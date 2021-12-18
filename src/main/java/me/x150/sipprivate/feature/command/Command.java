@@ -5,7 +5,9 @@
 
 package me.x150.sipprivate.feature.command;
 
-public abstract class Command {
+import me.x150.sipprivate.util.Utils;
+
+public abstract class Command extends Utils.Logging {
 
     private final String   name;
     private final String   description;

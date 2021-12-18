@@ -5,6 +5,7 @@ import me.x150.sipprivate.feature.gui.FastTickable;
 import me.x150.sipprivate.feature.gui.notifications.NotificationRenderer;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleRegistry;
+import me.x150.sipprivate.helper.Rotations;
 import me.x150.sipprivate.helper.event.EventType;
 import me.x150.sipprivate.helper.event.Events;
 import me.x150.sipprivate.helper.event.events.PostInitEvent;
@@ -25,20 +26,18 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.util.ArrayList;
 
-public class SipoverPrivate implements ModInitializer {
+@SuppressWarnings("ResultOfMethodCallIgnored") public class SipoverPrivate implements ModInitializer {
 
     public static final String          MOD_ID           = "sipoverprivate";
     public static final String          MOD_NAME         = "SipoverPrivate";
-    public static       Logger          LOGGER           = LogManager.getLogger();
-    public static       MinecraftClient client           = MinecraftClient.getInstance();
+    public static final Logger          LOGGER           = LogManager.getLogger();
+    public static final MinecraftClient client           = MinecraftClient.getInstance();
+    public static final File            BASE             = new File(MinecraftClient.getInstance().runDirectory, "sip");
     public static       long            lastScreenChange = System.currentTimeMillis();
-
-    public static SipoverPrivate INSTANCE;
-
-    public static File BASE = new File(MinecraftClient.getInstance().runDirectory, "sip");
-    public static Thread  MODULE_FTTICKER;
-    public static Thread  FAST_TICKER;
-    public        boolean initialized = false;
+    public static       SipoverPrivate  INSTANCE;
+    public static       Thread          MODULE_FTTICKER;
+    public static       Thread          FAST_TICKER;
+    public              boolean         initialized      = false;
 
     public static void log(Level level, String message) {
         LOGGER.log(level, "[" + MOD_NAME + "] " + message);
@@ -96,7 +95,7 @@ public class SipoverPrivate implements ModInitializer {
                 if (client.currentScreen instanceof FastTickable tickable) {
                     tickable.onFastTick();
                 }
-                for (Element child : new ArrayList<>(client.currentScreen.children())) { // wow i hate this
+                for (Element child : new ArrayList<>(client.currentScreen.children())) { // wow, I hate this
                     if (child instanceof FastTickable t) {
                         t.onFastTick();
                     }
@@ -129,7 +128,7 @@ public class SipoverPrivate implements ModInitializer {
                 if (client.player == null || client.world == null) {
                     continue;
                 }
-                //                Rotations.update(); // updates rotations, again only if we are in a world
+                Rotations.update(); // updates rotations, again only if we are in a world
             }
         }, "100_tps_ticker:gui");
         MODULE_FTTICKER.start();

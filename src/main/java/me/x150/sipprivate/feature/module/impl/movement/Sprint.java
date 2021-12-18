@@ -1,6 +1,5 @@
 package me.x150.sipprivate.feature.module.impl.movement;
 
-import jdk.jfr.Category;
 import me.x150.sipprivate.SipoverPrivate;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleType;
@@ -9,7 +8,7 @@ import net.minecraft.client.util.math.MatrixStack;
 public class Sprint extends Module {
 
     public Sprint() {
-        super("Sprint", "togglesprint for jewish people", ModuleType.MOVEMENT);
+        super("Sprint", "Sprints all the time, even when the shift key isn't held", ModuleType.MOVEMENT);
     }
 
     @Override public void tick() {

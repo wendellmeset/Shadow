@@ -5,13 +5,10 @@
 
 package me.x150.sipprivate.feature.gui.notifications;
 
-import me.zeroX150.atomic.feature.module.ModuleRegistry;
-import me.zeroX150.atomic.feature.module.impl.render.Hud;
-import me.zeroX150.atomic.helper.font.FontRenderers;
+import me.x150.sipprivate.helper.font.FontRenderers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class Notification {
 
@@ -51,13 +48,11 @@ public class Notification {
      */
     public static Notification create(long duration, String title, boolean topBar, String... contents) {
         Notification n = new Notification(duration, title, contents);
-        if (Objects.requireNonNull(ModuleRegistry.getByClass(Hud.class)).isEnabled()) {
-            if (topBar) {
-                n.posY = n.renderPosY = -69;
-                NotificationRenderer.topBarNotifications.add(0, n);
-            } else {
-                NotificationRenderer.notifications.add(0, n);
-            }
+        if (topBar) {
+            n.posY = n.renderPosY = -69;
+            NotificationRenderer.topBarNotifications.add(0, n);
+        } else {
+            NotificationRenderer.notifications.add(0, n);
         }
         return n;
     }

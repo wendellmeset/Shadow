@@ -1,7 +1,8 @@
 package me.x150.sipprivate.config;
 
 public class IntSetting extends SettingBase<Integer> {
-    int min, max;
+    final int min;
+    final int max;
 
     public IntSetting(Integer defaultValue, String name, String description, int min, int max) {
         super(defaultValue, name, description);

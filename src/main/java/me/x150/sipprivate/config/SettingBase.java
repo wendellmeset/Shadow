@@ -1,5 +1,8 @@
 package me.x150.sipprivate.config;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 
 /**
@@ -15,11 +18,12 @@ public abstract class SettingBase<V> {
     /**
      * The default value of this setting
      */
-    V defaultValue;
+    final V defaultValue;
+    List<BooleanSupplier> suppliers = new ArrayList<>();
     /**
      * The current value of this setting
      */
-    V value;
+    V                     value;
 
     /**
      * Constructs a new Setting
@@ -32,6 +36,14 @@ public abstract class SettingBase<V> {
         this.name = name;
         this.description = description;
         this.defaultValue = this.value = defaultValue;
+    }
+
+    public void showIf(BooleanSupplier supplier) {
+        suppliers.add(supplier);
+    }
+
+    public boolean shouldShow() {
+        return suppliers.stream().allMatch(BooleanSupplier::getAsBoolean);
     }
 
     /**
@@ -67,6 +79,10 @@ public abstract class SettingBase<V> {
      */
     public void setValue(V value) {
         this.value = value;
+    }
+
+    public void reset() {
+        this.setValue(this.getDefaultValue());
     }
 
     /**

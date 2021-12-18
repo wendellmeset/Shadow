@@ -14,14 +14,10 @@ import me.x150.sipprivate.helper.event.events.base.NonCancellableEvent;
 import me.x150.sipprivate.keybinding.KeybindingManager;
 import org.apache.commons.io.FileUtils;
 
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterOutputStream;
@@ -35,26 +31,6 @@ public class ConfigManager {
 
     static {
         CONFIG_FILE = new File(SipoverPrivate.BASE, "config.sip");
-    }
-
-    /**
-     * Encrypts a byte array with a key
-     *
-     * @param in  The byte array to encrypt
-     * @param key The key to use
-     * @return The encrypted byte array
-     * @throws Exception If something goes wrong
-     */
-    static byte[] encrypt(byte[] in, String key) throws Exception {
-        byte[] k = key.getBytes(StandardCharsets.UTF_8);
-        MessageDigest msgd = MessageDigest.getInstance("SHA-1");
-        k = msgd.digest(k);
-        k = Arrays.copyOf(k, 16);
-        SecretKeySpec sks = new SecretKeySpec(k, "AES");
-        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-        cipher.init(Cipher.ENCRYPT_MODE, sks);
-        //        return Base64.getEncoder().encodeToString(cipher.doFinal(in.getBytes(StandardCharsets.UTF_8)));
-        return cipher.doFinal(in);
     }
 
     /**
@@ -89,30 +65,11 @@ public class ConfigManager {
     }
 
     /**
-     * Decrypts a byte array with a key
-     *
-     * @param in  The byte array to decrypt
-     * @param key The key used to encrypt the byte array
-     * @return The decrypted byte array
-     * @throws Exception If something goes wrong
-     */
-    static byte[] decrypt(byte[] in, String key) throws Exception {
-        byte[] k = key.getBytes(StandardCharsets.UTF_8);
-        MessageDigest msgd = MessageDigest.getInstance("SHA-1");
-        k = msgd.digest(k);
-        k = Arrays.copyOf(k, 16);
-        SecretKeySpec sks = new SecretKeySpec(k, "AES");
-        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-        cipher.init(Cipher.DECRYPT_MODE, sks);
-        return cipher.doFinal(in);
-    }
-
-    /**
      * Saves the current state of the client to the file
      */
     public static void saveState() {
         if (!loaded || !enabled) {
-            System.out.println("Not saving config because we didnt load it yet");
+            System.out.println("Not saving config because we didn't load it yet");
             return;
         }
         System.out.println("Saving state");
@@ -138,8 +95,7 @@ public class ConfigManager {
         base.add("enabled", enabled);
         base.add("config", config);
         try {
-            FileUtils.writeByteArrayToFile(CONFIG_FILE, encrypt(compress(base.toString().getBytes(StandardCharsets.UTF_8)), "amogus"));
-            //            FileUtils.write(CONFIG_FILE, encrypt(base.toString(), "amogus"), StandardCharsets.UTF_8);
+            FileUtils.writeByteArrayToFile(CONFIG_FILE, compress(base.toString().getBytes(StandardCharsets.UTF_8)));
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Failed to save config!");
@@ -163,22 +119,21 @@ public class ConfigManager {
             if (!CONFIG_FILE.exists()) {
                 return;
             }
-            byte[] retrv = FileUtils.readFileToByteArray(CONFIG_FILE);
-            //            String retrv = FileUtils.readFileToString(CONFIG_FILE, StandardCharsets.UTF_8);
-            String decr = new String(decompress(decrypt(retrv, "amogus")));
-            JsonObject config = new JsonParser().parse(decr).getAsJsonObject();
+            byte[] retrieved = FileUtils.readFileToByteArray(CONFIG_FILE);
+            String decompressed = new String(decompress(retrieved));
+            JsonObject config = JsonParser.parseString(decompressed).getAsJsonObject();
             if (config.has("config") && config.get("config").isJsonArray()) {
                 JsonArray configArray = config.get("config").getAsJsonArray();
                 for (JsonElement jsonElement : configArray) {
                     if (jsonElement.isJsonObject()) {
-                        JsonObject jobj = jsonElement.getAsJsonObject();
-                        String name = jobj.get("name").getAsString();
+                        JsonObject jsonObj = jsonElement.getAsJsonObject();
+                        String name = jsonObj.get("name").getAsString();
                         Module j = ModuleRegistry.getByName(name);
                         if (j == null) {
                             continue;
                         }
-                        if (jobj.has("pairs") && jobj.get("pairs").isJsonArray()) {
-                            JsonArray pairs = jobj.get("pairs").getAsJsonArray();
+                        if (jsonObj.has("pairs") && jsonObj.get("pairs").isJsonArray()) {
+                            JsonArray pairs = jsonObj.get("pairs").getAsJsonArray();
                             for (JsonElement pair : pairs) {
                                 JsonObject jo = pair.getAsJsonObject();
                                 String key = jo.get("key").getAsString();

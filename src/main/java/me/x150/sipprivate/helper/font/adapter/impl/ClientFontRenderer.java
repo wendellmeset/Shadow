@@ -7,8 +7,8 @@ import net.minecraft.client.util.math.MatrixStack;
 public class ClientFontRenderer implements FontAdapter {
     final GlyphPageFontRenderer renderer;
 
-    public ClientFontRenderer(GlyphPageFontRenderer gpfr) {
-        this.renderer = gpfr;
+    public ClientFontRenderer(GlyphPageFontRenderer fontRenderer) {
+        this.renderer = fontRenderer;
     }
 
     @Override public int drawString(MatrixStack matrices, String text, float x, float y, int color) {

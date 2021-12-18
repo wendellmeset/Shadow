@@ -7,8 +7,9 @@ import java.util.List;
  * A group of settings
  */
 public class SettingsGroup {
-    String name, description;
-    List<SettingBase<?>> settings;
+    final String               name;
+    final String               description;
+    final List<SettingBase<?>> settings;
 
     SettingsGroup(String name, String description, List<SettingBase<?>> settings) {
         this.name = name;
@@ -21,8 +22,8 @@ public class SettingsGroup {
     }
 
     public static class Builder {
+        final List<SettingBase<?>> s = new ArrayList<>();
         String name = "none", description = "";
-        List<SettingBase<?>> s = new ArrayList<>();
 
         public Builder name(String name) {
             this.name = name;

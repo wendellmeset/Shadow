@@ -1,12 +1,13 @@
 package me.x150.sipprivate.config;
 
 public class DoubleSetting extends SettingBase<Double> {
-    int    prec;
-    double min, max;
+    final int    precision;
+    final double min;
+    final double max;
 
     public DoubleSetting(Double defaultValue, String name, String description, int precision, double min, double max) {
         super(defaultValue, name, description);
-        this.prec = precision;
+        this.precision = precision;
         this.min = min;
         this.max = max;
     }
@@ -28,14 +29,14 @@ public class DoubleSetting extends SettingBase<Double> {
 
     public static class Builder extends SettingBase.Builder<Builder, Double, DoubleSetting> {
         double min = Double.NEGATIVE_INFINITY, max = Double.POSITIVE_INFINITY;
-        int prec = 2;
+        int precision = 2;
 
         public Builder(double defaultValue) {
             super(defaultValue);
         }
 
-        public Builder precision(int prec) {
-            this.prec = prec;
+        public Builder precision(int precision) {
+            this.precision = precision;
             return this;
         }
 
@@ -50,7 +51,7 @@ public class DoubleSetting extends SettingBase<Double> {
         }
 
         @Override public DoubleSetting get() {
-            return new DoubleSetting(defaultValue, name, description, prec, min, max);
+            return new DoubleSetting(defaultValue, name, description, precision, min, max);
         }
     }
 }

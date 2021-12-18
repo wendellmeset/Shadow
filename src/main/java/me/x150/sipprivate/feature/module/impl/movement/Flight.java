@@ -21,15 +21,15 @@ import java.util.Random;
 
 public class Flight extends Module {
 
-    final EnumSetting<FlightMode> mode            = this.config.create(new EnumSetting<FlightMode>(FlightMode.Static, "Mode", "How you fly"));
-    final BooleanSetting    bypassVanillaAc = this.config.create(new BooleanSetting.Builder(true).name("Toasts").description("Whether to show enabled / disabled toasts").get());
-    final DoubleSetting     speed           = this.config.create(new DoubleSetting.Builder(-1).name("Speed").description("The keybind to toggle the module with").min(0.1).max(10).defaultValue(2D).precision(1).get());
+    final EnumSetting<FlightMode> mode            = this.config.create(new EnumSetting.Builder<>(FlightMode.Static).name("Mode").description("How you fly").get());
+    final BooleanSetting          bypassVanillaAc = this.config.create(new BooleanSetting.Builder(true).name("Bypass vanilla AC").description("Whether to bypass the vanilla anticheat").get());
+    final DoubleSetting           speed           = this.config.create(new DoubleSetting.Builder(1).name("Speed").description("How fast you fly").min(0).max(10).get());
 
     int     bypassTimer = 0;
     boolean flewBefore  = false;
 
     public Flight() {
-        super("Flight", "i think this explains itself", ModuleType.MOVEMENT);
+        super("Flight", "Allows you to fly without having permission to", ModuleType.MOVEMENT);
         Events.registerEventHandler(EventType.PACKET_SEND, event -> {
             if (!this.isEnabled()) {
                 return;
@@ -136,10 +136,7 @@ public class Flight extends Module {
 
     }
 
-    enum FlightMode { //  = (MultiValue) this.config.create("Mode", "Static", "Vanilla", "Static", "3D", "Jetpack")
-        Vanilla,
-        Static,
-        ThreeD,
-        Jetpack;
+    public enum FlightMode { //  = (MultiValue) this.config.create("Mode", "Static", "Vanilla", "Static", "3D", "Jetpack")
+        Vanilla, Static, ThreeD, Jetpack
     }
 }

@@ -1,10 +1,9 @@
 package me.x150.sipprivate.feature.module.impl.render;
 
-import jdk.jfr.Category;
 import me.x150.sipprivate.SipoverPrivate;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleType;
-import me.x150.sipprivate.helper.util.Transitions;
+import me.x150.sipprivate.util.Transitions;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 
@@ -13,7 +12,7 @@ public class Fullbright extends Module {
     double og;
 
     public Fullbright() {
-        super("Fullbright", "shine bright like a diamond", ModuleType.RENDER);
+        super("Fullbright", "Allows you to see in complete darkness", ModuleType.RENDER);
     }
 
     @Override public void tick() {
@@ -25,11 +24,11 @@ public class Fullbright extends Module {
     }
 
     @Override public void disable() {
-       SipoverPrivate.client.options.gamma = og;
+        SipoverPrivate.client.options.gamma = og;
     }
 
     @Override public void onFastTick() {
-       SipoverPrivate.client.options.gamma = Transitions.transition(SipoverPrivate.client.options.gamma, 10, 300);
+        SipoverPrivate.client.options.gamma = Transitions.transition(SipoverPrivate.client.options.gamma, 10, 300);
     }
 
     @Override public String getContext() {

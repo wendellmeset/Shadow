@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ModuleConfig {
-    List<SettingBase<?>> settings = new ArrayList<>();
-    List<SettingsGroup>  groups   = new ArrayList<>();
+    final List<SettingBase<?>> settings = new ArrayList<>();
+    final List<SettingsGroup>  groups   = new ArrayList<>();
 
     public <S extends SettingBase<?>> S create(S in) { // used as a proxy to make a one liner
         settings.add(in);

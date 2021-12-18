@@ -24,8 +24,8 @@ public class AtomicConsoleScreen extends ImGuiProxyScreen {
     public static final Color               BACKGROUND = new Color(80, 99, 107);
     static              AtomicConsoleScreen inst       = null;
     final               List<LogEntry>      logs       = new ArrayList<>();
-    ImString current     = new ImString();
-    boolean  focusBefore = false;
+    final               ImString            current    = new ImString();
+    boolean focusBefore = false;
 
     private AtomicConsoleScreen() {
 
@@ -84,7 +84,7 @@ public class AtomicConsoleScreen extends ImGuiProxyScreen {
             List<String> s = getSuggestions(cmd);
             ImVec2 c = ImGui.getWindowPos();
             c.y += ImGui.getWindowHeight() + ImGui.getStyle().getWindowPaddingY();
-            ImGui.setNextWindowSizeConstraints(0, 0, 200, 170);
+            ImGui.setNextWindowSizeConstraints(0, 0, 1000, 170);
             ImGui.begin("cmdSuggestions", ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoDecoration | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoFocusOnAppearing);
 
             ImGui.setWindowPos(c.x, c.y);

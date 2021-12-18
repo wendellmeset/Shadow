@@ -9,7 +9,7 @@ import net.minecraft.text.Text;
 
 
 public abstract class ImGuiProxyScreen extends Screen {
-    public static boolean imguiDebugWindow = false;
+    public static final boolean imguiDebugWindow = false;
     boolean closed    = false;
     boolean closedAck = false;
 

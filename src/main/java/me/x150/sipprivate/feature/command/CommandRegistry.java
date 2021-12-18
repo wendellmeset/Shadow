@@ -5,6 +5,26 @@
 
 package me.x150.sipprivate.feature.command;
 
+import me.x150.sipprivate.feature.command.impl.Config;
+import me.x150.sipprivate.feature.command.impl.ConfigUtils;
+import me.x150.sipprivate.feature.command.impl.Drop;
+import me.x150.sipprivate.feature.command.impl.Effect;
+import me.x150.sipprivate.feature.command.impl.FakeItem;
+import me.x150.sipprivate.feature.command.impl.Find;
+import me.x150.sipprivate.feature.command.impl.ForEach;
+import me.x150.sipprivate.feature.command.impl.Gamemode;
+import me.x150.sipprivate.feature.command.impl.Help;
+import me.x150.sipprivate.feature.command.impl.Hologram;
+import me.x150.sipprivate.feature.command.impl.Invsee;
+import me.x150.sipprivate.feature.command.impl.Kill;
+import me.x150.sipprivate.feature.command.impl.Panic;
+import me.x150.sipprivate.feature.command.impl.Plugins;
+import me.x150.sipprivate.feature.command.impl.RageQuit;
+import me.x150.sipprivate.feature.command.impl.Rename;
+import me.x150.sipprivate.feature.command.impl.Say;
+import me.x150.sipprivate.feature.command.impl.Taco;
+import me.x150.sipprivate.feature.command.impl.Toggle;
+import me.x150.sipprivate.feature.command.impl.ViewNbt;
 import me.x150.sipprivate.feature.gui.AtomicConsoleScreen;
 
 import java.io.PrintWriter;
@@ -18,11 +38,32 @@ public class CommandRegistry {
     private static final List<Command> commands = new ArrayList<>();
 
     static {
-        // TODO: 18.12.21 add commands 
+        // TODO: 18.12.21 add commands
+        init();
     }
 
     public static void init() {
-
+        commands.clear();
+        commands.add(new Toggle());
+        commands.add(new Config());
+        commands.add(new Gamemode());
+        commands.add(new Effect());
+        commands.add(new Hologram());
+        commands.add(new Help());
+        commands.add(new ForEach());
+        commands.add(new Drop());
+        commands.add(new Panic());
+        commands.add(new Rename());
+        commands.add(new ViewNbt());
+        commands.add(new Say());
+        commands.add(new ConfigUtils());
+        commands.add(new Kill());
+        commands.add(new Invsee());
+        commands.add(new RageQuit());
+        commands.add(new Plugins());
+        commands.add(new Find());
+        commands.add(new FakeItem());
+        commands.add(new Taco());
     }
 
     public static List<Command> getCommands() {
