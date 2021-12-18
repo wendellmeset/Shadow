@@ -2,7 +2,11 @@
   "required": true,
   "package": "me.x150.sipprivate.mixin",
   "compatibilityLevel": "JAVA_8",
-  "mixins": [],
+  "mixins": [
+    "ClientPlayerEntityMixin",
+    "KeyboardMixin",
+    "MinecraftClientMixin"
+  ],
   "client": [],
   "server": [],
   "injectors": {

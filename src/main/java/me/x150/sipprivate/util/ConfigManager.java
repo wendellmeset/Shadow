@@ -31,7 +31,7 @@ public class ConfigManager {
     public static boolean      enabled     = false;
 
     static {
-        CONFIG_FILE = new File(SipoverPrivate.client.runDirectory, "config.sip");
+        CONFIG_FILE = new File(SipoverPrivate.BASE, "config.sip");
     }
 
     /**
