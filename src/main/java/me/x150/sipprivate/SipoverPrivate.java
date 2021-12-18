@@ -30,6 +30,7 @@ public class SipoverPrivate implements ModInitializer {
     public static final String          MOD_NAME = "SipoverPrivate";
     public static       Logger          LOGGER   = LogManager.getLogger();
     public static       MinecraftClient client   = MinecraftClient.getInstance();
+    public static       long            lastScreenChange = System.currentTimeMillis();
 
     public static SipoverPrivate INSTANCE;
 

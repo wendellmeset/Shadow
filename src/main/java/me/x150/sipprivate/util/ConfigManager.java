@@ -8,6 +8,9 @@ import me.x150.sipprivate.SipoverPrivate;
 import me.x150.sipprivate.config.SettingBase;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleRegistry;
+import me.x150.sipprivate.helper.event.EventType;
+import me.x150.sipprivate.helper.event.Events;
+import me.x150.sipprivate.helper.event.events.base.NonCancellableEvent;
 import me.x150.sipprivate.keybinding.KeybindingManager;
 import org.apache.commons.io.FileUtils;
 
@@ -141,6 +144,7 @@ public class ConfigManager {
             e.printStackTrace();
             System.out.println("Failed to save config!");
         }
+        Events.fireEvent(EventType.CONFIG_SAVE, new NonCancellableEvent());
     }
 
     /**
