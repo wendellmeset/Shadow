@@ -12,10 +12,10 @@ import java.io.File;
 
 public class SipoverPrivate implements ModInitializer {
 
-    public static final String MOD_ID   = "sipoverprivate";
-    public static final String MOD_NAME = "SipoverPrivate";
-    public static Logger LOGGER = LogManager.getLogger();
-    public static MinecraftClient client = MinecraftClient.getInstance();
+    public static final String          MOD_ID   = "sipoverprivate";
+    public static final String          MOD_NAME = "SipoverPrivate";
+    public static       Logger          LOGGER   = LogManager.getLogger();
+    public static       MinecraftClient client   = MinecraftClient.getInstance();
 
     public static File BASE = new File(MinecraftClient.getInstance().runDirectory, "sip");
 

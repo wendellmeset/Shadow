@@ -1,7 +1,7 @@
 package me.x150.sipprivate.keybinding;
 
-import me.x150.sipprivate.module.Module;
-import me.x150.sipprivate.module.ModuleManager;
+import me.x150.sipprivate.feature.module.Module;
+import me.x150.sipprivate.feature.module.ModuleRegistry;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +20,7 @@ public class KeybindingManager {
      * Init the keybinding manager
      */
     public static void init() {
-        for (Module module : ModuleManager.instance().getModules()) {
+        for (Module module : ModuleRegistry.getModules()) {
             keybindMap.put(module, new Keybind(module.keybind.getValue()));
         }
     }

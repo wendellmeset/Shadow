@@ -6,9 +6,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import me.x150.sipprivate.SipoverPrivate;
 import me.x150.sipprivate.config.SettingBase;
+import me.x150.sipprivate.feature.module.Module;
+import me.x150.sipprivate.feature.module.ModuleRegistry;
 import me.x150.sipprivate.keybinding.KeybindingManager;
-import me.x150.sipprivate.module.Module;
-import me.x150.sipprivate.module.ModuleManager;
 import org.apache.commons.io.FileUtils;
 
 import javax.crypto.Cipher;
@@ -116,7 +116,7 @@ public class ConfigManager {
         JsonObject base = new JsonObject();
         JsonArray enabled = new JsonArray();
         JsonArray config = new JsonArray();
-        for (Module module : ModuleManager.instance().getModules()) {
+        for (Module module : ModuleRegistry.getModules()) {
             if (module.isEnabled()) {
                 enabled.add(module.getName());
             }
@@ -169,7 +169,7 @@ public class ConfigManager {
                     if (jsonElement.isJsonObject()) {
                         JsonObject jobj = jsonElement.getAsJsonObject();
                         String name = jobj.get("name").getAsString();
-                        Module j = ModuleManager.instance().getModuleByName(name);
+                        Module j = ModuleRegistry.getByName(name);
                         if (j == null) {
                             continue;
                         }
@@ -192,7 +192,7 @@ public class ConfigManager {
             if (config.has("enabled") && config.get("enabled").isJsonArray()) {
                 for (JsonElement enabled : config.get("enabled").getAsJsonArray()) {
                     String name = enabled.getAsString();
-                    Module m = ModuleManager.instance().getModuleByName(name);
+                    Module m = ModuleRegistry.getByName(name);
                     if (m != null) {
                         toBeEnabled.add(m);
                     }

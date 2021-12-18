@@ -1,0 +1,84 @@
+/*
+ * This file is part of the atomic client distribution.
+ * Copyright (c) 2021-2021 0x150.
+ */
+
+package me.x150.sipprivate.feature.module;
+
+import me.x150.sipprivate.config.BooleanSetting;
+import me.x150.sipprivate.config.IntSetting;
+import me.x150.sipprivate.config.ModuleConfig;
+import net.minecraft.client.util.math.MatrixStack;
+
+public abstract class Module {
+
+    public final  ModuleConfig   config;
+    public final  IntSetting     keybind;
+    private final String         name;
+    private final String         description;
+    private final ModuleType     moduleType;
+    private final BooleanSetting toasts;
+    private       boolean        enabled = false;
+
+    public Module(String n, String d, ModuleType type) {
+        this.name = n;
+        this.description = d;
+        this.moduleType = type;
+        this.config = new ModuleConfig();
+        this.keybind = this.config.create(new IntSetting.Builder(-1).name("Keybind").description("The keybind to toggle the module with").min(-1).get());
+        this.toasts = this.config.create(new BooleanSetting.Builder(true).name("Toasts").description("Whether to show enabled / disabled toasts").get());
+    }
+
+    public ModuleType getModuleType() {
+        return moduleType;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public abstract void tick();
+
+    public abstract void enable();
+
+    public abstract void disable();
+
+    public abstract String getContext();
+
+    public abstract void onWorldRender(MatrixStack matrices);
+
+    public abstract void onHudRender();
+
+    public void onFastTick() {
+
+    }
+
+    public void onFastTick_NWC() {
+
+    }
+
+    public void toggle() {
+        setEnabled(!enabled);
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+        if (toasts.getValue()) {
+            //            Notification.create(1000, "Module toggle", (this.enabled ? "§aEn" : "§cDis") + "abled §r" + this.getName());
+        }
+        if (this.enabled) {
+            this.enable();
+        } else {
+            this.disable();
+        }
+    }
+
+}
