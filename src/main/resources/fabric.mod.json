@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "sipoverprivate",
+  "version": "${version}",
+  "name": "SipoverPrivate",
+  "description": "YOOOOO $2500 WE GETTIN RICH BOYYS",
+  "authors": [
+    "0x150, Kopamed"
+  ],
+  "contributors": [],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/sipoverprivate/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "me.x150.sipprivate.SipoverPrivateMain"
+    ],
+    "client": [],
+    "server": []
+  },
+  "mixins": [
+    "sipoverprivate.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.12.12",
+    "fabric": "*"
+  }
+}
