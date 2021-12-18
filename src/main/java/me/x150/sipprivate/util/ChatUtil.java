@@ -15,7 +15,7 @@ public class ChatUtil {
         MinecraftClient.getInstance().inGameHud.addChatMessage(MessageType.SYSTEM, Text.of(s), MinecraftClient.getInstance().player.getUuid());
     }
 
-    public static void sendFormatted(String msg){
+    public static void sendFormatted(String msg) {
         MinecraftClient.getInstance().inGameHud.addChatMessage(MessageType.SYSTEM, Text.of(Formatting.GRAY + "[" + Formatting.DARK_GRAY + "SipClient" + Formatting.GRAY + "] " + Formatting.RESET + msg), MinecraftClient.getInstance().player.getUuid());
     }
 }

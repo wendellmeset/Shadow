@@ -1,7 +1,5 @@
 package me.x150.sipprivate.mixin;
 
-import io.netty.channel.ChannelHandlerContext;
-import me.x150.sipprivate.feature.module.ModuleRegistry;
 import me.x150.sipprivate.helper.event.EventType;
 import me.x150.sipprivate.helper.event.Events;
 import me.x150.sipprivate.helper.event.events.PacketEvent;

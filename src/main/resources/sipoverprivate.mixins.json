@@ -3,6 +3,8 @@
   "package": "me.x150.sipprivate.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "AChatScreenMixin",
+    "AInGameHudMixin",
     "BlockEntityRenderDispatcherMixin",
     "BlockRenderManagerMixin",
     "ClientConnectionMixin",
