@@ -3,7 +3,7 @@
   "id": "sipoverprivate",
   "version": "${version}",
   "name": "SipoverPrivate",
-  "description": "YOOOOO $2500 WE GETTIN RICH BOYYS",
+  "description": "YOOOOO 2500 KROMER WE GETTIN RICH BOYYS",
   "authors": [
     "0x150",
     "Kopamed"
@@ -15,7 +15,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "me.x150.sipprivate.SipoverPrivateMain"
+      "me.x150.sipprivate.SipoverPrivate"
     ],
     "client": [],
     "server": []
