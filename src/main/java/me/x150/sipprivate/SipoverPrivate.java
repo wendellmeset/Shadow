@@ -2,6 +2,7 @@ package me.x150.sipprivate;
 
 import me.x150.sipprivate.feature.command.CommandRegistry;
 import me.x150.sipprivate.feature.gui.FastTickable;
+import me.x150.sipprivate.feature.gui.notifications.NotificationRenderer;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleRegistry;
 import me.x150.sipprivate.helper.event.EventType;
@@ -26,14 +27,18 @@ import java.util.ArrayList;
 
 public class SipoverPrivate implements ModInitializer {
 
-    public static final String          MOD_ID   = "sipoverprivate";
-    public static final String          MOD_NAME = "SipoverPrivate";
-    public static       Logger          LOGGER   = LogManager.getLogger();
-    public static       MinecraftClient client   = MinecraftClient.getInstance();
+    public static final String          MOD_ID           = "sipoverprivate";
+    public static final String          MOD_NAME         = "SipoverPrivate";
+    public static       Logger          LOGGER           = LogManager.getLogger();
+    public static       MinecraftClient client           = MinecraftClient.getInstance();
+    public static       long            lastScreenChange = System.currentTimeMillis();
 
     public static SipoverPrivate INSTANCE;
 
     public static File BASE = new File(MinecraftClient.getInstance().runDirectory, "sip");
+    public static Thread  MODULE_FTTICKER;
+    public static Thread  FAST_TICKER;
+    public        boolean initialized = false;
 
     public static void log(Level level, String message) {
         LOGGER.log(level, "[" + MOD_NAME + "] " + message);
@@ -54,10 +59,6 @@ public class SipoverPrivate implements ModInitializer {
         log(Level.INFO, "Done initializing");
         //TODO: Initializer
     }
-
-    public static Thread  MODULE_FTTICKER;
-    public static Thread  FAST_TICKER;
-    public        boolean initialized = false;
 
     void initFonts() {
         FontRenderers.setNormal(new ClientFontRenderer(GlyphPageFontRenderer.createFromID("Font.ttf", 17, false, false, false)));
@@ -89,7 +90,7 @@ public class SipoverPrivate implements ModInitializer {
     }
 
     void tickGuiSystem() {
-        //        NotificationRenderer.onFastTick();
+        NotificationRenderer.onFastTick();
         try {
             if (client.currentScreen != null) {
                 if (client.currentScreen instanceof FastTickable tickable) {

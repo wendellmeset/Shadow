@@ -3,12 +3,21 @@
   "package": "me.x150.sipprivate.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "AChatScreenMixin",
+    "AInGameHudMixin",
+    "BlockEntityRenderDispatcherMixin",
+    "BlockRenderManagerMixin",
+    "ClientConnectionMixin",
     "ClientPlayerEntityMixin",
+    "EntityRenderDispatcherMixin",
     "GameRendererMixin",
     "IMinecraftClientAccessor",
     "IRenderTickCounterAccessor",
+    "ItemStackMixin",
     "KeyboardMixin",
-    "MinecraftClientMixin"
+    "MinecraftClientMixin",
+    "MouseMixin",
+    "PlayerEntityMixin"
   ],
   "client": [],
   "server": [],
