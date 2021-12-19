@@ -24,7 +24,7 @@ public abstract class Element {
 
     abstract public boolean keyPressed(int keycode);
 
-    abstract public void render(MatrixStack matrices);
+    abstract public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed);
 
     abstract public void tickAnim();
 
@@ -42,6 +42,14 @@ public abstract class Element {
 
     public void setX(double x) {
         this.x = x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public double getX() {
+        return x;
     }
 
     public void setHeight(double height) {

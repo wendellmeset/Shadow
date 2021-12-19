@@ -50,7 +50,7 @@ public class BooleanSettingEditor extends ConfigBase<BooleanSetting> {
         return false;
     }
 
-    @Override public void render(MatrixStack matrices) {
+    @Override public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
         Theme theme = ClickGUI.theme;
         double smoothAnimProgress = easeInOutCubic(animProgress);
         //        if (xSmooth==-1) xSmooth = getPreferredX();

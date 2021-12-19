@@ -13,6 +13,7 @@ import me.x150.sipprivate.feature.gui.clickgui.element.impl.config.DoubleSetting
 import me.x150.sipprivate.feature.gui.clickgui.element.impl.config.EnumSettingEditor;
 import me.x150.sipprivate.feature.gui.clickgui.theme.Theme;
 import me.x150.sipprivate.helper.render.Renderer;
+import me.x150.sipprivate.util.Utils;
 import net.minecraft.client.util.math.MatrixStack;
 
 import java.util.ArrayList;
@@ -74,18 +75,29 @@ public class ConfigDisplay extends Element {
         }
         return false;
     }
-
-    @Override public void render(MatrixStack matrices) {
+    long hoverStart = System.currentTimeMillis();
+    boolean hoveredBefore = false;
+    @Override public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
         double yOffset = 0;
         Theme theme = ClickGUI.theme;
         Renderer.R2D.fill(matrices, theme.getConfig(), x, this.y, x + width, this.y + height);
         Renderer.R2D.fill(matrices, theme.getAccent(), x, this.y, x + 1, this.y + height);
+        boolean hovered = inBounds(mouseX, mouseY);
+        if (!hoveredBefore && hovered) hoverStart = System.currentTimeMillis();
+        hoveredBefore = hovered;
+        String renderingDesc = null;
         for (ConfigBase<?> basis : bases) {
             basis.setX(x + padding);
             basis.setY(this.y + yOffset);
             if (!basis.getConfigValue().shouldShow()) continue;
-            basis.render(matrices);
+            basis.render(matrices, 0, 0, 0);
+            if (basis.inBounds(mouseX, mouseY) && renderingDesc == null) {
+                renderingDesc = basis.getConfigValue().description;
+            }
             yOffset += basis.getHeight();
+        }
+        if (hoverStart+500<System.currentTimeMillis() && hovered && renderingDesc != null) {
+            ClickGUI.instance.renderDescription(Utils.Mouse.getMouseX(), Utils.Mouse.getMouseY()+10,renderingDesc);
         }
         this.height = yOffset;
     }

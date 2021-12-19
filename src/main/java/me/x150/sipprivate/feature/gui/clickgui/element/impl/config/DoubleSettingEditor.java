@@ -50,7 +50,7 @@ public class DoubleSettingEditor extends ConfigBase<DoubleSetting> {
         return MathHelper.clamp((configValue.getValue()-configValue.getMin()) / (configValue.getMax()- configValue.getMin()), 0, 1);
     }
 
-    @Override public void render(MatrixStack matrices) {
+    @Override public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
         Theme theme = ClickGUI.theme;
         FontRenderers.getNormal().drawString(matrices,configValue.name,x,y,0xFFFFFF);
         String t = configValue.getValue().toString();

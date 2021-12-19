@@ -19,6 +19,7 @@ import me.x150.sipprivate.feature.module.impl.exploit.OffhandCrash;
 import me.x150.sipprivate.feature.module.impl.exploit.Phase;
 import me.x150.sipprivate.feature.module.impl.exploit.VanillaSpoof;
 import me.x150.sipprivate.feature.module.impl.exploit.Voider;
+import me.x150.sipprivate.feature.module.impl.misc.TpRange;
 import me.x150.sipprivate.feature.module.impl.movement.Flight;
 import me.x150.sipprivate.feature.module.impl.movement.Sprint;
 import me.x150.sipprivate.feature.module.impl.render.ClickGUI;
@@ -57,6 +58,7 @@ public class ModuleRegistry {
         modules.add(new XRAY());
         modules.add(new Voider());
         modules.add(new ClickGUI());
+        modules.add(new TpRange());
         // TODO: 18.12.21 add modules
     }
 

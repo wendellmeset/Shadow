@@ -54,10 +54,16 @@ public class ModuleDisplay extends Element {
     @Override public boolean keyPressed(int keycode) {
         return extended && cd.keyPressed(keycode);
     }
-
-    @Override public void render(MatrixStack matrices) {
+    long hoverStart = System.currentTimeMillis();
+    boolean hoveredBefore = false;
+    @Override public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
         Theme theme = ClickGUI.theme;
-        boolean hovered = inBounds(Utils.Mouse.getMouseX(), Utils.Mouse.getMouseY());
+        boolean hovered = inBounds(mouseX, mouseY);
+        if (!hoveredBefore && hovered) hoverStart = System.currentTimeMillis();
+        if (hoverStart+500<System.currentTimeMillis() && hovered) {
+            ClickGUI.instance.renderDescription(Utils.Mouse.getMouseX(), Utils.Mouse.getMouseY()+10,module.getDescription());
+        }
+        hoveredBefore = hovered;
         Renderer.R2D.fill(matrices, hovered ? theme.getModule().darker() : theme.getModule(), x, y, x + width, y + height);
         FontRenderers.getNormal().drawCenteredString(matrices, module.getName(), x + width / 2d, y + height / 2d - FontRenderers.getNormal().getMarginHeight() / 2d, 0xFFFFFF);
         if (module.isEnabled()) {
@@ -65,8 +71,8 @@ public class ModuleDisplay extends Element {
         }
         cd.setX(this.x);
         cd.setY(this.y + height);
-        Renderer.R2D.scissor(x,y,width,getHeight());
-        cd.render(matrices);
+        Renderer.R2D.scissor(x,y-scrollBeingUsed,width,getHeight());
+        if (extendAnim > 0) cd.render(matrices, mouseX, mouseY, scrollBeingUsed);
         Renderer.R2D.unscissor();
     }
 

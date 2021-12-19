@@ -1,6 +1,5 @@
 package me.x150.sipprivate.feature.gui.clickgui.element.impl;
 
-import me.x150.sipprivate.SipoverPrivate;
 import me.x150.sipprivate.feature.gui.clickgui.ClickGUI;
 import me.x150.sipprivate.feature.gui.clickgui.element.Element;
 import me.x150.sipprivate.feature.gui.clickgui.theme.Theme;
@@ -83,7 +82,7 @@ public class CategoryDisplay extends Element {
         return padding + cfr.getFontHeight() + padding;
     }
 
-    @Override public void render(MatrixStack matrices) {
+    @Override public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
         Theme theme = ClickGUI.theme;
         Renderer.R2D.fill(matrices, theme.getHeader(), x, y, x + width, y + headerHeight());
         cfr.drawCenteredString(matrices, mt.getName(), x + width / 2d, y + headerHeight() / 2d - cfr.getFontHeight() / 2d, 0xFFFFFF);
@@ -91,7 +90,7 @@ public class CategoryDisplay extends Element {
         for (ModuleDisplay moduleDisplay : md) {
             moduleDisplay.setX(this.x);
             moduleDisplay.setY(this.y + y);
-            moduleDisplay.render(matrices);
+            moduleDisplay.render(matrices, mouseX, mouseY, scrollBeingUsed);
             y += moduleDisplay.getHeight();
         }
         this.height = y;

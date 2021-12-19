@@ -53,7 +53,7 @@ public class EnumSettingEditor extends ConfigBase<EnumSetting<?>> {
         return false;
     }
 
-    @Override public void render(MatrixStack matrices) {
+    @Override public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
         Theme theme = ClickGUI.theme;
         FontRenderers.getNormal().drawString(matrices, configValue.name, x, y + 1, 0xFFFFFF);
         double yOffset = FontRenderers.getNormal().getMarginHeight() + 2;
