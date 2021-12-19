@@ -40,7 +40,7 @@ public class TpRange extends Module {
                 return;
             }
             MouseEvent me = (MouseEvent) event;
-            if (me.getAction() == MouseEvent.MouseEventType.MOUSE_CLICKED && me.getButton() == 0) {
+            if (me.getAction() == 1 && me.getButton() == 0) {
                 if (running.get()) {
                     Notification.create(5000, "TpRange", "Already exploiting, please wait a bit");
                 } else {

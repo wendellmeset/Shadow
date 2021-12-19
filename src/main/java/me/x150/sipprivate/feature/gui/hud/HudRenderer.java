@@ -39,7 +39,7 @@ public class HudRenderer {
                 return;
             }
             MouseEvent me = (MouseEvent) event;
-            if (me.getAction() == MouseEvent.MouseEventType.MOUSE_CLICKED) {
+            if (me.getAction() == 1) {
                 mouseHeldDown = true;
                 prevX = Utils.Mouse.getMouseX();
                 prevY = Utils.Mouse.getMouseY();
@@ -48,7 +48,7 @@ public class HudRenderer {
                         break;
                     }
                 }
-            } else if (me.getAction() == MouseEvent.MouseEventType.MOUSE_RELEASED) {
+            } else if (me.getAction() == 0) {
                 mouseHeldDown = false;
                 for (HudElement element : elements) {
                     element.mouseReleased();

@@ -5,23 +5,23 @@
 
 package me.x150.sipprivate.helper.event.events;
 
-import me.x150.sipprivate.helper.event.events.base.NonCancellableEvent;
+import me.x150.sipprivate.helper.event.events.base.Event;
 
-public class MouseEvent extends NonCancellableEvent {
+public class MouseEvent extends Event {
 
     final int            button;
-    final MouseEventType type;
+    final int type;
 
     public MouseEvent(int button, int action) {
         this.button = button;
-        type = action == 1 ? MouseEventType.MOUSE_CLICKED : MouseEventType.MOUSE_RELEASED;
+        type = action;
     }
 
     public int getButton() {
         return button;
     }
 
-    public MouseEventType getAction() {
+    public int getAction() {
         return type;
     }
 

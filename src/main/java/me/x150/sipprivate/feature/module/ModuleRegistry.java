@@ -27,6 +27,7 @@ import me.x150.sipprivate.feature.module.impl.render.Fullbright;
 import me.x150.sipprivate.feature.module.impl.render.Hud;
 import me.x150.sipprivate.feature.module.impl.render.TargetHud;
 import me.x150.sipprivate.feature.module.impl.render.XRAY;
+import me.x150.sipprivate.feature.module.impl.world.AnyPlacer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +60,7 @@ public class ModuleRegistry {
         modules.add(new Voider());
         modules.add(new ClickGUI());
         modules.add(new TpRange());
+        modules.add(new AnyPlacer());
         // TODO: 18.12.21 add modules
     }
 
