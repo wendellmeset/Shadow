@@ -21,7 +21,7 @@ public class KeybindingManager {
      */
     public static void init() {
         for (Module module : ModuleRegistry.getModules()) {
-            keybindMap.put(module, new Keybind(module.keybind.getValue()));
+            keybindMap.put(module, new Keybind((int) (module.keybind.getValue() + 0)));
         }
     }
 

@@ -53,7 +53,7 @@ public class DoubleSettingEditor extends ConfigBase<DoubleSetting> {
         FontRenderers.getNormal().drawString(matrices,configValue.name,x,y,0xFFFFFF);
         String t = configValue.getValue().toString();
         FontRenderers.getNormal().drawString(matrices,t,x+width-FontRenderers.getNormal().getStringWidth(t)-1,y,0xFFFFFF);
-        double h = y+FontRenderers.getNormal().getMarginHeight()+1; // 9 px left
+        double h = y + FontRenderers.getNormal().getMarginHeight() + .5; // 9 px left
         Renderer.R2D.fill(matrices,Theme.INACTIVE,x,h+9/2d-.5,x+width,h+9/2d+.5);
         Renderer.R2D.fill(matrices, Theme.ACTIVE, x, h+9/2d-.5, x+width*getPer(),h+9/2d+.5);
         Renderer.R2D.fill(matrices,Theme.ACCENT,x+width*getPer()-.5,h+.5,x+width*getPer()+.5,h+8.5);

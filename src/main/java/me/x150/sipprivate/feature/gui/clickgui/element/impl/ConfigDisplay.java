@@ -2,6 +2,7 @@ package me.x150.sipprivate.feature.gui.clickgui.element.impl;
 
 import me.x150.sipprivate.config.BooleanSetting;
 import me.x150.sipprivate.config.DoubleSetting;
+import me.x150.sipprivate.config.EnumSetting;
 import me.x150.sipprivate.config.ModuleConfig;
 import me.x150.sipprivate.config.SettingBase;
 import me.x150.sipprivate.feature.gui.clickgui.Theme;
@@ -9,6 +10,7 @@ import me.x150.sipprivate.feature.gui.clickgui.element.Element;
 import me.x150.sipprivate.feature.gui.clickgui.element.impl.config.BooleanSettingEditor;
 import me.x150.sipprivate.feature.gui.clickgui.element.impl.config.ConfigBase;
 import me.x150.sipprivate.feature.gui.clickgui.element.impl.config.DoubleSettingEditor;
+import me.x150.sipprivate.feature.gui.clickgui.element.impl.config.EnumSettingEditor;
 import me.x150.sipprivate.helper.render.Renderer;
 import net.minecraft.client.util.math.MatrixStack;
 
@@ -28,8 +30,11 @@ public class ConfigDisplay extends Element {
                 BooleanSettingEditor bse = new BooleanSettingEditor(0, 0, width-padding-paddingLeft, set);
                 bases.add(bse);
             } else if (setting instanceof DoubleSetting set) {
-                DoubleSettingEditor dse = new DoubleSettingEditor(0,0,width-padding-paddingLeft,set);
+                DoubleSettingEditor dse = new DoubleSettingEditor(0, 0, width - padding - paddingLeft, set);
                 bases.add(dse);
+            } else if (setting instanceof EnumSetting<?> set) {
+                EnumSettingEditor ese = new EnumSettingEditor(0, 0, width - padding - paddingLeft, set);
+                bases.add(ese);
             }
         }
         this.height = bases.stream().map(Element::getHeight).reduce(Double::sum).orElse(0d);
