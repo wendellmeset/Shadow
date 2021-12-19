@@ -1,7 +1,8 @@
 package me.x150.sipprivate.feature.gui.clickgui.element.impl.config;
 
 import me.x150.sipprivate.config.DoubleSetting;
-import me.x150.sipprivate.feature.gui.clickgui.Theme;
+import me.x150.sipprivate.feature.gui.clickgui.ClickGUI;
+import me.x150.sipprivate.feature.gui.clickgui.theme.Theme;
 import me.x150.sipprivate.helper.font.FontRenderers;
 import me.x150.sipprivate.helper.render.Renderer;
 import me.x150.sipprivate.util.Utils;
@@ -50,13 +51,14 @@ public class DoubleSettingEditor extends ConfigBase<DoubleSetting> {
     }
 
     @Override public void render(MatrixStack matrices) {
+        Theme theme = ClickGUI.theme;
         FontRenderers.getNormal().drawString(matrices,configValue.name,x,y,0xFFFFFF);
         String t = configValue.getValue().toString();
         FontRenderers.getNormal().drawString(matrices,t,x+width-FontRenderers.getNormal().getStringWidth(t)-1,y,0xFFFFFF);
         double h = y + FontRenderers.getNormal().getMarginHeight() + .5; // 9 px left
-        Renderer.R2D.fill(matrices,Theme.INACTIVE,x,h+9/2d-.5,x+width,h+9/2d+.5);
-        Renderer.R2D.fill(matrices, Theme.ACTIVE, x, h+9/2d-.5, x+width*getPer(),h+9/2d+.5);
-        Renderer.R2D.fill(matrices,Theme.ACCENT,x+width*getPer()-.5,h+.5,x+width*getPer()+.5,h+8.5);
+        Renderer.R2D.fill(matrices, theme.getInactive(),x,h+9/2d-.5,x+width,h+9/2d+.5);
+        Renderer.R2D.fill(matrices, theme.getActive(), x, h+9/2d-.5, x+width*getPer(),h+9/2d+.5);
+        Renderer.R2D.fill(matrices, theme.getAccent(),x+width*getPer()-.5,h+.5,x+width*getPer()+.5,h+8.5);
     }
 
     @Override public void tickAnim() {

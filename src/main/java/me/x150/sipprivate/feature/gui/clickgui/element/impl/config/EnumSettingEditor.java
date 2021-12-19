@@ -1,7 +1,8 @@
 package me.x150.sipprivate.feature.gui.clickgui.element.impl.config;
 
 import me.x150.sipprivate.config.EnumSetting;
-import me.x150.sipprivate.feature.gui.clickgui.Theme;
+import me.x150.sipprivate.feature.gui.clickgui.ClickGUI;
+import me.x150.sipprivate.feature.gui.clickgui.theme.Theme;
 import me.x150.sipprivate.helper.font.FontRenderers;
 import me.x150.sipprivate.helper.render.Renderer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -24,7 +25,8 @@ public class EnumSettingEditor extends ConfigBase<EnumSetting<?>> {
     }
 
     <T extends Enum<?>> int getColor(T value) {
-        return configValue.getValue().equals(value) ? Theme.ACTIVE.getRGB() : Theme.INACTIVE.getRGB();
+        Theme theme = ClickGUI.theme;
+        return configValue.getValue().equals(value) ? theme.getActive().getRGB() : theme.getInactive().getRGB();
     }
 
     @Override public boolean clicked(double x, double y, int button) {
@@ -52,9 +54,10 @@ public class EnumSettingEditor extends ConfigBase<EnumSetting<?>> {
     }
 
     @Override public void render(MatrixStack matrices) {
+        Theme theme = ClickGUI.theme;
         FontRenderers.getNormal().drawString(matrices, configValue.name, x, y + 1, 0xFFFFFF);
         double yOffset = FontRenderers.getNormal().getMarginHeight() + 2;
-        Renderer.R2D.fill(matrices, Theme.MODULE.darker(), x, y + yOffset, x + width, y + height);
+        Renderer.R2D.fill(matrices, theme.getModule().darker(), x, y + yOffset, x + width, y + height);
         yOffset += 1;
         for (EnumSelectorClickable<?> value : values) {
             value.x = x + 1;

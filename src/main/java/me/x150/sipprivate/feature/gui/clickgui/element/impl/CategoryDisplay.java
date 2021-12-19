@@ -1,7 +1,9 @@
 package me.x150.sipprivate.feature.gui.clickgui.element.impl;
 
-import me.x150.sipprivate.feature.gui.clickgui.Theme;
+import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.feature.gui.clickgui.ClickGUI;
 import me.x150.sipprivate.feature.gui.clickgui.element.Element;
+import me.x150.sipprivate.feature.gui.clickgui.theme.Theme;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleRegistry;
 import me.x150.sipprivate.feature.module.ModuleType;
@@ -82,7 +84,8 @@ public class CategoryDisplay extends Element {
     }
 
     @Override public void render(MatrixStack matrices) {
-        Renderer.R2D.fill(matrices, Theme.HEADER, x, y, x + width, y + headerHeight());
+        Theme theme = ClickGUI.theme;
+        Renderer.R2D.fill(matrices, theme.getHeader(), x, y, x + width, y + headerHeight());
         cfr.drawCenteredString(matrices, mt.getName(), x + width / 2d, y + headerHeight() / 2d - cfr.getFontHeight() / 2d, 0xFFFFFF);
         double y = headerHeight();
         for (ModuleDisplay moduleDisplay : md) {

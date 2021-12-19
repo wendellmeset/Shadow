@@ -1,7 +1,8 @@
 package me.x150.sipprivate.feature.gui.clickgui.element.impl;
 
-import me.x150.sipprivate.feature.gui.clickgui.Theme;
+import me.x150.sipprivate.feature.gui.clickgui.ClickGUI;
 import me.x150.sipprivate.feature.gui.clickgui.element.Element;
+import me.x150.sipprivate.feature.gui.clickgui.theme.Theme;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.helper.font.FontRenderers;
 import me.x150.sipprivate.helper.render.Renderer;
@@ -55,11 +56,12 @@ public class ModuleDisplay extends Element {
     }
 
     @Override public void render(MatrixStack matrices) {
+        Theme theme = ClickGUI.theme;
         boolean hovered = inBounds(Utils.Mouse.getMouseX(), Utils.Mouse.getMouseY());
-        Renderer.R2D.fill(matrices, hovered ? Theme.MODULE.darker() : Theme.MODULE, x, y, x + width, y + height);
+        Renderer.R2D.fill(matrices, hovered ? theme.getModule().darker() : theme.getModule(), x, y, x + width, y + height);
         FontRenderers.getNormal().drawCenteredString(matrices, module.getName(), x + width / 2d, y + height / 2d - FontRenderers.getNormal().getMarginHeight() / 2d, 0xFFFFFF);
         if (module.isEnabled()) {
-            Renderer.R2D.fill(matrices, Theme.ACCENT, x, y, x + 1, y + height);
+            Renderer.R2D.fill(matrices, theme.getAccent(), x, y, x + 1, y + height);
         }
         cd.setX(this.x);
         cd.setY(this.y + height);

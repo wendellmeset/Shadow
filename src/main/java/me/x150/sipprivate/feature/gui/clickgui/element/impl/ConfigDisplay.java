@@ -5,12 +5,13 @@ import me.x150.sipprivate.config.DoubleSetting;
 import me.x150.sipprivate.config.EnumSetting;
 import me.x150.sipprivate.config.ModuleConfig;
 import me.x150.sipprivate.config.SettingBase;
-import me.x150.sipprivate.feature.gui.clickgui.Theme;
+import me.x150.sipprivate.feature.gui.clickgui.ClickGUI;
 import me.x150.sipprivate.feature.gui.clickgui.element.Element;
 import me.x150.sipprivate.feature.gui.clickgui.element.impl.config.BooleanSettingEditor;
 import me.x150.sipprivate.feature.gui.clickgui.element.impl.config.ConfigBase;
 import me.x150.sipprivate.feature.gui.clickgui.element.impl.config.DoubleSettingEditor;
 import me.x150.sipprivate.feature.gui.clickgui.element.impl.config.EnumSettingEditor;
+import me.x150.sipprivate.feature.gui.clickgui.theme.Theme;
 import me.x150.sipprivate.helper.render.Renderer;
 import net.minecraft.client.util.math.MatrixStack;
 
@@ -76,8 +77,9 @@ public class ConfigDisplay extends Element {
 
     @Override public void render(MatrixStack matrices) {
         double yOffset = 0;
-        Renderer.R2D.fill(matrices, Theme.CONFIG, x, this.y, x + width, this.y + height);
-        Renderer.R2D.fill(matrices, Theme.ACCENT, x, this.y, x + 1, this.y + height);
+        Theme theme = ClickGUI.theme;
+        Renderer.R2D.fill(matrices, theme.getConfig(), x, this.y, x + width, this.y + height);
+        Renderer.R2D.fill(matrices, theme.getAccent(), x, this.y, x + 1, this.y + height);
         for (ConfigBase<?> basis : bases) {
             basis.setX(x + padding);
             basis.setY(this.y + yOffset);
