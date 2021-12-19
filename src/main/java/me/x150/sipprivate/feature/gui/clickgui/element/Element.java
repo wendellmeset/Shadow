@@ -3,7 +3,7 @@ package me.x150.sipprivate.feature.gui.clickgui.element;
 import net.minecraft.client.util.math.MatrixStack;
 
 public abstract class Element {
-    public double x, y, width, height;
+    protected double x, y, width, height;
 
     public Element(double x, double y, double w, double h) {
         this.x = x;
@@ -26,11 +26,29 @@ public abstract class Element {
 
     abstract public void render(MatrixStack matrices);
 
+    abstract public void tickAnim();
+
     public double getWidth() {
         return width;
     }
 
     public double getHeight() {
         return height;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
+    }
+
+    public void setWidth(double width) {
+        this.width = width;
     }
 }

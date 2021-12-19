@@ -1,5 +1,6 @@
 package me.x150.sipprivate.feature.gui.clickgui;
 
+import me.x150.sipprivate.feature.gui.FastTickable;
 import me.x150.sipprivate.feature.gui.clickgui.element.Element;
 import me.x150.sipprivate.feature.gui.clickgui.element.impl.CategoryDisplay;
 import me.x150.sipprivate.feature.module.ModuleType;
@@ -11,11 +12,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ClickGUI extends Screen {
-    List<Element> elements = new ArrayList<>();
-    ParticleRenderer real = new ParticleRenderer(300);
+public class ClickGUI extends Screen implements FastTickable {
+    List<Element>    elements = new ArrayList<>();
+    ParticleRenderer real     = new ParticleRenderer(300);
 
-    public ClickGUI() {
+    public static final ClickGUI instance = new ClickGUI();
+
+    private ClickGUI() {
         super(Text.of(""));
         initElements();
     }
@@ -78,5 +81,11 @@ public class ClickGUI extends Screen {
 
     @Override public boolean isPauseScreen() {
         return false;
+    }
+
+    @Override public void onFastTick() {
+        for (Element element : elements) {
+            element.tickAnim();
+        }
     }
 }

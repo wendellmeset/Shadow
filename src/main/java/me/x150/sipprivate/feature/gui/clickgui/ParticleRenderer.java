@@ -11,9 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ParticleRenderer {
-    static Color DYING = new Color(255,255,255,0); // it goes gradient so you can still see the white
+    static Color DYING = new Color(255, 255, 255, 0); // it goes gradient so you can still see the white
     List<Particle> particles = new ArrayList<>();
     int            pc;
+
     public ParticleRenderer(int pc) {
         this.pc = pc;
         for (int i = 0; i < pc; i++) {
@@ -62,7 +63,7 @@ public class ParticleRenderer {
         void render(MatrixStack stack) {
             stack.push();
             stack.translate(x, y, 0);
-            stack.multiply(new Quaternion(0, 0, (System.currentTimeMillis() % rotSpeed) / ((float) rotSpeed) * 360f * (spinsReverse?-1:1), true));
+            stack.multiply(new Quaternion(0, 0, (System.currentTimeMillis() % rotSpeed) / ((float) rotSpeed) * 360f * (spinsReverse ? -1 : 1), true));
             Renderer.R2D.fill(stack, Renderer.Util.lerp(Theme.ACCENT, DYING, size / 10d), -size, -size, size, size);
             stack.pop();
         }

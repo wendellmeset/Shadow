@@ -12,6 +12,18 @@ public class DoubleSetting extends SettingBase<Double> {
         this.max = max;
     }
 
+    public double getMin() {
+        return min;
+    }
+
+    public double getMax() {
+        return max;
+    }
+
+    public int getPrecision() {
+        return precision;
+    }
+
     @Override public Double parse(String value) {
         try {
             return Double.parseDouble(value);

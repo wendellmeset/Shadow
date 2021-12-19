@@ -7,15 +7,17 @@ import me.x150.sipprivate.helper.font.FontRenderers;
 import me.x150.sipprivate.helper.render.Renderer;
 import me.x150.sipprivate.util.Utils;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.math.MathHelper;
 
 public class ModuleDisplay extends Element {
-    Module module;
+    Module        module;
     ConfigDisplay cd;
-
+    boolean       extended = false;
+    double extendAnim = 0;
     public ModuleDisplay(double x, double y, Module module) {
         super(x, y, 100, 15);
         this.module = module;
-        this.cd = new ConfigDisplay(x,y,module.config);
+        this.cd = new ConfigDisplay(x, y, module.config);
     }
 
     @Override public boolean clicked(double x, double y, int button) {
@@ -28,8 +30,9 @@ public class ModuleDisplay extends Element {
                 return false;
             }
             return true;
-        } else
+        } else {
             return extended && cd.clicked(x, y, button);
+        }
     }
 
     @Override public boolean dragged(double x, double y, double deltaX, double deltaY) {
@@ -39,24 +42,37 @@ public class ModuleDisplay extends Element {
     @Override public boolean released() {
         return extended && cd.released();
     }
+    double easeInOutCubic(double x) {
+        return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
 
+    }
     @Override public double getHeight() {
-        return super.getHeight()+(extended?cd.getHeight():0);
+        return super.getHeight() + cd.getHeight()*easeInOutCubic(extendAnim);
     }
 
     @Override public boolean keyPressed(int keycode) {
         return extended && cd.keyPressed(keycode);
     }
-    boolean extended = false;
+
     @Override public void render(MatrixStack matrices) {
         boolean hovered = inBounds(Utils.Mouse.getMouseX(), Utils.Mouse.getMouseY());
-        Renderer.R2D.fill(matrices, hovered?Theme.MODULE.darker():Theme.MODULE, x, y, x + width, y + height);
+        Renderer.R2D.fill(matrices, hovered ? Theme.MODULE.darker() : Theme.MODULE, x, y, x + width, y + height);
         FontRenderers.getNormal().drawCenteredString(matrices, module.getName(), x + width / 2d, y + height / 2d - FontRenderers.getNormal().getMarginHeight() / 2d, 0xFFFFFF);
         if (module.isEnabled()) {
             Renderer.R2D.fill(matrices, Theme.ACCENT, x, y, x + 1, y + height);
         }
-        cd.x = this.x;
-        cd.y = this.y+height;
-        if (extended) cd.render(matrices);
+        cd.setX(this.x);
+        cd.setY(this.y + height);
+        Renderer.R2D.scissor(x,y,width,getHeight());
+        cd.render(matrices);
+        Renderer.R2D.unscissor();
+    }
+
+    @Override public void tickAnim() {
+        double a = 0.04;
+        if (!extended) a *= -1;
+        extendAnim += a;
+        extendAnim = MathHelper.clamp(extendAnim, 0, 1);
+        cd.tickAnim();
     }
 }

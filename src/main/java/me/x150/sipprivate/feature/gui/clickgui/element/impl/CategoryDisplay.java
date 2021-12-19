@@ -86,11 +86,17 @@ public class CategoryDisplay extends Element {
         cfr.drawCenteredString(matrices, mt.getName(), x + width / 2d, y + headerHeight() / 2d - cfr.getFontHeight() / 2d, 0xFFFFFF);
         double y = headerHeight();
         for (ModuleDisplay moduleDisplay : md) {
-            moduleDisplay.x = this.x;
-            moduleDisplay.y = this.y + y;
+            moduleDisplay.setX(this.x);
+            moduleDisplay.setY(this.y + y);
             moduleDisplay.render(matrices);
             y += moduleDisplay.getHeight();
         }
         this.height = y;
+    }
+
+    @Override public void tickAnim() {
+        for (ModuleDisplay moduleDisplay : md) {
+            moduleDisplay.tickAnim();
+        }
     }
 }
