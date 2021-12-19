@@ -6,10 +6,11 @@ import me.x150.sipprivate.feature.module.ModuleType;
 import net.minecraft.client.util.math.MatrixStack;
 
 public class ClickGUI extends Module {
+    int t = 2;
+
     public ClickGUI() {
         super("ClickGUI", "sexy", ModuleType.RENDER);
     }
-    int t = 2;
 
     @Override public void tick() {
         t--;

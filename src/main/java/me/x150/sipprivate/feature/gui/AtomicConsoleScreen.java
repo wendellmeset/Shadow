@@ -9,7 +9,6 @@ import imgui.internal.ImGui;
 import imgui.type.ImString;
 import me.x150.sipprivate.feature.command.Command;
 import me.x150.sipprivate.feature.command.CommandRegistry;
-import me.x150.sipprivate.feature.module.ModuleType;
 
 import java.awt.Color;
 import java.util.ArrayList;

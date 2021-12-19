@@ -259,6 +259,34 @@ public class Renderer {
             RenderSystem.disableScissor();
         }
 
+        public static void renderCircle(MatrixStack matrices, Color c, double originX, double originY, double rad, int segments) {
+            segments = MathHelper.clamp(segments, 4, 360);
+            RenderSystem.setShaderColor(1, 1, 1, 1);
+            int color = c.getRGB();
+
+            Matrix4f matrix = matrices.peek().getPositionMatrix();
+            float f = (float) (color >> 24 & 255) / 255.0F;
+            float g = (float) (color >> 16 & 255) / 255.0F;
+            float h = (float) (color >> 8 & 255) / 255.0F;
+            float k = (float) (color & 255) / 255.0F;
+            BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
+            RenderSystem.defaultBlendFunc();
+            RenderSystem.enableBlend();
+            RenderSystem.disableTexture();
+            RenderSystem.setShader(GameRenderer::getPositionColorShader);
+            bufferBuilder.begin(VertexFormat.DrawMode.TRIANGLE_FAN, VertexFormats.POSITION_COLOR);
+            for(int i = 0;i<360;i+=(360/segments)) {
+                double radians = Math.toRadians(i);
+                double sin = Math.sin(radians)*rad;
+                double cos = Math.cos(radians)*rad;
+                bufferBuilder.vertex(matrix,(float) (originX+sin),(float) (originY+cos),0).color(g, h, k, f).next();
+            }
+            bufferBuilder.end();
+            BufferRenderer.draw(bufferBuilder);
+            RenderSystem.enableTexture();
+            RenderSystem.disableBlend();
+        }
+
         public static void drawEntity(double x, double y, double size, float mouseX, float mouseY, LivingEntity entity, MatrixStack stack) {
             float f = (float) Math.atan(mouseX / 40.0F);
             float g = (float) Math.atan(mouseY / 40.0F);
