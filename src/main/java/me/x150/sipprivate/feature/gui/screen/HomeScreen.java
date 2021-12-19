@@ -1,4 +1,4 @@
-package me.x150.sipprivate.feature.gui;
+package me.x150.sipprivate.feature.gui.screen;
 
 import me.x150.sipprivate.SipoverPrivate;
 import net.minecraft.client.gui.screen.Screen;

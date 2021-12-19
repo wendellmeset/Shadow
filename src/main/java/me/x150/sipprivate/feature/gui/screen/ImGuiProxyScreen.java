@@ -1,4 +1,4 @@
-package me.x150.sipprivate.feature.gui;
+package me.x150.sipprivate.feature.gui.screen;
 
 import imgui.ImGui;
 import me.x150.sipprivate.SipoverPrivate;

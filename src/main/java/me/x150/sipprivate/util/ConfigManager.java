@@ -160,8 +160,6 @@ public class ConfigManager {
 
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            KeybindingManager.reload();
         }
     }
 

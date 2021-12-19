@@ -53,7 +53,7 @@ import java.util.ArrayList;
         if (!BASE.exists()) {
             BASE.mkdir();
         }
-        KeybindingManager.init();
+//        KeybindingManager.init();
         ConfigManager.loadState();
         log(Level.INFO, "Done initializing");
         //TODO: Initializer

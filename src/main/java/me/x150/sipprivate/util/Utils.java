@@ -8,7 +8,7 @@ package me.x150.sipprivate.util;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import me.x150.sipprivate.SipoverPrivate;
-import me.x150.sipprivate.feature.gui.AtomicConsoleScreen;
+import me.x150.sipprivate.feature.gui.screen.AtomicConsoleScreen;
 import me.x150.sipprivate.helper.font.adapter.FontAdapter;
 import me.x150.sipprivate.mixin.IMinecraftClientAccessor;
 import me.x150.sipprivate.mixin.IRenderTickCounterAccessor;

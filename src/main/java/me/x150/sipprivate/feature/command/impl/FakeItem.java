@@ -3,7 +3,7 @@ package me.x150.sipprivate.feature.command.impl;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import me.x150.sipprivate.SipoverPrivate;
 import me.x150.sipprivate.feature.command.Command;
-import me.x150.sipprivate.feature.gui.AtomicConsoleScreen;
+import me.x150.sipprivate.feature.gui.screen.AtomicConsoleScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;

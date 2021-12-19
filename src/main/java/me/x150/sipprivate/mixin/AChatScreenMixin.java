@@ -2,7 +2,7 @@ package me.x150.sipprivate.mixin;
 
 import me.x150.sipprivate.SipoverPrivate;
 import me.x150.sipprivate.feature.command.CommandRegistry;
-import me.x150.sipprivate.feature.gui.AtomicConsoleScreen;
+import me.x150.sipprivate.feature.gui.screen.AtomicConsoleScreen;
 import me.x150.sipprivate.util.Utils;
 import net.minecraft.client.gui.screen.ChatScreen;
 import org.spongepowered.asm.mixin.Mixin;

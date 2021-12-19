@@ -2,7 +2,7 @@ package me.x150.sipprivate.helper.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.x150.sipprivate.SipoverPrivate;
-import me.x150.sipprivate.feature.gui.HomeScreen;
+import me.x150.sipprivate.feature.gui.screen.HomeScreen;
 import me.x150.sipprivate.helper.math.Matrix4x4;
 import me.x150.sipprivate.helper.math.Vector3D;
 import net.minecraft.client.MinecraftClient;

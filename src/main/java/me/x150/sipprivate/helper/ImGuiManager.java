@@ -5,7 +5,7 @@ import imgui.flag.ImGuiCol;
 import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import me.x150.sipprivate.SipoverPrivate;
-import me.x150.sipprivate.feature.gui.ImGuiProxyScreen;
+import me.x150.sipprivate.feature.gui.screen.ImGuiProxyScreen;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

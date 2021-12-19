@@ -42,7 +42,7 @@ public class ConfigDisplay extends Element {
 
     @Override public boolean clicked(double x, double y, int button) {
         for (ConfigBase<?> basis : bases) {
-            if (basis.clicked(x, y, button)) {
+            if (basis.getConfigValue().shouldShow() && basis.clicked(x, y, button)) {
                 return true;
             }
         }
@@ -51,7 +51,7 @@ public class ConfigDisplay extends Element {
 
     @Override public boolean dragged(double x, double y, double deltaX, double deltaY) {
         for (ConfigBase<?> basis : bases) {
-            if (basis.dragged(x, y, deltaX, deltaY)) {
+            if (basis.getConfigValue().shouldShow() && basis.dragged(x, y, deltaX, deltaY)) {
                 return true;
             }
         }
@@ -60,14 +60,14 @@ public class ConfigDisplay extends Element {
 
     @Override public boolean released() {
         for (ConfigBase<?> basis : bases) {
-            basis.released();
+            if (basis.getConfigValue().shouldShow()) basis.released();
         }
         return false;
     }
 
     @Override public boolean keyPressed(int keycode) {
         for (ConfigBase<?> basis : bases) {
-            if (basis.keyPressed(keycode)) {
+            if (basis.getConfigValue().shouldShow() && basis.keyPressed(keycode)) {
                 return true;
             }
         }
@@ -81,6 +81,7 @@ public class ConfigDisplay extends Element {
         for (ConfigBase<?> basis : bases) {
             basis.setX(x + padding);
             basis.setY(this.y + yOffset);
+            if (!basis.getConfigValue().shouldShow()) continue;
             basis.render(matrices);
             yOffset += basis.getHeight();
         }

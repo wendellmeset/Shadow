@@ -110,8 +110,6 @@ public class ConfigUtils extends Command {
                             module.setEnabled(false);
                         }
                     }
-                    KeybindingManager.reload();
-                    success("Reloaded keybinding manager");
                     success("Loaded config file!");
                 } catch (Exception e) {
                     error("Couldn't load config: " + e.getLocalizedMessage());

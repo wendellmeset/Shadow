@@ -1,4 +1,4 @@
-package me.x150.sipprivate.feature.gui;
+package me.x150.sipprivate.feature.gui.screen;
 
 import imgui.ImVec2;
 import imgui.flag.ImGuiCol;

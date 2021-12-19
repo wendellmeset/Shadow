@@ -12,20 +12,6 @@ import java.util.Map;
 public class KeybindingManager {
 
     /**
-     * List of all the modules with their respective keybinds
-     */
-    public static final Map<Module, Keybind> keybindMap = new HashMap<>();
-
-    /**
-     * Init the keybinding manager
-     */
-    public static void init() {
-        for (Module module : ModuleRegistry.getModules()) {
-            keybindMap.put(module, new Keybind((int) (module.keybind.getValue() + 0)));
-        }
-    }
-
-    /**
      * Update a single keybind via keyboard event
      *
      * @param kc     The key which was changed
@@ -36,21 +22,10 @@ public class KeybindingManager {
             return; // JESSE WE FUCKED UP
         }
         if (action == 1) { // key pressed
-            for (Module o : keybindMap.keySet().toArray(new Module[0])) {
-                Keybind kb = keybindMap.get(o);
-                if (kb.keycode() == kc) {
-                    o.toggle();
-                }
+            for (Module module : ModuleRegistry.getModules()) {
+                if (module.keybind.getValue() == kc) module.toggle();
             }
         }
-    }
-
-    /**
-     * Reloads the keybind manager
-     */
-    public static void reload() {
-        keybindMap.clear();
-        init();
     }
 
 }

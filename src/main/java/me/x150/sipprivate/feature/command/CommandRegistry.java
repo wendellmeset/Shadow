@@ -5,6 +5,7 @@
 
 package me.x150.sipprivate.feature.command;
 
+import me.x150.sipprivate.feature.command.impl.Bind;
 import me.x150.sipprivate.feature.command.impl.Config;
 import me.x150.sipprivate.feature.command.impl.ConfigUtils;
 import me.x150.sipprivate.feature.command.impl.Drop;
@@ -25,7 +26,7 @@ import me.x150.sipprivate.feature.command.impl.Say;
 import me.x150.sipprivate.feature.command.impl.Taco;
 import me.x150.sipprivate.feature.command.impl.Toggle;
 import me.x150.sipprivate.feature.command.impl.ViewNbt;
-import me.x150.sipprivate.feature.gui.AtomicConsoleScreen;
+import me.x150.sipprivate.feature.gui.screen.AtomicConsoleScreen;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -64,6 +65,7 @@ public class CommandRegistry {
         commands.add(new Find());
         commands.add(new FakeItem());
         commands.add(new Taco());
+        commands.add(new Bind());
     }
 
     public static List<Command> getCommands() {
