@@ -21,6 +21,7 @@ import me.x150.sipprivate.feature.module.impl.exploit.VanillaSpoof;
 import me.x150.sipprivate.feature.module.impl.exploit.Voider;
 import me.x150.sipprivate.feature.module.impl.movement.Flight;
 import me.x150.sipprivate.feature.module.impl.movement.Sprint;
+import me.x150.sipprivate.feature.module.impl.render.ClickGUI;
 import me.x150.sipprivate.feature.module.impl.render.Fullbright;
 import me.x150.sipprivate.feature.module.impl.render.Hud;
 import me.x150.sipprivate.feature.module.impl.render.TargetHud;
@@ -55,6 +56,7 @@ public class ModuleRegistry {
         modules.add(new VanillaSpoof());
         modules.add(new XRAY());
         modules.add(new Voider());
+        modules.add(new ClickGUI());
         // TODO: 18.12.21 add modules
     }
 
