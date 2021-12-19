@@ -1,6 +1,7 @@
 package me.x150.sipprivate.feature.gui.clickgui;
 
 import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.feature.gui.clickgui.theme.Theme;
 import me.x150.sipprivate.helper.render.Renderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
@@ -61,10 +62,11 @@ public class ParticleRenderer {
         }
 
         void render(MatrixStack stack) {
+            Theme theme = ClickGUI.theme;
             stack.push();
             stack.translate(x, y, 0);
             stack.multiply(new Quaternion(0, 0, (System.currentTimeMillis() % rotSpeed) / ((float) rotSpeed) * 360f * (spinsReverse ? -1 : 1), true));
-            Renderer.R2D.fill(stack, Renderer.Util.lerp(Theme.ACCENT, DYING, size / 10d), -size, -size, size, size);
+            Renderer.R2D.fill(stack, Renderer.Util.lerp(theme.getAccent(), DYING, size / 10d), -size, -size, size, size);
             stack.pop();
         }
 

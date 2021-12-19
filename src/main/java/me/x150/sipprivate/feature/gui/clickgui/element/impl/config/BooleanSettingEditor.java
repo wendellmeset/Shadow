@@ -1,7 +1,8 @@
 package me.x150.sipprivate.feature.gui.clickgui.element.impl.config;
 
 import me.x150.sipprivate.config.BooleanSetting;
-import me.x150.sipprivate.feature.gui.clickgui.Theme;
+import me.x150.sipprivate.feature.gui.clickgui.ClickGUI;
+import me.x150.sipprivate.feature.gui.clickgui.theme.Theme;
 import me.x150.sipprivate.helper.font.FontRenderers;
 import me.x150.sipprivate.helper.render.Renderer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -50,11 +51,12 @@ public class BooleanSettingEditor extends ConfigBase<BooleanSetting> {
     }
 
     @Override public void render(MatrixStack matrices) {
+        Theme theme = ClickGUI.theme;
         double smoothAnimProgress = easeInOutCubic(animProgress);
         //        if (xSmooth==-1) xSmooth = getPreferredX();
-        Renderer.R2D.fill(matrices, Renderer.Util.lerp(Theme.ACTIVE, Theme.INACTIVE, smoothAnimProgress), x, y + height / 2d - rh / 2d, x + rw, y + height / 2d + rh / 2d);
+        Renderer.R2D.fill(matrices, Renderer.Util.lerp(theme.getActive(), theme.getInactive(), smoothAnimProgress), x, y + height / 2d - rh / 2d, x + rw, y + height / 2d + rh / 2d);
         double rix = getPreferredX();
-        Renderer.R2D.fill(matrices, Theme.ACCENT, rix, y + height / 2d - rh / 2d + margin, rix + rid, y + height / 2d - rh / 2d + margin + rid);
+        Renderer.R2D.fill(matrices, theme.getAccent(), rix, y + height / 2d - rh / 2d + margin, rix + rid, y + height / 2d - rh / 2d + margin + rid);
         //        Renderer.R2D.renderCircle(matrices, Theme.ACCENT,);
         FontRenderers.getNormal().drawString(matrices, configValue.getName(), x + rw + 2, y + height / 2d - FontRenderers.getNormal().getMarginHeight() / 2d, 0xFFFFFF);
     }
