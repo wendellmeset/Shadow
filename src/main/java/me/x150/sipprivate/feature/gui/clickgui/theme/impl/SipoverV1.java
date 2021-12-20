@@ -15,15 +15,15 @@ public class SipoverV1 implements Theme {
     }
 
     @Override public Color getHeader() {
-        return new Color(0xC31F1F1F, true);
+        return new Color(0xFF1D2525, true);
     }
 
     @Override public Color getModule() {
-        return new Color(0xD0131313, true);
+        return new Color(0xFF171E1F, true);
     }
 
     @Override public Color getConfig() {
-        return new Color(0xEF0E0E0E, true);
+        return new Color(0xFF111A1A, true);
     }
 
     @Override public Color getActive() {
@@ -31,6 +31,6 @@ public class SipoverV1 implements Theme {
     }
 
     @Override public Color getInactive() {
-        return new Color(42, 42, 42, 255);
+        return new Color(80, 80, 80, 255);
     }
 }

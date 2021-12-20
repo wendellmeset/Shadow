@@ -3,6 +3,9 @@ package me.x150.sipprivate.mixin;
 import me.x150.sipprivate.feature.gui.notifications.NotificationRenderer;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleRegistry;
+import me.x150.sipprivate.helper.event.EventType;
+import me.x150.sipprivate.helper.event.Events;
+import me.x150.sipprivate.helper.event.events.base.NonCancellableEvent;
 import me.x150.sipprivate.util.Utils;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.hud.InGameHud;
@@ -21,5 +24,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
         }
         NotificationRenderer.render();
         Utils.TickManager.render();
+        Events.fireEvent(EventType.HUD_RENDER, new NonCancellableEvent());
     }
 }

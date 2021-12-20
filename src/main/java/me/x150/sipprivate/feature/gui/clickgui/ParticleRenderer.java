@@ -23,8 +23,10 @@ import java.util.List;
 
 public class ParticleRenderer {
     static Color DYING = new Color(255, 255, 255, 0); // it goes gradient so you can still see the white
-    List<Particle> particles = new ArrayList<>();
+    public List<Particle> particles = new ArrayList<>();
     int            pc;
+    public boolean shouldAdd = true;
+    long lastTick = System.currentTimeMillis();
 
     public ParticleRenderer(int pc) {
         this.pc = pc;
@@ -34,25 +36,28 @@ public class ParticleRenderer {
     }
 
     void addParticle() {
+        if (!shouldAdd) return;
         Particle n = new Particle();
         n.x = Math.random() * SipoverPrivate.client.getWindow().getScaledWidth();
         n.y = -10;
-        n.velY = (Math.random() * 2 + 1);
-        n.decline = MathHelper.lerp(Math.random(), 0.1, 0.3);
+        n.velY = (Math.random() + 1);
+        n.decline = MathHelper.lerp(Math.random(), 0.05, 0.2);
         particles.add(n);
     }
 
-    public void tick() {
+    private void tick() {
+        lastTick = System.currentTimeMillis();
         for (Particle particle : particles) {
             particle.move();
         }
         particles.removeIf(Particle::isDead);
-        while (particles.size() < pc) {
-            addParticle();
-        }
     }
 
     public void render(MatrixStack stack) {
+        long timeDiffSinceLastTick = System.currentTimeMillis()-lastTick;
+        int iter = (int) Math.floor(timeDiffSinceLastTick/20d);
+        for(int i = 0;i<iter;i++) tick();
+        if (particles.size() < this.pc) addParticle();
         for (Particle particle : particles) {
             particle.render(stack);
         }

@@ -7,6 +7,7 @@ import me.x150.sipprivate.helper.font.FontRenderers;
 import me.x150.sipprivate.helper.render.Renderer;
 import net.minecraft.client.util.math.MatrixStack;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,10 +55,9 @@ public class EnumSettingEditor extends ConfigBase<EnumSetting<?>> {
     }
 
     @Override public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
-        Theme theme = ClickGUI.theme;
         FontRenderers.getNormal().drawString(matrices, configValue.name, x, y + 1, 0xFFFFFF);
         double yOffset = FontRenderers.getNormal().getMarginHeight() + 2;
-        Renderer.R2D.fill(matrices, theme.getModule().darker(), x, y + yOffset, x + width, y + height);
+        Renderer.R2D.fill(matrices, new Color(0,0,0,30), x, y + yOffset, x + width, y + height);
         yOffset += 1;
         for (EnumSelectorClickable<?> value : values) {
             value.x = x + 1;

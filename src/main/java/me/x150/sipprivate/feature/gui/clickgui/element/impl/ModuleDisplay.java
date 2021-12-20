@@ -77,11 +77,14 @@ public class ModuleDisplay extends Element {
         }
         cd.setX(this.x);
         cd.setY(this.y + height);
-        Renderer.R2D.scissor(x, y - scrollBeingUsed, width, getHeight());
+        boolean animationInProgress = extendAnim != 0 && extendAnim != 1;
+        if (animationInProgress) {
+            Renderer.R2D.scissor(x, y - scrollBeingUsed, width, getHeight());
+        }
         if (extendAnim > 0) {
             cd.render(matrices, mouseX, mouseY, scrollBeingUsed);
         }
-        Renderer.R2D.unscissor();
+        if (animationInProgress) Renderer.R2D.unscissor();
     }
 
     @Override public void tickAnim() {
