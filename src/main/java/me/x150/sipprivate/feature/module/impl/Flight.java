@@ -4,7 +4,6 @@ import me.x150.sipprivate.SipoverPrivate;
 import me.x150.sipprivate.feature.config.BooleanSetting;
 import me.x150.sipprivate.feature.config.DoubleSetting;
 import me.x150.sipprivate.feature.config.EnumSetting;
-import me.x150.sipprivate.feature.gui.clickgui.theme.impl.SipoverV1;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleType;
 import me.x150.sipprivate.helper.event.EventType;
@@ -136,7 +135,7 @@ public class Flight extends Module {
         if (isDebuggerEnabled()) {
             Vec3d a = Utils.getInterpolatedEntityPosition(SipoverPrivate.client.player);
             Vec3d b = a.add(SipoverPrivate.client.player.getVelocity());
-            Renderer.R3D.line(a,b, Color.CYAN, matrices);
+            Renderer.R3D.line(a, b, Color.CYAN, matrices);
         }
     }
 

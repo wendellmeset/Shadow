@@ -82,7 +82,7 @@ public class AnyPlacer extends Module {
         if (isDebuggerEnabled()) {
             HitResult hr = SipoverPrivate.client.player.raycast(500, 0, true);
             Vec3d spawnPos = hr.getPos();
-            Renderer.R3D.renderFilled(spawnPos.subtract(-.3,0,-.3), new Vec3d(.6, 0.001,.6), Color.WHITE,matrices);
+            Renderer.R3D.renderFilled(spawnPos.subtract(-.3, 0, -.3), new Vec3d(.6, 0.001, .6), Color.WHITE, matrices);
         }
     }
 

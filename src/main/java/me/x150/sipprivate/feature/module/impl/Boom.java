@@ -15,7 +15,6 @@ import me.x150.sipprivate.helper.event.EventType;
 import me.x150.sipprivate.helper.event.Events;
 import me.x150.sipprivate.helper.event.events.MouseEvent;
 import me.x150.sipprivate.helper.event.events.PacketEvent;
-import me.x150.sipprivate.helper.render.Renderer;
 import me.x150.sipprivate.mixin.PlayerInteractEntityC2SPacketAccessor;
 import me.x150.sipprivate.util.Utils;
 import net.minecraft.client.util.math.MatrixStack;
@@ -33,7 +32,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 
-import java.awt.Color;
 import java.util.Objects;
 
 public class Boom extends Module {

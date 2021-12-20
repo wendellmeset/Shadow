@@ -21,11 +21,11 @@ import java.util.List;
 
 public class ClickGUI extends Screen implements FastTickable {
     public static final ClickGUI instance = new ClickGUI();
-    public static Theme theme = new SipoverV1();
+    public static       Theme    theme    = new SipoverV1();
     List<Element>    elements = new ArrayList<>();
     ParticleRenderer real     = new ParticleRenderer(100);
-    String desc = null;
-    double descX, descY;
+    String           desc     = null;
+    double           descX, descY;
     double scroll = 0;
 
     private ClickGUI() {

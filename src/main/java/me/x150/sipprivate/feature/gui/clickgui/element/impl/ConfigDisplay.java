@@ -20,12 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConfigDisplay extends Element {
-    List<ConfigBase<?>> bases       = new ArrayList<>();
+    List<ConfigBase<?>> bases         = new ArrayList<>();
     ModuleConfig        mc;
-    double              padding     = 3;
-    double              paddingLeft = 2;
-    long    hoverStart    = System.currentTimeMillis();
-    boolean hoveredBefore = false;
+    double              padding       = 3;
+    double              paddingLeft   = 2;
+    long                hoverStart    = System.currentTimeMillis();
+    boolean             hoveredBefore = false;
 
     public ConfigDisplay(double x, double y, ModuleConfig mc) {
         super(x, y, 100, 0);

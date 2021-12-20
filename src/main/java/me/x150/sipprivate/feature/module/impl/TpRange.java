@@ -28,6 +28,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class TpRange extends Module {
     static final ExecutorService esv = Executors.newFixedThreadPool(1);
     AtomicBoolean running = new AtomicBoolean(false);
+    Vec3d spoofedPos         = null;
+    Vec3d previousSpoofedPos = null;
 
     public TpRange() {
         super("TpRange", "Hits someone from VERY far away", ModuleType.FUN);
@@ -83,8 +85,7 @@ public class TpRange extends Module {
         doIt();
         running.set(false);
     }
-    Vec3d spoofedPos = null;
-    Vec3d previousSpoofedPos = null;
+
     void teleportTo(Vec3d from, Vec3d pos) {
         double distance = from.distanceTo(pos);
         for (int i = 0; i < distance; i += 2) {

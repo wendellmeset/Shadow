@@ -8,7 +8,9 @@ public class EnumSetting<T extends Enum<?>> extends SettingBase<T> {
 
     @SuppressWarnings("unchecked") public EnumSetting(T defaultValue, String name, String description) {
         super(defaultValue, name, description);
-        if (!Modifier.isPublic(defaultValue.getClass().getModifiers())) throw new IllegalArgumentException("Enum has to be public!");
+        if (!Modifier.isPublic(defaultValue.getClass().getModifiers())) {
+            throw new IllegalArgumentException("Enum has to be public!");
+        }
         try {
             this.values = (T[]) defaultValue.getClass().getMethod("values").invoke(null);
         } catch (Exception e) {

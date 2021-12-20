@@ -13,10 +13,10 @@ import net.minecraft.util.math.MathHelper;
 public class ModuleDisplay extends Element {
     Module        module;
     ConfigDisplay cd;
-    boolean       extended   = false;
-    double        extendAnim = 0;
-    long    hoverStart    = System.currentTimeMillis();
-    boolean hoveredBefore = false;
+    boolean       extended      = false;
+    double        extendAnim    = 0;
+    long          hoverStart    = System.currentTimeMillis();
+    boolean       hoveredBefore = false;
 
     public ModuleDisplay(double x, double y, Module module) {
         super(x, y, 100, 15);

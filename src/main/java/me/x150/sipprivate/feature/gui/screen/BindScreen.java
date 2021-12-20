@@ -11,10 +11,11 @@ import org.lwjgl.glfw.GLFW;
 import java.lang.reflect.Field;
 
 public class BindScreen extends Screen {
-    Module a;
-    long   closeAt = -1;
+    Module             a;
+    long               closeAt = -1;
     ClientFontRenderer cfr     = FontRenderers.getCustomNormal(30);
     ClientFontRenderer smaller = FontRenderers.getCustomNormal(20);
+
     public BindScreen(Module toBind) {
         super(Text.of(""));
         this.a = toBind;
