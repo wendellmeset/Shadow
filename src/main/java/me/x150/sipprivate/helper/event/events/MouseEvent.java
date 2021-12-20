@@ -9,7 +9,7 @@ import me.x150.sipprivate.helper.event.events.base.Event;
 
 public class MouseEvent extends Event {
 
-    final int            button;
+    final int button;
     final int type;
 
     public MouseEvent(int button, int action) {

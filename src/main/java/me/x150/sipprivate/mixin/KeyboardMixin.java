@@ -4,7 +4,7 @@ import me.x150.sipprivate.SipoverPrivate;
 import me.x150.sipprivate.helper.event.EventType;
 import me.x150.sipprivate.helper.event.Events;
 import me.x150.sipprivate.helper.event.events.KeyboardEvent;
-import me.x150.sipprivate.keybinding.KeybindingManager;
+import me.x150.sipprivate.helper.manager.KeybindingManager;
 import net.minecraft.client.Keyboard;
 import net.minecraft.client.MinecraftClient;
 import org.spongepowered.asm.mixin.Final;

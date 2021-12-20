@@ -61,6 +61,17 @@ public class Utils {
         return new Color(Color.HSBtoRGB((System.currentTimeMillis() % 4750) / 4750f, 0.5f, 1));
     }
 
+    public static Vec3d getInterpolatedEntityPosition(Entity entity) {
+        Vec3d a = entity.getPos();
+        Vec3d b = new Vec3d(entity.prevX, entity.prevY, entity.prevZ);
+        float p = SipoverPrivate.client.getTickDelta();
+        return new Vec3d(
+                MathHelper.lerp(p, b.x, a.x),
+                MathHelper.lerp(p, b.y, a.y),
+                MathHelper.lerp(p, b.z, a.z)
+        );
+    }
+
     public static String[] splitLinesToWidth(String input, double maxWidth, FontAdapter rendererUsed) {
         List<String> dSplit = List.of(input.split("\n"));
         List<String> splits = new ArrayList<>();

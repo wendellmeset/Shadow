@@ -5,29 +5,30 @@
 
 package me.x150.sipprivate.feature.module;
 
-import me.x150.sipprivate.feature.module.impl.exploit.AntiOffhandCrash;
-import me.x150.sipprivate.feature.module.impl.exploit.AntiPacketKick;
-import me.x150.sipprivate.feature.module.impl.exploit.AntiReducedDebugInfo;
-import me.x150.sipprivate.feature.module.impl.exploit.BoatPhase;
-import me.x150.sipprivate.feature.module.impl.exploit.Boaty;
-import me.x150.sipprivate.feature.module.impl.exploit.Boom;
-import me.x150.sipprivate.feature.module.impl.exploit.CaveMapper;
-import me.x150.sipprivate.feature.module.impl.exploit.InstaBow;
-import me.x150.sipprivate.feature.module.impl.exploit.NoComCrash;
-import me.x150.sipprivate.feature.module.impl.exploit.OOBCrash;
-import me.x150.sipprivate.feature.module.impl.exploit.OffhandCrash;
-import me.x150.sipprivate.feature.module.impl.exploit.Phase;
-import me.x150.sipprivate.feature.module.impl.exploit.VanillaSpoof;
-import me.x150.sipprivate.feature.module.impl.exploit.Voider;
-import me.x150.sipprivate.feature.module.impl.misc.TpRange;
-import me.x150.sipprivate.feature.module.impl.movement.Flight;
-import me.x150.sipprivate.feature.module.impl.movement.Sprint;
-import me.x150.sipprivate.feature.module.impl.render.ClickGUI;
-import me.x150.sipprivate.feature.module.impl.render.Fullbright;
-import me.x150.sipprivate.feature.module.impl.render.Hud;
-import me.x150.sipprivate.feature.module.impl.render.TargetHud;
-import me.x150.sipprivate.feature.module.impl.render.XRAY;
-import me.x150.sipprivate.feature.module.impl.world.AnyPlacer;
+import me.x150.sipprivate.feature.module.impl.AntiOffhandCrash;
+import me.x150.sipprivate.feature.module.impl.AntiPacketKick;
+import me.x150.sipprivate.feature.module.impl.AntiReducedDebugInfo;
+import me.x150.sipprivate.feature.module.impl.AnyPlacer;
+import me.x150.sipprivate.feature.module.impl.BoatPhase;
+import me.x150.sipprivate.feature.module.impl.Boaty;
+import me.x150.sipprivate.feature.module.impl.Boom;
+import me.x150.sipprivate.feature.module.impl.CaveMapper;
+import me.x150.sipprivate.feature.module.impl.ClickGUI;
+import me.x150.sipprivate.feature.module.impl.FireballDeflector;
+import me.x150.sipprivate.feature.module.impl.Flight;
+import me.x150.sipprivate.feature.module.impl.Fullbright;
+import me.x150.sipprivate.feature.module.impl.Hud;
+import me.x150.sipprivate.feature.module.impl.InstaBow;
+import me.x150.sipprivate.feature.module.impl.NoComCrash;
+import me.x150.sipprivate.feature.module.impl.OOBCrash;
+import me.x150.sipprivate.feature.module.impl.OffhandCrash;
+import me.x150.sipprivate.feature.module.impl.Phase;
+import me.x150.sipprivate.feature.module.impl.Sprint;
+import me.x150.sipprivate.feature.module.impl.TargetHud;
+import me.x150.sipprivate.feature.module.impl.TpRange;
+import me.x150.sipprivate.feature.module.impl.VanillaSpoof;
+import me.x150.sipprivate.feature.module.impl.Voider;
+import me.x150.sipprivate.feature.module.impl.XRAY;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +62,7 @@ public class ModuleRegistry {
         modules.add(new ClickGUI());
         modules.add(new TpRange());
         modules.add(new AnyPlacer());
-        // TODO: 18.12.21 add modules
+        modules.add(new FireballDeflector());
     }
 
     public static List<Module> getModules() {

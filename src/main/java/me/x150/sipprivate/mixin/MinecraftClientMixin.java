@@ -1,7 +1,7 @@
 package me.x150.sipprivate.mixin;
 
 import me.x150.sipprivate.SipoverPrivate;
-import me.x150.sipprivate.util.ConfigManager;
+import me.x150.sipprivate.helper.manager.ConfigManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
 import net.minecraft.client.gui.screen.Screen;

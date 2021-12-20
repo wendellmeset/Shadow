@@ -13,8 +13,7 @@ import me.x150.sipprivate.helper.font.FontRenderers;
 import me.x150.sipprivate.helper.font.adapter.impl.ClientFontRenderer;
 import me.x150.sipprivate.helper.font.adapter.impl.VanillaFontRenderer;
 import me.x150.sipprivate.helper.font.render.GlyphPageFontRenderer;
-import me.x150.sipprivate.keybinding.KeybindingManager;
-import me.x150.sipprivate.util.ConfigManager;
+import me.x150.sipprivate.helper.manager.ConfigManager;
 import me.x150.sipprivate.util.Utils;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.client.MinecraftClient;
@@ -53,7 +52,7 @@ import java.util.ArrayList;
         if (!BASE.exists()) {
             BASE.mkdir();
         }
-//        KeybindingManager.init();
+        //        KeybindingManager.init();
         ConfigManager.loadState();
         log(Level.INFO, "Done initializing");
         //TODO: Initializer

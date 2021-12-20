@@ -6,7 +6,6 @@ import me.x150.sipprivate.feature.gui.clickgui.theme.Theme;
 import me.x150.sipprivate.helper.render.Renderer;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.BufferRenderer;
-import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormat;
@@ -60,33 +59,13 @@ public class ParticleRenderer {
     }
 
     static class Particle {
-        long   rotSpeed = (long) MathHelper.lerp(Math.random(), 3000, 10000);
-        long rotSpeed2 = (long) MathHelper.lerp(Math.random(), 3000, 10000);
-        double x        = 0, y = 0, size = 10, decline = 0.1;
+        long   rotSpeed  = (long) MathHelper.lerp(Math.random(), 3000, 10000);
+        long   rotSpeed2 = (long) MathHelper.lerp(Math.random(), 3000, 10000);
+        double x         = 0, y = 0, size = 10, decline = 0.1;
         double velX = 0, velY = 0;
-        boolean spinsReverse = Math.random() > .5;
+        boolean spinsReverse  = Math.random() > .5;
         boolean spinsReverse2 = Math.random() > .5;
 
-        void move() {
-            size -= decline;
-            size = Math.max(0, size);
-            x += velX;
-            y += velY;
-        }
-
-        void render(MatrixStack stack) {
-            Theme theme = ClickGUI.theme;
-            stack.push();
-            stack.translate(x, y, 0);
-            stack.multiply(new Quaternion(0, (System.currentTimeMillis() % rotSpeed2) / ((float) rotSpeed2) * 360f * (spinsReverse2?-1:1), (System.currentTimeMillis() % rotSpeed) / ((float) rotSpeed) * 360f * (spinsReverse ? -1 : 1), true));
-//            Renderer.R2D.fill(stack, Renderer.Util.lerp(theme.getAccent(), DYING, size / 10d), -size, -size, size, size);
-            renderOutline(new Vec3d(-size,-size,-size), new Vec3d(size,size,size).multiply(2),Renderer.Util.lerp(theme.getAccent(), DYING, size / 10d),stack);
-            stack.pop();
-        }
-
-        boolean isDead() {
-            return size <= 0;
-        }
         public static BufferBuilder renderPrepare(Color color) {
             float red = color.getRed() / 255f;
             float green = color.getGreen() / 255f;
@@ -100,6 +79,7 @@ public class ParticleRenderer {
             buffer.begin(VertexFormat.DrawMode.DEBUG_LINES, VertexFormats.POSITION);
             return buffer;
         }
+
         public static void renderOutline(Vec3d start, Vec3d dimensions, Color color, MatrixStack stack) {
             RenderSystem.defaultBlendFunc();
             RenderSystem.enableBlend();
@@ -152,6 +132,27 @@ public class ParticleRenderer {
 
             buffer.vertex(matrix, x1, y1, z2).next();
             buffer.vertex(matrix, x1, y2, z2).next();
+        }
+
+        void move() {
+            size -= decline;
+            size = Math.max(0, size);
+            x += velX;
+            y += velY;
+        }
+
+        void render(MatrixStack stack) {
+            Theme theme = ClickGUI.theme;
+            stack.push();
+            stack.translate(x, y, 0);
+            stack.multiply(new Quaternion(0, (System.currentTimeMillis() % rotSpeed2) / ((float) rotSpeed2) * 360f * (spinsReverse2 ? -1 : 1), (System.currentTimeMillis() % rotSpeed) / ((float) rotSpeed) * 360f * (spinsReverse ? -1 : 1), true));
+            //            Renderer.R2D.fill(stack, Renderer.Util.lerp(theme.getAccent(), DYING, size / 10d), -size, -size, size, size);
+            renderOutline(new Vec3d(-size, -size, -size), new Vec3d(size, size, size).multiply(2), Renderer.Util.lerp(theme.getAccent(), DYING, size / 10d), stack);
+            stack.pop();
+        }
+
+        boolean isDead() {
+            return size <= 0;
         }
     }
 }

@@ -1,6 +1,6 @@
 package me.x150.sipprivate.feature.gui.clickgui.element.impl.config;
 
-import me.x150.sipprivate.config.EnumSetting;
+import me.x150.sipprivate.feature.config.EnumSetting;
 import me.x150.sipprivate.feature.gui.clickgui.ClickGUI;
 import me.x150.sipprivate.feature.gui.clickgui.theme.Theme;
 import me.x150.sipprivate.helper.font.FontRenderers;

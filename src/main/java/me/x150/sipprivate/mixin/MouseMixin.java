@@ -14,7 +14,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
     @Inject(method = "onMouseButton", at = @At("HEAD"), cancellable = true) public void atomic_dispatchMouseEvent(long window, int button, int action, int mods, CallbackInfo ci) {
         if (window == SipoverPrivate.client.getWindow().getHandle()) {
-            if(Events.fireEvent(EventType.MOUSE_EVENT, new MouseEvent(button, action))) ci.cancel();
+            if (Events.fireEvent(EventType.MOUSE_EVENT, new MouseEvent(button, action))) {
+                ci.cancel();
+            }
         }
     }
 }

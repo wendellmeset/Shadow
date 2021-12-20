@@ -12,17 +12,18 @@ import java.lang.reflect.Field;
 
 public class BindScreen extends Screen {
     Module a;
-    long closeAt = -1;
+    long   closeAt = -1;
+    ClientFontRenderer cfr     = FontRenderers.getCustomNormal(30);
+    ClientFontRenderer smaller = FontRenderers.getCustomNormal(20);
     public BindScreen(Module toBind) {
         super(Text.of(""));
         this.a = toBind;
     }
-    ClientFontRenderer cfr = FontRenderers.getCustomNormal(30);
-    ClientFontRenderer smaller = FontRenderers.getCustomNormal(20);
+
     @Override public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         renderBackground(matrices);
-        cfr.drawCenteredString(matrices,"Press any key",width/2d,height/2d-cfr.getMarginHeight(),0xAAAAAA);
-        String kn = a.keybind.getValue() > 0?GLFW.glfwGetKeyName((int) (a.keybind.getValue()+0),GLFW.glfwGetKeyScancode((int) (a.keybind.getValue()+0))):"None";
+        cfr.drawCenteredString(matrices, "Press any key", width / 2d, height / 2d - cfr.getMarginHeight(), 0xAAAAAA);
+        String kn = a.keybind.getValue() > 0 ? GLFW.glfwGetKeyName((int) (a.keybind.getValue() + 0), GLFW.glfwGetKeyScancode((int) (a.keybind.getValue() + 0))) : "None";
         if (kn == null) {
             try {
                 for (Field declaredField : GLFW.class.getDeclaredFields()) {
@@ -30,25 +31,27 @@ public class BindScreen extends Screen {
                         int a = (int) declaredField.get(null);
                         if (a == this.a.keybind.getValue()) {
                             String nb = declaredField.getName().substring("GLFW_KEY_".length());
-                            kn = nb.substring(0,1).toUpperCase()+nb.substring(1).toLowerCase();
+                            kn = nb.substring(0, 1).toUpperCase() + nb.substring(1).toLowerCase();
                         }
                     }
                 }
             } catch (Exception ignored) {
-                kn = "unknown."+(int) (a.keybind.getValue()+0);
+                kn = "unknown." + (int) (a.keybind.getValue() + 0);
             }
         }
-        smaller.drawCenteredString(matrices, "Current bind: "+kn,width/2d,height/2d,0xBBBBBB);
+        smaller.drawCenteredString(matrices, "Current bind: " + kn, width / 2d, height / 2d, 0xBBBBBB);
         super.render(matrices, mouseX, mouseY, delta);
     }
 
     @Override public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (closeAt != -1) return false;
+        if (closeAt != -1) {
+            return false;
+        }
         if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
             keyCode = -1;
         }
         a.keybind.setValue((double) keyCode);
-        closeAt = System.currentTimeMillis()+500;
+        closeAt = System.currentTimeMillis() + 500;
         return true;
     }
 

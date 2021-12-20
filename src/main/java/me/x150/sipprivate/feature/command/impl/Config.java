@@ -5,7 +5,7 @@
 
 package me.x150.sipprivate.feature.command.impl;
 
-import me.x150.sipprivate.config.SettingBase;
+import me.x150.sipprivate.feature.config.SettingBase;
 import me.x150.sipprivate.feature.command.Command;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleRegistry;

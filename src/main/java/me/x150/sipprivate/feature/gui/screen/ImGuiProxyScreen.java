@@ -2,7 +2,7 @@ package me.x150.sipprivate.feature.gui.screen;
 
 import imgui.ImGui;
 import me.x150.sipprivate.SipoverPrivate;
-import me.x150.sipprivate.helper.ImGuiManager;
+import me.x150.sipprivate.helper.manager.ImGuiManager;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;

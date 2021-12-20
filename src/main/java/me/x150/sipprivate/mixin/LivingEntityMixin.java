@@ -1,7 +1,7 @@
 package me.x150.sipprivate.mixin;
 
 import me.x150.sipprivate.SipoverPrivate;
-import me.x150.sipprivate.helper.AttackManager;
+import me.x150.sipprivate.helper.manager.AttackManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;

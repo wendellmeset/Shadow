@@ -3,7 +3,7 @@ package me.x150.sipprivate.mixin;
 import me.x150.sipprivate.SipoverPrivate;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleRegistry;
-import me.x150.sipprivate.helper.ImGuiManager;
+import me.x150.sipprivate.helper.manager.ImGuiManager;
 import me.x150.sipprivate.helper.render.Renderer;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;

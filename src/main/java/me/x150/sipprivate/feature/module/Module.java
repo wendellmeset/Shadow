@@ -5,17 +5,18 @@
 
 package me.x150.sipprivate.feature.module;
 
-import me.x150.sipprivate.config.BooleanSetting;
-import me.x150.sipprivate.config.DoubleSetting;
-import me.x150.sipprivate.config.ModuleConfig;
+import me.x150.sipprivate.feature.config.BooleanSetting;
+import me.x150.sipprivate.feature.config.DoubleSetting;
+import me.x150.sipprivate.feature.config.ModuleConfig;
 import me.x150.sipprivate.feature.gui.notifications.Notification;
 import net.minecraft.client.util.math.MatrixStack;
 
 public abstract class Module {
 
-    public final  ModuleConfig  config;
-    public final  DoubleSetting keybind;
-    private final String        name;
+    public final  ModuleConfig   config;
+    public final  DoubleSetting  keybind;
+    private final BooleanSetting debuggerEnabled;
+    private final String         name;
     private final String         description;
     private final ModuleType     moduleType;
     private final BooleanSetting toasts;
@@ -28,7 +29,15 @@ public abstract class Module {
         this.config = new ModuleConfig();
         this.keybind = this.config.create(new DoubleSetting.Builder(-1).name("Keybind").description("The keybind to toggle the module with").min(-1).max(65535).precision(0).get());
         this.keybind.showIf(() -> false);
+        this.debuggerEnabled = this.config.create(new BooleanSetting.Builder(false)
+                .name("Debugger")
+                .description("Shows a lot of funky visuals describing whats going on")
+                .get());
         this.toasts = this.config.create(new BooleanSetting.Builder(true).name("Toasts").description("Whether to show enabled / disabled toasts").get());
+    }
+
+    protected boolean isDebuggerEnabled() {
+        return this.debuggerEnabled.getValue();
     }
 
     public ModuleType getModuleType() {

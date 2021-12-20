@@ -1,6 +1,6 @@
 package me.x150.sipprivate.feature.gui.clickgui.element.impl.config;
 
-import me.x150.sipprivate.config.BooleanSetting;
+import me.x150.sipprivate.feature.config.BooleanSetting;
 import me.x150.sipprivate.feature.gui.clickgui.ClickGUI;
 import me.x150.sipprivate.feature.gui.clickgui.theme.Theme;
 import me.x150.sipprivate.helper.font.FontRenderers;
@@ -9,10 +9,10 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 
 public class BooleanSettingEditor extends ConfigBase<BooleanSetting> {
-    double rw     = 14;
-    double rh     = 5;
-    double rid    = 4;
-    double margin = .5;
+    double rw           = 14;
+    double rh           = 5;
+    double rid          = 4;
+    double margin       = .5;
     double animProgress = 0;
 
     public BooleanSettingEditor(double x, double y, double width, BooleanSetting configValue) {

@@ -1,6 +1,6 @@
 package me.x150.sipprivate.feature.gui.clickgui.element.impl.config;
 
-import me.x150.sipprivate.config.DoubleSetting;
+import me.x150.sipprivate.feature.config.DoubleSetting;
 import me.x150.sipprivate.feature.gui.clickgui.ClickGUI;
 import me.x150.sipprivate.feature.gui.clickgui.theme.Theme;
 import me.x150.sipprivate.helper.font.FontRenderers;
@@ -11,16 +11,18 @@ import net.minecraft.util.math.MathHelper;
 
 public class DoubleSettingEditor extends ConfigBase<DoubleSetting> {
 
+    boolean clicked = false;
+
     public DoubleSettingEditor(double x, double y, double width, DoubleSetting configValue) {
-        super(x, y, width, FontRenderers.getNormal().getMarginHeight()+10, configValue);
+        super(x, y, width, FontRenderers.getNormal().getMarginHeight() + 10, configValue);
     }
 
     void handleClick(double x) {
         double translated = x - this.x;
-        double perIn = MathHelper.clamp(translated/width,0,1);
-        configValue.setValue(Utils.Math.roundToDecimal(perIn*(configValue.getMax()- configValue.getMin())+configValue.getMin(), configValue.getPrecision()));
+        double perIn = MathHelper.clamp(translated / width, 0, 1);
+        configValue.setValue(Utils.Math.roundToDecimal(perIn * (configValue.getMax() - configValue.getMin()) + configValue.getMin(), configValue.getPrecision()));
     }
-    boolean clicked = false;
+
     @Override public boolean clicked(double x, double y, int button) {
         if (inBounds(x, y)) {
             clicked = true;
@@ -47,18 +49,18 @@ public class DoubleSettingEditor extends ConfigBase<DoubleSetting> {
     }
 
     double getPer() {
-        return MathHelper.clamp((configValue.getValue()-configValue.getMin()) / (configValue.getMax()- configValue.getMin()), 0, 1);
+        return MathHelper.clamp((configValue.getValue() - configValue.getMin()) / (configValue.getMax() - configValue.getMin()), 0, 1);
     }
 
     @Override public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
         Theme theme = ClickGUI.theme;
-        FontRenderers.getNormal().drawString(matrices,configValue.name,x,y,0xFFFFFF);
+        FontRenderers.getNormal().drawString(matrices, configValue.name, x, y, 0xFFFFFF);
         String t = configValue.getValue().toString();
-        FontRenderers.getNormal().drawString(matrices,t,x+width-FontRenderers.getNormal().getStringWidth(t)-1,y,0xFFFFFF);
+        FontRenderers.getNormal().drawString(matrices, t, x + width - FontRenderers.getNormal().getStringWidth(t) - 1, y, 0xFFFFFF);
         double h = y + FontRenderers.getNormal().getMarginHeight() + .5; // 9 px left
-        Renderer.R2D.fill(matrices, theme.getInactive(),x,h+9/2d-.5,x+width,h+9/2d+.5);
-        Renderer.R2D.fill(matrices, theme.getActive(), x, h+9/2d-.5, x+width*getPer(),h+9/2d+.5);
-        Renderer.R2D.fill(matrices, theme.getAccent(),x+width*getPer()-.5,h+.5,x+width*getPer()+.5,h+8.5);
+        Renderer.R2D.fill(matrices, theme.getInactive(), x, h + 9 / 2d - .5, x + width, h + 9 / 2d + .5);
+        Renderer.R2D.fill(matrices, theme.getActive(), x, h + 9 / 2d - .5, x + width * getPer(), h + 9 / 2d + .5);
+        Renderer.R2D.fill(matrices, theme.getAccent(), x + width * getPer() - .5, h + .5, x + width * getPer() + .5, h + 8.5);
     }
 
     @Override public void tickAnim() {

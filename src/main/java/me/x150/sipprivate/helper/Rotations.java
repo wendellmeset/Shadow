@@ -82,8 +82,12 @@ public class Rotations {
     }
 
     public static Vec2f getPitchYaw(Vec3d targetV3) {
+        return getPitchYawFromOtherEntity(SipoverPrivate.client.player.getEyePos(), targetV3);
+    }
+
+    public static Vec2f getPitchYawFromOtherEntity(Vec3d eyePos, Vec3d targetV3) {
         double vec = 57.2957763671875;
-        Vec3d target = targetV3.subtract(Objects.requireNonNull(SipoverPrivate.client.player).getEyePos());
+        Vec3d target = targetV3.subtract(eyePos);
         double square = Math.sqrt(target.x * target.x + target.z * target.z);
         float pitch = MathHelper.wrapDegrees((float) (-(MathHelper.atan2(target.y, square) * vec)));
         float yaw = MathHelper.wrapDegrees((float) (MathHelper.atan2(target.z, target.x) * vec) - 90.0F);

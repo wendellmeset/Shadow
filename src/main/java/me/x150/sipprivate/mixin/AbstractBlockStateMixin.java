@@ -6,7 +6,7 @@
 package me.x150.sipprivate.mixin;
 
 import me.x150.sipprivate.feature.module.ModuleRegistry;
-import me.x150.sipprivate.feature.module.impl.render.XRAY;
+import me.x150.sipprivate.feature.module.impl.XRAY;
 import net.minecraft.block.AbstractBlock;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

@@ -1,10 +1,10 @@
 package me.x150.sipprivate.feature.gui.clickgui.element.impl;
 
-import me.x150.sipprivate.config.BooleanSetting;
-import me.x150.sipprivate.config.DoubleSetting;
-import me.x150.sipprivate.config.EnumSetting;
-import me.x150.sipprivate.config.ModuleConfig;
-import me.x150.sipprivate.config.SettingBase;
+import me.x150.sipprivate.feature.config.BooleanSetting;
+import me.x150.sipprivate.feature.config.DoubleSetting;
+import me.x150.sipprivate.feature.config.EnumSetting;
+import me.x150.sipprivate.feature.config.ModuleConfig;
+import me.x150.sipprivate.feature.config.SettingBase;
 import me.x150.sipprivate.feature.gui.clickgui.ClickGUI;
 import me.x150.sipprivate.feature.gui.clickgui.element.Element;
 import me.x150.sipprivate.feature.gui.clickgui.element.impl.config.BooleanSettingEditor;
@@ -20,16 +20,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConfigDisplay extends Element {
-    List<ConfigBase<?>> bases = new ArrayList<>();
+    List<ConfigBase<?>> bases       = new ArrayList<>();
     ModuleConfig        mc;
-    double padding = 3;
-    double paddingLeft = 2;
+    double              padding     = 3;
+    double              paddingLeft = 2;
+    long    hoverStart    = System.currentTimeMillis();
+    boolean hoveredBefore = false;
+
     public ConfigDisplay(double x, double y, ModuleConfig mc) {
         super(x, y, 100, 0);
         this.mc = mc;
         for (SettingBase<?> setting : mc.getSettings()) {
             if (setting instanceof BooleanSetting set) {
-                BooleanSettingEditor bse = new BooleanSettingEditor(0, 0, width-padding-paddingLeft, set);
+                BooleanSettingEditor bse = new BooleanSettingEditor(0, 0, width - padding - paddingLeft, set);
                 bases.add(bse);
             } else if (setting instanceof DoubleSetting set) {
                 DoubleSettingEditor dse = new DoubleSettingEditor(0, 0, width - padding - paddingLeft, set);
@@ -62,7 +65,9 @@ public class ConfigDisplay extends Element {
 
     @Override public boolean released() {
         for (ConfigBase<?> basis : bases) {
-            if (basis.getConfigValue().shouldShow()) basis.released();
+            if (basis.getConfigValue().shouldShow()) {
+                basis.released();
+            }
         }
         return false;
     }
@@ -75,29 +80,32 @@ public class ConfigDisplay extends Element {
         }
         return false;
     }
-    long hoverStart = System.currentTimeMillis();
-    boolean hoveredBefore = false;
+
     @Override public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
         double yOffset = 0;
         Theme theme = ClickGUI.theme;
         Renderer.R2D.fill(matrices, theme.getConfig(), x, this.y, x + width, this.y + height);
         Renderer.R2D.fill(matrices, theme.getAccent(), x, this.y, x + 1, this.y + height);
         boolean hovered = inBounds(mouseX, mouseY);
-        if (!hoveredBefore && hovered) hoverStart = System.currentTimeMillis();
+        if (!hoveredBefore && hovered) {
+            hoverStart = System.currentTimeMillis();
+        }
         hoveredBefore = hovered;
         String renderingDesc = null;
         for (ConfigBase<?> basis : bases) {
             basis.setX(x + padding);
             basis.setY(this.y + yOffset);
-            if (!basis.getConfigValue().shouldShow()) continue;
+            if (!basis.getConfigValue().shouldShow()) {
+                continue;
+            }
             basis.render(matrices, 0, 0, 0);
             if (basis.inBounds(mouseX, mouseY) && renderingDesc == null) {
                 renderingDesc = basis.getConfigValue().description;
             }
             yOffset += basis.getHeight();
         }
-        if (hoverStart+500<System.currentTimeMillis() && hovered && renderingDesc != null) {
-            ClickGUI.instance.renderDescription(Utils.Mouse.getMouseX(), Utils.Mouse.getMouseY()+10,renderingDesc);
+        if (hoverStart + 500 < System.currentTimeMillis() && hovered && renderingDesc != null) {
+            ClickGUI.instance.renderDescription(Utils.Mouse.getMouseX(), Utils.Mouse.getMouseY() + 10, renderingDesc);
         }
         this.height = yOffset;
     }

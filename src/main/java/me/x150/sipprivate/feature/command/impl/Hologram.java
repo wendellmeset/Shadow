@@ -7,7 +7,7 @@ package me.x150.sipprivate.feature.command.impl;
 
 import me.x150.sipprivate.SipoverPrivate;
 import me.x150.sipprivate.feature.command.Command;
-import me.x150.sipprivate.helper.HologramManager;
+import me.x150.sipprivate.helper.manager.HologramManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;

@@ -20,21 +20,24 @@ import java.util.Collections;
 import java.util.List;
 
 public class ClickGUI extends Screen implements FastTickable {
+    public static final ClickGUI instance = new ClickGUI();
+    public static Theme theme = new SipoverV1();
     List<Element>    elements = new ArrayList<>();
     ParticleRenderer real     = new ParticleRenderer(100);
-    public static Theme theme = new SipoverV1();
-
-    public static final ClickGUI instance = new ClickGUI();
-
     String desc = null;
     double descX, descY;
     double scroll = 0;
 
+    private ClickGUI() {
+        super(Text.of(""));
+        initElements();
+    }
+
     @Override public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
-        scroll += amount*10;
+        scroll += amount * 10;
         double bottomMost = 0;
         for (Element element : elements) {
-            double y = element.getY()+element.getHeight();
+            double y = element.getY() + element.getHeight();
             bottomMost = Math.max(bottomMost, y);
         }
         bottomMost -= height;
@@ -47,11 +50,6 @@ public class ClickGUI extends Screen implements FastTickable {
         desc = text;
         descX = x;
         descY = y;
-    }
-
-    private ClickGUI() {
-        super(Text.of(""));
-        initElements();
     }
 
     void initElements() {
@@ -80,9 +78,11 @@ public class ClickGUI extends Screen implements FastTickable {
         super.render(matrices, mouseX, mouseY, delta);
         if (desc != null) {
             double width = FontRenderers.getNormal().getStringWidth(desc);
-            if (descX+width > SipoverPrivate.client.getWindow().getScaledWidth()) descX -= (descX+width-SipoverPrivate.client.getWindow().getScaledWidth()) + 4;
-            Renderer.R2D.fill(new Color(20,20,30,200),descX-1,descY,descX+width+3,descY+FontRenderers.getNormal().getMarginHeight()+1);
-            FontRenderers.getNormal().drawString(Renderer.R3D.getEmptyMatrixStack(),desc,descX,descY,0xFFFFFF);
+            if (descX + width > SipoverPrivate.client.getWindow().getScaledWidth()) {
+                descX -= (descX + width - SipoverPrivate.client.getWindow().getScaledWidth()) + 4;
+            }
+            Renderer.R2D.fill(new Color(20, 20, 30, 200), descX - 1, descY, descX + width + 3, descY + FontRenderers.getNormal().getMarginHeight() + 1);
+            FontRenderers.getNormal().drawString(Renderer.R3D.getEmptyMatrixStack(), desc, descX, descY, 0xFFFFFF);
             desc = null;
         }
     }
