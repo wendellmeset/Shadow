@@ -74,8 +74,19 @@ public class ClickGUI extends Screen implements FastTickable {
     }
 
     void initElements() {
+        double width = SipoverPrivate.client.getWindow().getScaledWidth();
+        double x = 5;
+        double y = 5;
+        double tallestInTheRoom = 0;
         for (ModuleType value : ModuleType.values()) {
-            CategoryDisplay cd = new CategoryDisplay(0, 0, value);
+            CategoryDisplay cd = new CategoryDisplay(x, y, value);
+            tallestInTheRoom = Math.max(tallestInTheRoom, cd.getHeight());
+            x += cd.getWidth()+5;
+            if (x >= width) {
+                y += tallestInTheRoom+5;
+                tallestInTheRoom = 0;
+                x = 5;
+            }
             elements.add(cd);
         }
     }
@@ -88,7 +99,10 @@ public class ClickGUI extends Screen implements FastTickable {
             client.setScreen(null);
             return;
         }
+        matrices.push();
+        matrices.translate(0,0,-20);
         if (!closing) real.render(matrices);
+        matrices.pop();
         matrices.push();
         matrices.translate(0, -easeInOutQuint(1-introAnimation)*height, 0);
         matrices.translate(0, -trackedScroll, 0);

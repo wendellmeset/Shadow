@@ -23,7 +23,7 @@ import java.util.Objects;
 public class Phase extends Module {
 
     public Phase() {
-        super("Phase", "go through walls like a ghost", ModuleType.MOVEMENT);
+        super("Phase", "Go through walls when flying (works best with creative)", ModuleType.MOVEMENT);
         Events.registerEventHandler(EventType.PACKET_SEND, event -> {
             if (!this.isEnabled() || SipoverPrivate.client.player == null || !SipoverPrivate.client.player.getAbilities().flying) {
                 return;

@@ -28,7 +28,7 @@ public class Boaty extends Module {
     Vec3d         start   = null;
 
     public Boaty() {
-        super("Boaty", "Uses boats to crash a server", ModuleType.EXPLOIT);
+        super("Boaty", "Uses boat movement to crash a server", ModuleType.EXPLOIT);
     }
 
     @Override public void tick() {

@@ -33,7 +33,7 @@ public class NoComCrash extends Module {
     int                 i       = 0;
 
     public NoComCrash() {
-        super("NoComCrash", "Crashes servers with several out of range chunk funnies", ModuleType.EXPLOIT);
+        super("NoComCrash", "Crashes the server by requesting chunks out of bounds", ModuleType.EXPLOIT);
     }
 
     @Override public void tick() {

@@ -23,7 +23,7 @@ public class FireballDeflector extends Module {
     BooleanSetting    checkVel = this.config.create(new BooleanSetting.Builder(false).name("Check velocity")
             .description("Checks if the fireball is actually approaching before hitting. Can get funky with a lot of them").get());
     public FireballDeflector() {
-        super("FireballDeflector", "Deflects fireballs in your hit range", ModuleType.MISC);
+        super("FireballDeflector", "Deflects (or reflects) fireballs in your hit range", ModuleType.MISC);
     }
 
     boolean isApproaching(Vec3d checkAgainst, Vec3d checkPos, Vec3d checkVel) {

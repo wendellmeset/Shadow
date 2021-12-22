@@ -44,7 +44,7 @@ public class Boom extends Module {
     long              lastFired = 0L;
 
     public Boom() {
-        super("Boom", "oh shit", ModuleType.WORLD);
+        super("Boom", "Spawns fireballs whereever you click", ModuleType.WORLD);
         Events.registerEventHandler(EventType.MOUSE_EVENT, event -> {
             if (!this.isEnabled() || SipoverPrivate.client.currentScreen != null) {
                 return;

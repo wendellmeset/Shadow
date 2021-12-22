@@ -17,7 +17,7 @@ import net.minecraft.sound.SoundEvents;
 public class AntiOffhandCrash extends Module {
 
     public AntiOffhandCrash() {
-        super("AntiOffhandCrash", "shut fuck inertia", ModuleType.MISC);
+        super("AntiOffhandCrash", "Prevents you from getting crashed by OffhandCrash", ModuleType.MISC);
         Events.registerEventHandler(EventType.PACKET_RECEIVE, event1 -> {
             if (!this.isEnabled()) {
                 return;

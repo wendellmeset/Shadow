@@ -46,7 +46,7 @@ public class Hud extends Module {
     Notification   serverNotResponding = null;
 
     public Hud() {
-        super("Hud", "Shows fancy stuff on screen", ModuleType.RENDER);
+        super("Hud", "Shows information about the player on screen", ModuleType.RENDER);
         lastTimePacketReceived = System.currentTimeMillis();
 
         Events.registerEventHandler(EventType.PACKET_RECEIVE, event1 -> {

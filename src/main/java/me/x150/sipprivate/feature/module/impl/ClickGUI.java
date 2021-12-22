@@ -9,7 +9,7 @@ public class ClickGUI extends Module {
     int t = 2;
 
     public ClickGUI() {
-        super("ClickGUI", "sexy", ModuleType.RENDER);
+        super("ClickGUI", "A visual manager for all modules", ModuleType.RENDER);
     }
 
     @Override public void tick() {

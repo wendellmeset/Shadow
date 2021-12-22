@@ -12,7 +12,7 @@ import net.minecraft.client.util.math.MatrixStack;
 public class AntiPacketKick extends Module {
 
     public AntiPacketKick() {
-        super("AntiPacketKick", "remember the \"internal exception\" moments? say goodbye to these", ModuleType.MISC);
+        super("AntiPacketKick", "Prevents a client disconnect caused by an internal exception", ModuleType.MISC);
     }
 
     @Override public void tick() {

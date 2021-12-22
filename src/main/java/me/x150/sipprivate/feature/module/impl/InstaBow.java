@@ -32,7 +32,7 @@ public class InstaBow extends Module {
     BooleanSetting autoFire = this.config.create(new BooleanSetting.Builder(false).name("Auto fire").description("Automatically fire the bow when its held and an entity is on the same Y").get());
 
     public InstaBow() {
-        super("InstaBow", "SUPERCHARGE YOUR BOW", ModuleType.EXPLOIT);
+        super("BowOneTap", "Exploits the velocity handler on the server to give your arrow near infinite velocity", ModuleType.EXPLOIT);
         Events.registerEventHandler(EventType.PACKET_SEND, event -> {
             if (!this.isEnabled()) {
                 return;

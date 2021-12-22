@@ -61,6 +61,7 @@ public class ParticleRenderer {
         for (Particle particle : particles) {
             particle.render(stack);
         }
+        RenderSystem.setShaderColor(1,1,1,1);
     }
 
     static class Particle {

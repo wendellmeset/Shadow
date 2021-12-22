@@ -8,7 +8,9 @@ package me.x150.sipprivate.feature.module.impl;
 import me.x150.sipprivate.SipoverPrivate;
 import me.x150.sipprivate.feature.config.DoubleSetting;
 import me.x150.sipprivate.feature.module.Module;
+import me.x150.sipprivate.feature.module.ModuleRegistry;
 import me.x150.sipprivate.feature.module.ModuleType;
+import me.x150.sipprivate.util.Utils;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.util.math.BlockPos;
@@ -19,7 +21,7 @@ public class OffhandCrash extends Module {
     DoubleSetting a = this.config.create(new DoubleSetting.Builder(500).precision(0).name("Amount").description("How many crash packets to send per tick").min(10).max(10000).get());
 
     public OffhandCrash() {
-        super("OffhandCrash", "crashes players with offhand packets", ModuleType.EXPLOIT);
+        super("OffhandCrash", "Crashes players around with sound packets", ModuleType.EXPLOIT);
     }
 
     @Override public void tick() {
@@ -37,7 +39,10 @@ public class OffhandCrash extends Module {
     }
 
     @Override public void enable() {
-
+        if (!ModuleRegistry.getByClass(AntiOffhandCrash.class).isEnabled()) {
+            Utils.Logging.messageChat("I would recommend you turn on AntiOffhandCrash before using this");
+            setEnabled(false);
+        }
     }
 
     @Override public void disable() {
