@@ -4,7 +4,7 @@ import imgui.ImGui;
 import imgui.flag.ImGuiCol;
 import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.gui.screen.ImGuiProxyScreen;
 
 import java.io.IOException;
@@ -122,7 +122,7 @@ public class ImGuiManager {
         }
 
         init = true;
-        long win = SipoverPrivate.client.getWindow().getHandle();
+        long win = CoffeeClientMain.client.getWindow().getHandle();
         ImGui.createContext();
         initFonts();
         style();

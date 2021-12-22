@@ -5,7 +5,7 @@
 
 package me.x150.sipprivate.feature.module.impl;
 
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.config.BooleanSetting;
 import me.x150.sipprivate.feature.config.DoubleSetting;
 import me.x150.sipprivate.feature.module.Module;
@@ -14,7 +14,7 @@ import me.x150.sipprivate.helper.Rotations;
 import me.x150.sipprivate.helper.event.EventType;
 import me.x150.sipprivate.helper.event.Events;
 import me.x150.sipprivate.helper.event.events.PacketEvent;
-import me.x150.sipprivate.util.Utils;
+import me.x150.sipprivate.helper.util.Utils;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -39,15 +39,15 @@ public class InstaBow extends Module {
             }
             PacketEvent pe = (PacketEvent) event;
             if (pe.getPacket() instanceof PlayerActionC2SPacket packet && packet.getAction() == PlayerActionC2SPacket.Action.RELEASE_USE_ITEM) {
-                Vec3d a = SipoverPrivate.client.player.getPos().subtract(0, 1e-10, 0);
-                Vec3d b = SipoverPrivate.client.player.getPos().add(0, 1e-10, 0);
-                SipoverPrivate.client.getNetworkHandler().sendPacket(new ClientCommandC2SPacket(SipoverPrivate.client.player, ClientCommandC2SPacket.Mode.START_SPRINTING));
+                Vec3d a = CoffeeClientMain.client.player.getPos().subtract(0, 1e-10, 0);
+                Vec3d b = CoffeeClientMain.client.player.getPos().add(0, 1e-10, 0);
+                CoffeeClientMain.client.getNetworkHandler().sendPacket(new ClientCommandC2SPacket(CoffeeClientMain.client.player, ClientCommandC2SPacket.Mode.START_SPRINTING));
                 //                ModuleRegistry.getByClass(NoFall.class).enabled = false; // disable nofall modifying packets when we send these
                 for (int i = 0; i < it.getValue(); i++) {
                     PlayerMoveC2SPacket p = new PlayerMoveC2SPacket.PositionAndOnGround(a.x, a.y, a.z, true);
                     PlayerMoveC2SPacket p1 = new PlayerMoveC2SPacket.PositionAndOnGround(b.x, b.y, b.z, false);
-                    SipoverPrivate.client.getNetworkHandler().sendPacket(p);
-                    SipoverPrivate.client.getNetworkHandler().sendPacket(p1);
+                    CoffeeClientMain.client.getNetworkHandler().sendPacket(p);
+                    CoffeeClientMain.client.getNetworkHandler().sendPacket(p1);
                 }
                 //                ModuleRegistry.getByClass(NoFall.class).enabled = true;
             }
@@ -58,24 +58,24 @@ public class InstaBow extends Module {
         if (!autoFire.getValue()) {
             return;
         }
-        Vec3d ep = SipoverPrivate.client.player.getEyePos();
+        Vec3d ep = CoffeeClientMain.client.player.getEyePos();
         Entity nearestApplicable = null;
-        for (Entity entity : SipoverPrivate.client.world.getEntities()) {
+        for (Entity entity : CoffeeClientMain.client.world.getEntities()) {
             if (entity.getType() == EntityType.ENDERMAN) {
                 continue;
             }
-            if (!(entity instanceof LivingEntity ent) || !ent.isAttackable() || ent.isDead() || entity.equals(SipoverPrivate.client.player)) {
+            if (!(entity instanceof LivingEntity ent) || !ent.isAttackable() || ent.isDead() || entity.equals(CoffeeClientMain.client.player)) {
                 continue;
             }
             Vec3d origin = entity.getPos();
             float h = entity.getHeight();
             Vec3d upper = origin.add(0, h, 0);
             Vec3d center = entity.getPos().add(0, h / 2f, 0);
-            if (Utils.Math.isABObstructed(ep, center, SipoverPrivate.client.world, SipoverPrivate.client.player)) {
+            if (Utils.Math.isABObstructed(ep, center, CoffeeClientMain.client.world, CoffeeClientMain.client.player)) {
                 continue;
             }
             if (ep.y < upper.y && ep.y > origin.y) { // entity's on our Y
-                if (nearestApplicable == null || nearestApplicable.distanceTo(SipoverPrivate.client.player) > origin.distanceTo(SipoverPrivate.client.player.getPos())) {
+                if (nearestApplicable == null || nearestApplicable.distanceTo(CoffeeClientMain.client.player) > origin.distanceTo(CoffeeClientMain.client.player.getPos())) {
                     nearestApplicable = entity;
                 }
             }
@@ -83,14 +83,14 @@ public class InstaBow extends Module {
         if (nearestApplicable == null) {
             return;
         }
-        if (SipoverPrivate.client.player.isUsingItem() && SipoverPrivate.client.player.getMainHandStack().getItem() == Items.BOW) {
-            BowItem be = (BowItem) SipoverPrivate.client.player.getMainHandStack().getItem();
-            int p = be.getMaxUseTime(null) - SipoverPrivate.client.player.getItemUseTimeLeft();
+        if (CoffeeClientMain.client.player.isUsingItem() && CoffeeClientMain.client.player.getMainHandStack().getItem() == Items.BOW) {
+            BowItem be = (BowItem) CoffeeClientMain.client.player.getMainHandStack().getItem();
+            int p = be.getMaxUseTime(null) - CoffeeClientMain.client.player.getItemUseTimeLeft();
             if (BowItem.getPullProgress(p) > 0.1) {
                 Rotations.lookAtV3(nearestApplicable.getPos().add(0, nearestApplicable.getHeight() / 2f, 0));
-                SipoverPrivate.client.getNetworkHandler()
-                        .sendPacket(new PlayerMoveC2SPacket.LookAndOnGround(Rotations.getClientYaw(), Rotations.getClientPitch(), SipoverPrivate.client.player.isOnGround()));
-                SipoverPrivate.client.interactionManager.stopUsingItem(SipoverPrivate.client.player);
+                CoffeeClientMain.client.getNetworkHandler()
+                        .sendPacket(new PlayerMoveC2SPacket.LookAndOnGround(Rotations.getClientYaw(), Rotations.getClientPitch(), CoffeeClientMain.client.player.isOnGround()));
+                CoffeeClientMain.client.interactionManager.stopUsingItem(CoffeeClientMain.client.player);
             }
         }
     }

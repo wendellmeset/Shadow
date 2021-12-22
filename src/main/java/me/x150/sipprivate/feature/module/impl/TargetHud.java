@@ -5,15 +5,15 @@
 
 package me.x150.sipprivate.feature.module.impl;
 
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.config.BooleanSetting;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleType;
 import me.x150.sipprivate.helper.font.FontRenderers;
 import me.x150.sipprivate.helper.manager.AttackManager;
 import me.x150.sipprivate.helper.render.Renderer;
-import me.x150.sipprivate.util.Transitions;
-import me.x150.sipprivate.util.Utils;
+import me.x150.sipprivate.helper.util.Transitions;
+import me.x150.sipprivate.helper.util.Utils;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
@@ -53,10 +53,10 @@ public class TargetHud extends Module {
     }
 
     boolean isApplicable(Entity check) {
-        if (check == SipoverPrivate.client.player) {
+        if (check == CoffeeClientMain.client.player) {
             return false;
         }
-        if (check.distanceTo(SipoverPrivate.client.player) > 64) {
+        if (check.distanceTo(CoffeeClientMain.client.player) > 64) {
             return false;
         }
         int l = check.getEntityName().length();
@@ -67,7 +67,7 @@ public class TargetHud extends Module {
         if (!isValidEntityName) {
             return false;
         }
-        if (check == SipoverPrivate.client.player) {
+        if (check == CoffeeClientMain.client.player) {
             return false;
         }
         return check.getType() == EntityType.PLAYER && check instanceof PlayerEntity;
@@ -78,8 +78,8 @@ public class TargetHud extends Module {
             e = AttackManager.getLastAttackInTimeRange();
             return;
         }
-        List<Entity> entitiesQueue = StreamSupport.stream(Objects.requireNonNull(SipoverPrivate.client.world).getEntities().spliterator(), false).filter(this::isApplicable)
-                .sorted(Comparator.comparingDouble(value -> value.getPos().distanceTo(Objects.requireNonNull(SipoverPrivate.client.player).getPos()))).collect(Collectors.toList());
+        List<Entity> entitiesQueue = StreamSupport.stream(Objects.requireNonNull(CoffeeClientMain.client.world).getEntities().spliterator(), false).filter(this::isApplicable)
+                .sorted(Comparator.comparingDouble(value -> value.getPos().distanceTo(Objects.requireNonNull(CoffeeClientMain.client.player).getPos()))).collect(Collectors.toList());
         if (entitiesQueue.size() > 0) {
             e = entitiesQueue.get(0);
         } else {
@@ -145,7 +145,7 @@ public class TargetHud extends Module {
             Renderer.R2D.fill(stack, new Color(37, 50, 56, 200), 0, 0, modalWidth, modalHeight);
             FontRenderers.getNormal().drawString(stack, entity.getEntityName(), 40, yOffset, 0xFFFFFF);
             yOffset += FontRenderers.getNormal().getFontHeight();
-            PlayerListEntry ple = Objects.requireNonNull(SipoverPrivate.client.getNetworkHandler()).getPlayerListEntry(entity.getUuid());
+            PlayerListEntry ple = Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).getPlayerListEntry(entity.getUuid());
             if (ple != null && renderPing.getValue()) {
                 int ping = ple.getLatency();
                 String v = ping + " ms";
@@ -172,7 +172,7 @@ public class TargetHud extends Module {
             }
             if (renderDistance.getValue()) {
                 FontRenderers.getNormal()
-                        .drawString(stack, Utils.Math.roundToDecimal(entity.getPos().distanceTo(Objects.requireNonNull(SipoverPrivate.client.player).getPos()), 1) + " D", 40, yOffset, 0xFFFFFF);
+                        .drawString(stack, Utils.Math.roundToDecimal(entity.getPos().distanceTo(Objects.requireNonNull(CoffeeClientMain.client.player).getPos()), 1) + " D", 40, yOffset, 0xFFFFFF);
                 yOffset += FontRenderers.getNormal().getFontHeight();
             }
             if (renderMaxHP.getValue()) {
@@ -184,14 +184,14 @@ public class TargetHud extends Module {
                 FontRenderers.getNormal().drawString(stack, t, (modalWidth - mhP - 3), (modalHeight - 3 - FontRenderers.getNormal().getFontHeight()), 0xFFFFFF);
             }
 
-            HitResult bhr = entity.raycast(entity.getPos().distanceTo(Objects.requireNonNull(SipoverPrivate.client.player).getPos()), 0f, false);
-            if (bhr.getPos().distanceTo(SipoverPrivate.client.player.getPos().add(0, 1, 0)) < 1.5 && renderLook.getValue()) {
+            HitResult bhr = entity.raycast(entity.getPos().distanceTo(Objects.requireNonNull(CoffeeClientMain.client.player).getPos()), 0f, false);
+            if (bhr.getPos().distanceTo(CoffeeClientMain.client.player.getPos().add(0, 1, 0)) < 1.5 && renderLook.getValue()) {
                 FontRenderers.getNormal().drawString(stack, "Looks at you", 40, yOffset, 0xFFFFFF);
                 yOffset += FontRenderers.getNormal().getFontHeight();
             }
 
             if (AttackManager.getLastAttackInTimeRange() != null && renderLoseWin.getValue()) {
-                String st = entity.getHealth() > SipoverPrivate.client.player.getHealth() ? "Losing" : entity.getHealth() == SipoverPrivate.client.player.getHealth() ? "Stalemate" : "Winning";
+                String st = entity.getHealth() > CoffeeClientMain.client.player.getHealth() ? "Losing" : entity.getHealth() == CoffeeClientMain.client.player.getHealth() ? "Stalemate" : "Winning";
                 FontRenderers.getNormal().drawString(stack, st, 40, yOffset, 0xFFFFFF);
             }
 

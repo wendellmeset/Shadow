@@ -6,7 +6,7 @@
 package me.x150.sipprivate.feature.module.impl;
 
 import com.google.common.collect.Lists;
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleType;
 import net.minecraft.block.Block;
@@ -42,11 +42,11 @@ public class XRAY extends Module {
     }
 
     @Override public void enable() {
-        SipoverPrivate.client.worldRenderer.reload();
+        CoffeeClientMain.client.worldRenderer.reload();
     }
 
     @Override public void disable() {
-        SipoverPrivate.client.worldRenderer.reload();
+        CoffeeClientMain.client.worldRenderer.reload();
     }
 
     @Override public String getContext() {

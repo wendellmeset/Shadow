@@ -14,7 +14,7 @@ import me.x150.sipprivate.helper.font.adapter.impl.ClientFontRenderer;
 import me.x150.sipprivate.helper.font.adapter.impl.VanillaFontRenderer;
 import me.x150.sipprivate.helper.font.render.GlyphPageFontRenderer;
 import me.x150.sipprivate.helper.manager.ConfigManager;
-import me.x150.sipprivate.util.Utils;
+import me.x150.sipprivate.helper.util.Utils;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Element;
@@ -25,18 +25,18 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.util.ArrayList;
 
-@SuppressWarnings("ResultOfMethodCallIgnored") public class SipoverPrivate implements ModInitializer {
+@SuppressWarnings("ResultOfMethodCallIgnored") public class CoffeeClientMain implements ModInitializer {
 
-    public static final String          MOD_ID           = "sipoverprivate";
-    public static final String          MOD_NAME         = "SipoverPrivate";
-    public static final Logger          LOGGER           = LogManager.getLogger();
-    public static final MinecraftClient client           = MinecraftClient.getInstance();
-    public static final File            BASE             = new File(MinecraftClient.getInstance().runDirectory, "sip");
-    public static       long            lastScreenChange = System.currentTimeMillis();
-    public static       SipoverPrivate  INSTANCE;
-    public static       Thread          MODULE_FTTICKER;
-    public static       Thread          FAST_TICKER;
-    public              boolean         initialized      = false;
+    public static final String           MOD_ID           = "sipoverprivate";
+    public static final String           MOD_NAME         = "SipoverPrivate";
+    public static final Logger           LOGGER           = LogManager.getLogger();
+    public static final MinecraftClient  client           = MinecraftClient.getInstance();
+    public static final File             BASE             = new File(MinecraftClient.getInstance().runDirectory, "sip");
+    public static       long             lastScreenChange = System.currentTimeMillis();
+    public static       CoffeeClientMain INSTANCE;
+    public static       Thread           MODULE_FTTICKER;
+    public static       Thread           FAST_TICKER;
+    public              boolean          initialized      = false;
 
     public static void log(Level level, String message) {
         LOGGER.log(level, "[" + MOD_NAME + "] " + message);

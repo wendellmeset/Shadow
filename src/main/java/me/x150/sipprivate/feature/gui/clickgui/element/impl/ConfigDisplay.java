@@ -13,7 +13,7 @@ import me.x150.sipprivate.feature.gui.clickgui.element.impl.config.DoubleSetting
 import me.x150.sipprivate.feature.gui.clickgui.element.impl.config.EnumSettingEditor;
 import me.x150.sipprivate.feature.gui.clickgui.theme.Theme;
 import me.x150.sipprivate.helper.render.Renderer;
-import me.x150.sipprivate.util.Utils;
+import me.x150.sipprivate.helper.util.Utils;
 import net.minecraft.client.util.math.MatrixStack;
 
 import java.util.ArrayList;

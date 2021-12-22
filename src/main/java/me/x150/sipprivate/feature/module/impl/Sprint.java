@@ -1,6 +1,6 @@
 package me.x150.sipprivate.feature.module.impl;
 
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleType;
 import net.minecraft.client.util.math.MatrixStack;
@@ -12,11 +12,11 @@ public class Sprint extends Module {
     }
 
     @Override public void tick() {
-        if (SipoverPrivate.client.player == null || SipoverPrivate.client.getNetworkHandler() == null) {
+        if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.getNetworkHandler() == null) {
             return;
         }
-        if (SipoverPrivate.client.options.keyForward.isPressed() && !SipoverPrivate.client.options.keyBack.isPressed() && !SipoverPrivate.client.player.isSneaking() && !SipoverPrivate.client.player.horizontalCollision) {
-            SipoverPrivate.client.player.setSprinting(true);
+        if (CoffeeClientMain.client.options.keyForward.isPressed() && !CoffeeClientMain.client.options.keyBack.isPressed() && !CoffeeClientMain.client.player.isSneaking() && !CoffeeClientMain.client.player.horizontalCollision) {
+            CoffeeClientMain.client.player.setSprinting(true);
         }
     }
 

@@ -10,7 +10,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.command.Command;
 import me.x150.sipprivate.feature.config.SettingBase;
 import me.x150.sipprivate.feature.module.Module;
@@ -30,7 +30,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ConfigUtils extends Command {
-    static final File CONFIG_STORAGE = new File(SipoverPrivate.BASE, "configs");
+    static final File CONFIG_STORAGE = new File(CoffeeClientMain.BASE, "configs");
 
     public ConfigUtils() {
         super("ConfigUtils", "Config file management", "configUtils", "cu");
@@ -163,7 +163,7 @@ public class ConfigUtils extends Command {
                     Style s = Style.EMPTY.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.of("Click to open")))
                             .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, out.getAbsolutePath()));
                     t.setStyle(s);
-                    Objects.requireNonNull(SipoverPrivate.client.player).sendMessage(t, false);
+                    Objects.requireNonNull(CoffeeClientMain.client.player).sendMessage(t, false);
                 } catch (Exception e) {
                     error("Couldn't save config: " + e.getLocalizedMessage());
                 }

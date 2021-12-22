@@ -1,6 +1,6 @@
 package me.x150.sipprivate.feature.module.impl;
 
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.gui.notifications.Notification;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleType;
@@ -9,7 +9,7 @@ import me.x150.sipprivate.helper.event.Events;
 import me.x150.sipprivate.helper.event.events.MouseEvent;
 import me.x150.sipprivate.helper.event.events.PacketEvent;
 import me.x150.sipprivate.helper.render.Renderer;
-import me.x150.sipprivate.util.Utils;
+import me.x150.sipprivate.helper.util.Utils;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.ProjectileUtil;
@@ -37,10 +37,10 @@ public class TpRange extends Module {
             if (!this.isEnabled()) {
                 return;
             }
-            if (SipoverPrivate.client.player == null || SipoverPrivate.client.world == null) {
+            if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.world == null) {
                 return;
             }
-            if (SipoverPrivate.client.currentScreen != null) {
+            if (CoffeeClientMain.client.currentScreen != null) {
                 return;
             }
             MouseEvent me = (MouseEvent) event;
@@ -64,20 +64,20 @@ public class TpRange extends Module {
     }
 
     void doIt() {
-        Vec3d goal = SipoverPrivate.client.player.getRotationVec(1f).multiply(200);
-        Box b = SipoverPrivate.client.player.getBoundingBox().stretch(goal).expand(1, 1, 1);
-        EntityHitResult ehr = ProjectileUtil.raycast(SipoverPrivate.client.player, SipoverPrivate.client.player.getCameraPosVec(0), SipoverPrivate.client.player.getCameraPosVec(0)
+        Vec3d goal = CoffeeClientMain.client.player.getRotationVec(1f).multiply(200);
+        Box b = CoffeeClientMain.client.player.getBoundingBox().stretch(goal).expand(1, 1, 1);
+        EntityHitResult ehr = ProjectileUtil.raycast(CoffeeClientMain.client.player, CoffeeClientMain.client.player.getCameraPosVec(0), CoffeeClientMain.client.player.getCameraPosVec(0)
                 .add(goal), b, Entity::isAttackable, 200 * 200);
         if (ehr == null) {
             return;
         }
         Vec3d pos = ehr.getPos();
-        Vec3d orig = SipoverPrivate.client.player.getPos();
+        Vec3d orig = CoffeeClientMain.client.player.getPos();
         teleportTo(orig, pos);
-        SipoverPrivate.client.interactionManager.attackEntity(SipoverPrivate.client.player, ehr.getEntity());
+        CoffeeClientMain.client.interactionManager.attackEntity(CoffeeClientMain.client.player, ehr.getEntity());
         Utils.sleep(100);
         teleportTo(pos, orig);
-        SipoverPrivate.client.player.updatePosition(orig.x, orig.y, orig.z);
+        CoffeeClientMain.client.player.updatePosition(orig.x, orig.y, orig.z);
     }
 
     void theFunny() {
@@ -94,13 +94,13 @@ public class TpRange extends Module {
             double newY = MathHelper.lerp(prog, from.y, pos.y);
             double newZ = MathHelper.lerp(prog, from.z, pos.z);
             PlayerMoveC2SPacket p = new PlayerMoveC2SPacket.PositionAndOnGround(newX, newY, newZ, true);
-            SipoverPrivate.client.getNetworkHandler().sendPacket(p);
+            CoffeeClientMain.client.getNetworkHandler().sendPacket(p);
             previousSpoofedPos = spoofedPos;
             spoofedPos = new Vec3d(newX, newY, newZ);
             Utils.sleep(10);
         }
         PlayerMoveC2SPacket p = new PlayerMoveC2SPacket.PositionAndOnGround(pos.x, pos.y, pos.z, true);
-        SipoverPrivate.client.getNetworkHandler().sendPacket(p);
+        CoffeeClientMain.client.getNetworkHandler().sendPacket(p);
         previousSpoofedPos = null;
         spoofedPos = null;
     }

@@ -5,7 +5,7 @@
 
 package me.x150.sipprivate.feature.command.impl;
 
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.command.Command;
 import net.minecraft.world.GameMode;
 
@@ -26,14 +26,14 @@ public class Gamemode extends Command {
     }
 
     @Override public void onExecute(String[] args) {
-        if (SipoverPrivate.client.interactionManager == null) {
+        if (CoffeeClientMain.client.interactionManager == null) {
             return;
         }
         if (args.length == 0) {
             message("gamemode pls");
         } else {
             GameMode gm = GameMode.byName(args[0]);
-            SipoverPrivate.client.interactionManager.setGameMode(gm);
+            CoffeeClientMain.client.interactionManager.setGameMode(gm);
         }
     }
 }

@@ -5,7 +5,7 @@
 
 package me.x150.sipprivate.helper;
 
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.helper.event.EventType;
 import me.x150.sipprivate.helper.event.Events;
 import me.x150.sipprivate.helper.event.events.PacketEvent;
@@ -55,34 +55,34 @@ public class Rotations {
     }
 
     public static void lookAtPositionSmooth(Vec3d target, double laziness) {
-        double delX = target.x - Objects.requireNonNull(SipoverPrivate.client.player).getX();
-        double delZ = target.z - SipoverPrivate.client.player.getZ();
-        double delY = target.y - (SipoverPrivate.client.player.getY() + SipoverPrivate.client.player.getEyeHeight(SipoverPrivate.client.player.getPose()));
+        double delX = target.x - Objects.requireNonNull(CoffeeClientMain.client.player).getX();
+        double delZ = target.z - CoffeeClientMain.client.player.getZ();
+        double delY = target.y - (CoffeeClientMain.client.player.getY() + CoffeeClientMain.client.player.getEyeHeight(CoffeeClientMain.client.player.getPose()));
 
         // setting yaw
         double required = Math.toDegrees(Math.atan2(delZ, delX)) - 90, delta, add, speed;
-        delta = MathHelper.wrapDegrees(required - SipoverPrivate.client.player.getYaw());
+        delta = MathHelper.wrapDegrees(required - CoffeeClientMain.client.player.getYaw());
         speed = Math.abs(delta / laziness);
         add = speed * (delta >= 0 ? 1 : -1);
         if ((add >= 0 && add > delta) || (add < 0 && add < delta)) {
             add = delta;
         }
-        SipoverPrivate.client.player.setYaw(SipoverPrivate.client.player.getYaw() + (float) add);
+        CoffeeClientMain.client.player.setYaw(CoffeeClientMain.client.player.getYaw() + (float) add);
 
         // setting pitch
         double sqrt = Math.sqrt(delX * delX + delZ * delZ);
         required = -Math.toDegrees(Math.atan2(delY, sqrt));
-        delta = MathHelper.wrapDegrees(required - SipoverPrivate.client.player.getPitch());
+        delta = MathHelper.wrapDegrees(required - CoffeeClientMain.client.player.getPitch());
         speed = Math.abs(delta / laziness);
         add = speed * (delta >= 0 ? 1 : -1);
         if ((add >= 0 && add > delta) || (add < 0 && add < delta)) {
             add = delta;
         }
-        SipoverPrivate.client.player.setPitch(SipoverPrivate.client.player.getPitch() + (float) add);
+        CoffeeClientMain.client.player.setPitch(CoffeeClientMain.client.player.getPitch() + (float) add);
     }
 
     public static Vec2f getPitchYaw(Vec3d targetV3) {
-        return getPitchYawFromOtherEntity(SipoverPrivate.client.player.getEyePos(), targetV3);
+        return getPitchYawFromOtherEntity(CoffeeClientMain.client.player.getEyePos(), targetV3);
     }
 
     public static Vec2f getPitchYawFromOtherEntity(Vec3d eyePos, Vec3d targetV3) {

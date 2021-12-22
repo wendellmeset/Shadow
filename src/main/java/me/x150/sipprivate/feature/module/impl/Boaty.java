@@ -5,12 +5,12 @@
 
 package me.x150.sipprivate.feature.module.impl;
 
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.config.DoubleSetting;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleType;
 import me.x150.sipprivate.helper.render.Renderer;
-import me.x150.sipprivate.util.Utils;
+import me.x150.sipprivate.helper.util.Utils;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.packet.c2s.play.VehicleMoveC2SPacket;
@@ -32,17 +32,17 @@ public class Boaty extends Module {
     }
 
     @Override public void tick() {
-        if (Objects.requireNonNull(SipoverPrivate.client.player).hasVehicle()) {
-            Entity vehicle = SipoverPrivate.client.player.getVehicle();
+        if (Objects.requireNonNull(CoffeeClientMain.client.player).hasVehicle()) {
+            Entity vehicle = CoffeeClientMain.client.player.getVehicle();
             if (!running) {
-                BlockPos start = SipoverPrivate.client.player.getBlockPos();
+                BlockPos start = CoffeeClientMain.client.player.getBlockPos();
                 this.start = new Vec3d(start.getX() + .5, start.getY() + 1, start.getZ() + .5);
             }
             running = true;
             Objects.requireNonNull(vehicle).updatePosition(start.x, start.y - 1, start.z);
             VehicleMoveC2SPacket p = new VehicleMoveC2SPacket(vehicle);
             for (int i = 0; i < amount.getValue(); i++) {
-                Objects.requireNonNull(SipoverPrivate.client.getNetworkHandler()).sendPacket(p);
+                Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).sendPacket(p);
             }
         } else {
             running = false;
@@ -73,7 +73,7 @@ public class Boaty extends Module {
     }
 
     @Override public void onFastTick_NWC() {
-        if (SipoverPrivate.client.world == null || SipoverPrivate.client.player == null) {
+        if (CoffeeClientMain.client.world == null || CoffeeClientMain.client.player == null) {
             setEnabled(false);
         }
     }

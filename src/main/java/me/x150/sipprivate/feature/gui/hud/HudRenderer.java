@@ -4,14 +4,14 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.gui.hud.element.HudElement;
 import me.x150.sipprivate.feature.gui.hud.element.Taco;
 import me.x150.sipprivate.feature.gui.hud.element.TargetHUD;
 import me.x150.sipprivate.helper.event.EventType;
 import me.x150.sipprivate.helper.event.Events;
 import me.x150.sipprivate.helper.event.events.MouseEvent;
-import me.x150.sipprivate.util.Utils;
+import me.x150.sipprivate.helper.util.Utils;
 import net.minecraft.client.gui.screen.ChatScreen;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.Level;
@@ -23,15 +23,15 @@ import java.util.List;
 
 public class HudRenderer {
 
-    static final   File             CONFIG   = new File(SipoverPrivate.BASE, "hud.sip");
+    static final   File             CONFIG   = new File(CoffeeClientMain.BASE, "hud.sip");
     private static HudRenderer      INSTANCE;
     final          List<HudElement> elements = register();
     boolean isEditing     = false;
     boolean mouseHeldDown = false;
     double  prevX         = Utils.Mouse.getMouseX();
     double  prevY         = Utils.Mouse.getMouseY();
-    double  prevWX        = SipoverPrivate.client.getWindow().getScaledWidth();
-    double  prevWY        = SipoverPrivate.client.getWindow().getScaledHeight();
+    double  prevWX        = CoffeeClientMain.client.getWindow().getScaledWidth();
+    double  prevWY        = CoffeeClientMain.client.getWindow().getScaledHeight();
 
     private HudRenderer() {
         Events.registerEventHandler(EventType.MOUSE_EVENT, event -> {
@@ -74,7 +74,7 @@ public class HudRenderer {
     }
 
     void saveConfig() {
-        SipoverPrivate.log(Level.INFO, "Saving hud");
+        CoffeeClientMain.log(Level.INFO, "Saving hud");
         JsonArray root = new JsonArray();
         for (HudElement element : elements) {
             JsonObject current = new JsonObject();
@@ -86,17 +86,17 @@ public class HudRenderer {
         try {
             FileUtils.write(CONFIG, root.toString(), StandardCharsets.UTF_8);
         } catch (Exception ignored) {
-            SipoverPrivate.log(Level.ERROR, "Failed to write hud file");
+            CoffeeClientMain.log(Level.ERROR, "Failed to write hud file");
         }
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored") void loadConfig() {
-        SipoverPrivate.log(Level.INFO, "Loading hud");
+        CoffeeClientMain.log(Level.INFO, "Loading hud");
         if (!CONFIG.isFile()) {
             CONFIG.delete();
         }
         if (!CONFIG.exists()) {
-            SipoverPrivate.log(Level.INFO, "Skipping hud loading because file doesn't exist");
+            CoffeeClientMain.log(Level.INFO, "Skipping hud loading because file doesn't exist");
             return;
         }
         try {
@@ -115,14 +115,14 @@ public class HudRenderer {
                 }
             }
         } catch (Exception ignored) {
-            SipoverPrivate.log(Level.ERROR, "Failed to read hud file - corrupted?");
+            CoffeeClientMain.log(Level.ERROR, "Failed to read hud file - corrupted?");
         }
-        SipoverPrivate.log(Level.INFO, "Loaded hud");
+        CoffeeClientMain.log(Level.INFO, "Loaded hud");
     }
 
     public void fastTick() {
-        double currentWX = SipoverPrivate.client.getWindow().getScaledWidth();
-        double currentWY = SipoverPrivate.client.getWindow().getScaledHeight();
+        double currentWX = CoffeeClientMain.client.getWindow().getScaledWidth();
+        double currentWY = CoffeeClientMain.client.getWindow().getScaledHeight();
         if (currentWX != prevWX) {
             for (HudElement element : elements) {
                 double px = element.getPosX();
@@ -139,7 +139,7 @@ public class HudRenderer {
             }
             prevWY = currentWY;
         }
-        isEditing = SipoverPrivate.client.currentScreen instanceof ChatScreen;
+        isEditing = CoffeeClientMain.client.currentScreen instanceof ChatScreen;
         if (mouseHeldDown) {
             for (HudElement element : elements) {
                 element.mouseDragged(Utils.Mouse.getMouseX() - prevX, Utils.Mouse.getMouseY() - prevY);

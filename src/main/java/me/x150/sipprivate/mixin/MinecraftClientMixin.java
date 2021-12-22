@@ -1,6 +1,6 @@
 package me.x150.sipprivate.mixin;
 
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.helper.manager.ConfigManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
@@ -16,10 +16,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
     }
 
     @Inject(method = "<init>", at = @At("TAIL")) void atomic_postInit(RunArgs args, CallbackInfo ci) {
-        SipoverPrivate.INSTANCE.postWindowInit();
+        CoffeeClientMain.INSTANCE.postWindowInit();
     }
 
     @Inject(method = "setScreen", at = @At("HEAD")) void atomic_preSetScreen(Screen screen, CallbackInfo ci) {
-        SipoverPrivate.lastScreenChange = System.currentTimeMillis();
+        CoffeeClientMain.lastScreenChange = System.currentTimeMillis();
     }
 }

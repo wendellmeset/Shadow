@@ -6,7 +6,7 @@
 package me.x150.sipprivate.feature.module.impl;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.config.BooleanSetting;
 import me.x150.sipprivate.feature.config.DoubleSetting;
 import me.x150.sipprivate.feature.config.SettingsGroup;
@@ -14,7 +14,7 @@ import me.x150.sipprivate.feature.gui.notifications.Notification;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleType;
 import me.x150.sipprivate.helper.render.Renderer;
-import me.x150.sipprivate.util.Utils;
+import me.x150.sipprivate.helper.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -114,7 +114,7 @@ public class CaveMapper extends Module {
             for (BlockPos pos : new BlockPos[]{right, left, fw, bw, up, down}) {
                 boolean hadObstacle = false;
                 int y = pos.getY();
-                while (!Objects.requireNonNull(SipoverPrivate.client.world).isOutOfHeightLimit(y)) {
+                while (!Objects.requireNonNull(CoffeeClientMain.client.world).isOutOfHeightLimit(y)) {
                     BlockPos current = new BlockPos(pos.getX(), y, pos.getZ());
                     if (!bs(current).isAir()) {
                         hadObstacle = true;
@@ -127,7 +127,7 @@ public class CaveMapper extends Module {
                         toScan.add(pos);
                         scannedBlocks.add(pos);
                     }
-                } else if (bs(pos).isFullCube(SipoverPrivate.client.world, pos) && circ.stream().noneMatch(blockPosListEntry -> blockPosListEntry.getKey().equals(pos))) {
+                } else if (bs(pos).isFullCube(CoffeeClientMain.client.world, pos) && circ.stream().noneMatch(blockPosListEntry -> blockPosListEntry.getKey().equals(pos))) {
                     Vec3d renderR = new Vec3d(pos.getX(), pos.getY(), pos.getZ());
                     Vec3d end = renderR.add(new Vec3d(1, 1, 1));
                     float x1 = (float) renderR.x;
@@ -244,7 +244,7 @@ public class CaveMapper extends Module {
     }
 
     BlockState bs(BlockPos bp) {
-        return Objects.requireNonNull(SipoverPrivate.client.world).getBlockState(bp);
+        return Objects.requireNonNull(CoffeeClientMain.client.world).getBlockState(bp);
     }
 
     @Override public void tick() {
@@ -255,16 +255,16 @@ public class CaveMapper extends Module {
         toScan.clear();
         ores.clear();
         circ.clear();
-        start = Objects.requireNonNull(SipoverPrivate.client.player).getBlockPos();
+        start = Objects.requireNonNull(CoffeeClientMain.client.player).getBlockPos();
         toScan.add(start);
         scanned = false;
     }
 
     @Override public String getContext() {
         return scannedBlocks.size() + "S|" + new ArrayList<>(this.ores).stream()
-                .filter(blockPos -> shouldRenderOre(Objects.requireNonNull(SipoverPrivate.client.world).getBlockState(blockPos).getBlock()))
+                .filter(blockPos -> shouldRenderOre(Objects.requireNonNull(CoffeeClientMain.client.world).getBlockState(blockPos).getBlock()))
                 .count() + "F|" + Utils.Math.roundToDecimal((double) new ArrayList<>(this.ores).stream()
-                .filter(blockPos -> shouldRenderOre(Objects.requireNonNull(SipoverPrivate.client.world).getBlockState(blockPos).getBlock())).count() / scannedBlocks.size() * 100, 2) + "%D";
+                .filter(blockPos -> shouldRenderOre(Objects.requireNonNull(CoffeeClientMain.client.world).getBlockState(blockPos).getBlock())).count() / scannedBlocks.size() * 100, 2) + "%D";
     }
 
     @Override public void disable() {
@@ -279,7 +279,7 @@ public class CaveMapper extends Module {
         }
         List<Map.Entry<BlockPos, List<Vec3d>>> real = new ArrayList<>(circ);
 
-        Camera cam = SipoverPrivate.client.gameRenderer.getCamera();
+        Camera cam = CoffeeClientMain.client.gameRenderer.getCamera();
         BufferBuilder buffer = Tessellator.getInstance().getBuffer();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         GL11.glDepthFunc(GL11.GL_ALWAYS);
@@ -299,7 +299,7 @@ public class CaveMapper extends Module {
                 if (ores.contains(entry.getKey())) {
                     continue;
                 }
-                double dist = new Vec3d(entry.getKey().getX(), entry.getKey().getY(), entry.getKey().getZ()).distanceTo(Objects.requireNonNull(SipoverPrivate.client.player).getPos());
+                double dist = new Vec3d(entry.getKey().getX(), entry.getKey().getY(), entry.getKey().getZ()).distanceTo(Objects.requireNonNull(CoffeeClientMain.client.player).getPos());
                 dist = (1 - MathHelper.clamp(dist, 0, 15) / 15d) * 3d;
                 dist = Math.round(dist);
                 dist /= 3;
@@ -335,15 +335,15 @@ public class CaveMapper extends Module {
             if (ore == null) {
                 continue;
             }
-            Block t = Objects.requireNonNull(SipoverPrivate.client.world).getBlockState(ore).getBlock();
+            Block t = Objects.requireNonNull(CoffeeClientMain.client.world).getBlockState(ore).getBlock();
             if (!shouldRenderOre(t)) {
                 continue;
             }
             Vec3d p = new Vec3d(ore.getX(), ore.getY(), ore.getZ());
-            double dist = p.distanceTo(Objects.requireNonNull(SipoverPrivate.client.player).getPos());
+            double dist = p.distanceTo(Objects.requireNonNull(CoffeeClientMain.client.player).getPos());
             dist = MathHelper.clamp(dist, 0, 30);
-            Renderer.R3D.renderFilled(p, new Vec3d(1, 1, 1), Renderer.Util.modify(oreColors.containsKey(t) ? oreColors.get(t) : new Color(SipoverPrivate.client.world.getBlockState(ore)
-                    .getMapColor(SipoverPrivate.client.world, ore).color), -1, -1, -1, (int) ((dist / 30d) * 200)), matrices);
+            Renderer.R3D.renderFilled(p, new Vec3d(1, 1, 1), Renderer.Util.modify(oreColors.containsKey(t) ? oreColors.get(t) : new Color(CoffeeClientMain.client.world.getBlockState(ore)
+                    .getMapColor(CoffeeClientMain.client.world, ore).color), -1, -1, -1, (int) ((dist / 30d) * 200)), matrices);
         }
     }
 

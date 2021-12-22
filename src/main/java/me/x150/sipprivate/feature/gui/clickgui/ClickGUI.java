@@ -1,6 +1,6 @@
 package me.x150.sipprivate.feature.gui.clickgui;
 
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.gui.FastTickable;
 import me.x150.sipprivate.feature.gui.clickgui.element.Element;
 import me.x150.sipprivate.feature.gui.clickgui.element.impl.CategoryDisplay;
@@ -11,7 +11,7 @@ import me.x150.sipprivate.helper.event.EventType;
 import me.x150.sipprivate.helper.event.Events;
 import me.x150.sipprivate.helper.font.FontRenderers;
 import me.x150.sipprivate.helper.render.Renderer;
-import me.x150.sipprivate.util.Transitions;
+import me.x150.sipprivate.helper.util.Transitions;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
@@ -74,7 +74,7 @@ public class ClickGUI extends Screen implements FastTickable {
     }
 
     void initElements() {
-        double width = SipoverPrivate.client.getWindow().getScaledWidth();
+        double width = CoffeeClientMain.client.getWindow().getScaledWidth();
         double x = 5;
         double y = 5;
         double tallestInTheRoom = 0;
@@ -116,8 +116,8 @@ public class ClickGUI extends Screen implements FastTickable {
         super.render(matrices, mouseX, mouseY, delta);
         if (desc != null) {
             double width = FontRenderers.getNormal().getStringWidth(desc);
-            if (descX + width > SipoverPrivate.client.getWindow().getScaledWidth()) {
-                descX -= (descX + width - SipoverPrivate.client.getWindow().getScaledWidth()) + 4;
+            if (descX + width > CoffeeClientMain.client.getWindow().getScaledWidth()) {
+                descX -= (descX + width - CoffeeClientMain.client.getWindow().getScaledWidth()) + 4;
             }
             Renderer.R2D.fill(new Color(20, 20, 30, 200), descX - 1, descY, descX + width + 3, descY + FontRenderers.getNormal().getMarginHeight() + 1);
             FontRenderers.getNormal().drawString(Renderer.R3D.getEmptyMatrixStack(), desc, descX, descY, 0xFFFFFF);

@@ -5,7 +5,7 @@
 
 package me.x150.sipprivate.feature.command.impl;
 
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.command.Command;
 import me.x150.sipprivate.helper.manager.HologramManager;
 import net.minecraft.item.ItemStack;
@@ -64,8 +64,8 @@ public class Hologram extends Command {
             }
         }
         String text = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
-        Vec3d pos = Objects.requireNonNull(SipoverPrivate.client.player).getPos();
-        BlockPos displayable = SipoverPrivate.client.player.getBlockPos();
+        Vec3d pos = Objects.requireNonNull(CoffeeClientMain.client.player).getPos();
+        BlockPos displayable = CoffeeClientMain.client.player.getBlockPos();
         message("Armor stand config:");
         message("  Text: " + text);
         message("  Is baby: " + (generateAsBaby ? "Yes" : "No"));
@@ -77,6 +77,6 @@ public class Hologram extends Command {
         HologramManager.Hologram h = HologramManager.generateDefault(text, pos).isEgg(generateAsEgg).isSmall(generateAsBaby).hasGravity(makeGravity).isVisible(makeVisible).isMarker(marker);
         ItemStack stack = h.generate();
         message("Dont forget to open your inventory before placing");
-        SipoverPrivate.client.player.getInventory().addPickBlock(stack);
+        CoffeeClientMain.client.player.getInventory().addPickBlock(stack);
     }
 }

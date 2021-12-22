@@ -2,12 +2,12 @@ package me.x150.sipprivate.feature.command.impl;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.command.Command;
 import me.x150.sipprivate.helper.event.EventType;
 import me.x150.sipprivate.helper.event.Events;
 import me.x150.sipprivate.helper.event.events.PacketEvent;
-import me.x150.sipprivate.util.Utils;
+import me.x150.sipprivate.helper.util.Utils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
@@ -40,8 +40,8 @@ public class Find extends Command {
         });
         Events.registerEventHandler(EventType.NOCLIP_QUERY, event -> { // this also functions as a tick thing so eh
             if (pendingBook && bookSlot != -1) {
-                assert SipoverPrivate.client.player != null;
-                SipoverPrivate.client.player.getInventory().selectedSlot = bookSlot;
+                assert CoffeeClientMain.client.player != null;
+                CoffeeClientMain.client.player.getInventory().selectedSlot = bookSlot;
             }
         });
     }
@@ -53,8 +53,8 @@ public class Find extends Command {
                 sent2nd = true;
                 return;
             }
-            assert SipoverPrivate.client.player != null;
-            ItemStack current = SipoverPrivate.client.player.getInventory().getMainHandStack();
+            assert CoffeeClientMain.client.player != null;
+            ItemStack current = CoffeeClientMain.client.player.getInventory().getMainHandStack();
             NbtCompound c = current.getOrCreateNbt();
             if (c.contains("pages", NbtCompound.LIST_TYPE)) {
                 NbtList l = c.getList("pages", NbtCompound.STRING_TYPE);
@@ -64,7 +64,7 @@ public class Find extends Command {
                 if (root.get("text") == null || root.get("text").getAsString().isEmpty()) {
                     error("Couldn't find player, is the dude online?");
                     CreativeInventoryActionC2SPacket pack3 = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(bookSlot), new ItemStack(Items.AIR));
-                    Objects.requireNonNull(SipoverPrivate.client.getNetworkHandler()).sendPacket(pack3);
+                    Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).sendPacket(pack3);
                     pendingBook = sent2nd = false;
                     bookSlot = -1;
                     pe.setCancelled(true);
@@ -80,14 +80,14 @@ public class Find extends Command {
             } else {
                 error("Couldn't find player, is the dude online?");
                 CreativeInventoryActionC2SPacket pack3 = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(bookSlot), new ItemStack(Items.AIR));
-                Objects.requireNonNull(SipoverPrivate.client.getNetworkHandler()).sendPacket(pack3);
+                Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).sendPacket(pack3);
                 pendingBook = sent2nd = false;
                 bookSlot = -1;
             }
             pe.setCancelled(true);
         } else if (pe.getPacket() instanceof ScreenHandlerSlotUpdateS2CPacket packet) {
             if (packet.getItemStack().getItem() == Items.WRITTEN_BOOK) {
-                Utils.TickManager.runInNTicks(5, () -> Objects.requireNonNull(SipoverPrivate.client.getNetworkHandler()).sendPacket(new PlayerInteractItemC2SPacket(Hand.MAIN_HAND)));
+                Utils.TickManager.runInNTicks(5, () -> Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).sendPacket(new PlayerInteractItemC2SPacket(Hand.MAIN_HAND)));
             }
         }
     }
@@ -100,7 +100,7 @@ public class Find extends Command {
     }
 
     @Override public void onExecute(String[] args) {
-        if (!SipoverPrivate.client.interactionManager.hasCreativeInventory()) {
+        if (!CoffeeClientMain.client.interactionManager.hasCreativeInventory()) {
             error("Cant find the player, need GMC");
             return;
         }
@@ -110,13 +110,13 @@ public class Find extends Command {
             return;
         }
         try {
-            assert SipoverPrivate.client.player != null;
-            String n = "{pages:[\"{\\\"nbt\\\":\\\"Pos\\\",\\\"entity\\\":\\\"" + u + "\\\"}\"],title:\"0\",author:\"" + SipoverPrivate.client.player.getGameProfile().getName() + "\"}";
+            assert CoffeeClientMain.client.player != null;
+            String n = "{pages:[\"{\\\"nbt\\\":\\\"Pos\\\",\\\"entity\\\":\\\"" + u + "\\\"}\"],title:\"0\",author:\"" + CoffeeClientMain.client.player.getGameProfile().getName() + "\"}";
             ItemStack s = Utils.generateItemStackWithMeta(n, Items.WRITTEN_BOOK);
             pendingBook = true;
-            bookSlot = SipoverPrivate.client.player.getInventory().selectedSlot;
-            CreativeInventoryActionC2SPacket a = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(SipoverPrivate.client.player.getInventory().selectedSlot), s);
-            Objects.requireNonNull(SipoverPrivate.client.getNetworkHandler()).sendPacket(a);
+            bookSlot = CoffeeClientMain.client.player.getInventory().selectedSlot;
+            CreativeInventoryActionC2SPacket a = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(CoffeeClientMain.client.player.getInventory().selectedSlot), s);
+            Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).sendPacket(a);
             message("Finding player coords...");
         } catch (Exception ignored) {
             error("UUID invalid");

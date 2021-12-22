@@ -5,7 +5,7 @@
 
 package me.x150.sipprivate.feature.module.impl;
 
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleType;
 import me.x150.sipprivate.helper.event.EventType;
@@ -25,16 +25,16 @@ public class Phase extends Module {
     public Phase() {
         super("Phase", "Go through walls when flying (works best with creative)", ModuleType.MOVEMENT);
         Events.registerEventHandler(EventType.PACKET_SEND, event -> {
-            if (!this.isEnabled() || SipoverPrivate.client.player == null || !SipoverPrivate.client.player.getAbilities().flying) {
+            if (!this.isEnabled() || CoffeeClientMain.client.player == null || !CoffeeClientMain.client.player.getAbilities().flying) {
                 return;
             }
             PacketEvent pe = (PacketEvent) event;
-            Box p = SipoverPrivate.client.player.getBoundingBox(SipoverPrivate.client.player.getPose()).offset(0, 0.27, 0).expand(0.25);
+            Box p = CoffeeClientMain.client.player.getBoundingBox(CoffeeClientMain.client.player.getPose()).offset(0, 0.27, 0).expand(0.25);
             if (p.getYLength() < 2) {
                 p = p.expand(0, 1, 0);
             }
-            p = p.offset(SipoverPrivate.client.player.getPos());
-            if (pe.getPacket() instanceof PlayerMoveC2SPacket && !Objects.requireNonNull(SipoverPrivate.client.world).isSpaceEmpty(SipoverPrivate.client.player, p)) {
+            p = p.offset(CoffeeClientMain.client.player.getPos());
+            if (pe.getPacket() instanceof PlayerMoveC2SPacket && !Objects.requireNonNull(CoffeeClientMain.client.world).isSpaceEmpty(CoffeeClientMain.client.player, p)) {
                 event.setCancelled(true);
             }
         });
@@ -54,10 +54,10 @@ public class Phase extends Module {
     }
 
     @Override public void enable() {
-        Objects.requireNonNull(SipoverPrivate.client.player).setPose(EntityPose.STANDING);
-        SipoverPrivate.client.player.setOnGround(false);
-        SipoverPrivate.client.player.fallDistance = 0;
-        SipoverPrivate.client.player.setVelocity(0, 0, 0);
+        Objects.requireNonNull(CoffeeClientMain.client.player).setPose(EntityPose.STANDING);
+        CoffeeClientMain.client.player.setOnGround(false);
+        CoffeeClientMain.client.player.fallDistance = 0;
+        CoffeeClientMain.client.player.setVelocity(0, 0, 0);
     }
 
     @Override public void disable() {
@@ -65,14 +65,14 @@ public class Phase extends Module {
     }
 
     @Override public String getContext() {
-        return getNoClipState(SipoverPrivate.client.player) ? "Active" : null;
+        return getNoClipState(CoffeeClientMain.client.player) ? "Active" : null;
     }
 
     @Override public void onWorldRender(MatrixStack matrices) {
-        if (Objects.requireNonNull(SipoverPrivate.client.player).getAbilities().flying) {
-            SipoverPrivate.client.player.setPose(EntityPose.STANDING);
-            SipoverPrivate.client.player.setOnGround(false);
-            SipoverPrivate.client.player.fallDistance = 0;
+        if (Objects.requireNonNull(CoffeeClientMain.client.player).getAbilities().flying) {
+            CoffeeClientMain.client.player.setPose(EntityPose.STANDING);
+            CoffeeClientMain.client.player.setOnGround(false);
+            CoffeeClientMain.client.player.fallDistance = 0;
             //SipoverPrivate.client.player.setVelocity(0,0,0);
         }
     }

@@ -1,7 +1,7 @@
 package me.x150.sipprivate.feature.command.impl;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.command.Command;
 import me.x150.sipprivate.feature.gui.screen.AtomicConsoleScreen;
 import net.minecraft.entity.Entity;
@@ -26,7 +26,7 @@ public class FakeItem extends Command {
 
     @Override public String[] getSuggestions(String fullCommand, String[] args) {
         if (args.length == 1) {
-            return SipoverPrivate.client.world.getPlayers().stream().map(abstractClientPlayerEntity -> abstractClientPlayerEntity.getGameProfile().getName()).collect(Collectors.toList())
+            return CoffeeClientMain.client.world.getPlayers().stream().map(abstractClientPlayerEntity -> abstractClientPlayerEntity.getGameProfile().getName()).collect(Collectors.toList())
                     .toArray(String[]::new);
         } else if (args.length == 2) {
             return new String[]{"hand", "custom:(item id) [item nbt]"};
@@ -53,7 +53,7 @@ public class FakeItem extends Command {
             nameTarget = args[0];
         }
         PlayerEntity le = null;
-        for (Entity entity : SipoverPrivate.client.world.getEntities()) {
+        for (Entity entity : CoffeeClientMain.client.world.getEntities()) {
             if (entity instanceof PlayerEntity le1) {
                 if (u != null && entity.getUuid().equals(u)) {
                     le = le1;
@@ -67,7 +67,7 @@ public class FakeItem extends Command {
             return;
         }
         if (args[1].equalsIgnoreCase("hand")) {
-            ItemStack main = SipoverPrivate.client.player.getMainHandStack().copy();
+            ItemStack main = CoffeeClientMain.client.player.getMainHandStack().copy();
             if (main.isEmpty()) {
                 error("You're not holding anything");
                 return;

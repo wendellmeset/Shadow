@@ -1,6 +1,6 @@
 package me.x150.sipprivate.mixin;
 
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleRegistry;
 import me.x150.sipprivate.helper.manager.ImGuiManager;
@@ -23,7 +23,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
     void atomic_dispatchWorldRender(float tickDelta, long limitTime, MatrixStack matrix, CallbackInfo ci) {
         Renderer.R3D.setLastRenderStack(matrix);
         if (vb) {
-            SipoverPrivate.client.options.bobView = true;
+            CoffeeClientMain.client.options.bobView = true;
             vb = false;
         }
         for (Module module : ModuleRegistry.getModules()) {
@@ -44,9 +44,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
     }
 
     @Inject(at = @At("HEAD"), method = "bobView", cancellable = true) private void atomic_stopCursorBob(MatrixStack matrices, float f, CallbackInfo ci) {
-        if (SipoverPrivate.client.options.bobView && dis) {
+        if (CoffeeClientMain.client.options.bobView && dis) {
             vb = true;
-            SipoverPrivate.client.options.bobView = false;
+            CoffeeClientMain.client.options.bobView = false;
             dis = false;
             ci.cancel();
         }

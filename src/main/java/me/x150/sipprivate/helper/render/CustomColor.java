@@ -5,7 +5,7 @@
 
 package me.x150.sipprivate.helper.render;
 
-import me.x150.sipprivate.util.Utils;
+import me.x150.sipprivate.helper.util.Utils;
 
 @SuppressWarnings("unused") public class CustomColor extends java.awt.Color {
 

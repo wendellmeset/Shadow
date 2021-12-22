@@ -5,9 +5,9 @@
 
 package me.x150.sipprivate.feature.command.impl;
 
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.command.Command;
-import me.x150.sipprivate.util.Utils;
+import me.x150.sipprivate.helper.util.Utils;
 import net.minecraft.client.network.PlayerListEntry;
 
 import java.util.Arrays;
@@ -45,12 +45,12 @@ public class ForEach extends Command {
             return;
         }
         message("Sending the message for every person in the player list, with " + delay + "ms delay");
-        for (PlayerListEntry playerListEntry : Objects.requireNonNull(SipoverPrivate.client.getNetworkHandler()).getPlayerList()) {
+        for (PlayerListEntry playerListEntry : Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).getPlayerList()) {
             if (Utils.Players.isPlayerNameValid(playerListEntry.getProfile().getName()) && !playerListEntry.getProfile().getId()
-                    .equals(Objects.requireNonNull(SipoverPrivate.client.player).getUuid())) {
+                    .equals(Objects.requireNonNull(CoffeeClientMain.client.player).getUuid())) {
                 runner.execute(() -> {
                     try {
-                        SipoverPrivate.client.player.sendChatMessage(String.join(" ", Arrays.copyOfRange(args, 1, args.length)).replaceAll("%s", playerListEntry.getProfile().getName()));
+                        CoffeeClientMain.client.player.sendChatMessage(String.join(" ", Arrays.copyOfRange(args, 1, args.length)).replaceAll("%s", playerListEntry.getProfile().getName()));
                         Thread.sleep(delay);
                     } catch (Exception ignored) {
                     }

@@ -7,12 +7,12 @@ package me.x150.sipprivate.feature.command.impl;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.command.Command;
 import me.x150.sipprivate.helper.event.EventType;
 import me.x150.sipprivate.helper.event.Events;
 import me.x150.sipprivate.helper.event.events.PacketEvent;
-import me.x150.sipprivate.util.Utils;
+import me.x150.sipprivate.helper.util.Utils;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -55,8 +55,8 @@ public class Kill extends Command {
         });
         Events.registerEventHandler(EventType.NOCLIP_QUERY, event -> { // this also functions as a tick thing so eh
             if (pendingBook && bookSlot != -1) {
-                assert SipoverPrivate.client.player != null;
-                SipoverPrivate.client.player.getInventory().selectedSlot = bookSlot;
+                assert CoffeeClientMain.client.player != null;
+                CoffeeClientMain.client.player.getInventory().selectedSlot = bookSlot;
             }
         });
     }
@@ -75,8 +75,8 @@ public class Kill extends Command {
                 sent2nd = true;
                 return;
             }
-            assert SipoverPrivate.client.player != null;
-            ItemStack current = SipoverPrivate.client.player.getInventory().getMainHandStack();
+            assert CoffeeClientMain.client.player != null;
+            ItemStack current = CoffeeClientMain.client.player.getInventory().getMainHandStack();
             NbtCompound c = current.getOrCreateNbt();
             if (c.contains("pages", NbtCompound.LIST_TYPE)) {
                 NbtList l = c.getList("pages", NbtCompound.STRING_TYPE);
@@ -86,7 +86,7 @@ public class Kill extends Command {
                 if (root.get("text") == null || root.get("text").getAsString().isEmpty()) {
                     error("Couldn't find player, is the dude online?");
                     CreativeInventoryActionC2SPacket pack3 = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(bookSlot), new ItemStack(Items.AIR));
-                    Objects.requireNonNull(SipoverPrivate.client.getNetworkHandler()).sendPacket(pack3);
+                    Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).sendPacket(pack3);
                     pendingBook = sent2nd = false;
                     bookSlot = -1;
                     pe.setCancelled(true);
@@ -99,18 +99,18 @@ public class Kill extends Command {
                 pendingBook = sent2nd = false;
                 bookSlot = -1;
                 success(String.format("Player's at X=%s,Y=%s,Z=%s, sending funny", Utils.Math.roundToDecimal(target.x, 1), Utils.Math.roundToDecimal(target.y, 1), Utils.Math.roundToDecimal(target.z, 1)));
-                makeKillPotAt(new BlockHitResult(SipoverPrivate.client.player.getPos(), Direction.DOWN, new BlockPos(SipoverPrivate.client.player.getPos()), false), target);
+                makeKillPotAt(new BlockHitResult(CoffeeClientMain.client.player.getPos(), Direction.DOWN, new BlockPos(CoffeeClientMain.client.player.getPos()), false), target);
             } else {
                 error("Couldn't find player, is the dude online?");
                 CreativeInventoryActionC2SPacket pack3 = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(bookSlot), new ItemStack(Items.AIR));
-                Objects.requireNonNull(SipoverPrivate.client.getNetworkHandler()).sendPacket(pack3);
+                Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).sendPacket(pack3);
                 pendingBook = sent2nd = false;
                 bookSlot = -1;
             }
             pe.setCancelled(true);
         } else if (pe.getPacket() instanceof ScreenHandlerSlotUpdateS2CPacket packet) {
             if (packet.getItemStack().getItem() == Items.WRITTEN_BOOK) {
-                Utils.TickManager.runInNTicks(5, () -> Objects.requireNonNull(SipoverPrivate.client.getNetworkHandler()).sendPacket(new PlayerInteractItemC2SPacket(Hand.MAIN_HAND)));
+                Utils.TickManager.runInNTicks(5, () -> Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).sendPacket(new PlayerInteractItemC2SPacket(Hand.MAIN_HAND)));
             }
         }
     }
@@ -118,13 +118,13 @@ public class Kill extends Command {
     void makeKillPotAt(BlockHitResult bhr, Vec3d target) {
         target = target.add(0, 2.7, 0);
         ItemStack s = Utils.generateItemStackWithMeta("{data: [], palette: [], EntityTag: {Item: {Count: 1b, id: \"minecraft:splash_potion\", tag: {CustomPotionEffects: [{ShowParticles: 1b, Duration: 20, Id: 6b, Amplifier: 125b}], Potion: \"minecraft:awkward\"}}, Pos: [" + target.x + "d, " + target.y + "d, " + target.z + "d], Motion: [0d,-5d,0d], id: \"minecraft:potion\", LeftOwner: 1b}}", Items.BAT_SPAWN_EGG);
-        assert SipoverPrivate.client.player != null;
-        CreativeInventoryActionC2SPacket pack = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(SipoverPrivate.client.player.getInventory().selectedSlot), s);
-        Objects.requireNonNull(SipoverPrivate.client.getNetworkHandler()).sendPacket(pack);
+        assert CoffeeClientMain.client.player != null;
+        CreativeInventoryActionC2SPacket pack = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(CoffeeClientMain.client.player.getInventory().selectedSlot), s);
+        Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).sendPacket(pack);
         PlayerInteractBlockC2SPacket pack2 = new PlayerInteractBlockC2SPacket(Hand.MAIN_HAND, bhr);
-        SipoverPrivate.client.getNetworkHandler().sendPacket(pack2);
-        CreativeInventoryActionC2SPacket pack3 = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(SipoverPrivate.client.player.getInventory().selectedSlot), new ItemStack(Items.AIR));
-        SipoverPrivate.client.getNetworkHandler().sendPacket(pack3);
+        CoffeeClientMain.client.getNetworkHandler().sendPacket(pack2);
+        CreativeInventoryActionC2SPacket pack3 = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(CoffeeClientMain.client.player.getInventory().selectedSlot), new ItemStack(Items.AIR));
+        CoffeeClientMain.client.getNetworkHandler().sendPacket(pack3);
     }
 
     @Override public void onExecute(String[] args) {
@@ -132,23 +132,23 @@ public class Kill extends Command {
             error("Cant kill no one");
             return;
         }
-        assert SipoverPrivate.client.interactionManager != null;
-        if (!SipoverPrivate.client.interactionManager.hasCreativeInventory()) {
+        assert CoffeeClientMain.client.interactionManager != null;
+        if (!CoffeeClientMain.client.interactionManager.hasCreativeInventory()) {
             error("I cant give you a kill pot because you dont have a creative inv");
             return;
         }
         if (args[0].equals("*")) {
             message("Killing everyone in render distance");
-            assert SipoverPrivate.client.world != null;
-            for (AbstractClientPlayerEntity player : SipoverPrivate.client.world.getPlayers()) {
-                if (player.equals(SipoverPrivate.client.player)) {
+            assert CoffeeClientMain.client.world != null;
+            for (AbstractClientPlayerEntity player : CoffeeClientMain.client.world.getPlayers()) {
+                if (player.equals(CoffeeClientMain.client.player)) {
                     continue;
                 }
                 onExecute(new String[]{player.getGameProfile().getName()});
             }
             return;
         }
-        HitResult hr = SipoverPrivate.client.crosshairTarget;
+        HitResult hr = CoffeeClientMain.client.crosshairTarget;
         assert hr != null;
         BlockHitResult bhr;
         if (!(hr instanceof BlockHitResult bhr1)) {
@@ -164,21 +164,21 @@ public class Kill extends Command {
             String uuidP = user.substring(1);
             try {
                 UUID resolved = UUID.fromString(uuidP);
-                assert SipoverPrivate.client.player != null;
-                String n = "{pages:[\"{\\\"nbt\\\":\\\"Pos\\\",\\\"entity\\\":\\\"" + resolved + "\\\"}\"],title:\"0\",author:\"" + SipoverPrivate.client.player.getGameProfile().getName() + "\"}";
+                assert CoffeeClientMain.client.player != null;
+                String n = "{pages:[\"{\\\"nbt\\\":\\\"Pos\\\",\\\"entity\\\":\\\"" + resolved + "\\\"}\"],title:\"0\",author:\"" + CoffeeClientMain.client.player.getGameProfile().getName() + "\"}";
                 ItemStack s = Utils.generateItemStackWithMeta(n, Items.WRITTEN_BOOK);
                 pendingBook = true;
-                bookSlot = SipoverPrivate.client.player.getInventory().selectedSlot;
-                CreativeInventoryActionC2SPacket a = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(SipoverPrivate.client.player.getInventory().selectedSlot), s);
-                Objects.requireNonNull(SipoverPrivate.client.getNetworkHandler()).sendPacket(a);
+                bookSlot = CoffeeClientMain.client.player.getInventory().selectedSlot;
+                CreativeInventoryActionC2SPacket a = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(CoffeeClientMain.client.player.getInventory().selectedSlot), s);
+                Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).sendPacket(a);
                 message("Finding player coords...");
             } catch (Exception ignored) {
                 error("UUID invalid");
             }
             return;
         } else {
-            assert SipoverPrivate.client.world != null;
-            for (Entity entity : SipoverPrivate.client.world.getEntities()) {
+            assert CoffeeClientMain.client.world != null;
+            for (Entity entity : CoffeeClientMain.client.world.getEntities()) {
                 if (entity instanceof PlayerEntity pe && pe.getGameProfile().getName().toLowerCase().contains(user.toLowerCase())) {
                     if (pe.getGameProfile().getName().equalsIgnoreCase(user)) { // direct match, we know who we want to fuck
                         targets.clear();

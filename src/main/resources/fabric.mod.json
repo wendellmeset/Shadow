@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "id": "sipoverprivate",
+  "id": "coffeeclient",
   "version": "${version}",
-  "name": "SipoverPrivate",
+  "name": "Coffee client",
   "description": "YOOOOO 2500 KROMER WE GETTIN RICH BOYYS",
   "authors": [
     "0x150",
@@ -15,7 +15,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "me.x150.sipprivate.SipoverPrivate"
+      "me.x150.sipprivate.CoffeeClientMain"
     ],
     "client": [],
     "server": []

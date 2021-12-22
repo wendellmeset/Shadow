@@ -5,9 +5,9 @@
 
 package me.x150.sipprivate.feature.command.impl;
 
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.command.Command;
-import me.x150.sipprivate.util.Utils;
+import me.x150.sipprivate.helper.util.Utils;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 
@@ -31,7 +31,7 @@ public class Effect extends Command {
     }
 
     @Override public void onExecute(String[] args) {
-        if (SipoverPrivate.client.player == null) {
+        if (CoffeeClientMain.client.player == null) {
             return;
         }
         if (args.length == 0) {
@@ -57,11 +57,11 @@ public class Effect extends Command {
                     return;
                 }
                 StatusEffectInstance inst = new StatusEffectInstance(effect, duration, strength);
-                SipoverPrivate.client.player.addStatusEffect(inst);
+                CoffeeClientMain.client.player.addStatusEffect(inst);
             }
             case "clear" -> {
-                for (StatusEffectInstance statusEffect : SipoverPrivate.client.player.getStatusEffects().toArray(new StatusEffectInstance[0])) {
-                    SipoverPrivate.client.player.removeStatusEffect(statusEffect.getEffectType());
+                for (StatusEffectInstance statusEffect : CoffeeClientMain.client.player.getStatusEffects().toArray(new StatusEffectInstance[0])) {
+                    CoffeeClientMain.client.player.removeStatusEffect(statusEffect.getEffectType());
                 }
             }
             default -> error("\"give\" and \"clear\" only pls");

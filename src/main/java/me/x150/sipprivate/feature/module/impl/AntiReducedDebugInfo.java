@@ -5,7 +5,7 @@
 
 package me.x150.sipprivate.feature.module.impl;
 
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleType;
 import net.minecraft.client.util.math.MatrixStack;
@@ -31,7 +31,7 @@ public class AntiReducedDebugInfo extends Module {
     }
 
     @Override public String getContext() {
-        boolean origDebugInfoReduce = Objects.requireNonNull(SipoverPrivate.client.player).hasReducedDebugInfo() || SipoverPrivate.client.options.reducedDebugInfo;
+        boolean origDebugInfoReduce = Objects.requireNonNull(CoffeeClientMain.client.player).hasReducedDebugInfo() || CoffeeClientMain.client.options.reducedDebugInfo;
         return origDebugInfoReduce ? "Active!" : null;
     }
 

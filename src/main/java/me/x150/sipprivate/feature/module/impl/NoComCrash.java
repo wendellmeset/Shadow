@@ -5,7 +5,7 @@
 
 package me.x150.sipprivate.feature.module.impl;
 
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.config.DoubleSetting;
 import me.x150.sipprivate.feature.config.EnumSetting;
 import me.x150.sipprivate.feature.module.Module;
@@ -41,7 +41,7 @@ public class NoComCrash extends Module {
             Vec3d cpos = pickRandomPos();
             if (method.getValue() == Method.Interact) {
                 PlayerInteractBlockC2SPacket packet = new PlayerInteractBlockC2SPacket(Hand.MAIN_HAND, new BlockHitResult(cpos, Direction.DOWN, new BlockPos(cpos), false));
-                Objects.requireNonNull(SipoverPrivate.client.getNetworkHandler()).sendPacket(packet);
+                Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).sendPacket(packet);
             } else {
                 ItemStack stack = new ItemStack(Items.OAK_SIGN, 1);
                 NbtCompound nbt = stack.getOrCreateSubNbt("BlockEntityTag");
@@ -50,7 +50,7 @@ public class NoComCrash extends Module {
                 nbt.putInt("z", (int) cpos.z);
                 //                stack.setSubNbt("BlockEntityTag", nbt);
                 CreativeInventoryActionC2SPacket packet = new CreativeInventoryActionC2SPacket(1, stack);
-                Objects.requireNonNull(SipoverPrivate.client.getNetworkHandler()).sendPacket(packet);
+                Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).sendPacket(packet);
             }
             this.i++;
         }

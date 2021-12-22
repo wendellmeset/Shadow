@@ -5,11 +5,11 @@
 
 package me.x150.sipprivate.feature.module.impl;
 
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.gui.notifications.Notification;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleType;
-import me.x150.sipprivate.util.Utils;
+import me.x150.sipprivate.helper.util.Utils;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.vehicle.BoatEntity;
 
@@ -36,17 +36,17 @@ public class BoatPhase extends Module {
     }
 
     @Override public void onWorldRender(MatrixStack matrices) {
-        if (SipoverPrivate.client.player == null || SipoverPrivate.client.getNetworkHandler() == null) {
+        if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.getNetworkHandler() == null) {
             return;
         }
-        if (!(SipoverPrivate.client.player.getVehicle() instanceof BoatEntity)) {
+        if (!(CoffeeClientMain.client.player.getVehicle() instanceof BoatEntity)) {
             Notification.create(5000, "Boat phase", true, "sir you need a boat");
             setEnabled(false);
             return;
         }
-        SipoverPrivate.client.player.getVehicle().noClip = true;
-        SipoverPrivate.client.player.getVehicle().setNoGravity(true);
-        SipoverPrivate.client.player.noClip = true;
+        CoffeeClientMain.client.player.getVehicle().noClip = true;
+        CoffeeClientMain.client.player.getVehicle().setNoGravity(true);
+        CoffeeClientMain.client.player.noClip = true;
     }
 
     @Override public void onHudRender() {

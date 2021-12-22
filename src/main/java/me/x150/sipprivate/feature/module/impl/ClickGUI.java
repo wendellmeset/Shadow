@@ -1,6 +1,6 @@
 package me.x150.sipprivate.feature.module.impl;
 
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleType;
 import net.minecraft.client.util.math.MatrixStack;
@@ -15,7 +15,7 @@ public class ClickGUI extends Module {
     @Override public void tick() {
         t--;
         if (t == 0) {
-            SipoverPrivate.client.setScreen(me.x150.sipprivate.feature.gui.clickgui.ClickGUI.instance);
+            CoffeeClientMain.client.setScreen(me.x150.sipprivate.feature.gui.clickgui.ClickGUI.instance);
             setEnabled(false);
         }
     }

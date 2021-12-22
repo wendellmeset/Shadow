@@ -5,7 +5,7 @@
 
 package me.x150.sipprivate.feature.module.impl;
 
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.config.DoubleSetting;
 import me.x150.sipprivate.feature.config.EnumSetting;
 import me.x150.sipprivate.feature.gui.notifications.Notification;
@@ -15,8 +15,8 @@ import me.x150.sipprivate.helper.event.EventType;
 import me.x150.sipprivate.helper.event.Events;
 import me.x150.sipprivate.helper.event.events.MouseEvent;
 import me.x150.sipprivate.helper.event.events.PacketEvent;
+import me.x150.sipprivate.helper.util.Utils;
 import me.x150.sipprivate.mixin.PlayerInteractEntityC2SPacketAccessor;
-import me.x150.sipprivate.util.Utils;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -46,7 +46,7 @@ public class Boom extends Module {
     public Boom() {
         super("Boom", "Spawns fireballs whereever you click", ModuleType.WORLD);
         Events.registerEventHandler(EventType.MOUSE_EVENT, event -> {
-            if (!this.isEnabled() || SipoverPrivate.client.currentScreen != null) {
+            if (!this.isEnabled() || CoffeeClientMain.client.currentScreen != null) {
                 return;
             }
             MouseEvent me = (MouseEvent) event;
@@ -69,7 +69,7 @@ public class Boom extends Module {
             PacketEvent pe = (PacketEvent) event;
             if (pe.getPacket() instanceof PlayerInteractEntityC2SPacket e) {
                 PlayerInteractEntityC2SPacketAccessor a = (PlayerInteractEntityC2SPacketAccessor) e;
-                Entity entity = Objects.requireNonNull(SipoverPrivate.client.world).getEntityById(a.getEntityId());
+                Entity entity = Objects.requireNonNull(CoffeeClientMain.client.world).getEntityById(a.getEntityId());
                 if (entity != null && entity.getType() == EntityType.FIREBALL && System.currentTimeMillis() - lastFired < 1000) {
                     event.setCancelled(true);
                 }
@@ -78,48 +78,48 @@ public class Boom extends Module {
     }
 
     void fbInstant() {
-        if (!Objects.requireNonNull(SipoverPrivate.client.interactionManager).hasCreativeInventory()) {
+        if (!Objects.requireNonNull(CoffeeClientMain.client.interactionManager).hasCreativeInventory()) {
             return;
         }
-        HitResult hr = Objects.requireNonNull(SipoverPrivate.client.player).raycast(200, 0, false);
+        HitResult hr = Objects.requireNonNull(CoffeeClientMain.client.player).raycast(200, 0, false);
         Vec3d n = hr.getPos();
         String nbt = String.format("{EntityTag:{id:\"minecraft:fireball\",ExplosionPower:%db,Motion:[%sd,%sd,%sd],Pos:[%s,%s,%s],Item:{id:\"minecraft:egg\",Count:1b}}}", ((int) Math.floor(power.getValue())), 0, -2, 0, n.getX(), n.getY(), n.getZ());
         ItemStack stack = Utils.generateItemStackWithMeta(nbt, Items.BAT_SPAWN_EGG);
-        ItemStack air = SipoverPrivate.client.player.getInventory().getMainHandStack().copy();
-        Vec3d a = SipoverPrivate.client.player.getEyePos();
+        ItemStack air = CoffeeClientMain.client.player.getInventory().getMainHandStack().copy();
+        Vec3d a = CoffeeClientMain.client.player.getEyePos();
         BlockHitResult bhr = new BlockHitResult(a, Direction.DOWN, new BlockPos(a), false);
-        CreativeInventoryActionC2SPacket u1 = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(SipoverPrivate.client.player.getInventory().selectedSlot), stack);
-        CreativeInventoryActionC2SPacket u2 = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(SipoverPrivate.client.player.getInventory().selectedSlot), air);
+        CreativeInventoryActionC2SPacket u1 = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(CoffeeClientMain.client.player.getInventory().selectedSlot), stack);
+        CreativeInventoryActionC2SPacket u2 = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(CoffeeClientMain.client.player.getInventory().selectedSlot), air);
         PlayerInteractBlockC2SPacket p1 = new PlayerInteractBlockC2SPacket(Hand.MAIN_HAND, bhr);
-        Objects.requireNonNull(SipoverPrivate.client.getNetworkHandler()).sendPacket(u1);
-        SipoverPrivate.client.getNetworkHandler().sendPacket(p1);
-        SipoverPrivate.client.getNetworkHandler().sendPacket(u2);
+        Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).sendPacket(u1);
+        CoffeeClientMain.client.getNetworkHandler().sendPacket(p1);
+        CoffeeClientMain.client.getNetworkHandler().sendPacket(u2);
         lastFired = System.currentTimeMillis();
     }
 
     void fbGhast() {
-        if (!Objects.requireNonNull(SipoverPrivate.client.interactionManager).hasCreativeInventory()) {
+        if (!Objects.requireNonNull(CoffeeClientMain.client.interactionManager).hasCreativeInventory()) {
             return;
         }
-        Vec3d v = Objects.requireNonNull(SipoverPrivate.client.player).getRotationVector();
+        Vec3d v = Objects.requireNonNull(CoffeeClientMain.client.player).getRotationVector();
         v = v.multiply(speed.getValue() / 10d);
         // ((int) Math.floor(power.getValue()))
         String nbt = String.format("{EntityTag:{id:\"minecraft:fireball\",ExplosionPower:%db,power:[%s,%s,%s],Item:{id:\"minecraft:egg\",Count:1b}}}", ((int) Math.floor(power.getValue())), v.x, v.y, v.z);
         ItemStack stack = Utils.generateItemStackWithMeta(nbt, Items.BAT_SPAWN_EGG);
-        ItemStack air = SipoverPrivate.client.player.getInventory().getMainHandStack().copy();
-        Vec3d a = SipoverPrivate.client.player.getEyePos();
+        ItemStack air = CoffeeClientMain.client.player.getInventory().getMainHandStack().copy();
+        Vec3d a = CoffeeClientMain.client.player.getEyePos();
         BlockHitResult bhr = new BlockHitResult(a, Direction.DOWN, new BlockPos(a), false);
-        CreativeInventoryActionC2SPacket u1 = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(SipoverPrivate.client.player.getInventory().selectedSlot), stack);
-        CreativeInventoryActionC2SPacket u2 = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(SipoverPrivate.client.player.getInventory().selectedSlot), air);
+        CreativeInventoryActionC2SPacket u1 = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(CoffeeClientMain.client.player.getInventory().selectedSlot), stack);
+        CreativeInventoryActionC2SPacket u2 = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(CoffeeClientMain.client.player.getInventory().selectedSlot), air);
         PlayerInteractBlockC2SPacket p1 = new PlayerInteractBlockC2SPacket(Hand.MAIN_HAND, bhr);
-        Objects.requireNonNull(SipoverPrivate.client.getNetworkHandler()).sendPacket(u1);
-        SipoverPrivate.client.getNetworkHandler().sendPacket(p1);
-        SipoverPrivate.client.getNetworkHandler().sendPacket(u2);
+        Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).sendPacket(u1);
+        CoffeeClientMain.client.getNetworkHandler().sendPacket(p1);
+        CoffeeClientMain.client.getNetworkHandler().sendPacket(u2);
         lastFired = System.currentTimeMillis();
     }
 
     @Override public void tick() {
-        if (!Objects.requireNonNull(SipoverPrivate.client.interactionManager).hasCreativeInventory()) {
+        if (!Objects.requireNonNull(CoffeeClientMain.client.interactionManager).hasCreativeInventory()) {
             Notification.create(6000, "", true, "You need to be in creative");
             setEnabled(false);
         }

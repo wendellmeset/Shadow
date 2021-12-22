@@ -5,7 +5,7 @@
 
 package me.x150.sipprivate.feature.command.impl;
 
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.command.Command;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtByte;
@@ -67,11 +67,11 @@ public class ViewNbt extends Command {
                 }
             }
         }
-        if (Objects.requireNonNull(SipoverPrivate.client.player).getInventory().getMainHandStack().isEmpty()) {
+        if (Objects.requireNonNull(CoffeeClientMain.client.player).getInventory().getMainHandStack().isEmpty()) {
             error("you're not holding anything");
             return;
         }
-        ItemStack stack = SipoverPrivate.client.player.getInventory().getMainHandStack();
+        ItemStack stack = CoffeeClientMain.client.player.getInventory().getMainHandStack();
         NbtCompound c = stack.getNbt();
         if (!stack.hasNbt() || c == null) {
             error("stack has no data");
@@ -82,13 +82,13 @@ public class ViewNbt extends Command {
         } else {
             // I've to use .sendMessage because of monkey minecraft api
             if (noColor) {
-                SipoverPrivate.client.player.sendMessage(Text.of(c.asString()), false);
+                CoffeeClientMain.client.player.sendMessage(Text.of(c.asString()), false);
             } else {
-                SipoverPrivate.client.player.sendMessage(NbtHelper.toPrettyPrintedText(c), false);
+                CoffeeClientMain.client.player.sendMessage(NbtHelper.toPrettyPrintedText(c), false);
             }
         }
         if (copy) {
-            SipoverPrivate.client.keyboard.setClipboard(c.asString());
+            CoffeeClientMain.client.keyboard.setClipboard(c.asString());
             success("Copied nbt!");
         }
     }

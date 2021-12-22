@@ -1,9 +1,9 @@
 package me.x150.sipprivate.feature.module.impl;
 
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleType;
-import me.x150.sipprivate.util.Transitions;
+import me.x150.sipprivate.helper.util.Transitions;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 
@@ -20,15 +20,15 @@ public class Fullbright extends Module {
     }
 
     @Override public void enable() {
-        og = MathHelper.clamp(SipoverPrivate.client.options.gamma, 0, 1);
+        og = MathHelper.clamp(CoffeeClientMain.client.options.gamma, 0, 1);
     }
 
     @Override public void disable() {
-        SipoverPrivate.client.options.gamma = og;
+        CoffeeClientMain.client.options.gamma = og;
     }
 
     @Override public void onFastTick() {
-        SipoverPrivate.client.options.gamma = Transitions.transition(SipoverPrivate.client.options.gamma, 10, 300);
+        CoffeeClientMain.client.options.gamma = Transitions.transition(CoffeeClientMain.client.options.gamma, 10, 300);
     }
 
     @Override public String getContext() {

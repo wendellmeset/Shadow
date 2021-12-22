@@ -1,7 +1,7 @@
 package me.x150.sipprivate.feature.gui.screen;
 
 import imgui.ImGui;
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.helper.manager.ImGuiManager;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
@@ -35,7 +35,7 @@ public abstract class ImGuiProxyScreen extends Screen {
             return;
         }
         // sets the size of the window in case it got resized
-        ImGui.getIO().setDisplaySize(SipoverPrivate.client.getWindow().getWidth(), SipoverPrivate.client.getWindow().getHeight());
+        ImGui.getIO().setDisplaySize(CoffeeClientMain.client.getWindow().getWidth(), CoffeeClientMain.client.getWindow().getHeight());
         // new frame
         ImGuiManager.getImplGlfw().newFrame();
         ImGui.newFrame();

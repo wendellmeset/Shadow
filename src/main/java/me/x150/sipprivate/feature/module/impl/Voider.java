@@ -1,12 +1,12 @@
 package me.x150.sipprivate.feature.module.impl;
 
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.config.DoubleSetting;
 import me.x150.sipprivate.feature.gui.notifications.Notification;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleType;
 import me.x150.sipprivate.helper.render.Renderer;
-import me.x150.sipprivate.util.Utils;
+import me.x150.sipprivate.helper.util.Utils;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -39,8 +39,8 @@ public class Voider extends Module {
                 Vec3d root = startPos.add(ox, 0, oz);
                 BlockPos pp = new BlockPos(root);
                 latest = Vec3d.of(pp);
-                String chat = String.format("/fill %d %d %d %d %d %d minecraft:air", pp.getX() - 2, SipoverPrivate.client.world.getBottomY(), pp.getZ() - 2, pp.getX() + 2, SipoverPrivate.client.world.getTopY() - 1, pp.getZ() + 2);
-                SipoverPrivate.client.player.sendChatMessage(chat);
+                String chat = String.format("/fill %d %d %d %d %d %d minecraft:air", pp.getX() - 2, CoffeeClientMain.client.world.getBottomY(), pp.getZ() - 2, pp.getX() + 2, CoffeeClientMain.client.world.getTopY() - 1, pp.getZ() + 2);
+                CoffeeClientMain.client.player.sendChatMessage(chat);
                 Utils.sleep((long) (delay.getValue() + 0));
             }
         }
@@ -48,7 +48,7 @@ public class Voider extends Module {
     }
 
     @Override public void enable() {
-        startPos = SipoverPrivate.client.player.getPos();
+        startPos = CoffeeClientMain.client.player.getPos();
         cancel.set(false);
         runner = new Thread(this::run);
         runner.start();
@@ -65,8 +65,8 @@ public class Voider extends Module {
 
     @Override public void onWorldRender(MatrixStack matrices) {
         if (latest != null) {
-            Renderer.R3D.renderFilled(new Vec3d(latest.x - 2, SipoverPrivate.client.world.getBottomY(), latest.z - 2), new Vec3d(5, 0.001, 5), Utils.getCurrentRGB(), matrices);
-            Renderer.R3D.line(new Vec3d(latest.x + .5, SipoverPrivate.client.world.getBottomY(), latest.z + .5), new Vec3d(latest.x + .5, SipoverPrivate.client.world.getTopY(), latest.z + .5), Color.RED, matrices);
+            Renderer.R3D.renderFilled(new Vec3d(latest.x - 2, CoffeeClientMain.client.world.getBottomY(), latest.z - 2), new Vec3d(5, 0.001, 5), Utils.getCurrentRGB(), matrices);
+            Renderer.R3D.line(new Vec3d(latest.x + .5, CoffeeClientMain.client.world.getBottomY(), latest.z + .5), new Vec3d(latest.x + .5, CoffeeClientMain.client.world.getTopY(), latest.z + .5), Color.RED, matrices);
         }
     }
 

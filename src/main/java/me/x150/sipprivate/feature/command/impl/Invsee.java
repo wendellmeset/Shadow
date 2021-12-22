@@ -5,9 +5,9 @@
 
 package me.x150.sipprivate.feature.command.impl;
 
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.command.Command;
-import me.x150.sipprivate.util.Utils;
+import me.x150.sipprivate.helper.util.Utils;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,7 +23,7 @@ public class Invsee extends Command {
 
     @Override public String[] getSuggestions(String fullCommand, String[] args) {
         if (args.length == 1) {
-            return SipoverPrivate.client.world.getPlayers().stream().map(abstractClientPlayerEntity -> abstractClientPlayerEntity.getGameProfile().getName()).collect(Collectors.toList())
+            return CoffeeClientMain.client.world.getPlayers().stream().map(abstractClientPlayerEntity -> abstractClientPlayerEntity.getGameProfile().getName()).collect(Collectors.toList())
                     .toArray(String[]::new);
         }
         return super.getSuggestions(fullCommand, args);
@@ -35,7 +35,7 @@ public class Invsee extends Command {
             return;
         }
         PlayerEntity t = null;
-        for (Entity player : Objects.requireNonNull(SipoverPrivate.client.world).getEntities()) {
+        for (Entity player : Objects.requireNonNull(CoffeeClientMain.client.world).getEntities()) {
             if (player instanceof PlayerEntity player1) {
                 if (player1.getGameProfile().getName().equalsIgnoreCase(args[0])) {
                     t = player1;
@@ -48,6 +48,6 @@ public class Invsee extends Command {
             return;
         }
         PlayerEntity finalT = t;
-        Utils.TickManager.runOnNextRender(() -> SipoverPrivate.client.setScreen(new InventoryScreen(finalT)));
+        Utils.TickManager.runOnNextRender(() -> CoffeeClientMain.client.setScreen(new InventoryScreen(finalT)));
     }
 }

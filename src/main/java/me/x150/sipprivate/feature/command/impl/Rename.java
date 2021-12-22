@@ -5,7 +5,7 @@
 
 package me.x150.sipprivate.feature.command.impl;
 
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.command.Command;
 import net.minecraft.text.Text;
 
@@ -30,10 +30,10 @@ public class Rename extends Command {
             error("example: rename &c&lthe &afunny");
             return;
         }
-        if (Objects.requireNonNull(SipoverPrivate.client.player).getInventory().getMainHandStack().isEmpty()) {
+        if (Objects.requireNonNull(CoffeeClientMain.client.player).getInventory().getMainHandStack().isEmpty()) {
             error("idk if you're holding anything");
             return;
         }
-        SipoverPrivate.client.player.getInventory().getMainHandStack().setCustomName(Text.of("§r" + String.join(" ", args).replaceAll("&", "§")));
+        CoffeeClientMain.client.player.getInventory().getMainHandStack().setCustomName(Text.of("§r" + String.join(" ", args).replaceAll("&", "§")));
     }
 }

@@ -1,6 +1,6 @@
 package me.x150.sipprivate.mixin;
 
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.helper.event.EventType;
 import me.x150.sipprivate.helper.event.Events;
 import me.x150.sipprivate.helper.event.events.KeyboardEvent;
@@ -21,8 +21,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
     @Inject(method = "onKey", at = @At("RETURN")) void atomic_postKeyPressed(long window, int key, int scancode, int action, int modifiers, CallbackInfo ci) {
         if (window == this.client.getWindow()
-                .getHandle() && SipoverPrivate.client.currentScreen == null && System.currentTimeMillis() - SipoverPrivate.lastScreenChange > 10) { // make sure we are in game and the screen has been there for at least 10 ms
-            if (SipoverPrivate.client.player == null || SipoverPrivate.client.world == null) {
+                .getHandle() && CoffeeClientMain.client.currentScreen == null && System.currentTimeMillis() - CoffeeClientMain.lastScreenChange > 10) { // make sure we are in game and the screen has been there for at least 10 ms
+            if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.world == null) {
                 return; // again, make sure we are in game and exist
             }
             KeybindingManager.updateSingle(key, action);

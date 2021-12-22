@@ -5,10 +5,10 @@
 
 package me.x150.sipprivate.feature.gui.notifications;
 
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.helper.font.FontRenderers;
 import me.x150.sipprivate.helper.render.Renderer;
-import me.x150.sipprivate.util.Transitions;
+import me.x150.sipprivate.helper.util.Transitions;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 
@@ -46,7 +46,7 @@ public class NotificationRenderer {
         //        if (!Objects.requireNonNull(ModuleRegistry.getByClass(Hud.class)).isEnabled()) {
         //            return;
         //        }
-        int baseX = SipoverPrivate.client.getWindow().getScaledWidth() / 2;
+        int baseX = CoffeeClientMain.client.getWindow().getScaledWidth() / 2;
         int height = 16;
         int baseY = -height - 5;
         int currentYOffset = 5;
@@ -115,8 +115,8 @@ public class NotificationRenderer {
         //            return;
         //        }
         int currentYOffset = -20;
-        int baseX = SipoverPrivate.client.getWindow().getScaledWidth() - 160;
-        int baseY = SipoverPrivate.client.getWindow().getScaledHeight() - 50;
+        int baseX = CoffeeClientMain.client.getWindow().getScaledWidth() - 160;
+        int baseY = CoffeeClientMain.client.getWindow().getScaledHeight() - 50;
         long c = System.currentTimeMillis();
         for (Notification notification : new ArrayList<>(notifications)) {
             double timeRemaining = Math.abs(c - notification.creationDate - notification.duration) / (double) notification.duration;

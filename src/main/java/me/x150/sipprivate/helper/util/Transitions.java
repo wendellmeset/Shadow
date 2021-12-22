@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 0x150.
  */
 
-package me.x150.sipprivate.util;
+package me.x150.sipprivate.helper.util;
 
 import java.awt.Color;
 

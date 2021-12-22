@@ -5,7 +5,7 @@
 
 package me.x150.sipprivate.feature.command.impl;
 
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.command.Command;
 
 import java.util.Objects;
@@ -28,6 +28,6 @@ public class Say extends Command {
             error("not sure if i can say nothing");
             return;
         }
-        Objects.requireNonNull(SipoverPrivate.client.player).sendChatMessage(String.join(" ", args));
+        Objects.requireNonNull(CoffeeClientMain.client.player).sendChatMessage(String.join(" ", args));
     }
 }

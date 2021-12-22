@@ -1,11 +1,11 @@
 package me.x150.sipprivate.feature.command.impl;
 
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.command.Command;
 import me.x150.sipprivate.feature.gui.screen.BindScreen;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleRegistry;
-import me.x150.sipprivate.util.Utils;
+import me.x150.sipprivate.helper.util.Utils;
 
 import java.util.stream.Collectors;
 
@@ -34,7 +34,7 @@ public class Bind extends Command {
         }
         BindScreen bs = new BindScreen(module);
         Utils.TickManager.runInNTicks(5, () -> {
-            SipoverPrivate.client.setScreen(bs);
+            CoffeeClientMain.client.setScreen(bs);
         });
     }
 }

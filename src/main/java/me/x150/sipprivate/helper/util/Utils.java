@@ -3,11 +3,11 @@
  * Copyright (c) 2021-2021 0x150.
  */
 
-package me.x150.sipprivate.util;
+package me.x150.sipprivate.helper.util;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.gui.screen.AtomicConsoleScreen;
 import me.x150.sipprivate.helper.font.adapter.FontAdapter;
 import me.x150.sipprivate.mixin.IMinecraftClientAccessor;
@@ -53,7 +53,7 @@ public class Utils {
     }
 
     public static void setClientTps(float tps) {
-        IRenderTickCounterAccessor accessor = ((IRenderTickCounterAccessor) ((IMinecraftClientAccessor) SipoverPrivate.client).getRenderTickCounter());
+        IRenderTickCounterAccessor accessor = ((IRenderTickCounterAccessor) ((IMinecraftClientAccessor) CoffeeClientMain.client).getRenderTickCounter());
         accessor.setTickTime(1000f / tps);
     }
 
@@ -64,7 +64,7 @@ public class Utils {
     public static Vec3d getInterpolatedEntityPosition(Entity entity) {
         Vec3d a = entity.getPos();
         Vec3d b = new Vec3d(entity.prevX, entity.prevY, entity.prevZ);
-        float p = SipoverPrivate.client.getTickDelta();
+        float p = CoffeeClientMain.client.getTickDelta();
         return new Vec3d(MathHelper.lerp(p, b.x, a.x), MathHelper.lerp(p, b.y, a.y), MathHelper.lerp(p, b.z, a.z));
     }
 
@@ -120,14 +120,14 @@ public class Utils {
 
         public static void drop(int index) {
             int translatedSlotId = slotIndexToId(index);
-            Objects.requireNonNull(SipoverPrivate.client.interactionManager)
-                    .clickSlot(Objects.requireNonNull(SipoverPrivate.client.player).currentScreenHandler.syncId, translatedSlotId, 1, SlotActionType.THROW, SipoverPrivate.client.player);
+            Objects.requireNonNull(CoffeeClientMain.client.interactionManager)
+                    .clickSlot(Objects.requireNonNull(CoffeeClientMain.client.player).currentScreenHandler.syncId, translatedSlotId, 1, SlotActionType.THROW, CoffeeClientMain.client.player);
         }
 
         public static void moveStackToOther(int slotIdFrom, int slotIdTo) {
-            Objects.requireNonNull(SipoverPrivate.client.interactionManager).clickSlot(0, slotIdFrom, 0, SlotActionType.PICKUP, SipoverPrivate.client.player); // pick up item from stack
-            SipoverPrivate.client.interactionManager.clickSlot(0, slotIdTo, 0, SlotActionType.PICKUP, SipoverPrivate.client.player); // put item to target
-            SipoverPrivate.client.interactionManager.clickSlot(0, slotIdFrom, 0, SlotActionType.PICKUP, SipoverPrivate.client.player); // (in case target slot had item) put item from target back to from
+            Objects.requireNonNull(CoffeeClientMain.client.interactionManager).clickSlot(0, slotIdFrom, 0, SlotActionType.PICKUP, CoffeeClientMain.client.player); // pick up item from stack
+            CoffeeClientMain.client.interactionManager.clickSlot(0, slotIdTo, 0, SlotActionType.PICKUP, CoffeeClientMain.client.player); // put item to target
+            CoffeeClientMain.client.interactionManager.clickSlot(0, slotIdFrom, 0, SlotActionType.PICKUP, CoffeeClientMain.client.player); // (in case target slot had item) put item from target back to from
         }
     }
 
@@ -178,11 +178,11 @@ public class Utils {
     public static class Mouse {
 
         public static double getMouseX() {
-            return SipoverPrivate.client.mouse.getX() / SipoverPrivate.client.getWindow().getScaleFactor();
+            return CoffeeClientMain.client.mouse.getX() / CoffeeClientMain.client.getWindow().getScaleFactor();
         }
 
         public static double getMouseY() {
-            return SipoverPrivate.client.mouse.getY() / SipoverPrivate.client.getWindow().getScaleFactor();
+            return CoffeeClientMain.client.mouse.getY() / CoffeeClientMain.client.getWindow().getScaleFactor();
         }
     }
 
@@ -277,10 +277,10 @@ public class Utils {
         }
 
         public static void messageChat(String n) {
-            if (SipoverPrivate.client.player == null) {
+            if (CoffeeClientMain.client.player == null) {
                 return;
             }
-            SipoverPrivate.client.player.sendMessage(Text.of("[§9A§r] " + n), false);
+            CoffeeClientMain.client.player.sendMessage(Text.of("[§9A§r] " + n), false);
         }
 
     }

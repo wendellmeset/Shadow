@@ -1,7 +1,7 @@
 package me.x150.sipprivate.feature.gui.hud.element;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.helper.font.FontRenderers;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.GameRenderer;
@@ -10,7 +10,7 @@ import net.minecraft.util.Identifier;
 
 public class Taco extends HudElement {
     public Taco() {
-        super("Taco", 0, SipoverPrivate.client.getWindow().getScaledHeight(), 100, 100);
+        super("Taco", 0, CoffeeClientMain.client.getWindow().getScaledHeight(), 100, 100);
     }
 
     @Override public void renderIntern(MatrixStack stack) {

@@ -5,7 +5,7 @@
 
 package me.x150.sipprivate.feature.command.impl;
 
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.command.Command;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleRegistry;
@@ -49,7 +49,7 @@ public class Panic extends Command {
                     module.setEnabled(false);
                 }
             }
-            SipoverPrivate.client.inGameHud.getChatHud().clear(true);
+            CoffeeClientMain.client.inGameHud.getChatHud().clear(true);
         } else if (args[0].equalsIgnoreCase("restore")) {
             if (stored.size() == 0) {
                 error("The stored module list is empty");

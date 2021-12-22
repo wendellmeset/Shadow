@@ -7,7 +7,7 @@ package me.x150.sipprivate.feature.command.impl;
 
 import com.mojang.brigadier.suggestion.Suggestion;
 import com.mojang.brigadier.suggestion.Suggestions;
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.command.Command;
 import me.x150.sipprivate.helper.event.EventType;
 import me.x150.sipprivate.helper.event.Events;
@@ -25,7 +25,7 @@ public class Plugins extends Command {
 
     public Plugins() {
         super("Plugins", "Finds server plugins via command suggestions", "pl", "plugins");
-        if (SipoverPrivate.client.getNetworkHandler() != null) {
+        if (CoffeeClientMain.client.getNetworkHandler() != null) {
             Events.registerEventHandler(EventType.PACKET_RECEIVE, event -> {
                 if (!pendingCmdTree) {
                     return;
@@ -58,8 +58,8 @@ public class Plugins extends Command {
     }
 
     @Override public void onExecute(String[] args) {
-        if (SipoverPrivate.client.getNetworkHandler() != null) {
-            SipoverPrivate.client.getNetworkHandler().sendPacket(new RequestCommandCompletionsC2SPacket(0, "/"));
+        if (CoffeeClientMain.client.getNetworkHandler() != null) {
+            CoffeeClientMain.client.getNetworkHandler().sendPacket(new RequestCommandCompletionsC2SPacket(0, "/"));
             pendingCmdTree = true;
         }
     }

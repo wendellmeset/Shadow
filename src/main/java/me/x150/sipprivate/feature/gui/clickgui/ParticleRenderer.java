@@ -1,7 +1,7 @@
 package me.x150.sipprivate.feature.gui.clickgui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.gui.clickgui.theme.Theme;
 import me.x150.sipprivate.helper.render.Renderer;
 import net.minecraft.client.render.BufferBuilder;
@@ -38,7 +38,7 @@ public class ParticleRenderer {
     void addParticle() {
         if (!shouldAdd) return;
         Particle n = new Particle();
-        n.x = Math.random() * SipoverPrivate.client.getWindow().getScaledWidth();
+        n.x = Math.random() * CoffeeClientMain.client.getWindow().getScaledWidth();
         n.y = -10;
         n.velY = (Math.random() + 1);
         n.decline = MathHelper.lerp(Math.random(), 0.05, 0.2);

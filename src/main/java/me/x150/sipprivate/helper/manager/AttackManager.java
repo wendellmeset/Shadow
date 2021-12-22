@@ -1,6 +1,6 @@
 package me.x150.sipprivate.helper.manager;
 
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 
@@ -11,11 +11,11 @@ public class AttackManager {
     static              LivingEntity lastAttacked;
 
     public static LivingEntity getLastAttackInTimeRange() {
-        if (getLastAttack() + MAX_ATTACK_TIMEOUT < System.currentTimeMillis() || SipoverPrivate.client.player == null || SipoverPrivate.client.player.isDead()) {
+        if (getLastAttack() + MAX_ATTACK_TIMEOUT < System.currentTimeMillis() || CoffeeClientMain.client.player == null || CoffeeClientMain.client.player.isDead()) {
             lastAttacked = null;
         }
         if (lastAttacked != null) {
-            if (lastAttacked.getPos().distanceTo(SipoverPrivate.client.player.getPos()) > 16 || lastAttacked.isDead()) {
+            if (lastAttacked.getPos().distanceTo(CoffeeClientMain.client.player.getPos()) > 16 || lastAttacked.isDead()) {
                 lastAttacked = null;
             }
         }
@@ -26,7 +26,7 @@ public class AttackManager {
         if (entity.getType() != EntityType.PLAYER) {
             return;
         }
-        if (entity.equals(SipoverPrivate.client.player)) {
+        if (entity.equals(CoffeeClientMain.client.player)) {
             return;
         }
         lastAttacked = entity;

@@ -4,7 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import me.x150.sipprivate.SipoverPrivate;
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.config.SettingBase;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleRegistry;
@@ -29,7 +29,7 @@ public class ConfigManager {
     public static boolean      enabled     = false;
 
     static {
-        CONFIG_FILE = new File(SipoverPrivate.BASE, "config.sip");
+        CONFIG_FILE = new File(CoffeeClientMain.BASE, "config.sip");
     }
 
     /**

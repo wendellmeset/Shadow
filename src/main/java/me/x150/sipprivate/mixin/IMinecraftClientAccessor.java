@@ -12,4 +12,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
     @Mutable @Accessor("session") void setSession(Session newSession);
 
     @Accessor("renderTickCounter") RenderTickCounter getRenderTickCounter();
+
+    @Accessor("currentFps") int getCurrentFps();
 }
