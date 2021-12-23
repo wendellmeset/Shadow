@@ -1,30 +1,30 @@
-package me.x150.sipprivate.feature.module.impl;
+/*
+ * This file is part of the atomic client distribution.
+ * Copyright (c) 2021-2021 0x150.
+ */
 
-import me.x150.sipprivate.CoffeeClientMain;
+package me.x150.sipprivate.feature.module.impl.misc;
+
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleType;
 import net.minecraft.client.util.math.MatrixStack;
 
-public class ClickGUI extends Module {
-    int t = 2;
+public class AntiPacketKick extends Module {
 
-    public ClickGUI() {
-        super("ClickGUI", "A visual manager for all modules", ModuleType.RENDER);
+    public AntiPacketKick() {
+        super("AntiPacketKick", "Prevents a client disconnect caused by an internal exception", ModuleType.MISC);
     }
 
     @Override public void tick() {
-        t--;
-        if (t == 0) {
-            CoffeeClientMain.client.setScreen(me.x150.sipprivate.feature.gui.clickgui.ClickGUI.instance);
-            setEnabled(false);
-        }
+
     }
 
     @Override public void enable() {
-        t = 2;
+
     }
 
     @Override public void disable() {
+
     }
 
     @Override public String getContext() {
@@ -39,3 +39,4 @@ public class ClickGUI extends Module {
 
     }
 }
+

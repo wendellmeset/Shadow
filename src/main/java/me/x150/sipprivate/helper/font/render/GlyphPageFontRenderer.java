@@ -351,7 +351,8 @@ public class GlyphPageFontRenderer {
             } else {
                 float f = glyphPage.drawChar(matrices, c0, posX, posY, r, b, g, alpha);
 
-                doDraw(f, glyphPage);
+                drawUnderlineStrikethrough(f, glyphPage);
+                this.posX += f;
             }
         }
 
@@ -360,7 +361,7 @@ public class GlyphPageFontRenderer {
 
     }
 
-    private void doDraw(float f, GlyphPage glyphPage) {
+    private void drawUnderlineStrikethrough(float f, GlyphPage glyphPage) {
         BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
         GlStateManager._disableTexture();
         if (this.strikethroughStyle) {
@@ -386,7 +387,7 @@ public class GlyphPageFontRenderer {
             GlStateManager._enableTexture();
         }
 
-        this.posX += f;
+//        this.posX += f;
     }
 
     private GlyphPage getCurrentGlyphPage() {

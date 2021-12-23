@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 0x150.
  */
 
-package me.x150.sipprivate.feature.module.impl;
+package me.x150.sipprivate.feature.module.impl.movement;
 
 import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.gui.notifications.Notification;

@@ -14,6 +14,8 @@
     "EntityRenderDispatcherMixin",
     "GameRendererMixin",
     "ICustomPayloadC2SPacketAccessor",
+    "IDebugHudAccessor",
+    "IInGameHudAccessor",
     "IMinecraftClientAccessor",
     "IPlayerMoveC2SPacketAccessor",
     "IRenderTickCounterAccessor",

@@ -3,7 +3,7 @@
  * Copyright (c) 2021-2021 0x150.
  */
 
-package me.x150.sipprivate.feature.module.impl;
+package me.x150.sipprivate.feature.module.impl.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.x150.sipprivate.CoffeeClientMain;
@@ -13,6 +13,7 @@ import me.x150.sipprivate.feature.config.SettingsGroup;
 import me.x150.sipprivate.feature.gui.notifications.Notification;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleType;
+import me.x150.sipprivate.feature.module.impl.world.XRAY;
 import me.x150.sipprivate.helper.render.Renderer;
 import me.x150.sipprivate.helper.util.Utils;
 import net.minecraft.block.Block;

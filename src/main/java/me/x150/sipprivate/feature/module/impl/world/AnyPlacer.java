@@ -1,4 +1,4 @@
-package me.x150.sipprivate.feature.module.impl;
+package me.x150.sipprivate.feature.module.impl.world;
 
 import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.module.Module;

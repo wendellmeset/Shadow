@@ -1,4 +1,4 @@
-package me.x150.sipprivate.feature.module.impl;
+package me.x150.sipprivate.feature.module.impl.misc;
 
 import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.config.BooleanSetting;

@@ -11,6 +11,7 @@ import net.minecraft.client.texture.AbstractTexture;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.math.Matrix4f;
 import org.lwjgl.BufferUtils;
 
 import javax.imageio.ImageIO;
@@ -69,6 +70,7 @@ public class GlyphPage {
         maxHeight += 2;
 
         imgSize = (int) Math.ceil(Math.max(Math.ceil(Math.sqrt(maxWidth * maxWidth * chars.length) / maxWidth), Math.ceil(Math.sqrt(maxHeight * maxHeight * chars.length) / maxHeight)) * Math.max(maxWidth, maxHeight)) + 1;
+//        imgSize /= 2;
 
         bufferedImage = new BufferedImage(imgSize, imgSize, BufferedImage.TYPE_INT_ARGB);
 
@@ -164,19 +166,20 @@ public class GlyphPage {
 
         float width = glyph.width;
         float height = glyph.height;
+        Matrix4f posMat = stack.peek().getPositionMatrix();
 
-        BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferBuilder = tessellator.getBuffer();
 
         RenderSystem.setShader(GameRenderer::getPositionColorTexShader);
         bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE);
 
-        bufferBuilder.vertex(stack.peek().getPositionMatrix(), x, y + height, 0).color(red, green, blue, alpha).texture(pageX, pageY + pageHeight).next();
-        bufferBuilder.vertex(stack.peek().getPositionMatrix(), x + width, y + height, 0).color(red, green, blue, alpha).texture(pageX + pageWidth, pageY + pageHeight).next();
-        bufferBuilder.vertex(stack.peek().getPositionMatrix(), x + width, y, 0).color(red, green, blue, alpha).texture(pageX + pageWidth, pageY).next();
-        bufferBuilder.vertex(stack.peek().getPositionMatrix(), x, y, 0).color(red, green, blue, alpha).texture(pageX, pageY).next();
-        bufferBuilder.end();
+        bufferBuilder.vertex(posMat, x, y + height, 0).color(red, green, blue, alpha).texture(pageX, pageY + pageHeight).next();
+        bufferBuilder.vertex(posMat, x + width, y + height, 0).color(red, green, blue, alpha).texture(pageX + pageWidth, pageY + pageHeight).next();
+        bufferBuilder.vertex(posMat, x + width, y, 0).color(red, green, blue, alpha).texture(pageX + pageWidth, pageY).next();
+        bufferBuilder.vertex(posMat, x, y, 0).color(red, green, blue, alpha).texture(pageX, pageY).next();
 
-        BufferRenderer.draw(bufferBuilder);
+        tessellator.draw();
 
         return width - 8;
     }

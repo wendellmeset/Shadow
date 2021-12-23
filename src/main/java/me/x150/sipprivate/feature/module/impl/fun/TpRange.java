@@ -1,6 +1,7 @@
-package me.x150.sipprivate.feature.module.impl;
+package me.x150.sipprivate.feature.module.impl.fun;
 
 import me.x150.sipprivate.CoffeeClientMain;
+import me.x150.sipprivate.feature.config.EnumSetting;
 import me.x150.sipprivate.feature.gui.notifications.Notification;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleType;
@@ -26,6 +27,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TpRange extends Module {
+    public enum Mode {
+        PaperBypass, Instant
+    }
+    EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.PaperBypass)
+            .name("Mode")
+            .description("How to exploit the range, Instant works on vanilla, PaperBypass on almost everything")
+            .get());
     static final ExecutorService esv = Executors.newFixedThreadPool(1);
     AtomicBoolean running = new AtomicBoolean(false);
     Vec3d spoofedPos         = null;
@@ -73,11 +81,20 @@ public class TpRange extends Module {
         }
         Vec3d pos = ehr.getPos();
         Vec3d orig = CoffeeClientMain.client.player.getPos();
-        teleportTo(orig, pos);
-        CoffeeClientMain.client.interactionManager.attackEntity(CoffeeClientMain.client.player, ehr.getEntity());
-        Utils.sleep(100);
-        teleportTo(pos, orig);
-        CoffeeClientMain.client.player.updatePosition(orig.x, orig.y, orig.z);
+
+        if (mode.getValue() == Mode.PaperBypass) {
+            teleportTo(orig, pos);
+            CoffeeClientMain.client.interactionManager.attackEntity(CoffeeClientMain.client.player, ehr.getEntity());
+            Utils.sleep(100);
+            teleportTo(pos, orig);
+            CoffeeClientMain.client.player.updatePosition(orig.x, orig.y, orig.z);
+        } else {
+            PlayerMoveC2SPacket tpToEntity = new PlayerMoveC2SPacket.PositionAndOnGround(pos.x,pos.y,pos.z,false);
+            PlayerMoveC2SPacket tpBack = new PlayerMoveC2SPacket.PositionAndOnGround(orig.x,orig.y,orig.z,true);
+            CoffeeClientMain.client.getNetworkHandler().sendPacket(tpToEntity);
+            CoffeeClientMain.client.interactionManager.attackEntity(CoffeeClientMain.client.player, ehr.getEntity());
+            CoffeeClientMain.client.getNetworkHandler().sendPacket(tpBack);
+        }
     }
 
     void theFunny() {

@@ -2,7 +2,7 @@ package me.x150.sipprivate.feature.gui.hud.element;
 
 import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.module.ModuleRegistry;
-import me.x150.sipprivate.feature.module.impl.TargetHud;
+import me.x150.sipprivate.feature.module.impl.render.TargetHud;
 import net.minecraft.client.util.math.MatrixStack;
 
 public class TargetHUD extends HudElement {

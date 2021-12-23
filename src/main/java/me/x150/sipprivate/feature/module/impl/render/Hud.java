@@ -1,4 +1,4 @@
-package me.x150.sipprivate.feature.module.impl;
+package me.x150.sipprivate.feature.module.impl.render;
 
 import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.config.BooleanSetting;
@@ -17,6 +17,8 @@ import me.x150.sipprivate.helper.font.adapter.impl.ClientFontRenderer;
 import me.x150.sipprivate.helper.render.Renderer;
 import me.x150.sipprivate.helper.util.Transitions;
 import me.x150.sipprivate.helper.util.Utils;
+import me.x150.sipprivate.mixin.IDebugHudAccessor;
+import me.x150.sipprivate.mixin.IInGameHudAccessor;
 import me.x150.sipprivate.mixin.IMinecraftClientAccessor;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.util.math.MatrixStack;
@@ -97,6 +99,14 @@ public class Hud extends Module {
             return;
         }
         MatrixStack ms = Renderer.R3D.getEmptyMatrixStack();
+        double heightOffsetLeft = 0, heightOffsetRight = 0;
+        if (CoffeeClientMain.client.options.debugEnabled){
+            double heightAccordingToMc = 9;
+            List<String> lt = ((IDebugHudAccessor) ((IInGameHudAccessor) CoffeeClientMain.client.inGameHud).getDebugHud()).callGetLeftText();
+            List<String> rt = ((IDebugHudAccessor) ((IInGameHudAccessor) CoffeeClientMain.client.inGameHud).getDebugHud()).callGetRightText();
+            heightOffsetLeft = 2+heightAccordingToMc*(lt.size()+3);
+            heightOffsetRight = 2+heightAccordingToMc*rt.size()+5;
+        }
         if (!shouldNoConnectionDropDown()) {
             if (serverNotResponding != null) {
                 serverNotResponding.duration = 0;
@@ -113,10 +123,15 @@ public class Hud extends Module {
         makeSureIsInitialized();
 
         if (modules.getValue()) {
+            ms.push();
+            ms.translate(0,heightOffsetRight,0);
             drawModuleList(ms);
+            ms.pop();
         }
-
+        ms.push();
+        ms.translate(0, heightOffsetLeft, 0);
         drawTopLeft(ms);
+        ms.pop();
 
         HudRenderer.getInstance().render();
     }
@@ -162,7 +177,7 @@ public class Hud extends Module {
             double slideProg = MathHelper.clamp(prog - 1, 0, 1); // 1-2 as 0-1 from 0-2
             double hei = (FontRenderers.getNormal().getMarginHeight() + 2);
             double wid = moduleEntry.getRenderWidth() + 3;
-            Renderer.R2D.fill(ClickGUI.theme.getActive(), width - (wid + 1), y, width, y + hei * expandProg);
+            Renderer.R2D.fill(ms,ClickGUI.theme.getActive(), width - (wid + 1), y, width, y + hei * expandProg);
             ms.push();
             ms.translate((1 - slideProg) * wid, 0, 0);
             Renderer.R2D.fill(ms, ClickGUI.theme.getModule(), width - wid, y, width, y + hei * expandProg);
@@ -213,7 +228,7 @@ public class Hud extends Module {
             }
             animationProgress += a;
             animationProgress = MathHelper.clamp(animationProgress, 0, 1);
-            renderWidth = Transitions.transition(renderWidth, getWidth(), 7, 0.0001);
+            renderWidth = Transitions.transition(renderWidth, getWidth(), 7, 0);
         }
 
         double getAnimProg() {
