@@ -54,6 +54,26 @@ public class Rotations {
         update();
     }
 
+    public static Vec3d relativeToAbsolute(Vec3d absRootPos, Vec2f rotation, Vec3d relative) {
+        double xOffset = relative.x;
+        double yOffset = relative.y;
+        double zOffset = relative.z;
+        float rot = 0.017453292F;
+        float f = MathHelper.cos((rotation.y + 90.0F) * rot);
+        float g = MathHelper.sin((rotation.y + 90.0F) * rot);
+        float h = MathHelper.cos(-rotation.x * rot);
+        float i = MathHelper.sin(-rotation.x * rot);
+        float j = MathHelper.cos((-rotation.x + 90.0F) * rot);
+        float k = MathHelper.sin((-rotation.x + 90.0F) * rot);
+        Vec3d vec3d2 = new Vec3d(f * h, i, g * h);
+        Vec3d vec3d3 = new Vec3d(f * j, k, g * j);
+        Vec3d vec3d4 = vec3d2.crossProduct(vec3d3).multiply(-1.0D);
+        double d = vec3d2.x * zOffset + vec3d3.x * yOffset + vec3d4.x * xOffset;
+        double e = vec3d2.y * zOffset + vec3d3.y * yOffset + vec3d4.y * xOffset;
+        double l = vec3d2.z * zOffset + vec3d3.z * yOffset + vec3d4.z * xOffset;
+        return new Vec3d(absRootPos.x + d, absRootPos.y + e, absRootPos.z + l);
+    }
+
     public static void lookAtPositionSmooth(Vec3d target, double laziness) {
         double delX = target.x - Objects.requireNonNull(CoffeeClientMain.client.player).getX();
         double delZ = target.z - CoffeeClientMain.client.player.getZ();
