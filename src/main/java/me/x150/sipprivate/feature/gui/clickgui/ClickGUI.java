@@ -146,7 +146,7 @@ public class ClickGUI extends Screen implements FastTickable {
     @Override public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
         mouseY += trackedScroll;
         for (Element element : elements) {
-            if (element.dragged(mouseX, mouseY, deltaX, deltaY)) {
+            if (element.dragged(mouseX, mouseY, deltaX, deltaY, button)) {
                 return true;
             }
         }

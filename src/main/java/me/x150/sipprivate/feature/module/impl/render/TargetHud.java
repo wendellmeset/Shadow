@@ -198,7 +198,7 @@ public class TargetHud extends Module {
             Text cname = re.getCustomName();
             re.setCustomName(Text.of("DoNotRenderThisUsernamePlease"));
             stack.pop();
-            Renderer.R2D.drawEntity((20 * renderWX) + x, (modalHeight - 11) * renderWX + y, renderWX * 27, -10, -10, entity, stack);
+            Renderer.R2D.renderEntity((20 * renderWX) + x, (modalHeight - 11) * renderWX + y, renderWX * 27, -10, -10, entity, stack);
             re.setCustomName(cname);
         }
     }

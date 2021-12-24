@@ -32,6 +32,7 @@ import net.minecraft.util.math.Vector4f;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.Color;
+import java.util.Vector;
 
 public class Renderer {
 
@@ -249,7 +250,18 @@ public class Renderer {
 
         public static final Identifier OPTIONS_BACKGROUND_TEXTURE = new Identifier("sipoverprivate", "background.jpg");
 
-        public static void scissor(double x, double y, double width, double height) {
+        public static void scissor(MatrixStack stack, double x, double y, double endX, double endY) {
+            Matrix4f matrix = stack.peek().getPositionMatrix();
+            Vector4f coord = new Vector4f((float) x, (float) y, 0, 1);
+            Vector4f end = new Vector4f((float) (endX), (float) (endY), 0, 1);
+            coord.transform(matrix);
+            end.transform(matrix);
+            x = coord.getX();
+            y = coord.getY();
+            double width = end.getX()-x;
+            double height = end.getY()-y;
+            width = Math.max(0, width);
+            height = Math.max(0, height);
             float d = (float) CoffeeClientMain.client.getWindow().getScaleFactor();
             int ay = (int) ((CoffeeClientMain.client.getWindow().getScaledHeight() - (y + height)) * d);
             RenderSystem.enableScissor((int) (x * d), ay, (int) (width * d), (int) (height * d));
@@ -287,7 +299,7 @@ public class Renderer {
             RenderSystem.disableBlend();
         }
 
-        public static void drawEntity(double x, double y, double size, float mouseX, float mouseY, LivingEntity entity, MatrixStack stack) {
+        public static void renderEntity(double x, double y, double size, float mouseX, float mouseY, LivingEntity entity, MatrixStack stack) {
             float f = (float) Math.atan(mouseX / 40.0F);
             float g = (float) Math.atan(mouseY / 40.0F);
             MatrixStack matrixStack = RenderSystem.getModelViewStack();

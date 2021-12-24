@@ -13,6 +13,8 @@ import me.x150.sipprivate.helper.font.adapter.FontAdapter;
 import me.x150.sipprivate.mixin.IMinecraftClientAccessor;
 import me.x150.sipprivate.mixin.IRenderTickCounterAccessor;
 import net.minecraft.client.network.ServerInfo;
+import net.minecraft.client.texture.NativeImage;
+import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -22,17 +24,23 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
+import org.lwjgl.BufferUtils;
 
+import javax.imageio.ImageIO;
 import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,6 +74,22 @@ public class Utils {
         Vec3d b = new Vec3d(entity.prevX, entity.prevY, entity.prevZ);
         float p = CoffeeClientMain.client.getTickDelta();
         return new Vec3d(MathHelper.lerp(p, b.x, a.x), MathHelper.lerp(p, b.y, a.y), MathHelper.lerp(p, b.z, a.z));
+    }
+
+    public static void registerBufferedImageTexture(Identifier i, BufferedImage bi) {
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(bi, "png", baos);
+            byte[] bytes = baos.toByteArray();
+
+            ByteBuffer data = BufferUtils.createByteBuffer(bytes.length).put(bytes);
+            data.flip();
+            NativeImageBackedTexture tex = new NativeImageBackedTexture(NativeImage.read(data));
+            CoffeeClientMain.client.execute(() -> CoffeeClientMain.client.getTextureManager().registerTexture(i, tex));
+        } catch (Exception e) {
+            System.out.println("failed to register");
+            e.printStackTrace();
+        }
     }
 
     public static String[] splitLinesToWidth(String input, double maxWidth, FontAdapter rendererUsed) {

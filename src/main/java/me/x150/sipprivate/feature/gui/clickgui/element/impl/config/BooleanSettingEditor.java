@@ -19,7 +19,7 @@ public class BooleanSettingEditor extends ConfigBase<BooleanSetting> {
         super(x, y, width, FontRenderers.getNormal().getFontHeight() + 2, configValue);
     }
 
-    @Override public boolean dragged(double x, double y, double deltaX, double deltaY) {
+    @Override public boolean dragged(double x, double y, double deltaX, double deltaY, int button) {
         return false;
     }
 

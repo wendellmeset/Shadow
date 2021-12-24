@@ -23,6 +23,7 @@ import me.x150.sipprivate.feature.command.impl.Plugins;
 import me.x150.sipprivate.feature.command.impl.RageQuit;
 import me.x150.sipprivate.feature.command.impl.Rename;
 import me.x150.sipprivate.feature.command.impl.Say;
+import me.x150.sipprivate.feature.command.impl.SkinExploit;
 import me.x150.sipprivate.feature.command.impl.Taco;
 import me.x150.sipprivate.feature.command.impl.Toggle;
 import me.x150.sipprivate.feature.command.impl.ViewNbt;
@@ -66,6 +67,7 @@ public class CommandRegistry {
         commands.add(new FakeItem());
         commands.add(new Taco());
         commands.add(new Bind());
+        commands.add(new SkinExploit());
     }
 
     public static List<Command> getCommands() {

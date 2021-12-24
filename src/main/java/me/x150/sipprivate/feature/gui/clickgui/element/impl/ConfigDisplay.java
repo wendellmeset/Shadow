@@ -54,9 +54,9 @@ public class ConfigDisplay extends Element {
         return false;
     }
 
-    @Override public boolean dragged(double x, double y, double deltaX, double deltaY) {
+    @Override public boolean dragged(double x, double y, double deltaX, double deltaY, int button) {
         for (ConfigBase<?> basis : bases) {
-            if (basis.getConfigValue().shouldShow() && basis.dragged(x, y, deltaX, deltaY)) {
+            if (basis.getConfigValue().shouldShow() && basis.dragged(x, y, deltaX, deltaY, button)) {
                 return true;
             }
         }

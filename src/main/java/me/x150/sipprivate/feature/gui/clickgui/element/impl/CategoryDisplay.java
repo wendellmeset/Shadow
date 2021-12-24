@@ -33,8 +33,10 @@ public class CategoryDisplay extends Element {
 
     @Override public boolean clicked(double x, double y, int button) {
         if (x >= this.x && x <= this.x + this.width && y >= this.y && y <= this.y + headerHeight()) {
-            selected = true;
-            return true;
+            if (button == 0) {
+                selected = true;
+                return true;
+            }
         } else {
             for (ModuleDisplay moduleDisplay : md) {
                 if (moduleDisplay.clicked(x, y, button)) {
@@ -45,14 +47,14 @@ public class CategoryDisplay extends Element {
         return false;
     }
 
-    @Override public boolean dragged(double x, double y, double deltaX, double deltaY) {
+    @Override public boolean dragged(double x, double y, double deltaX, double deltaY, int button) {
         if (selected) {
             this.x += deltaX;
             this.y += deltaY;
             return true;
         } else {
             for (ModuleDisplay moduleDisplay : md) {
-                if (moduleDisplay.dragged(x, y, deltaX, deltaY)) {
+                if (moduleDisplay.dragged(x, y, deltaX, deltaY, button)) {
                     return true;
                 }
             }

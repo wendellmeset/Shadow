@@ -12,6 +12,7 @@ import me.x150.sipprivate.feature.module.impl.exploit.InstaBow;
 import me.x150.sipprivate.feature.module.impl.exploit.NoComCrash;
 import me.x150.sipprivate.feature.module.impl.exploit.OOBCrash;
 import me.x150.sipprivate.feature.module.impl.exploit.OffhandCrash;
+import me.x150.sipprivate.feature.module.impl.exploit.SkinChangeExploit;
 import me.x150.sipprivate.feature.module.impl.exploit.VanillaSpoof;
 import me.x150.sipprivate.feature.module.impl.fun.TpRange;
 import me.x150.sipprivate.feature.module.impl.misc.AntiOffhandCrash;
@@ -67,6 +68,7 @@ public class ModuleRegistry {
         modules.add(new FireballDeflector());
         modules.add(new ShulkerDeflector());
         modules.add(new CarpetBomb());
+        modules.add(new SkinChangeExploit());
     }
 
     public static List<Module> getModules() {

@@ -42,7 +42,7 @@ public class EnumSettingEditor extends ConfigBase<EnumSetting<?>> {
         return false;
     }
 
-    @Override public boolean dragged(double x, double y, double deltaX, double deltaY) {
+    @Override public boolean dragged(double x, double y, double deltaX, double deltaY, int button) {
         return false;
     }
 

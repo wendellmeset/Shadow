@@ -18,7 +18,7 @@ public abstract class Element {
 
     abstract public boolean clicked(double x, double y, int button);
 
-    abstract public boolean dragged(double x, double y, double deltaX, double deltaY);
+    abstract public boolean dragged(double x, double y, double deltaX, double deltaY, int button);
 
     abstract public boolean released();
 

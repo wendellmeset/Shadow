@@ -1,13 +1,16 @@
 package me.x150.sipprivate.feature.gui.clickgui.element.impl.config;
 
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.config.DoubleSetting;
 import me.x150.sipprivate.feature.gui.clickgui.ClickGUI;
 import me.x150.sipprivate.feature.gui.clickgui.theme.Theme;
 import me.x150.sipprivate.helper.font.FontRenderers;
 import me.x150.sipprivate.helper.render.Renderer;
 import me.x150.sipprivate.helper.util.Utils;
+import net.minecraft.client.util.InputUtil;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
+import org.lwjgl.glfw.GLFW;
 
 public class DoubleSettingEditor extends ConfigBase<DoubleSetting> {
 
@@ -26,13 +29,13 @@ public class DoubleSettingEditor extends ConfigBase<DoubleSetting> {
     @Override public boolean clicked(double x, double y, int button) {
         if (inBounds(x, y)) {
             clicked = true;
-            handleClick(x);
+            if (button == 0) handleClick(x);
             return true;
         }
         return false;
     }
 
-    @Override public boolean dragged(double x, double y, double deltaX, double deltaY) {
+    @Override public boolean dragged(double x, double y, double deltaX, double deltaY, int button) {
         if (clicked) {
             handleClick(x);
         }

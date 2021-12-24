@@ -39,8 +39,8 @@ public class ModuleDisplay extends Element {
         }
     }
 
-    @Override public boolean dragged(double x, double y, double deltaX, double deltaY) {
-        return extended && cd.dragged(x, y, deltaX, deltaY);
+    @Override public boolean dragged(double x, double y, double deltaX, double deltaY, int button) {
+        return extended && cd.dragged(x, y, deltaX, deltaY, button);
     }
 
     @Override public boolean released() {
@@ -77,14 +77,11 @@ public class ModuleDisplay extends Element {
         }
         cd.setX(this.x);
         cd.setY(this.y + height);
-        boolean animationInProgress = extendAnim != 0 && extendAnim != 1;
-        if (animationInProgress) {
-            Renderer.R2D.scissor(x, y - scrollBeingUsed, width, getHeight());
-        }
+        Renderer.R2D.scissor(matrices, x, y, x+width, y+getHeight());
         if (extendAnim > 0) {
             cd.render(matrices, mouseX, mouseY, scrollBeingUsed);
         }
-        if (animationInProgress) Renderer.R2D.unscissor();
+        Renderer.R2D.unscissor();
     }
 
     @Override public void tickAnim() {

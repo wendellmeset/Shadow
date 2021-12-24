@@ -88,7 +88,7 @@ public class NotificationRenderer {
             float pad = 1;
             width += pad;
             Renderer.R2D.fill(ms, new Color(28, 28, 28, 200), notification.renderPosX - width, notification.renderPosY, notification.renderPosX - width + pad + (width * 2 * notification.animationProgress), notification.renderPosY + height);
-            Renderer.R2D.scissor(notification.renderPosX - width + pad, notification.renderPosY, (width * 2 * notification.animationProgress), height + 1);
+            Renderer.R2D.scissor(Renderer.R3D.getEmptyMatrixStack(),notification.renderPosX - width + pad, notification.renderPosY, (notification.renderPosX - width + pad)+(width * 2 * notification.animationProgress), notification.renderPosY+height + 1);
             FontRenderers.getNormal().drawCenteredString(ms, contents, notification.renderPosX, notification.renderPosY + height / 2f - FontRenderers.getNormal().getFontHeight() / 2f, 0xFFFFFF);
             Color GREEN = new Color(100, 255, 20);
             Color RED = new Color(255, 50, 20);
