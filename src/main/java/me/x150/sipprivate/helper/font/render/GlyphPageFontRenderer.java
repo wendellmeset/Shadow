@@ -387,7 +387,7 @@ public class GlyphPageFontRenderer {
             GlStateManager._enableTexture();
         }
 
-//        this.posX += f;
+        //        this.posX += f;
     }
 
     private GlyphPage getCurrentGlyphPage() {

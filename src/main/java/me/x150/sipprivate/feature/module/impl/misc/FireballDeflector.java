@@ -22,6 +22,7 @@ public class FireballDeflector extends Module {
             .description("How to change the fireball's motion (ReflectBack = reflect back at shooter, DeflectSomewhere = idc get it away)").get());
     BooleanSetting    checkVel = this.config.create(new BooleanSetting.Builder(false).name("Check velocity")
             .description("Checks if the fireball is actually approaching before hitting. Can get funky with a lot of them").get());
+
     public FireballDeflector() {
         super("FireballDeflector", "Deflects (or reflects) fireballs in your hit range", ModuleType.MISC);
     }

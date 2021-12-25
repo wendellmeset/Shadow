@@ -77,7 +77,7 @@ public class ModuleDisplay extends Element {
         }
         cd.setX(this.x);
         cd.setY(this.y + height);
-        Renderer.R2D.scissor(matrices, x, y, x+width, y+getHeight());
+        Renderer.R2D.scissor(matrices, x, y, x + width, y + getHeight());
         if (extendAnim > 0) {
             cd.render(matrices, mouseX, mouseY, scrollBeingUsed);
         }

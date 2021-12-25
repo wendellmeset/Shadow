@@ -29,15 +29,18 @@ public class ClickGUI extends Screen implements FastTickable {
     ParticleRenderer real     = new ParticleRenderer(100);
     String           desc     = null;
     double           descX, descY;
-    double scroll         = 0;
-    double trackedScroll = 0;
-    double introAnimation = 0;
-    boolean closing = false;
+    double  scroll         = 0;
+    double  trackedScroll  = 0;
+    double  introAnimation = 0;
+    boolean closing        = false;
+
     private ClickGUI() {
         super(Text.of(""));
         initElements();
         Events.registerEventHandler(EventType.HUD_RENDER, event -> {
-            if (this.real.particles.isEmpty() || !closing) return;
+            if (this.real.particles.isEmpty() || !closing) {
+                return;
+            }
             this.real.render(Renderer.R3D.getEmptyMatrixStack());
         });
     }
@@ -45,7 +48,7 @@ public class ClickGUI extends Screen implements FastTickable {
     @Override protected void init() {
         closing = false;
         introAnimation = 0;
-//        this.real.particles.clear();
+        //        this.real.particles.clear();
         this.real.shouldAdd = true;
     }
 
@@ -81,30 +84,34 @@ public class ClickGUI extends Screen implements FastTickable {
         for (ModuleType value : ModuleType.values()) {
             CategoryDisplay cd = new CategoryDisplay(x, y, value);
             tallestInTheRoom = Math.max(tallestInTheRoom, cd.getHeight());
-            x += cd.getWidth()+5;
+            x += cd.getWidth() + 5;
             if (x >= width) {
-                y += tallestInTheRoom+5;
+                y += tallestInTheRoom + 5;
                 tallestInTheRoom = 0;
                 x = 5;
             }
             elements.add(cd);
         }
     }
+
     double easeInOutQuint(double x) {
         return x < 0.5 ? 16 * x * x * x * x * x : 1 - Math.pow(-2 * x + 2, 5) / 2;
 
     }
+
     @Override public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         if (closing && introAnimation == 0) {
             client.setScreen(null);
             return;
         }
         matrices.push();
-        matrices.translate(0,0,-20);
-        if (!closing) real.render(matrices);
+        matrices.translate(0, 0, -20);
+        if (!closing) {
+            real.render(matrices);
+        }
         matrices.pop();
         matrices.push();
-        matrices.translate(0, -easeInOutQuint(1-introAnimation)*height, 0);
+        matrices.translate(0, -easeInOutQuint(1 - introAnimation) * height, 0);
         matrices.translate(0, -trackedScroll, 0);
         mouseY += trackedScroll;
         List<Element> rev = new ArrayList<>(elements);
@@ -168,7 +175,9 @@ public class ClickGUI extends Screen implements FastTickable {
 
     @Override public void onFastTick() {
         double d = 0.03;
-        if (closing) d *= -1;
+        if (closing) {
+            d *= -1;
+        }
         introAnimation += d;
         introAnimation = MathHelper.clamp(introAnimation, 0, 1);
         trackedScroll = Transitions.transition(trackedScroll, scroll, 7, 0);

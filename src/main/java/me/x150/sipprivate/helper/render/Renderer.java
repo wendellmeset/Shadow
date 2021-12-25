@@ -32,7 +32,6 @@ import net.minecraft.util.math.Vector4f;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.Color;
-import java.util.Vector;
 
 public class Renderer {
 
@@ -258,8 +257,8 @@ public class Renderer {
             end.transform(matrix);
             x = coord.getX();
             y = coord.getY();
-            double width = end.getX()-x;
-            double height = end.getY()-y;
+            double width = end.getX() - x;
+            double height = end.getY() - y;
             width = Math.max(0, width);
             height = Math.max(0, height);
             float d = (float) CoffeeClientMain.client.getWindow().getScaleFactor();

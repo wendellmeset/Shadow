@@ -27,18 +27,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TpRange extends Module {
-    public enum Mode {
-        PaperBypass, Instant
-    }
-    EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.PaperBypass)
-            .name("Mode")
-            .description("How to exploit the range, Instant works on vanilla, PaperBypass on almost everything")
-            .get());
     static final ExecutorService esv = Executors.newFixedThreadPool(1);
-    AtomicBoolean running = new AtomicBoolean(false);
-    Vec3d spoofedPos         = null;
-    Vec3d previousSpoofedPos = null;
-
+    EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.PaperBypass).name("Mode")
+            .description("How to exploit the range, Instant works on vanilla, PaperBypass on almost everything").get());
+    AtomicBoolean running            = new AtomicBoolean(false);
+    Vec3d         spoofedPos         = null;
+    Vec3d         previousSpoofedPos = null;
     public TpRange() {
         super("TpRange", "Hits someone from VERY far away", ModuleType.FUN);
         Events.registerEventHandler(EventType.MOUSE_EVENT, event -> {
@@ -89,8 +83,8 @@ public class TpRange extends Module {
             teleportTo(pos, orig);
             CoffeeClientMain.client.player.updatePosition(orig.x, orig.y, orig.z);
         } else {
-            PlayerMoveC2SPacket tpToEntity = new PlayerMoveC2SPacket.PositionAndOnGround(pos.x,pos.y,pos.z,false);
-            PlayerMoveC2SPacket tpBack = new PlayerMoveC2SPacket.PositionAndOnGround(orig.x,orig.y,orig.z,true);
+            PlayerMoveC2SPacket tpToEntity = new PlayerMoveC2SPacket.PositionAndOnGround(pos.x, pos.y, pos.z, false);
+            PlayerMoveC2SPacket tpBack = new PlayerMoveC2SPacket.PositionAndOnGround(orig.x, orig.y, orig.z, true);
             CoffeeClientMain.client.getNetworkHandler().sendPacket(tpToEntity);
             CoffeeClientMain.client.interactionManager.attackEntity(CoffeeClientMain.client.player, ehr.getEntity());
             CoffeeClientMain.client.getNetworkHandler().sendPacket(tpBack);
@@ -146,5 +140,9 @@ public class TpRange extends Module {
 
     @Override public void onHudRender() {
 
+    }
+
+    public enum Mode {
+        PaperBypass, Instant
     }
 }

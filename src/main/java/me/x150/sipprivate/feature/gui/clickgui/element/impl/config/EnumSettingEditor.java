@@ -57,7 +57,7 @@ public class EnumSettingEditor extends ConfigBase<EnumSetting<?>> {
     @Override public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
         FontRenderers.getNormal().drawString(matrices, configValue.name, x, y + 1, 0xFFFFFF);
         double yOffset = FontRenderers.getNormal().getMarginHeight() + 2;
-        Renderer.R2D.fill(matrices, new Color(0,0,0,30), x, y + yOffset, x + width, y + height);
+        Renderer.R2D.fill(matrices, new Color(0, 0, 0, 30), x, y + yOffset, x + width, y + height);
         yOffset += 1;
         for (EnumSelectorClickable<?> value : values) {
             value.x = x + 1;

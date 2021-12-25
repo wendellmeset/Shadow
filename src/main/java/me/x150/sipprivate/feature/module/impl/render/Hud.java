@@ -34,6 +34,7 @@ import java.util.List;
 
 public class Hud extends Module {
     public static double     currentTps = 0;
+    static ClientFontRenderer titleFr;
     final         DateFormat minSec     = new SimpleDateFormat("mm:ss");
     BooleanSetting fps                 = this.config.create(new BooleanSetting.Builder(true).name("FPS").description("Whether to show FPS").get());
     BooleanSetting tps                 = this.config.create(new BooleanSetting.Builder(true).name("TPS").description("Whether to show TPS").get());
@@ -43,6 +44,7 @@ public class Hud extends Module {
     long           lastTimePacketReceived;
     double         rNoConnectionPosY   = -10d;
     Notification   serverNotResponding = null;
+    List<ModuleEntry> moduleList = new ArrayList<>();
 
     public Hud() {
         super("Hud", "Shows information about the player on screen", ModuleType.RENDER);
@@ -55,6 +57,13 @@ public class Hud extends Module {
                 lastTimePacketReceived = System.currentTimeMillis();
             }
         });
+    }
+
+    static ClientFontRenderer getTitleFr() {
+        if (titleFr == null) {
+            titleFr = FontRenderers.getCustomNormal(20);
+        }
+        return titleFr;
     }
 
     double calcTps(double n) {
@@ -81,16 +90,6 @@ public class Hud extends Module {
 
     }
 
-    static ClientFontRenderer titleFr;
-    List<ModuleEntry> moduleList = new ArrayList<>();
-
-    static ClientFontRenderer getTitleFr() {
-        if (titleFr == null) {
-            titleFr = FontRenderers.getCustomNormal(20);
-        }
-        return titleFr;
-    }
-
     @Override public void onHudRender() {
         if (CoffeeClientMain.client.getNetworkHandler() == null) {
             return;
@@ -100,12 +99,12 @@ public class Hud extends Module {
         }
         MatrixStack ms = Renderer.R3D.getEmptyMatrixStack();
         double heightOffsetLeft = 0, heightOffsetRight = 0;
-        if (CoffeeClientMain.client.options.debugEnabled){
+        if (CoffeeClientMain.client.options.debugEnabled) {
             double heightAccordingToMc = 9;
             List<String> lt = ((IDebugHudAccessor) ((IInGameHudAccessor) CoffeeClientMain.client.inGameHud).getDebugHud()).callGetLeftText();
             List<String> rt = ((IDebugHudAccessor) ((IInGameHudAccessor) CoffeeClientMain.client.inGameHud).getDebugHud()).callGetRightText();
-            heightOffsetLeft = 2+heightAccordingToMc*(lt.size()+3);
-            heightOffsetRight = 2+heightAccordingToMc*rt.size()+5;
+            heightOffsetLeft = 2 + heightAccordingToMc * (lt.size() + 3);
+            heightOffsetRight = 2 + heightAccordingToMc * rt.size() + 5;
         }
         if (!shouldNoConnectionDropDown()) {
             if (serverNotResponding != null) {
@@ -124,7 +123,7 @@ public class Hud extends Module {
 
         if (modules.getValue()) {
             ms.push();
-            ms.translate(0,heightOffsetRight,0);
+            ms.translate(0, heightOffsetRight, 0);
             drawModuleList(ms);
             ms.pop();
         }
@@ -177,7 +176,7 @@ public class Hud extends Module {
             double slideProg = MathHelper.clamp(prog - 1, 0, 1); // 1-2 as 0-1 from 0-2
             double hei = (FontRenderers.getNormal().getMarginHeight() + 2);
             double wid = moduleEntry.getRenderWidth() + 3;
-            Renderer.R2D.fill(ms,ClickGUI.theme.getActive(), width - (wid + 1), y, width, y + hei * expandProg);
+            Renderer.R2D.fill(ms, ClickGUI.theme.getActive(), width - (wid + 1), y, width, y + hei * expandProg);
             ms.push();
             ms.translate((1 - slideProg) * wid, 0, 0);
             Renderer.R2D.fill(ms, ClickGUI.theme.getModule(), width - wid, y, width, y + hei * expandProg);
@@ -219,7 +218,7 @@ public class Hud extends Module {
     static class ModuleEntry {
         Module module;
         double animationProgress = 0;
-        double renderWidth = getWidth();
+        double renderWidth       = getWidth();
 
         void animate() {
             double a = 0.02;

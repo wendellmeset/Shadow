@@ -9,12 +9,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.ShulkerBulletEntity;
 
 public class ShulkerDeflector extends Module {
-    BooleanSetting checkOwner = this.config.create(new BooleanSetting.Builder(true)
-            .name("Check owner")
-            .description("Check if you own the projectile, else hit it")
-            .get());
+    BooleanSetting checkOwner = this.config.create(new BooleanSetting.Builder(true).name("Check owner").description("Check if you own the projectile, else hit it").get());
+
     public ShulkerDeflector() {
-        super("ShulkerDeflector","Automatically reflects shulker's projectiles", ModuleType.MISC);
+        super("ShulkerDeflector", "Automatically reflects shulker's projectiles", ModuleType.MISC);
     }
 
     @Override public void tick() {
@@ -27,8 +25,10 @@ public class ShulkerDeflector extends Module {
 
     @Override public void onFastTick() {
         for (Entity entity : CoffeeClientMain.client.world.getEntities()) {
-            if (entity instanceof ShulkerBulletEntity sbe && inHitRange(CoffeeClientMain.client.player,sbe)) {
-                if (checkOwner.getValue() && sbe.getOwner() != null && sbe.getOwner().equals(CoffeeClientMain.client.player)) continue;
+            if (entity instanceof ShulkerBulletEntity sbe && inHitRange(CoffeeClientMain.client.player, sbe)) {
+                if (checkOwner.getValue() && sbe.getOwner() != null && sbe.getOwner().equals(CoffeeClientMain.client.player)) {
+                    continue;
+                }
                 CoffeeClientMain.client.interactionManager.attackEntity(CoffeeClientMain.client.player, sbe);
             }
         }

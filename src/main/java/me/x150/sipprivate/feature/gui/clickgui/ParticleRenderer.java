@@ -22,10 +22,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ParticleRenderer {
-    static Color DYING = new Color(255, 255, 255, 0); // it goes gradient so you can still see the white
+    static Color          DYING     = new Color(255, 255, 255, 0); // it goes gradient so you can still see the white
     public List<Particle> particles = new ArrayList<>();
-    int            pc;
     public boolean shouldAdd = true;
+    int pc;
     long lastTick = System.currentTimeMillis();
 
     public ParticleRenderer(int pc) {
@@ -36,7 +36,9 @@ public class ParticleRenderer {
     }
 
     void addParticle() {
-        if (!shouldAdd) return;
+        if (!shouldAdd) {
+            return;
+        }
         Particle n = new Particle();
         n.x = Math.random() * CoffeeClientMain.client.getWindow().getScaledWidth();
         n.y = -10;
@@ -54,14 +56,18 @@ public class ParticleRenderer {
     }
 
     public void render(MatrixStack stack) {
-        long timeDiffSinceLastTick = System.currentTimeMillis()-lastTick;
-        int iter = (int) Math.floor(timeDiffSinceLastTick/20d);
-        for(int i = 0;i<iter;i++) tick();
-        if (particles.size() < this.pc) addParticle();
+        long timeDiffSinceLastTick = System.currentTimeMillis() - lastTick;
+        int iter = (int) Math.floor(timeDiffSinceLastTick / 20d);
+        for (int i = 0; i < iter; i++) {
+            tick();
+        }
+        if (particles.size() < this.pc) {
+            addParticle();
+        }
         for (Particle particle : particles) {
             particle.render(stack);
         }
-        RenderSystem.setShaderColor(1,1,1,1);
+        RenderSystem.setShaderColor(1, 1, 1, 1);
     }
 
     static class Particle {
