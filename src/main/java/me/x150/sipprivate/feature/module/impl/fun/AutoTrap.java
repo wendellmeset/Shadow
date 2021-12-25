@@ -80,7 +80,7 @@ public class AutoTrap extends Module {
     }
 
     @Override public void onFastTick() {
-        for (Entity player : CoffeeClientMain.client.world.getEntities()) {
+        for (Entity player : CoffeeClientMain.client.world.getPlayers()) {
             if (player.equals(CoffeeClientMain.client.player)) {
                 continue;
             }
@@ -153,7 +153,7 @@ public class AutoTrap extends Module {
 
     @Override public void onWorldRender(MatrixStack matrices) {
         if (isDebuggerEnabled()) {
-            for (Entity player : CoffeeClientMain.client.world.getEntities()) {
+            for (Entity player : CoffeeClientMain.client.world.getPlayers()) {
                 if (player.equals(CoffeeClientMain.client.player)) {
                     continue;
                 }
