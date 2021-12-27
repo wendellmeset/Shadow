@@ -32,6 +32,7 @@ import me.x150.sipprivate.feature.module.impl.render.TargetHud;
 import me.x150.sipprivate.feature.module.impl.world.AnyPlacer;
 import me.x150.sipprivate.feature.module.impl.world.AutoTnt;
 import me.x150.sipprivate.feature.module.impl.world.Boom;
+import me.x150.sipprivate.feature.module.impl.world.LetThereBeLight;
 import me.x150.sipprivate.feature.module.impl.world.Voider;
 import me.x150.sipprivate.feature.module.impl.world.XRAY;
 
@@ -73,6 +74,7 @@ public class ModuleRegistry {
         modules.add(new SkinChangeExploit());
         modules.add(new AutoTrap());
         modules.add(new AutoTnt());
+        modules.add(new LetThereBeLight());
     }
 
     public static List<Module> getModules() {

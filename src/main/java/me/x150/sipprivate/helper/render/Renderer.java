@@ -29,6 +29,7 @@ import net.minecraft.util.math.Quaternion;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.math.Vector4f;
+import net.minecraft.util.shape.VoxelShape;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.Color;
@@ -189,6 +190,38 @@ public class Renderer {
             GL11.glDepthFunc(GL11.GL_LEQUAL);
             RenderSystem.disableBlend();
             RenderSystem.enableCull();
+        }
+
+        public static void renderShape(Vec3d start, VoxelShape shape, MatrixStack matrices, Color color) {
+            float red = color.getRed() / 255f;
+            float green = color.getGreen() / 255f;
+            float blue = color.getBlue() / 255f;
+            float alpha = color.getAlpha() / 255f;
+            Camera c = CoffeeClientMain.client.gameRenderer.getCamera();
+            Vec3d camPos = c.getPos();
+            start = start.subtract(camPos);
+            Matrix4f matrix = matrices.peek().getPositionMatrix();
+            float x1 = (float) start.x;
+            float y1 = (float) start.y;
+            float z1 = (float) start.z;
+            BufferBuilder buffer = Tessellator.getInstance().getBuffer();
+            RenderSystem.setShader(GameRenderer::getPositionColorShader);
+            GL11.glDepthFunc(GL11.GL_ALWAYS);
+            RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+            RenderSystem.defaultBlendFunc();
+            RenderSystem.enableBlend();
+            buffer.begin(VertexFormat.DrawMode.DEBUG_LINES, VertexFormats.POSITION_COLOR);
+
+            shape.forEachEdge((minX, minY, minZ, maxX, maxY, maxZ) -> {
+                buffer.vertex(matrix,(float) (x1+minX),(float) (y1+minY),(float) (z1+minZ)).color(red, green, blue, alpha).next();
+                buffer.vertex(matrix,(float) (x1+maxX),(float) (y1+maxY),(float) (z1+maxZ)).color(red, green, blue, alpha).next();
+            });
+
+            buffer.end();
+
+            BufferRenderer.draw(buffer);
+            GL11.glDepthFunc(GL11.GL_LEQUAL);
+            RenderSystem.disableBlend();
         }
 
         public static void line(Vec3d start, Vec3d end, Color color, MatrixStack matrices) {
