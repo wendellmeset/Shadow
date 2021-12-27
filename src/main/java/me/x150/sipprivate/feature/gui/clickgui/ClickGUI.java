@@ -111,7 +111,9 @@ public class ClickGUI extends Screen implements FastTickable {
         }
         matrices.pop();
         matrices.push();
-        matrices.translate(0, -easeInOutQuint(1 - introAnimation) * height, 0);
+        double intp = easeInOutQuint(introAnimation);
+        matrices.translate((1-intp)*width/2, (1-intp)*height/2, 0);
+        matrices.scale((float) intp, (float) intp, 1);
         matrices.translate(0, -trackedScroll, 0);
         mouseY += trackedScroll;
         List<Element> rev = new ArrayList<>(elements);
