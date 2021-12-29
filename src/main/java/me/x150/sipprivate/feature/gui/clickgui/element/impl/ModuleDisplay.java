@@ -67,7 +67,7 @@ public class ModuleDisplay extends Element {
             hoverStart = System.currentTimeMillis();
         }
         if (hoverStart + 500 < System.currentTimeMillis() && hovered) {
-            ClickGUI.instance.renderDescription(Utils.Mouse.getMouseX(), Utils.Mouse.getMouseY() + 10, module.getDescription());
+            ClickGUI.instance().renderDescription(Utils.Mouse.getMouseX(), Utils.Mouse.getMouseY() + 10, module.getDescription());
         }
         hoveredBefore = hovered;
         Renderer.R2D.fill(matrices, hovered ? theme.getModule().darker() : theme.getModule(), x, y, x + width, y + height);

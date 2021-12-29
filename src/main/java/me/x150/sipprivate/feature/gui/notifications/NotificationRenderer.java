@@ -84,15 +84,23 @@ public class NotificationRenderer {
             float width = FontRenderers.getNormal().getStringWidth(contents) + 5;
             width = width / 2f;
             width = Math.max(minWidth, width);
-            Renderer.R2D.scissor(Renderer.R3D.getEmptyMatrixStack(),notification.renderPosX-width*notification.animationProgress,notification.renderPosY,notification.renderPosX+width*notification.animationProgress,notification.renderPosY + height + 1);
-            Renderer.R2D.fill(ms, new Color(28, 28, 28, 200), notification.renderPosX - width, notification.renderPosY, notification.renderPosX + width, notification.renderPosY + height);
+            Renderer.R2D.scissor(Renderer.R3D.getEmptyMatrixStack(), notification.renderPosX - width * notification.animationProgress, notification.renderPosY, notification.renderPosX + width * notification.animationProgress + 1, notification.renderPosY + height + 1);
+            Renderer.R2D.fill(ms, new Color(28, 28, 28, 200), notification.renderPosX - width, notification.renderPosY, notification.renderPosX + width + 1, notification.renderPosY + height);
             FontRenderers.getNormal().drawCenteredString(ms, contents, notification.renderPosX, notification.renderPosY + height / 2f - FontRenderers.getNormal().getFontHeight() / 2f, 0xFFFFFF);
             double timeRemainingInv = 1 - timeRemaining;
             if (!notification.shouldDoAnimation && notification.animationProgress == 0 && notificationExpired) {
                 timeRemainingInv = 1;
             }
-            Renderer.R2D.fill(ms,ClickGUI.theme.getActive(),notification.renderPosX - width, notification.renderPosY + height - 1, notification.renderPosX + width, notification.renderPosY + height);
-            Renderer.R2D.fill(ms, ClickGUI.theme.getAccent(), notification.renderPosX - width, notification.renderPosY + height - 1, notification.renderPosX - width + (width * 2 * timeRemainingInv), notification.renderPosY + height);
+            if (notification.duration == -1) {
+                double seedR = (System.currentTimeMillis() % 2000) / 2000d;
+                double seed = Math.abs((Math.sin(Math.toRadians(seedR * 360)) + 1) / 2);
+                Color start = Renderer.Util.lerp(ClickGUI.theme.getActive(), ClickGUI.theme.getAccent(), seed);
+                Color end = Renderer.Util.lerp(ClickGUI.theme.getActive(), ClickGUI.theme.getAccent(), 1 - seed);
+                Renderer.R2D.fillGradientH(ms, end, start, notification.renderPosX - width, notification.renderPosY + height - 1, notification.renderPosX + width + 1, notification.renderPosY + height);
+            } else {
+                Renderer.R2D.fill(ms, ClickGUI.theme.getActive(), notification.renderPosX - width, notification.renderPosY + height - 1, notification.renderPosX + width + 1, notification.renderPosY + height);
+                Renderer.R2D.fill(ms, ClickGUI.theme.getAccent(), notification.renderPosX - width, notification.renderPosY + height - 1, notification.renderPosX - width + ((width + 1) * 2 * timeRemainingInv), notification.renderPosY + height);
+            }
             Renderer.R2D.unscissor();
             currentYOffset += height + 3;
         }

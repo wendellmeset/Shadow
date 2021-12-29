@@ -27,7 +27,7 @@ public class SipoverV1 implements Theme {
     }
 
     @Override public Color getActive() {
-        return new Color(210, 75, 2, 255);
+        return new Color(222, 67, 0, 255);
     }
 
     @Override public Color getInactive() {

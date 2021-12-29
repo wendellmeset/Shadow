@@ -105,7 +105,7 @@ public class ConfigDisplay extends Element {
             yOffset += basis.getHeight();
         }
         if (hoverStart + 500 < System.currentTimeMillis() && hovered && renderingDesc != null) {
-            ClickGUI.instance.renderDescription(Utils.Mouse.getMouseX(), Utils.Mouse.getMouseY() + 10, renderingDesc);
+            ClickGUI.instance().renderDescription(Utils.Mouse.getMouseX(), Utils.Mouse.getMouseY() + 10, renderingDesc);
         }
         this.height = yOffset;
     }

@@ -5,6 +5,7 @@
   "mixins": [
     "AbstractBlockStateMixin",
     "AbstractClientPlayerEntityMixin",
+    "AButtonWidgetMixin",
     "AChatScreenMixin",
     "AEntityRendererMixin",
     "AInGameHudMixin",
@@ -22,6 +23,7 @@
     "IMinecraftClientAccessor",
     "IPlayerMoveC2SPacketAccessor",
     "IRenderTickCounterAccessor",
+    "ISliderWidgetAccessor",
     "ItemStackMixin",
     "KeyboardMixin",
     "LivingEntityMixin",

@@ -15,7 +15,7 @@ public class ClickGUI extends Module {
     @Override public void tick() {
         t--;
         if (t == 0) {
-            CoffeeClientMain.client.setScreen(me.x150.sipprivate.feature.gui.clickgui.ClickGUI.instance);
+            CoffeeClientMain.client.setScreen(me.x150.sipprivate.feature.gui.clickgui.ClickGUI.instance());
             setEnabled(false);
         }
     }
