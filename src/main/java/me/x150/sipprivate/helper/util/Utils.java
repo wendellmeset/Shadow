@@ -8,7 +8,7 @@ package me.x150.sipprivate.helper.util;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import me.x150.sipprivate.CoffeeClientMain;
-import me.x150.sipprivate.feature.gui.screen.AtomicConsoleScreen;
+import me.x150.sipprivate.feature.gui.screen.CoffeeConsoleScreen;
 import me.x150.sipprivate.helper.font.adapter.FontAdapter;
 import me.x150.sipprivate.mixin.IMinecraftClientAccessor;
 import me.x150.sipprivate.mixin.IRenderTickCounterAccessor;
@@ -285,19 +285,19 @@ public class Utils {
         }
 
         public static void success(String n) {
-            message0(n, AtomicConsoleScreen.SUCCESS);
+            message0(n, CoffeeConsoleScreen.SUCCESS);
         }
 
         public static void error(String n) {
-            message0(n, AtomicConsoleScreen.ERROR);
+            message0(n, CoffeeConsoleScreen.ERROR);
         }
 
         public static void message(String n) {
-            message0(n, AtomicConsoleScreen.DEFAULT);
+            message0(n, CoffeeConsoleScreen.DEFAULT);
         }
 
         public static void message0(String n, Color c) {
-            AtomicConsoleScreen.instance().log(n, c);
+            CoffeeConsoleScreen.instance().log(n, c);
         }
 
         public static void messageChat(String n) {

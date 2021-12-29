@@ -15,6 +15,7 @@ import me.x150.sipprivate.feature.module.impl.exploit.OffhandCrash;
 import me.x150.sipprivate.feature.module.impl.exploit.SkinChangeExploit;
 import me.x150.sipprivate.feature.module.impl.exploit.VanillaSpoof;
 import me.x150.sipprivate.feature.module.impl.fun.AutoTrap;
+import me.x150.sipprivate.feature.module.impl.fun.FakeHacker;
 import me.x150.sipprivate.feature.module.impl.fun.TpRange;
 import me.x150.sipprivate.feature.module.impl.misc.AntiOffhandCrash;
 import me.x150.sipprivate.feature.module.impl.misc.AntiPacketKick;
@@ -75,6 +76,7 @@ public class ModuleRegistry {
         modules.add(new AutoTrap());
         modules.add(new AutoTnt());
         modules.add(new LetThereBeLight());
+        modules.add(new FakeHacker());
     }
 
     public static List<Module> getModules() {

@@ -537,10 +537,10 @@ public class Renderer {
 
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
             bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+            bufferBuilder.vertex(matrix, (float) x1, (float) y1, 0.0F).color(r1, g1, b1, a1).next();
             bufferBuilder.vertex(matrix, (float) x1, (float) y2, 0.0F).color(r1, g1, b1, a1).next();
-            bufferBuilder.vertex(matrix, (float) x2, (float) y2, 0.0F).color(r1, g1, b1, a1).next();
+            bufferBuilder.vertex(matrix, (float) x2, (float) y2, 0.0F).color(r2, g2, b2, a2).next();
             bufferBuilder.vertex(matrix, (float) x2, (float) y1, 0.0F).color(r2, g2, b2, a2).next();
-            bufferBuilder.vertex(matrix, (float) x1, (float) y1, 0.0F).color(r2, g2, b2, a2).next();
             bufferBuilder.end();
             BufferRenderer.draw(bufferBuilder);
             RenderSystem.enableTexture();

@@ -6,6 +6,7 @@
 package me.x150.sipprivate.feature.gui.notifications;
 
 import me.x150.sipprivate.CoffeeClientMain;
+import me.x150.sipprivate.feature.gui.clickgui.ClickGUI;
 import me.x150.sipprivate.helper.font.FontRenderers;
 import me.x150.sipprivate.helper.render.Renderer;
 import me.x150.sipprivate.helper.util.Transitions;
@@ -31,6 +32,7 @@ public class NotificationRenderer {
         for (Notification notification : new ArrayList<>(notifications)) {
             notification.renderPosX = Transitions.transition(notification.renderPosX, notification.posX, 10);
             notification.renderPosY = Transitions.transition(notification.renderPosY, notification.posY, 10);
+            notification.animationProgress = Transitions.transition(notification.animationProgress, notification.animationGoal, 10, 0.0001);
         }
         for (Notification notification : new ArrayList<>(topBarNotifications)) {
             notification.renderPosX = Transitions.transition(notification.renderPosX, notification.posX, 10);
@@ -43,9 +45,6 @@ public class NotificationRenderer {
 
     public static void renderTop() {
         MatrixStack ms = Renderer.R3D.getEmptyMatrixStack();
-        //        if (!Objects.requireNonNull(ModuleRegistry.getByClass(Hud.class)).isEnabled()) {
-        //            return;
-        //        }
         int baseX = CoffeeClientMain.client.getWindow().getScaledWidth() / 2;
         int height = 16;
         int baseY = -height - 5;
@@ -68,12 +67,12 @@ public class NotificationRenderer {
             }
             if (!notificationExpired) {
                 notification.posY = currentYOffset;
-                if (Math.abs(notification.posY - notification.renderPosY) < 5) {
+                if (Math.abs(notification.posY - notification.renderPosY) < 3) {
                     notification.animationGoal = 1;
                 }
             } else {
                 notification.animationGoal = 0;
-                if (notification.animationProgress < 0.005) {
+                if (notification.animationProgress < 0.01) {
                     notification.posY = baseY - 5;
                     if (notification.renderPosY < baseY + 5) {
                         topBarNotifications.remove(notification);
@@ -85,25 +84,15 @@ public class NotificationRenderer {
             float width = FontRenderers.getNormal().getStringWidth(contents) + 5;
             width = width / 2f;
             width = Math.max(minWidth, width);
-            float pad = 1;
-            width += pad;
-            Renderer.R2D.fill(ms, new Color(28, 28, 28, 200), notification.renderPosX - width, notification.renderPosY, notification.renderPosX - width + pad + (width * 2 * notification.animationProgress), notification.renderPosY + height);
-            Renderer.R2D.scissor(Renderer.R3D.getEmptyMatrixStack(), notification.renderPosX - width + pad, notification.renderPosY, (notification.renderPosX - width + pad) + (width * 2 * notification.animationProgress), notification.renderPosY + height + 1);
+            Renderer.R2D.scissor(Renderer.R3D.getEmptyMatrixStack(),notification.renderPosX-width*notification.animationProgress,notification.renderPosY,notification.renderPosX+width*notification.animationProgress,notification.renderPosY + height + 1);
+            Renderer.R2D.fill(ms, new Color(28, 28, 28, 200), notification.renderPosX - width, notification.renderPosY, notification.renderPosX + width, notification.renderPosY + height);
             FontRenderers.getNormal().drawCenteredString(ms, contents, notification.renderPosX, notification.renderPosY + height / 2f - FontRenderers.getNormal().getFontHeight() / 2f, 0xFFFFFF);
-            Color GREEN = new Color(100, 255, 20);
-            Color RED = new Color(255, 50, 20);
             double timeRemainingInv = 1 - timeRemaining;
             if (!notification.shouldDoAnimation && notification.animationProgress == 0 && notificationExpired) {
                 timeRemainingInv = 1;
             }
-            Color color = Renderer.Util.lerp(GREEN, RED, timeRemaining);
-            double sin = Math.sin(Math.toRadians((c % 1000) / 1000d * 360));
-            if (notification.duration == -1) {
-                color = Renderer.Util.lerp(RED, RED.darker().darker(), sin);
-            } else if (notification.duration == -2) {
-                color = Renderer.Util.lerp(GREEN, GREEN.darker().darker(), sin);
-            }
-            Renderer.R2D.fill(ms, color, notification.renderPosX - width, notification.renderPosY + height - 2, notification.renderPosX - width + (width * 2 * timeRemainingInv), notification.renderPosY + height - 1);
+            Renderer.R2D.fill(ms,ClickGUI.theme.getActive(),notification.renderPosX - width, notification.renderPosY + height - 1, notification.renderPosX + width, notification.renderPosY + height);
+            Renderer.R2D.fill(ms, ClickGUI.theme.getAccent(), notification.renderPosX - width, notification.renderPosY + height - 1, notification.renderPosX - width + (width * 2 * timeRemainingInv), notification.renderPosY + height);
             Renderer.R2D.unscissor();
             currentYOffset += height + 3;
         }
@@ -111,25 +100,27 @@ public class NotificationRenderer {
 
     public static void renderSide() {
         MatrixStack ms = Renderer.R3D.getEmptyMatrixStack();
-        //        if (!Objects.requireNonNull(ModuleRegistry.getByClass(Hud.class)).isEnabled()) {
-        //            return;
-        //        }
-        int currentYOffset = -20;
-        int baseX = CoffeeClientMain.client.getWindow().getScaledWidth() - 160;
-        int baseY = CoffeeClientMain.client.getWindow().getScaledHeight() - 50;
+        int currentYOffset = 0;
+        int baseX = CoffeeClientMain.client.getWindow().getScaledWidth();
+        int baseY = CoffeeClientMain.client.getWindow().getScaledHeight() - 10;
         long c = System.currentTimeMillis();
         for (Notification notification : new ArrayList<>(notifications)) {
             double timeRemaining = Math.abs(c - notification.creationDate - notification.duration) / (double) notification.duration;
             timeRemaining = MathHelper.clamp(timeRemaining, 0, 1);
             boolean notificationExpired = notification.creationDate + notification.duration < c;
             int notifHeight = (int) (2 + ((notification.contents.length + (notification.title.isEmpty() ? 0 : 1)) * FontRenderers.getNormal().getFontHeight()));
+            double descWidth = 0;
+            for (String content : notification.contents) {
+                descWidth = Math.max(FontRenderers.getNormal().getStringWidth(content), descWidth);
+            }
+            double notifWidth = Math.max(4+Math.max(descWidth,FontRenderers.getNormal().getStringWidth(notification.title)),100);
+            notification.posY = baseY - currentYOffset - notifHeight;
             currentYOffset += notifHeight + 2;
-            notification.posY = baseY - currentYOffset;
             if (!notificationExpired) {
-                notification.posX = baseX;
+                notification.posX = baseX-notifWidth-10;
             } else {
-                notification.posX = baseX + 170;
-                if (notification.renderPosX > baseX + 165) {
+                notification.posX = baseX + 10;
+                if (notification.renderPosX > baseX + 5) {
                     notifications.remove(notification);
                     continue;
                 }
@@ -138,12 +129,11 @@ public class NotificationRenderer {
                 notification.renderPosY = notification.posY;
             }
             if (notification.renderPosX == 0) {
-                notification.renderPosX = baseX + 150;
+                notification.renderPosX = baseX+4;
             }
-            Renderer.R2D.fill(new Color(28, 28, 28, 170), notification.renderPosX, notification.renderPosY, notification.renderPosX + 151, notification.renderPosY + notifHeight);
-            Color GREEN = new Color(100, 255, 20);
-            Color RED = new Color(255, 50, 20);
-            Renderer.R2D.fill(Renderer.Util.lerp(GREEN, RED, timeRemaining), notification.renderPosX + 150, notification.renderPosY, notification.renderPosX + 150 + 1, notification.renderPosY + ((1 - timeRemaining) * notifHeight));
+            Renderer.R2D.fill(new Color(28, 28, 28), notification.renderPosX, notification.renderPosY, notification.renderPosX + notifWidth, notification.renderPosY + notifHeight);
+            Renderer.R2D.fill(ClickGUI.theme.getActive(),notification.renderPosX-1,notification.renderPosY,notification.renderPosX,notification.renderPosY+notifHeight);
+            Renderer.R2D.fill(ClickGUI.theme.getAccent(),notification.renderPosX-1,notification.renderPosY,notification.renderPosX,notification.renderPosY+(notifHeight*(1-timeRemaining)));
             int currentYOffsetText = (int) (1 + FontRenderers.getNormal().getFontHeight());
             FontRenderers.getNormal().drawString(ms, notification.title, notification.renderPosX + 2, notification.renderPosY + 1, 0xFFFFFF);
             for (String content : notification.contents) {

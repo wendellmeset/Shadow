@@ -3,7 +3,7 @@ package me.x150.sipprivate.feature.command.impl;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.command.Command;
-import me.x150.sipprivate.feature.gui.screen.AtomicConsoleScreen;
+import me.x150.sipprivate.feature.gui.screen.CoffeeConsoleScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
@@ -95,7 +95,7 @@ public class FakeItem extends Command {
                     StringWriter sw = new StringWriter();
                     e.printStackTrace(new PrintWriter(sw));
                     for (String s : sw.toString().split("\n")) {
-                        AtomicConsoleScreen.instance().log(s, AtomicConsoleScreen.BACKGROUND);
+                        CoffeeConsoleScreen.instance().log(s, CoffeeConsoleScreen.BACKGROUND);
                     }
                     return;
                 }

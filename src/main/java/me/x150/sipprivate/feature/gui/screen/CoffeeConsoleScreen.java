@@ -16,24 +16,24 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AtomicConsoleScreen extends ImGuiProxyScreen {
+public class CoffeeConsoleScreen extends ImGuiProxyScreen {
     public static final Color               ERROR      = new Color(214, 93, 62);
     public static final Color               SUCCESS    = new Color(65, 217, 101);
     public static final Color               DEFAULT    = Color.WHITE;
     public static final Color               CLIENT     = new Color(61, 173, 217);
     public static final Color               BACKGROUND = new Color(80, 99, 107);
-    static              AtomicConsoleScreen inst       = null;
+    static              CoffeeConsoleScreen inst       = null;
     final               List<LogEntry>      logs       = new ArrayList<>();
     final               ImString            current    = new ImString();
     boolean focusBefore = false;
 
-    private AtomicConsoleScreen() {
+    private CoffeeConsoleScreen() {
 
     }
 
-    public static AtomicConsoleScreen instance() {
+    public static CoffeeConsoleScreen instance() {
         if (inst == null) {
-            inst = new AtomicConsoleScreen();
+            inst = new CoffeeConsoleScreen();
         }
         return inst;
     }

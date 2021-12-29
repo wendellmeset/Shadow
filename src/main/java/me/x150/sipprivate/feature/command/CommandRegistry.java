@@ -27,7 +27,7 @@ import me.x150.sipprivate.feature.command.impl.SkinExploit;
 import me.x150.sipprivate.feature.command.impl.Taco;
 import me.x150.sipprivate.feature.command.impl.Toggle;
 import me.x150.sipprivate.feature.command.impl.ViewNbt;
-import me.x150.sipprivate.feature.gui.screen.AtomicConsoleScreen;
+import me.x150.sipprivate.feature.gui.screen.CoffeeConsoleScreen;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -80,17 +80,17 @@ public class CommandRegistry {
         String[] args = Arrays.copyOfRange(spl, 1, spl.length);
         Command c = CommandRegistry.getByAlias(cmd);
         if (c == null) {
-            AtomicConsoleScreen.instance().log("Command \"" + cmd + "\" not found", AtomicConsoleScreen.ERROR);
+            CoffeeConsoleScreen.instance().log("Command \"" + cmd + "\" not found", CoffeeConsoleScreen.ERROR);
         } else {
-            AtomicConsoleScreen.instance().log("> " + command, AtomicConsoleScreen.CLIENT);
+            CoffeeConsoleScreen.instance().log("> " + command, CoffeeConsoleScreen.CLIENT);
             try {
                 c.onExecute(args);
             } catch (Exception e) {
-                AtomicConsoleScreen.instance().log("Error while running command " + command, AtomicConsoleScreen.ERROR);
+                CoffeeConsoleScreen.instance().log("Error while running command " + command, CoffeeConsoleScreen.ERROR);
                 StringWriter sw = new StringWriter();
                 e.printStackTrace(new PrintWriter(sw));
                 for (String s : sw.toString().split("\n")) {
-                    AtomicConsoleScreen.instance().log(s, AtomicConsoleScreen.BACKGROUND);
+                    CoffeeConsoleScreen.instance().log(s, CoffeeConsoleScreen.BACKGROUND);
                 }
             }
         }
