@@ -17,6 +17,7 @@
     "EntityRenderDispatcherMixin",
     "GameMenuMixin",
     "GameRendererMixin",
+    "HandledScreenMixin",
     "ICustomPayloadC2SPacketAccessor",
     "IDebugHudAccessor",
     "IInGameHudAccessor",

@@ -20,6 +20,7 @@ import me.x150.sipprivate.feature.module.impl.fun.TpRange;
 import me.x150.sipprivate.feature.module.impl.misc.AntiOffhandCrash;
 import me.x150.sipprivate.feature.module.impl.misc.AntiPacketKick;
 import me.x150.sipprivate.feature.module.impl.misc.FireballDeflector;
+import me.x150.sipprivate.feature.module.impl.misc.NoFall;
 import me.x150.sipprivate.feature.module.impl.misc.ShulkerDeflector;
 import me.x150.sipprivate.feature.module.impl.movement.BoatPhase;
 import me.x150.sipprivate.feature.module.impl.movement.Flight;
@@ -77,6 +78,7 @@ public class ModuleRegistry {
         modules.add(new AutoTnt());
         modules.add(new LetThereBeLight());
         modules.add(new FakeHacker());
+        modules.add(new NoFall());
     }
 
     public static List<Module> getModules() {
