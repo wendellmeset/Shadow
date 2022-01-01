@@ -10,6 +10,7 @@ import me.x150.sipprivate.feature.module.ModuleType;
 import me.x150.sipprivate.helper.event.EventType;
 import me.x150.sipprivate.helper.event.Events;
 import me.x150.sipprivate.helper.font.FontRenderers;
+import me.x150.sipprivate.helper.render.MSAAFramebuffer;
 import me.x150.sipprivate.helper.render.Renderer;
 import me.x150.sipprivate.helper.util.Transitions;
 import net.minecraft.client.gui.screen.Screen;
@@ -111,6 +112,10 @@ public class ClickGUI extends Screen implements FastTickable {
             client.setScreen(null);
             return;
         }
+        MSAAFramebuffer.use(MSAAFramebuffer.MAX_SAMPLES,() -> renderIntern(matrices, mouseX, mouseY, delta));
+    }
+
+    void renderIntern(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         matrices.push();
         matrices.translate(0, 0, -20);
         if (!closing) {
@@ -143,8 +148,10 @@ public class ClickGUI extends Screen implements FastTickable {
 
     @Override public boolean mouseClicked(double mouseX, double mouseY, int button) {
         mouseY += trackedScroll;
-        for (Element element : elements) {
+        for (Element element : new ArrayList<>(elements)) {
             if (element.clicked(mouseX, mouseY, button)) {
+                elements.remove(element);
+                elements.add(0, element); // put to front when clicked
                 return true;
             }
         }

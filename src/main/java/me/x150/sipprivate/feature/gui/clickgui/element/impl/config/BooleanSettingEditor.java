@@ -54,9 +54,11 @@ public class BooleanSettingEditor extends ConfigBase<BooleanSetting> {
         Theme theme = ClickGUI.theme;
         double smoothAnimProgress = easeInOutCubic(animProgress);
         //        if (xSmooth==-1) xSmooth = getPreferredX();
-        Renderer.R2D.fill(matrices, Renderer.Util.lerp(theme.getActive(), theme.getInactive(), smoothAnimProgress), x, y + height / 2d - rh / 2d, x + rw, y + height / 2d + rh / 2d);
+//        Renderer.R2D.fill(matrices, Renderer.Util.lerp(theme.getActive(), theme.getInactive(), smoothAnimProgress), x, y + height / 2d - rh / 2d, x + rw, y + height / 2d + rh / 2d);
+        Renderer.R2D.renderRoundedQuad(matrices, Renderer.Util.lerp(theme.getActive(), theme.getInactive(), smoothAnimProgress), x, y+height/2d-rh/2d, x+rw, y+height/2d+rh/2d,rh/2d);
         double rix = getPreferredX();
-        Renderer.R2D.fill(matrices, theme.getAccent(), rix, y + height / 2d - rh / 2d + margin, rix + rid, y + height / 2d - rh / 2d + margin + rid);
+//        Renderer.R2D.fill(matrices, theme.getAccent(), rix, y + height / 2d - rh / 2d + margin, rix + rid, y + height / 2d - rh / 2d + margin + rid);
+        Renderer.R2D.renderCircle(matrices,theme.getAccent(),rix+rid/2,y+height/2d,rid/2d,15);
         //        Renderer.R2D.renderCircle(matrices, Theme.ACCENT,);
         FontRenderers.getNormal().drawString(matrices, configValue.getName(), x + rw + 2, y + height / 2d - FontRenderers.getNormal().getMarginHeight() / 2d, 0xFFFFFF);
     }

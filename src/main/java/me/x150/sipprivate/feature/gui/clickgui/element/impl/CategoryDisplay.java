@@ -86,7 +86,8 @@ public class CategoryDisplay extends Element {
 
     @Override public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
         Theme theme = ClickGUI.theme;
-        Renderer.R2D.fill(matrices, theme.getHeader(), x, y, x + width, y + headerHeight());
+//        Renderer.R2D.fill(matrices, theme.getHeader(), x, y, x + width, y + headerHeight());
+        Renderer.R2D.renderRoundedQuad(matrices, theme.getHeader(), x, y, x+width, y + height + 5,5);
         cfr.drawCenteredString(matrices, mt.getName(), x + width / 2d, y + headerHeight() / 2d - cfr.getFontHeight() / 2d, 0xFFFFFF);
         double y = headerHeight();
         for (ModuleDisplay moduleDisplay : md) {

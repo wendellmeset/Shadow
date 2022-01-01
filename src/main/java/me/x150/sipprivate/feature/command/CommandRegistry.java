@@ -25,6 +25,7 @@ import me.x150.sipprivate.feature.command.impl.Rename;
 import me.x150.sipprivate.feature.command.impl.Say;
 import me.x150.sipprivate.feature.command.impl.SkinExploit;
 import me.x150.sipprivate.feature.command.impl.Taco;
+import me.x150.sipprivate.feature.command.impl.Test;
 import me.x150.sipprivate.feature.command.impl.Toggle;
 import me.x150.sipprivate.feature.command.impl.ViewNbt;
 import me.x150.sipprivate.feature.gui.screen.CoffeeConsoleScreen;
@@ -68,6 +69,7 @@ public class CommandRegistry {
         commands.add(new Taco());
         commands.add(new Bind());
         commands.add(new SkinExploit());
+        commands.add(new Test());
     }
 
     public static List<Command> getCommands() {

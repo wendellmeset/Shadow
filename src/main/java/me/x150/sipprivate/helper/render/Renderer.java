@@ -552,6 +552,48 @@ public class Renderer {
             fill(R3D.getEmptyMatrixStack(), c, x1, y1, x2, y2);
         }
 
+        public static void renderRoundedQuad(MatrixStack matrices, Color c, double fromX, double fromY, double toX, double toY, double rad) {
+            int color = c.getRGB();
+            Matrix4f matrix = matrices.peek().getPositionMatrix();
+            float f = (float) (color >> 24 & 255) / 255.0F;
+            float g = (float) (color >> 16 & 255) / 255.0F;
+            float h = (float) (color >> 8 & 255) / 255.0F;
+            float k = (float) (color & 255) / 255.0F;
+            BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
+            RenderSystem.defaultBlendFunc();
+            RenderSystem.enableBlend();
+            RenderSystem.disableTexture();
+            RenderSystem.setShader(GameRenderer::getPositionColorShader);
+            bufferBuilder.begin(VertexFormat.DrawMode.TRIANGLE_FAN, VertexFormats.POSITION_COLOR);
+
+            double toX1 = toX - rad;
+            double toY1 = toY - rad;
+            double fromX1 = fromX + rad;
+            double fromY1 = fromY + rad;
+            int initial = -90;
+            double[][] map = new double[][]{
+                    new double[]{toX1, toY1},
+                    new double[]{toX1, fromY1},
+                    new double[]{fromX1, fromY1},
+                    new double[]{fromX1, toY1}
+            };
+            for (int i = 0; i < 4; i++) {
+                double[] current = map[i];
+                initial += 90;
+                for (int r = initial; r < (360 / 4 + initial); r++) {
+                    float rad1 = (float) Math.toRadians(r);
+                    float sin = (float) (Math.sin(rad1) * rad);
+                    float cos = (float) (Math.cos(rad1) * rad);
+                    bufferBuilder.vertex(matrix, (float) current[0] + sin, (float) current[1] + cos, 0.0F).color(g, h, k, f).next();
+                }
+            }
+            bufferBuilder.end();
+            BufferRenderer.draw(bufferBuilder);
+            RenderSystem.enableTexture();
+            RenderSystem.disableBlend();
+            RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+        }
+
         public static void lineScreenD(Color c, double x, double y, double x1, double y1) {
             float g = c.getRed() / 255f;
             float h = c.getGreen() / 255f;
