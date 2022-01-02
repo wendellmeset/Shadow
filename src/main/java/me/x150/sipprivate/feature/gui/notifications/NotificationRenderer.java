@@ -121,11 +121,11 @@ public class NotificationRenderer {
             for (String content : notification.contents) {
                 descWidth = Math.max(FontRenderers.getNormal().getStringWidth(content), descWidth);
             }
-            double notifWidth = Math.max(4+Math.max(descWidth,FontRenderers.getNormal().getStringWidth(notification.title)),100);
+            double notifWidth = Math.max(4 + Math.max(descWidth, FontRenderers.getNormal().getStringWidth(notification.title)), 100);
             notification.posY = baseY - currentYOffset - notifHeight;
             currentYOffset += notifHeight + 2;
             if (!notificationExpired) {
-                notification.posX = baseX-notifWidth-10;
+                notification.posX = baseX - notifWidth - 10;
             } else {
                 notification.posX = baseX + 10;
                 if (notification.renderPosX > baseX + 5) {
@@ -137,11 +137,11 @@ public class NotificationRenderer {
                 notification.renderPosY = notification.posY;
             }
             if (notification.renderPosX == 0) {
-                notification.renderPosX = baseX+4;
+                notification.renderPosX = baseX + 4;
             }
             Renderer.R2D.fill(new Color(28, 28, 28), notification.renderPosX, notification.renderPosY, notification.renderPosX + notifWidth, notification.renderPosY + notifHeight);
-            Renderer.R2D.fill(ClickGUI.theme.getActive(),notification.renderPosX-1,notification.renderPosY,notification.renderPosX,notification.renderPosY+notifHeight);
-            Renderer.R2D.fill(ClickGUI.theme.getAccent(),notification.renderPosX-1,notification.renderPosY,notification.renderPosX,notification.renderPosY+(notifHeight*(1-timeRemaining)));
+            Renderer.R2D.fill(ClickGUI.theme.getActive(), notification.renderPosX - 1, notification.renderPosY, notification.renderPosX, notification.renderPosY + notifHeight);
+            Renderer.R2D.fill(ClickGUI.theme.getAccent(), notification.renderPosX - 1, notification.renderPosY, notification.renderPosX, notification.renderPosY + (notifHeight * (1 - timeRemaining)));
             int currentYOffsetText = (int) (1 + FontRenderers.getNormal().getFontHeight());
             FontRenderers.getNormal().drawString(ms, notification.title, notification.renderPosX + 2, notification.renderPosY + 1, 0xFFFFFF);
             for (String content : notification.contents) {

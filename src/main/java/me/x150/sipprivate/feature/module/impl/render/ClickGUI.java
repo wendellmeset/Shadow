@@ -1,11 +1,13 @@
 package me.x150.sipprivate.feature.module.impl.render;
 
 import me.x150.sipprivate.CoffeeClientMain;
+import me.x150.sipprivate.feature.config.DoubleSetting;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleType;
 import net.minecraft.client.util.math.MatrixStack;
 
 public class ClickGUI extends Module {
+    public DoubleSetting radius = this.config.create(new DoubleSetting.Builder(5).name("Round radius").precision(1).min(0).max(10).description("How round the clickgui is").get());
     int t = 2;
 
     public ClickGUI() {

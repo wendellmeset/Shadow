@@ -13,7 +13,9 @@ public class NoFall extends Module {
     public NoFall() {
         super("NoFall", "Prevents you from taking fall damage", ModuleType.MISC);
         Events.registerEventHandler(EventType.PACKET_SEND, event -> {
-            if (!this.isEnabled()) return;
+            if (!this.isEnabled()) {
+                return;
+            }
             PacketEvent pe = (PacketEvent) event;
             if (pe.getPacket() instanceof PlayerMoveC2SPacket packet) {
                 IPlayerMoveC2SPacketAccessor accessor = (IPlayerMoveC2SPacketAccessor) packet;

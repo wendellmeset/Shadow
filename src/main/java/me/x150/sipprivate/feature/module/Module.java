@@ -61,6 +61,14 @@ public abstract class Module {
 
     public abstract void onHudRender();
 
+    public void onHudRenderNoMSAA() {
+
+    }
+
+    public void onWorldRenderNoMSAA(MatrixStack matrices) {
+
+    }
+
     public void onFastTick() {
 
     }

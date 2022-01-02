@@ -22,6 +22,7 @@ import java.util.stream.StreamSupport;
 
 public class FakeHacker extends Module {
     PlayerEntity target = null;
+
     public FakeHacker() {
         super("FakeHacker", "Makes it seem like another user is hacking", ModuleType.FUN);
         Events.registerEventHandler(EventType.MOUSE_EVENT, event -> {
@@ -47,12 +48,14 @@ public class FakeHacker extends Module {
     @Override public void tick() {
         if (target != null) {
             Iterable<Entity> entities = CoffeeClientMain.client.world.getEntities();
-            List<Entity> entities1 = new ArrayList<>(StreamSupport.stream(entities.spliterator(),false).toList());
+            List<Entity> entities1 = new ArrayList<>(StreamSupport.stream(entities.spliterator(), false).toList());
             Collections.shuffle(entities1);
             for (Entity entity : entities1) {
-                if (entity.equals(target)) continue;
+                if (entity.equals(target)) {
+                    continue;
+                }
                 if (entity.isAttackable() && entity.distanceTo(target) < 4) {
-                    target.lookAt(EntityAnchorArgumentType.EntityAnchor.EYES,entity.getPos().add(0,entity.getHeight()/2,0));
+                    target.lookAt(EntityAnchorArgumentType.EntityAnchor.EYES, entity.getPos().add(0, entity.getHeight() / 2, 0));
                     target.swingHand(Hand.MAIN_HAND);
                 }
             }
@@ -69,7 +72,7 @@ public class FakeHacker extends Module {
     }
 
     @Override public String getContext() {
-        return target==null?null:target.getEntityName();
+        return target == null ? null : target.getEntityName();
     }
 
     @Override public void onWorldRender(MatrixStack matrices) {

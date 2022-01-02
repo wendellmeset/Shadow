@@ -6,6 +6,7 @@ import me.x150.sipprivate.feature.module.ModuleRegistry;
 import me.x150.sipprivate.helper.event.EventType;
 import me.x150.sipprivate.helper.event.Events;
 import me.x150.sipprivate.helper.event.events.base.NonCancellableEvent;
+import me.x150.sipprivate.helper.render.MSAAFramebuffer;
 import me.x150.sipprivate.helper.util.Utils;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.hud.InGameHud;
@@ -17,13 +18,21 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(InGameHud.class) public abstract class AInGameHudMixin extends DrawableHelper {
     @Inject(method = "render", at = @At("RETURN")) public void atomic_postRender(MatrixStack matrices, float tickDelta, CallbackInfo ci) {
+        MSAAFramebuffer.use(MSAAFramebuffer.MAX_SAMPLES, () -> {
+            for (Module module : ModuleRegistry.getModules()) {
+                if (module.isEnabled()) {
+                    module.onHudRender();
+                }
+            }
+            NotificationRenderer.render();
+            Utils.TickManager.render();
+            Events.fireEvent(EventType.HUD_RENDER, new NonCancellableEvent());
+        });
         for (Module module : ModuleRegistry.getModules()) {
             if (module.isEnabled()) {
-                module.onHudRender();
+                module.onHudRenderNoMSAA();
             }
         }
-        NotificationRenderer.render();
-        Utils.TickManager.render();
-        Events.fireEvent(EventType.HUD_RENDER, new NonCancellableEvent());
+        Events.fireEvent(EventType.HUD_RENDER_NOMSAA, new NonCancellableEvent());
     }
 }

@@ -28,11 +28,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TpRange extends Module {
     static final ExecutorService esv = Executors.newFixedThreadPool(1);
-    EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.PaperBypass).name("Mode")
+    EnumSetting<Mode> mode               = this.config.create(new EnumSetting.Builder<>(Mode.PaperBypass).name("Mode")
             .description("How to exploit the range, Instant works on vanilla, PaperBypass on almost everything").get());
-    AtomicBoolean running            = new AtomicBoolean(false);
-    Vec3d         spoofedPos         = null;
-    Vec3d         previousSpoofedPos = null;
+    AtomicBoolean     running            = new AtomicBoolean(false);
+    Vec3d             spoofedPos         = null;
+    Vec3d             previousSpoofedPos = null;
+
     public TpRange() {
         super("TpRange", "Hits someone from VERY far away", ModuleType.FUN);
         Events.registerEventHandler(EventType.MOUSE_EVENT, event -> {

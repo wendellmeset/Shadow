@@ -15,12 +15,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(HandledScreen.class)
-public class HandledScreenMixin extends Screen {
-    public HandledScreenMixin() {
-        super(Text.of(""));
-    }
+@Mixin(HandledScreen.class) public class HandledScreenMixin extends Screen {
     private static HandledScreen<?> spoofedScreen = null;
+
     static {
         Events.registerEventHandler(EventType.PACKET_RECEIVE, event -> {
             PacketEvent pe = (PacketEvent) event;
@@ -31,32 +28,41 @@ public class HandledScreenMixin extends Screen {
         });
     }
 
-
     ButtonWidget openSpoof = null;
-    @Inject(method="init",at=@At("RETURN"))
-    void real(CallbackInfo ci) {
-        ButtonWidget closeSpoof = new ButtonWidget(5,5,100,20, Text.of("Close spoof"), button -> {
+
+
+    public HandledScreenMixin() {
+        super(Text.of(""));
+    }
+
+    @Inject(method = "init", at = @At("RETURN")) void real(CallbackInfo ci) {
+        ButtonWidget closeSpoof = new ButtonWidget(5, 5, 100, 20, Text.of("Close spoof"), button -> {
             spoofedScreen = (HandledScreen<?>) (Object) this;
             // go off menu client side but save it in spoofedScreen
             CoffeeClientMain.client.setScreen(null);
             CoffeeClientMain.client.player.currentScreenHandler = CoffeeClientMain.client.player.playerScreenHandler;
         });
         addDrawableChild(closeSpoof);
-        openSpoof = new ButtonWidget(5,30,100,20,Text.of("Open spoofed"), button -> {
-            if (spoofedScreen == null) return;
+        openSpoof = new ButtonWidget(5, 30, 100, 20, Text.of("Open spoofed"), button -> {
+            if (spoofedScreen == null) {
+                return;
+            }
             CoffeeClientMain.client.player.currentScreenHandler = spoofedScreen.getScreenHandler();
             CoffeeClientMain.client.setScreen(spoofedScreen);
         });
         addDrawableChild(openSpoof);
     }
-    @Inject(method="render",at=@At("HEAD"))
-    void real1(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if (openSpoof != null) openSpoof.active = spoofedScreen != null;
+
+    @Inject(method = "render", at = @At("HEAD")) void real1(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        if (openSpoof != null) {
+            openSpoof.active = spoofedScreen != null;
+        }
     }
 
-    @Inject(method="removed",at=@At("HEAD"),cancellable = true)
-    void real2(CallbackInfo ci) {
-        if (this.equals(spoofedScreen)) ci.cancel(); // dont notify the normal handler if we spoof this screen
+    @Inject(method = "removed", at = @At("HEAD"), cancellable = true) void real2(CallbackInfo ci) {
+        if (this.equals(spoofedScreen)) {
+            ci.cancel(); // dont notify the normal handler if we spoof this screen
+        }
     }
 
 }

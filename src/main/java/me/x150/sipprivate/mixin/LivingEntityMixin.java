@@ -15,4 +15,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
             AttackManager.registerLastAttacked(entity);
         }
     }
+
+    //    @Redirect(method="travel",at=@At(value="INVOKE",target="Lnet/minecraft/entity/LivingEntity;setVelocity(DDD)V"))
+    //    void mulVel(LivingEntity instance, double x, double y, double z)
+    //        instance.setVelocity(x,y,z);
+    //    }
+    //    @ModifyVariable(method="travel", at=@At(value="INVOKE_ASSIGN",target="Lnet/minecraft/entity/LivingEntity;applyMovementInput(Lnet/minecraft/util/math/Vec3d;F)Lnet/minecraft/util/math/Vec3d;"), index = 1)
+    //    Vec3d what(Vec3d value) {
+    //        Hyperspeed speed = ModuleRegistry.getByClass(Hyperspeed.class);
+    //        if (speed.isEnabled() && this.equals(CoffeeClientMain.client.player)) {
+    //            value.multiply(speed.speed.getValue(), 1, speed.speed.getValue());
+    //        }
+    //        return value;
+    //    }
 }

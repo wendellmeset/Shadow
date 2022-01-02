@@ -213,8 +213,8 @@ public class Renderer {
             buffer.begin(VertexFormat.DrawMode.DEBUG_LINES, VertexFormats.POSITION_COLOR);
 
             shape.forEachEdge((minX, minY, minZ, maxX, maxY, maxZ) -> {
-                buffer.vertex(matrix,(float) (x1+minX),(float) (y1+minY),(float) (z1+minZ)).color(red, green, blue, alpha).next();
-                buffer.vertex(matrix,(float) (x1+maxX),(float) (y1+maxY),(float) (z1+maxZ)).color(red, green, blue, alpha).next();
+                buffer.vertex(matrix, (float) (x1 + minX), (float) (y1 + minY), (float) (z1 + minZ)).color(red, green, blue, alpha).next();
+                buffer.vertex(matrix, (float) (x1 + maxX), (float) (y1 + maxY), (float) (z1 + maxZ)).color(red, green, blue, alpha).next();
             });
 
             buffer.end();
@@ -552,7 +552,7 @@ public class Renderer {
             fill(R3D.getEmptyMatrixStack(), c, x1, y1, x2, y2);
         }
 
-        public static void renderRoundedQuad(MatrixStack matrices, Color c, double fromX, double fromY, double toX, double toY, double rad) {
+        public static void renderRoundedQuad(MatrixStack matrices, Color c, double fromX, double fromY, double toX, double toY, double rad, double samples) {
             int color = c.getRGB();
             Matrix4f matrix = matrices.peek().getPositionMatrix();
             float f = (float) (color >> 24 & 255) / 255.0F;
@@ -571,16 +571,11 @@ public class Renderer {
             double fromX1 = fromX + rad;
             double fromY1 = fromY + rad;
             int initial = -90;
-            double[][] map = new double[][]{
-                    new double[]{toX1, toY1},
-                    new double[]{toX1, fromY1},
-                    new double[]{fromX1, fromY1},
-                    new double[]{fromX1, toY1}
-            };
+            double[][] map = new double[][]{new double[]{toX1, toY1}, new double[]{toX1, fromY1}, new double[]{fromX1, fromY1}, new double[]{fromX1, toY1}};
             for (int i = 0; i < 4; i++) {
                 double[] current = map[i];
                 initial += 90;
-                for (int r = initial; r < (360 / 4 + initial); r++) {
+                for (double r = initial; r < (360 / 4d + initial); r += (90 / samples)) {
                     float rad1 = (float) Math.toRadians(r);
                     float sin = (float) (Math.sin(rad1) * rad);
                     float cos = (float) (Math.cos(rad1) * rad);

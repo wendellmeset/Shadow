@@ -16,7 +16,7 @@ public class TestScreen extends Screen {
     @Override public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         renderBackground(matrices);
         MSAAFramebuffer.use(MSAAFramebuffer.MAX_SAMPLES, () -> {
-            Renderer.R2D.renderRoundedQuad(matrices, Color.RED,50,50,100,100,10);
+            Renderer.R2D.renderRoundedQuad(matrices, Color.RED, 50, 50, 100, 100, 10, 10);
         });
 
         super.render(matrices, mouseX, mouseY, delta);

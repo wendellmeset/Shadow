@@ -4,6 +4,7 @@ import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleRegistry;
 import me.x150.sipprivate.helper.manager.ImGuiManager;
+import me.x150.sipprivate.helper.render.MSAAFramebuffer;
 import me.x150.sipprivate.helper.render.Renderer;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -15,7 +16,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(GameRenderer.class) public class GameRendererMixin {
 
-    Module noRender;
     private boolean vb;
     private boolean dis;
 
@@ -26,9 +26,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
             CoffeeClientMain.client.options.bobView = true;
             vb = false;
         }
+        MSAAFramebuffer.use(MSAAFramebuffer.MAX_SAMPLES, () -> {
+            for (Module module : ModuleRegistry.getModules()) {
+                if (module.isEnabled()) {
+                    module.onWorldRender(matrix);
+                }
+            }
+        });
         for (Module module : ModuleRegistry.getModules()) {
             if (module.isEnabled()) {
-                module.onWorldRender(matrix);
+                module.onWorldRenderNoMSAA(matrix);
             }
         }
     }

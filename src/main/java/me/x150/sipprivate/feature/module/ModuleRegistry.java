@@ -24,13 +24,16 @@ import me.x150.sipprivate.feature.module.impl.misc.NoFall;
 import me.x150.sipprivate.feature.module.impl.misc.ShulkerDeflector;
 import me.x150.sipprivate.feature.module.impl.movement.BoatPhase;
 import me.x150.sipprivate.feature.module.impl.movement.Flight;
+import me.x150.sipprivate.feature.module.impl.movement.Hyperspeed;
 import me.x150.sipprivate.feature.module.impl.movement.Phase;
 import me.x150.sipprivate.feature.module.impl.movement.Sprint;
 import me.x150.sipprivate.feature.module.impl.render.CaveMapper;
 import me.x150.sipprivate.feature.module.impl.render.ClickGUI;
+import me.x150.sipprivate.feature.module.impl.render.ESP;
 import me.x150.sipprivate.feature.module.impl.render.Fullbright;
 import me.x150.sipprivate.feature.module.impl.render.Hud;
 import me.x150.sipprivate.feature.module.impl.render.TargetHud;
+import me.x150.sipprivate.feature.module.impl.render.Tracers;
 import me.x150.sipprivate.feature.module.impl.world.AnyPlacer;
 import me.x150.sipprivate.feature.module.impl.world.AutoTnt;
 import me.x150.sipprivate.feature.module.impl.world.Boom;
@@ -79,6 +82,9 @@ public class ModuleRegistry {
         modules.add(new LetThereBeLight());
         modules.add(new FakeHacker());
         modules.add(new NoFall());
+        modules.add(new ESP());
+        modules.add(new Tracers());
+        modules.add(new Hyperspeed());
     }
 
     public static List<Module> getModules() {

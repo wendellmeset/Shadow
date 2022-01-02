@@ -33,18 +33,18 @@ import java.util.Comparator;
 import java.util.List;
 
 public class Hud extends Module {
-    public static double     currentTps = 0;
-    static ClientFontRenderer titleFr;
-    final         DateFormat minSec     = new SimpleDateFormat("mm:ss");
-    BooleanSetting fps                 = this.config.create(new BooleanSetting.Builder(true).name("FPS").description("Whether to show FPS").get());
-    BooleanSetting tps                 = this.config.create(new BooleanSetting.Builder(true).name("TPS").description("Whether to show TPS").get());
-    BooleanSetting coords              = this.config.create(new BooleanSetting.Builder(true).name("Coordinates").description("Whether to show current coordinates").get());
-    BooleanSetting ping                = this.config.create(new BooleanSetting.Builder(true).name("Ping").description("Whether to show current ping").get());
-    BooleanSetting modules             = this.config.create(new BooleanSetting.Builder(true).name("Array list").description("Whether to show currently enabled modules").get());
-    long           lastTimePacketReceived;
-    double         rNoConnectionPosY   = -10d;
-    Notification   serverNotResponding = null;
-    List<ModuleEntry> moduleList = new ArrayList<>();
+    public static double             currentTps = 0;
+    static        ClientFontRenderer titleFr;
+    final         DateFormat         minSec     = new SimpleDateFormat("mm:ss");
+    BooleanSetting    fps                 = this.config.create(new BooleanSetting.Builder(true).name("FPS").description("Whether to show FPS").get());
+    BooleanSetting    tps                 = this.config.create(new BooleanSetting.Builder(true).name("TPS").description("Whether to show TPS").get());
+    BooleanSetting    coords              = this.config.create(new BooleanSetting.Builder(true).name("Coordinates").description("Whether to show current coordinates").get());
+    BooleanSetting    ping                = this.config.create(new BooleanSetting.Builder(true).name("Ping").description("Whether to show current ping").get());
+    BooleanSetting    modules             = this.config.create(new BooleanSetting.Builder(true).name("Array list").description("Whether to show currently enabled modules").get());
+    long              lastTimePacketReceived;
+    double            rNoConnectionPosY   = -10d;
+    Notification      serverNotResponding = null;
+    List<ModuleEntry> moduleList          = new ArrayList<>();
 
     public Hud() {
         super("Hud", "Shows information about the player on screen", ModuleType.RENDER);
@@ -88,6 +88,51 @@ public class Hud extends Module {
 
     @Override public void onWorldRender(MatrixStack matrices) {
 
+    }
+
+    @Override public void onHudRenderNoMSAA() {
+        if (CoffeeClientMain.client.getNetworkHandler() == null) {
+            return;
+        }
+        if (CoffeeClientMain.client.player == null) {
+            return;
+        }
+        MatrixStack ms = Renderer.R3D.getEmptyMatrixStack();
+        double heightOffsetLeft = 0, heightOffsetRight = 0;
+        if (CoffeeClientMain.client.options.debugEnabled) {
+            double heightAccordingToMc = 9;
+            List<String> lt = ((IDebugHudAccessor) ((IInGameHudAccessor) CoffeeClientMain.client.inGameHud).getDebugHud()).callGetLeftText();
+            List<String> rt = ((IDebugHudAccessor) ((IInGameHudAccessor) CoffeeClientMain.client.inGameHud).getDebugHud()).callGetRightText();
+            heightOffsetLeft = 2 + heightAccordingToMc * (lt.size() + 3);
+            heightOffsetRight = 2 + heightAccordingToMc * rt.size() + 5;
+        }
+        if (!shouldNoConnectionDropDown()) {
+            if (serverNotResponding != null) {
+                serverNotResponding.duration = 0;
+            }
+        } else {
+            if (serverNotResponding == null) {
+                serverNotResponding = Notification.create(-1, "", true, "Server not responding! " + minSec.format(System.currentTimeMillis() - lastTimePacketReceived));
+            }
+            serverNotResponding.contents = new String[]{"Server not responding! " + minSec.format(System.currentTimeMillis() - lastTimePacketReceived)};
+        }
+        if (!NotificationRenderer.topBarNotifications.contains(serverNotResponding)) {
+            serverNotResponding = null;
+        }
+        makeSureIsInitialized();
+
+        if (modules.getValue()) {
+            ms.push();
+            ms.translate(0, heightOffsetRight, 0);
+            drawModuleList(ms);
+            ms.pop();
+        }
+        ms.push();
+        ms.translate(0, heightOffsetLeft, 0);
+        drawTopLeft(ms);
+        ms.pop();
+
+        HudRenderer.getInstance().render();
     }
 
     @Override public void onHudRender() {

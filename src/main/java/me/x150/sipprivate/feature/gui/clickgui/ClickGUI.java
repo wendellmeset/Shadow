@@ -24,15 +24,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class ClickGUI extends Screen implements FastTickable {
-    public static Theme theme = new SipoverV1();
+    public static  Theme    theme = new SipoverV1();
     private static ClickGUI instance;
-
-    public static ClickGUI instance() {
-        if (instance == null) {
-            instance = new ClickGUI();
-        }
-        return instance;
-    }
     List<Element>    elements = new ArrayList<>();
     ParticleRenderer real     = new ParticleRenderer(100);
     String           desc     = null;
@@ -41,7 +34,6 @@ public class ClickGUI extends Screen implements FastTickable {
     double  trackedScroll  = 0;
     double  introAnimation = 0;
     boolean closing        = false;
-
     private ClickGUI() {
         super(Text.of(""));
         initElements();
@@ -51,6 +43,13 @@ public class ClickGUI extends Screen implements FastTickable {
             }
             this.real.render(Renderer.R3D.getEmptyMatrixStack());
         });
+    }
+
+    public static ClickGUI instance() {
+        if (instance == null) {
+            instance = new ClickGUI();
+        }
+        return instance;
     }
 
     @Override protected void init() {
@@ -112,7 +111,7 @@ public class ClickGUI extends Screen implements FastTickable {
             client.setScreen(null);
             return;
         }
-        MSAAFramebuffer.use(MSAAFramebuffer.MAX_SAMPLES,() -> renderIntern(matrices, mouseX, mouseY, delta));
+        MSAAFramebuffer.use(MSAAFramebuffer.MAX_SAMPLES, () -> renderIntern(matrices, mouseX, mouseY, delta));
     }
 
     void renderIntern(MatrixStack matrices, int mouseX, int mouseY, float delta) {
@@ -124,7 +123,7 @@ public class ClickGUI extends Screen implements FastTickable {
         matrices.pop();
         matrices.push();
         double intp = easeInOutQuint(introAnimation);
-        matrices.translate((1-intp)*width/2, (1-intp)*height/2, 0);
+        matrices.translate((1 - intp) * width / 2, (1 - intp) * height / 2, 0);
         matrices.scale((float) intp, (float) intp, 1);
         matrices.translate(0, -trackedScroll, 0);
         mouseY += trackedScroll;
