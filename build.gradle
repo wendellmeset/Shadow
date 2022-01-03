@@ -3,6 +3,12 @@ plugins {
 	id 'maven-publish'
 }
 
+repositories {
+	flatDir {
+		dirs 'lib'
+	}
+}
+
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
@@ -23,6 +29,8 @@ dependencies {
 
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
+	impl(name: "xauthlib-1.0.0")
+
 	impl('io.github.spair:imgui-java-binding:1.82.2')
 	impl('io.github.spair:imgui-java-lwjgl3:1.82.2') {
 		exclude group: "org.lwjgl"
@@ -32,8 +40,8 @@ dependencies {
 	}
 
 	configurations.impl.dependencies.each {
-		implementation(group: it.group, name: it.name, version: it.version)
-		include(group: it.group, name: it.name, version: it.version)
+		implementation(it)
+		include(it)
 	}
 }
 
