@@ -14,7 +14,7 @@
     "BlockRenderManagerMixin",
     "ClientConnectionMixin",
     "ClientPlayerEntityMixin",
-    "EntityMixin",
+
     "EntityRenderDispatcherMixin",
     "GameMenuMixin",
     "GameRendererMixin",

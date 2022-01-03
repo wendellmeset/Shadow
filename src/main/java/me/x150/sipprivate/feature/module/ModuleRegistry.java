@@ -22,6 +22,7 @@ import me.x150.sipprivate.feature.module.impl.misc.AntiPacketKick;
 import me.x150.sipprivate.feature.module.impl.misc.FireballDeflector;
 import me.x150.sipprivate.feature.module.impl.misc.NoFall;
 import me.x150.sipprivate.feature.module.impl.misc.ShulkerDeflector;
+import me.x150.sipprivate.feature.module.impl.movement.AntiAnvil;
 import me.x150.sipprivate.feature.module.impl.movement.BoatPhase;
 import me.x150.sipprivate.feature.module.impl.movement.Flight;
 import me.x150.sipprivate.feature.module.impl.movement.Hyperspeed;
@@ -85,6 +86,7 @@ public class ModuleRegistry {
         modules.add(new ESP());
         modules.add(new Tracers());
         modules.add(new Hyperspeed());
+        modules.add(new AntiAnvil());
     }
 
     public static List<Module> getModules() {
