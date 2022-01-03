@@ -36,6 +36,7 @@ public class ESP extends Module {
     BooleanSetting    entities    = this.config.create(new BooleanSetting.Builder(false).name("Show entities").description("Render entities").get());
     BooleanSetting    players     = this.config.create(new BooleanSetting.Builder(true).name("Show players").description("Render players").get());
     DoubleSetting     range       = this.config.create(new DoubleSetting.Builder(64).name("Range").description("How far to render the entities").min(32).max(128).precision(1).get());
+
     public ESP() {
         super("ESP", "shows where shit is but its the walmart version", ModuleType.RENDER);
     }

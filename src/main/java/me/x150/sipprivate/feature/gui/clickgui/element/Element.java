@@ -13,7 +13,7 @@ public abstract class Element {
     }
 
     public boolean inBounds(double cx, double cy) {
-        return cx >= x && cx <= x + width && cy >= y && cy <= y + height;
+        return cx >= x && cx < x + width && cy >= y && cy < y + height;
     }
 
     abstract public boolean clicked(double x, double y, int button);

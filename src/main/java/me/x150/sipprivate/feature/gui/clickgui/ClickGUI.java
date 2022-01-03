@@ -34,6 +34,7 @@ public class ClickGUI extends Screen implements FastTickable {
     double  trackedScroll  = 0;
     double  introAnimation = 0;
     boolean closing        = false;
+
     private ClickGUI() {
         super(Text.of(""));
         initElements();

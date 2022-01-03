@@ -22,8 +22,8 @@ import java.util.List;
 public class ConfigDisplay extends Element {
     List<ConfigBase<?>> bases         = new ArrayList<>();
     ModuleConfig        mc;
-    double              padding       = 3;
-    double              paddingLeft   = 2;
+    double              padding       = 4;
+    double              paddingLeft   = 3;
     long                hoverStart    = System.currentTimeMillis();
     boolean             hoveredBefore = false;
 
@@ -82,7 +82,7 @@ public class ConfigDisplay extends Element {
     }
 
     @Override public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
-        double yOffset = 0;
+        double yOffset = 2;
         Theme theme = ClickGUI.theme;
         Renderer.R2D.fill(matrices, theme.getConfig(), x, this.y, x + width, this.y + height);
         Renderer.R2D.fill(matrices, theme.getAccent(), x, this.y, x + 1, this.y + height);
@@ -107,7 +107,7 @@ public class ConfigDisplay extends Element {
         if (hoverStart + 500 < System.currentTimeMillis() && hovered && renderingDesc != null) {
             ClickGUI.instance().renderDescription(Utils.Mouse.getMouseX(), Utils.Mouse.getMouseY() + 10, renderingDesc);
         }
-        this.height = yOffset;
+        this.height = yOffset + 2;
     }
 
     @Override public void tickAnim() {

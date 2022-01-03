@@ -53,8 +53,6 @@ public class BooleanSettingEditor extends ConfigBase<BooleanSetting> {
     @Override public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
         Theme theme = ClickGUI.theme;
         double smoothAnimProgress = easeInOutCubic(animProgress);
-        //        if (xSmooth==-1) xSmooth = getPreferredX();
-        //        Renderer.R2D.fill(matrices, Renderer.Util.lerp(theme.getActive(), theme.getInactive(), smoothAnimProgress), x, y + height / 2d - rh / 2d, x + rw, y + height / 2d + rh / 2d);
         Renderer.R2D.renderRoundedQuad(matrices, Renderer.Util.lerp(theme.getActive(), theme.getInactive(), smoothAnimProgress), x, y + height / 2d - rh / 2d, x + rw, y + height / 2d + rh / 2d, rh / 2d, 5);
         double rix = getPreferredX();
         //        Renderer.R2D.fill(matrices, theme.getAccent(), rix, y + height / 2d - rh / 2d + margin, rix + rid, y + height / 2d - rh / 2d + margin + rid);

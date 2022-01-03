@@ -22,7 +22,7 @@ public class EnumSettingEditor extends ConfigBase<EnumSetting<?>> {
             values.add(a);
             h += a.height;
         }
-        this.height = h + 1;
+        this.height = h + 3;
     }
 
     <T extends Enum<?>> int getColor(T value) {
@@ -55,9 +55,11 @@ public class EnumSettingEditor extends ConfigBase<EnumSetting<?>> {
     }
 
     @Override public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
+        double pad = 0;
         FontRenderers.getNormal().drawString(matrices, configValue.name, x, y + 1, 0xFFFFFF);
         double yOffset = FontRenderers.getNormal().getMarginHeight() + 2;
-        Renderer.R2D.fill(matrices, new Color(0, 0, 0, 30), x, y + yOffset, x + width, y + height);
+        //        Renderer.R2D.fill(matrices, new Color(0, 0, 0, 30), x, y + yOffset, x + width, y + height);
+        Renderer.R2D.renderRoundedQuad(matrices, new Color(0, 0, 20, 60), x, y + yOffset, x + width, y + height - pad, 5, 5);
         yOffset += 1;
         for (EnumSelectorClickable<?> value : values) {
             value.x = x + 1;
@@ -66,7 +68,7 @@ public class EnumSettingEditor extends ConfigBase<EnumSetting<?>> {
             value.render(matrices);
             yOffset += value.height;
         }
-        this.height = yOffset + 1;
+        this.height = yOffset + pad;
     }
 
     @Override public void tickAnim() {
@@ -92,7 +94,7 @@ public class EnumSettingEditor extends ConfigBase<EnumSetting<?>> {
         }
 
         boolean inBounds(double cx, double cy) {
-            return cx >= x && cx <= x + width && cy >= y && cy <= y + height;
+            return cx >= x && cx < x + width && cy >= y && cy < y + height;
         }
     }
 }

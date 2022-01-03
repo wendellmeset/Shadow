@@ -32,7 +32,7 @@ public class CategoryDisplay extends Element {
     }
 
     @Override public boolean clicked(double x, double y, int button) {
-        if (x >= this.x && x <= this.x + this.width && y >= this.y && y <= this.y + headerHeight()) {
+        if (x >= this.x && x < this.x + this.width && y >= this.y && y < this.y + headerHeight()) {
             if (button == 0) {
                 selected = true;
                 return true;
@@ -88,7 +88,8 @@ public class CategoryDisplay extends Element {
         Theme theme = ClickGUI.theme;
         //        Renderer.R2D.fill(matrices, theme.getHeader(), x, y, x + width, y + headerHeight());
         double r = ModuleRegistry.getByClass(me.x150.sipprivate.feature.module.impl.render.ClickGUI.class).radius.getValue();
-        Renderer.R2D.renderRoundedQuad(matrices, theme.getHeader(), x, y, x + width, y + height + r, r, 15);
+        double preCalcHeight = md.stream().map(ModuleDisplay::getHeight).reduce(Double::sum).orElse(0d) + headerHeight();
+        Renderer.R2D.renderRoundedQuad(matrices, theme.getHeader(), x, y, x + width, y + preCalcHeight + r, r, 15);
         cfr.drawCenteredString(matrices, mt.getName(), x + width / 2d, y + headerHeight() / 2d - cfr.getFontHeight() / 2d, 0xFFFFFF);
         double y = headerHeight();
         for (ModuleDisplay moduleDisplay : md) {

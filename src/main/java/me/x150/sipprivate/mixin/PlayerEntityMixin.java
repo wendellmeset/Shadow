@@ -22,10 +22,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
         playerEntity.noClip = q.getNoClip();
     }
 
-    @Inject(method="getMovementSpeed",at=@At("RETURN"),cancellable = true)
-    void a(CallbackInfoReturnable<Float> cir) {
+    @Inject(method = "getMovementSpeed", at = @At("RETURN"), cancellable = true) void a(CallbackInfoReturnable<Float> cir) {
         Hyperspeed hs = ModuleRegistry.getByClass(Hyperspeed.class);
-        if (!hs.isEnabled() || !equals(CoffeeClientMain.client.player)) return;
-        cir.setReturnValue((float) (cir.getReturnValue()*hs.speed.getValue()));
+        if (!hs.isEnabled() || !equals(CoffeeClientMain.client.player)) {
+            return;
+        }
+        cir.setReturnValue((float) (cir.getReturnValue() * hs.speed.getValue()));
     }
 }

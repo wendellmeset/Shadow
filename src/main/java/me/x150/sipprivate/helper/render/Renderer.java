@@ -570,12 +570,10 @@ public class Renderer {
             double toY1 = toY - rad;
             double fromX1 = fromX + rad;
             double fromY1 = fromY + rad;
-            int initial = -90;
             double[][] map = new double[][]{new double[]{toX1, toY1}, new double[]{toX1, fromY1}, new double[]{fromX1, fromY1}, new double[]{fromX1, toY1}};
             for (int i = 0; i < 4; i++) {
                 double[] current = map[i];
-                initial += 90;
-                for (double r = initial; r < (360 / 4d + initial); r += (90 / samples)) {
+                for (double r = i * 90d; r < (360 / 4d + i * 90d); r += (90 / samples)) {
                     float rad1 = (float) Math.toRadians(r);
                     float sin = (float) (Math.sin(rad1) * rad);
                     float cos = (float) (Math.cos(rad1) * rad);
