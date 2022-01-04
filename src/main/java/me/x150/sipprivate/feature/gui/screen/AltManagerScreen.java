@@ -8,6 +8,7 @@ import me.x150.sipprivate.helper.font.adapter.FontAdapter;
 import me.x150.sipprivate.helper.font.adapter.impl.ClientFontRenderer;
 import me.x150.sipprivate.helper.render.MSAAFramebuffer;
 import me.x150.sipprivate.helper.render.Renderer;
+import me.x150.sipprivate.helper.util.Transitions;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.NativeImageBackedTexture;
@@ -69,6 +70,9 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
 
     }
 
+    double scroll       = 0;
+    double scrollSmooth = 0;
+
     @Override protected void init() {
         alts.clear();
         add = new ThemedButton(width - 60 - 5 - 20 - getPadding(), 10 + title.getMarginHeight() / 2d - 20 / 2d, 60, 20, "Add", () -> {
@@ -79,7 +83,7 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
         });
         double offset = 0;
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 20; i++) {
             AltContainer ad = new AltContainer("Amog", "abc@gmail.com", "abc", UUID.fromString("2f2b69af-7651-4960-8379-6df999b88d75"), getPadding(), getHeaderHeight() + offset, width - (getPadding() + leftWidth + getPadding() * 2));
             offset += ad.getHeight() + getPadding();
             alts.add(ad);
@@ -93,6 +97,20 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
         }
         add.tickAnim();
         exit.tickAnim();
+        scrollSmooth = Transitions.transition(scrollSmooth, scroll, 7, 0);
+    }
+
+    @Override public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
+        scroll -= amount * 10;
+        double max = 0;
+        for (AltContainer alt : alts) {
+            max = Math.max(max, alt.y + alt.getHeight());
+        }
+        max -= height;
+        max += getPadding();
+        max = Math.max(0, max);
+        scroll = MathHelper.clamp(scroll, 0, max);
+        return super.mouseScrolled(mouseX, mouseY, amount);
     }
 
     @Override protected void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
@@ -101,38 +119,50 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
         titleSmall.drawString(stack, "Alt manager", 10 + title.getStringWidth("Coffee") + 5, 10 + title.getMarginHeight() - titleSmall.getMarginHeight() - 1, 0, false);
         add.render(stack, mouseX, mouseY);
         exit.render(stack, mouseX, mouseY);
+
+        Renderer.R2D.scissor(stack, getPadding(), getHeaderHeight(), getPadding() + (width - (getPadding() + leftWidth + getPadding() * 2)), height);
+        stack.push();
+        stack.translate(0, -scrollSmooth, 0);
+        mouseY += scrollSmooth;
         for (AltContainer alt : alts) {
             alt.render(stack, mouseX, mouseY);
         }
+        stack.pop();
+        Renderer.R2D.unscissor();
+
+        double padding = 5;
+        double widRHeight = 64 + padding * 2;
 
         double fromX = width - (leftWidth + getPadding());
         double toX = width - getPadding();
         double fromY = getHeaderHeight();
-        double toY = height - getPadding();
+        double toY = fromY + widRHeight;
 
         Renderer.R2D.renderRoundedQuad(stack, new Color(255, 255, 255, 100), fromX, fromY, toX, toY, 10, 10);
         if (selectedAlt != null) {
-            double texWidth = 64;
-            double texHeight = 64;
-            double padding = 5;
+
+
+            double texDim = widRHeight - padding * 2;
+
+
             RenderSystem.enableBlend();
             RenderSystem.colorMask(false, false, false, true);
             RenderSystem.clearColor(0.0F, 0.0F, 0.0F, 0.0F);
             RenderSystem.clear(GL40C.GL_COLOR_BUFFER_BIT, false);
             RenderSystem.colorMask(true, true, true, true);
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
-            Renderer.R2D.renderRoundedQuadInternal(stack.peek().getPositionMatrix(), 0, 0, 0, 1, fromX + padding, fromY + padding, fromX + padding + texWidth, fromY + padding + texHeight, 6, 10);
+            Renderer.R2D.renderRoundedQuadInternal(stack.peek().getPositionMatrix(), 0, 0, 0, 1, fromX + padding, fromY + padding, fromX + padding + texDim, fromY + padding + texDim, 6, 10);
 
             RenderSystem.blendFunc(GL40C.GL_DST_ALPHA, GL40C.GL_ONE_MINUS_DST_ALPHA);
             RenderSystem.setShaderTexture(0, selectedAlt.tex);
-            Renderer.R2D.drawTexture(stack, fromX + padding, fromY + padding, texWidth, texHeight, 0, 0, 64, 64, 64, 64);
+            Renderer.R2D.drawTexture(stack, fromX + padding, fromY + padding, texDim, texDim, 0, 0, 64, 64, 64, 64);
             RenderSystem.defaultBlendFunc();
             AltContainer.PropEntry[] props = new AltContainer.PropEntry[]{new AltContainer.PropEntry(selectedAlt.name, FontRenderers.getCustomNormal(22), 0),
                     new AltContainer.PropEntry(selectedAlt.email, FontRenderers.getNormal(), 0x555555),
                     new AltContainer.PropEntry("Password: " + selectedAlt.password, FontRenderers.getNormal(), 0x555555)};
             float propsOffset = (float) (fromY + padding);
             for (AltContainer.PropEntry prop : props) {
-                prop.cfr.drawString(stack, prop.name, (float) (fromX + padding + texWidth + padding), propsOffset, prop.color, false);
+                prop.cfr.drawString(stack, prop.name, (float) (fromX + padding + texDim + padding), propsOffset, prop.color, false);
                 propsOffset += prop.cfr.getMarginHeight();
             }
         }
