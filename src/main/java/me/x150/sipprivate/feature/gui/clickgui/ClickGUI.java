@@ -1,5 +1,6 @@
 package me.x150.sipprivate.feature.gui.clickgui;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.gui.FastTickable;
 import me.x150.sipprivate.feature.gui.clickgui.element.Element;
@@ -116,6 +117,8 @@ public class ClickGUI extends Screen implements FastTickable {
     }
 
     void renderIntern(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
         matrices.push();
         matrices.translate(0, 0, -20);
         if (!closing) {

@@ -303,6 +303,26 @@ public class Renderer {
             RenderSystem.disableScissor();
         }
 
+        public static void drawTexture(MatrixStack matrices, double x0, double y0, double width, double height, float u, float v, double regionWidth, double regionHeight, double textureWidth, double textureHeight) {
+            double x1 = x0 + width;
+            double y1 = y0 + height;
+            double z = 0;
+            drawTexturedQuad(matrices.peek()
+                    .getPositionMatrix(), x0, x1, y0, y1, z, (u + 0.0F) / (float) textureWidth, (u + (float) regionWidth) / (float) textureWidth, (v + 0.0F) / (float) textureHeight, (v + (float) regionHeight) / (float) textureHeight);
+        }
+
+        private static void drawTexturedQuad(Matrix4f matrix, double x0, double x1, double y0, double y1, double z, float u0, float u1, float v0, float v1) {
+            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+            BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
+            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
+            bufferBuilder.vertex(matrix, (float) x0, (float) y1, (float) z).texture(u0, v1).next();
+            bufferBuilder.vertex(matrix, (float) x1, (float) y1, (float) z).texture(u1, v1).next();
+            bufferBuilder.vertex(matrix, (float) x1, (float) y0, (float) z).texture(u1, v0).next();
+            bufferBuilder.vertex(matrix, (float) x0, (float) y0, (float) z).texture(u0, v0).next();
+            bufferBuilder.end();
+            BufferRenderer.draw(bufferBuilder);
+        }
+
         public static void renderCircle(MatrixStack matrices, Color c, double originX, double originY, double rad, int segments) {
             segments = MathHelper.clamp(segments, 4, 360);
             RenderSystem.setShaderColor(1, 1, 1, 1);
@@ -552,18 +572,8 @@ public class Renderer {
             fill(R3D.getEmptyMatrixStack(), c, x1, y1, x2, y2);
         }
 
-        public static void renderRoundedQuad(MatrixStack matrices, Color c, double fromX, double fromY, double toX, double toY, double rad, double samples) {
-            int color = c.getRGB();
-            Matrix4f matrix = matrices.peek().getPositionMatrix();
-            float f = (float) (color >> 24 & 255) / 255.0F;
-            float g = (float) (color >> 16 & 255) / 255.0F;
-            float h = (float) (color >> 8 & 255) / 255.0F;
-            float k = (float) (color & 255) / 255.0F;
+        public static void renderRoundedQuadInternal(Matrix4f matrix, float cr, float cg, float cb, float ca, double fromX, double fromY, double toX, double toY, double rad, double samples) {
             BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
-            RenderSystem.defaultBlendFunc();
-            RenderSystem.enableBlend();
-            RenderSystem.disableTexture();
-            RenderSystem.setShader(GameRenderer::getPositionColorShader);
             bufferBuilder.begin(VertexFormat.DrawMode.TRIANGLE_FAN, VertexFormats.POSITION_COLOR);
 
             double toX1 = toX - rad;
@@ -577,11 +587,28 @@ public class Renderer {
                     float rad1 = (float) Math.toRadians(r);
                     float sin = (float) (Math.sin(rad1) * rad);
                     float cos = (float) (Math.cos(rad1) * rad);
-                    bufferBuilder.vertex(matrix, (float) current[0] + sin, (float) current[1] + cos, 0.0F).color(g, h, k, f).next();
+                    bufferBuilder.vertex(matrix, (float) current[0] + sin, (float) current[1] + cos, 0.0F).color(cr, cg, cb, ca).next();
                 }
             }
             bufferBuilder.end();
             BufferRenderer.draw(bufferBuilder);
+        }
+
+        public static void renderRoundedQuad(MatrixStack matrices, Color c, double fromX, double fromY, double toX, double toY, double rad, double samples) {
+            RenderSystem.defaultBlendFunc();
+
+            int color = c.getRGB();
+            Matrix4f matrix = matrices.peek().getPositionMatrix();
+            float f = (float) (color >> 24 & 255) / 255.0F;
+            float g = (float) (color >> 16 & 255) / 255.0F;
+            float h = (float) (color >> 8 & 255) / 255.0F;
+            float k = (float) (color & 255) / 255.0F;
+            RenderSystem.enableBlend();
+            RenderSystem.disableTexture();
+            RenderSystem.setShader(GameRenderer::getPositionColorShader);
+
+            renderRoundedQuadInternal(matrix, g, h, k, f, fromX, fromY, toX, toY, rad, samples);
+
             RenderSystem.enableTexture();
             RenderSystem.disableBlend();
             RenderSystem.setShaderColor(1f, 1f, 1f, 1f);

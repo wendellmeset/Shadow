@@ -32,7 +32,8 @@
     "MinecraftClientMixin",
     "MouseMixin",
     "PlayerEntityMixin",
-    "PlayerInteractEntityC2SPacketAccessor"
+    "PlayerInteractEntityC2SPacketAccessor",
+    "TitleScreenMixin"
   ],
   "client": [],
   "server": [],
