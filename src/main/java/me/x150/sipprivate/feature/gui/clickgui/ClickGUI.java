@@ -19,22 +19,22 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class ClickGUI extends Screen implements FastTickable {
-    public static  Theme    theme = new SipoverV1();
+    public static Theme theme = new SipoverV1();
     private static ClickGUI instance;
-    List<Element>    elements = new ArrayList<>();
-    ParticleRenderer real     = new ParticleRenderer(100);
-    String           desc     = null;
-    double           descX, descY;
-    double  scroll         = 0;
-    double  trackedScroll  = 0;
-    double  introAnimation = 0;
-    boolean closing        = false;
+    List<Element> elements = new ArrayList<>();
+    ParticleRenderer real = new ParticleRenderer(100);
+    String desc = null;
+    double descX, descY;
+    double scroll = 0;
+    double trackedScroll = 0;
+    double introAnimation = 0;
+    boolean closing = false;
 
     private ClickGUI() {
         super(Text.of(""));
@@ -54,19 +54,22 @@ public class ClickGUI extends Screen implements FastTickable {
         return instance;
     }
 
-    @Override protected void init() {
+    @Override
+    protected void init() {
         closing = false;
         introAnimation = 0;
         //        this.real.particles.clear();
         this.real.shouldAdd = true;
     }
 
-    @Override public void onClose() {
+    @Override
+    public void onClose() {
         closing = true;
         this.real.shouldAdd = false;
     }
 
-    @Override public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
         scroll -= amount * 10;
         double bottomMost = 0;
         for (Element element : elements) {
@@ -108,7 +111,8 @@ public class ClickGUI extends Screen implements FastTickable {
 
     }
 
-    @Override public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    @Override
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         if (closing && introAnimation == 0) {
             client.setScreen(null);
             return;
@@ -149,7 +153,8 @@ public class ClickGUI extends Screen implements FastTickable {
         }
     }
 
-    @Override public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
         mouseY += trackedScroll;
         for (Element element : new ArrayList<>(elements)) {
             if (element.clicked(mouseX, mouseY, button)) {
@@ -161,7 +166,8 @@ public class ClickGUI extends Screen implements FastTickable {
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
-    @Override public boolean mouseReleased(double mouseX, double mouseY, int button) {
+    @Override
+    public boolean mouseReleased(double mouseX, double mouseY, int button) {
         mouseY += trackedScroll;
         for (Element element : elements) {
             element.released();
@@ -169,7 +175,8 @@ public class ClickGUI extends Screen implements FastTickable {
         return super.mouseReleased(mouseX, mouseY, button);
     }
 
-    @Override public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+    @Override
+    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
         mouseY += trackedScroll;
         for (Element element : elements) {
             if (element.dragged(mouseX, mouseY, deltaX, deltaY, button)) {
@@ -179,7 +186,8 @@ public class ClickGUI extends Screen implements FastTickable {
         return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
     }
 
-    @Override public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         for (Element element : elements) {
             if (element.keyPressed(keyCode)) {
                 return true;
@@ -188,11 +196,13 @@ public class ClickGUI extends Screen implements FastTickable {
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
-    @Override public boolean isPauseScreen() {
+    @Override
+    public boolean isPauseScreen() {
         return false;
     }
 
-    @Override public void onFastTick() {
+    @Override
+    public void onFastTick() {
         double d = 0.03;
         if (closing) {
             d *= -1;

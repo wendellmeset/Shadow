@@ -11,12 +11,12 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 
 public class ModuleDisplay extends Element {
-    Module        module;
+    Module module;
     ConfigDisplay cd;
-    boolean       extended      = false;
-    double        extendAnim    = 0;
-    long          hoverStart    = System.currentTimeMillis();
-    boolean       hoveredBefore = false;
+    boolean extended = false;
+    double extendAnim = 0;
+    long hoverStart = System.currentTimeMillis();
+    boolean hoveredBefore = false;
 
     public ModuleDisplay(double x, double y, Module module) {
         super(x, y, 100, 15);
@@ -24,7 +24,8 @@ public class ModuleDisplay extends Element {
         this.cd = new ConfigDisplay(x, y, module.config);
     }
 
-    @Override public boolean clicked(double x, double y, int button) {
+    @Override
+    public boolean clicked(double x, double y, int button) {
         if (inBounds(x, y)) {
             if (button == 0) {
                 module.setEnabled(!module.isEnabled()); // left click
@@ -39,11 +40,13 @@ public class ModuleDisplay extends Element {
         }
     }
 
-    @Override public boolean dragged(double x, double y, double deltaX, double deltaY, int button) {
+    @Override
+    public boolean dragged(double x, double y, double deltaX, double deltaY, int button) {
         return extended && cd.dragged(x, y, deltaX, deltaY, button);
     }
 
-    @Override public boolean released() {
+    @Override
+    public boolean released() {
         return extended && cd.released();
     }
 
@@ -52,15 +55,18 @@ public class ModuleDisplay extends Element {
 
     }
 
-    @Override public double getHeight() {
+    @Override
+    public double getHeight() {
         return super.getHeight() + cd.getHeight() * easeInOutCubic(extendAnim);
     }
 
-    @Override public boolean keyPressed(int keycode) {
+    @Override
+    public boolean keyPressed(int keycode) {
         return extended && cd.keyPressed(keycode);
     }
 
-    @Override public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
+    @Override
+    public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
         Theme theme = ClickGUI.theme;
         boolean hovered = inBounds(mouseX, mouseY);
         if (!hoveredBefore && hovered) {
@@ -84,7 +90,8 @@ public class ModuleDisplay extends Element {
         Renderer.R2D.unscissor();
     }
 
-    @Override public void tickAnim() {
+    @Override
+    public void tickAnim() {
         double a = 0.04;
         if (!extended) {
             a *= -1;

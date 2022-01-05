@@ -15,12 +15,12 @@ import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class FireballDeflector extends Module {
-    EnumSetting<Mode> mode     = this.config.create(new EnumSetting.Builder<>(Mode.DeflectSomewhere).name("Mode")
+    EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.DeflectSomewhere).name("Mode")
             .description("How to change the fireball's motion (ReflectBack = reflect back at shooter, DeflectSomewhere = idc get it away)").get());
-    BooleanSetting    checkVel = this.config.create(new BooleanSetting.Builder(false).name("Check velocity")
+    BooleanSetting checkVel = this.config.create(new BooleanSetting.Builder(false).name("Check velocity")
             .description("Checks if the fireball is actually approaching before hitting. Can get funky with a lot of them").get());
 
     public FireballDeflector() {
@@ -55,7 +55,8 @@ public class FireballDeflector extends Module {
         return attacker.getCameraPosVec(1f).distanceTo(target.getPos().add(0, target.getHeight() / 2, 0)) <= CoffeeClientMain.client.interactionManager.getReachDistance();
     }
 
-    @Override public void onFastTick() {
+    @Override
+    public void onFastTick() {
         for (Entity entity : CoffeeClientMain.client.world.getEntities()) {
             if (entity instanceof FireballEntity fe) {
                 if (inHitRange(CoffeeClientMain.client.player, fe) && isApproaching(CoffeeClientMain.client.player.getPos(), fe.getPos(), fe.getVelocity())) {
@@ -65,23 +66,28 @@ public class FireballDeflector extends Module {
         }
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
 
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
 
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
 
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return null;
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
         if (isDebuggerEnabled()) {
             for (Entity entity : CoffeeClientMain.client.world.getEntities()) {
                 if (entity instanceof FireballEntity fe) {
@@ -99,7 +105,8 @@ public class FireballDeflector extends Module {
         }
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
 
     }
 

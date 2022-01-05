@@ -45,7 +45,8 @@ public class FakeHacker extends Module {
         });
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
         if (target != null) {
             Iterable<Entity> entities = CoffeeClientMain.client.world.getEntities();
             List<Entity> entities1 = new ArrayList<>(StreamSupport.stream(entities.spliterator(), false).toList());
@@ -62,24 +63,29 @@ public class FakeHacker extends Module {
         }
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
         target = null;
         Notification.create(6000, "", true, "Middle click a player to select them");
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
 
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return target == null ? null : target.getEntityName();
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
 
     }
 }

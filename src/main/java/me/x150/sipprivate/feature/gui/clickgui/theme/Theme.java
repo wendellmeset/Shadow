@@ -1,6 +1,6 @@
 package me.x150.sipprivate.feature.gui.clickgui.theme;
 
-import java.awt.Color;
+import java.awt.*;
 
 public interface Theme {
     String getName();

@@ -7,8 +7,8 @@ import java.util.List;
  * A group of settings
  */
 public class SettingsGroup {
-    final String               name;
-    final String               description;
+    final String name;
+    final String description;
     final List<SettingBase<?>> settings;
 
     SettingsGroup(String name, String description, List<SettingBase<?>> settings) {

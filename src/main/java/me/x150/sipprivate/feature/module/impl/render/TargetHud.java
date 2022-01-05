@@ -24,7 +24,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.MathHelper;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -33,20 +33,20 @@ import java.util.stream.StreamSupport;
 
 public class TargetHud extends Module {
 
-    public static final int modalWidth  = 160;
+    public static final int modalWidth = 160;
     public static final int modalHeight = 70;
-    BooleanSetting renderPing     = this.config.create(new BooleanSetting.Builder(true).name("Render ping").description("Shows the ping of the enemy").get());
-    BooleanSetting renderHP       = this.config.create(new BooleanSetting.Builder(true).name("Render health").description("Shows the HP of the enemy").get());
-    BooleanSetting renderMaxHP    = this.config.create(new BooleanSetting.Builder(true).name("Render max health").description("Shows the max HP of the enemy").get());
+    BooleanSetting renderPing = this.config.create(new BooleanSetting.Builder(true).name("Render ping").description("Shows the ping of the enemy").get());
+    BooleanSetting renderHP = this.config.create(new BooleanSetting.Builder(true).name("Render health").description("Shows the HP of the enemy").get());
+    BooleanSetting renderMaxHP = this.config.create(new BooleanSetting.Builder(true).name("Render max health").description("Shows the max HP of the enemy").get());
     BooleanSetting renderDistance = this.config.create(new BooleanSetting.Builder(true).name("Render distance").description("Shows the enemy's distance to you").get());
-    BooleanSetting renderLook     = this.config.create(new BooleanSetting.Builder(true).name("Render look").description("Shows if the enemy is looking near you").get());
-    BooleanSetting renderLoseWin  = this.config.create(new BooleanSetting.Builder(true).name("Render lose / win").description("Shows if you're currently losing or winning against the enemy").get());
-    double         wX             = 0;
-    double         renderWX1      = 0;
-    Entity         e              = null;
-    Entity         re             = null;
-    double         trackedHp      = 0;
-    double         trackedMaxHp   = 0;
+    BooleanSetting renderLook = this.config.create(new BooleanSetting.Builder(true).name("Render look").description("Shows if the enemy is looking near you").get());
+    BooleanSetting renderLoseWin = this.config.create(new BooleanSetting.Builder(true).name("Render lose / win").description("Shows if you're currently losing or winning against the enemy").get());
+    double wX = 0;
+    double renderWX1 = 0;
+    Entity e = null;
+    Entity re = null;
+    double trackedHp = 0;
+    double trackedMaxHp = 0;
 
     public TargetHud() {
         super("TargetHud", "Shows info about your opponent", ModuleType.RENDER);
@@ -73,7 +73,8 @@ public class TargetHud extends Module {
         return check.getType() == EntityType.PLAYER && check instanceof PlayerEntity;
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
         if (AttackManager.getLastAttackInTimeRange() != null) {
             e = AttackManager.getLastAttackInTimeRange();
             return;
@@ -92,15 +93,18 @@ public class TargetHud extends Module {
         }
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
 
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
 
     }
 
-    @Override public void onFastTick() {
+    @Override
+    public void onFastTick() {
         renderWX1 = Transitions.transition(renderWX1, wX, 10);
         if (re instanceof LivingEntity e) {
             trackedHp = Transitions.transition(trackedHp, e.getHealth(), 15, 0.002);
@@ -108,14 +112,17 @@ public class TargetHud extends Module {
         }
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return null;
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
 
     }
 

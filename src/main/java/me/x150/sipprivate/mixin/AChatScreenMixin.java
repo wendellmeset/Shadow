@@ -9,7 +9,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(ChatScreen.class) public class AChatScreenMixin {
+@Mixin(ChatScreen.class)
+public class AChatScreenMixin {
     @Redirect(method = "keyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ChatScreen;sendMessage(Ljava/lang/String;)V"))
     void atomic_interceptChatMessage(ChatScreen instance, String s) {
         if (s.startsWith(".")) { // filter all messages starting with .

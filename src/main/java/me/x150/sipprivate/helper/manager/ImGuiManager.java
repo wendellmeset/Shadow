@@ -14,8 +14,8 @@ import java.nio.file.Paths;
 
 public class ImGuiManager {
     protected static final ImGuiImplGlfw implGlfw = new ImGuiImplGlfw();
-    protected static final ImGuiImplGl3  implGl3  = new ImGuiImplGl3();
-    private static         boolean       init     = false;
+    protected static final ImGuiImplGl3 implGl3 = new ImGuiImplGl3();
+    private static boolean init = false;
 
     public static boolean isInitialized() {
         return init;

@@ -22,14 +22,16 @@ public class Panic extends Command {
         super("Panic", "Turns off all modules in case you get caught", "panic", "p", "disableall");
     }
 
-    @Override public String[] getSuggestions(String fullCommand, String[] args) {
+    @Override
+    public String[] getSuggestions(String fullCommand, String[] args) {
         if (args.length == 1) {
             return new String[]{"hard", "restore"};
         }
         return super.getSuggestions(fullCommand, args);
     }
 
-    @Override public void onExecute(String[] args) {
+    @Override
+    public void onExecute(String[] args) {
         if (args.length == 0) {
             stored.clear();
             message("Disabling all non-render modules");

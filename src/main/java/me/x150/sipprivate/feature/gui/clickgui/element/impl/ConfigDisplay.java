@@ -1,10 +1,6 @@
 package me.x150.sipprivate.feature.gui.clickgui.element.impl;
 
-import me.x150.sipprivate.feature.config.BooleanSetting;
-import me.x150.sipprivate.feature.config.DoubleSetting;
-import me.x150.sipprivate.feature.config.EnumSetting;
-import me.x150.sipprivate.feature.config.ModuleConfig;
-import me.x150.sipprivate.feature.config.SettingBase;
+import me.x150.sipprivate.feature.config.*;
 import me.x150.sipprivate.feature.gui.clickgui.ClickGUI;
 import me.x150.sipprivate.feature.gui.clickgui.element.Element;
 import me.x150.sipprivate.feature.gui.clickgui.element.impl.config.BooleanSettingEditor;
@@ -20,12 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConfigDisplay extends Element {
-    List<ConfigBase<?>> bases         = new ArrayList<>();
-    ModuleConfig        mc;
-    double              padding       = 4;
-    double              paddingLeft   = 3;
-    long                hoverStart    = System.currentTimeMillis();
-    boolean             hoveredBefore = false;
+    List<ConfigBase<?>> bases = new ArrayList<>();
+    ModuleConfig mc;
+    double padding = 4;
+    double paddingLeft = 3;
+    long hoverStart = System.currentTimeMillis();
+    boolean hoveredBefore = false;
 
     public ConfigDisplay(double x, double y, ModuleConfig mc) {
         super(x, y, 100, 0);
@@ -45,7 +41,8 @@ public class ConfigDisplay extends Element {
         this.height = bases.stream().map(Element::getHeight).reduce(Double::sum).orElse(0d);
     }
 
-    @Override public boolean clicked(double x, double y, int button) {
+    @Override
+    public boolean clicked(double x, double y, int button) {
         for (ConfigBase<?> basis : bases) {
             if (basis.getConfigValue().shouldShow() && basis.clicked(x, y, button)) {
                 return true;
@@ -54,7 +51,8 @@ public class ConfigDisplay extends Element {
         return false;
     }
 
-    @Override public boolean dragged(double x, double y, double deltaX, double deltaY, int button) {
+    @Override
+    public boolean dragged(double x, double y, double deltaX, double deltaY, int button) {
         for (ConfigBase<?> basis : bases) {
             if (basis.getConfigValue().shouldShow() && basis.dragged(x, y, deltaX, deltaY, button)) {
                 return true;
@@ -63,7 +61,8 @@ public class ConfigDisplay extends Element {
         return false;
     }
 
-    @Override public boolean released() {
+    @Override
+    public boolean released() {
         for (ConfigBase<?> basis : bases) {
             if (basis.getConfigValue().shouldShow()) {
                 basis.released();
@@ -72,7 +71,8 @@ public class ConfigDisplay extends Element {
         return false;
     }
 
-    @Override public boolean keyPressed(int keycode) {
+    @Override
+    public boolean keyPressed(int keycode) {
         for (ConfigBase<?> basis : bases) {
             if (basis.getConfigValue().shouldShow() && basis.keyPressed(keycode)) {
                 return true;
@@ -81,7 +81,8 @@ public class ConfigDisplay extends Element {
         return false;
     }
 
-    @Override public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
+    @Override
+    public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
         double yOffset = 2;
         Theme theme = ClickGUI.theme;
         Renderer.R2D.fill(matrices, theme.getConfig(), x, this.y, x + width, this.y + height);
@@ -110,7 +111,8 @@ public class ConfigDisplay extends Element {
         this.height = yOffset + 2;
     }
 
-    @Override public void tickAnim() {
+    @Override
+    public void tickAnim() {
         for (ConfigBase<?> basis : bases) {
             basis.tickAnim();
         }

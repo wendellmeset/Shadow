@@ -8,7 +8,8 @@ package me.x150.sipprivate.helper.event.events;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.util.math.MatrixStack;
 
-@SuppressWarnings("unused") public class BlockEntityRenderEvent extends RenderEvent {
+@SuppressWarnings("unused")
+public class BlockEntityRenderEvent extends RenderEvent {
 
     final BlockEntity entity;
 

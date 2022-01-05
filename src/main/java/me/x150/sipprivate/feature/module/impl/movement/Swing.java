@@ -18,11 +18,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class Swing extends Module {
     static BlockPos swinging;
-    static int      t = 0;
+    static int t = 0;
 
 
     public Swing() {
@@ -41,7 +41,9 @@ public class Swing extends Module {
             }
         });
         Events.registerEventHandler(EventType.PACKET_SEND, event -> {
-            if (!this.isEnabled()) return;
+            if (!this.isEnabled()) {
+                return;
+            }
             PacketEvent pe = (PacketEvent) event;
             if (pe.getPacket() instanceof ClientCommandC2SPacket e && e.getMode() == ClientCommandC2SPacket.Mode.PRESS_SHIFT_KEY) {
                 event.setCancelled(true);
@@ -65,7 +67,8 @@ public class Swing extends Module {
         return new double[]{yaw, pitch};
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
         if (swinging == null) {
             return;
         }
@@ -78,19 +81,23 @@ public class Swing extends Module {
         }
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
 
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
 
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return null;
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
         if (swinging == null || CoffeeClientMain.client.player == null) {
             return;
         }
@@ -98,12 +105,13 @@ public class Swing extends Module {
         Vec3d cringe2 = new Vec3d(swinging.getX() + 0.5, swinging.getY() + 0.5, swinging.getZ() + 0.5);
         Entity entity = CoffeeClientMain.client.player;
         Vec3d eSource = new Vec3d(MathHelper.lerp(CoffeeClientMain.client.getTickDelta(), entity.prevX, entity.getX()), MathHelper.lerp(CoffeeClientMain.client.getTickDelta(), entity.prevY, entity.getY()), MathHelper.lerp(CoffeeClientMain.client.getTickDelta(), entity.prevZ, entity.getZ()));
-//        Renderer.R3D.renderFilled(cringe, new Vec3d(1, 1, 1), new Color(150, 150, 150, 150), matrices)
-        Renderer.R3D.renderFilled(cringe.add(.5,.5,.5).subtract(.25,.25,.25), new Vec3d(.5,.5,.5), ClickGUI.theme.getInactive(),matrices);
+        //        Renderer.R3D.renderFilled(cringe, new Vec3d(1, 1, 1), new Color(150, 150, 150, 150), matrices)
+        Renderer.R3D.renderFilled(cringe.add(.5, .5, .5).subtract(.25, .25, .25), new Vec3d(.5, .5, .5), ClickGUI.theme.getInactive(), matrices);
         Renderer.R3D.line(eSource, cringe2, new Color(50, 50, 50, 255), matrices);
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
 
     }
 }

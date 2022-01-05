@@ -16,4 +16,8 @@ public interface FontAdapter {
     float getMarginHeight();
 
     void drawString(MatrixStack matrices, String s, float x, float y, int color, boolean dropShadow);
+
+    String trimStringToWidth(String in, double width);
+
+    String trimStringToWidth(String in, double width, boolean reverse);
 }

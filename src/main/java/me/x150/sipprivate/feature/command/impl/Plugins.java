@@ -57,7 +57,8 @@ public class Plugins extends Command {
         }
     }
 
-    @Override public void onExecute(String[] args) {
+    @Override
+    public void onExecute(String[] args) {
         if (CoffeeClientMain.client.getNetworkHandler() != null) {
             CoffeeClientMain.client.getNetworkHandler().sendPacket(new RequestCommandCompletionsC2SPacket(0, "/"));
             pendingCmdTree = true;

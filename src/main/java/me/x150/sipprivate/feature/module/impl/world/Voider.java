@@ -11,22 +11,23 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Voider extends Module {
-    DoubleSetting radius   = this.config.create(new DoubleSetting.Builder(100).precision(0).name("Radius").description("How much to erase on X and Z").min(20).max(500).get());
-    DoubleSetting delay    = this.config.create(new DoubleSetting.Builder(30).precision(0).name("Delay").description("How much delay to use while erasing").min(0).max(1000).get());
-    Thread        runner;
-    AtomicBoolean cancel   = new AtomicBoolean(false);
-    Vec3d         startPos = null;
-    Vec3d         latest   = null;
+    DoubleSetting radius = this.config.create(new DoubleSetting.Builder(100).precision(0).name("Radius").description("How much to erase on X and Z").min(20).max(500).get());
+    DoubleSetting delay = this.config.create(new DoubleSetting.Builder(30).precision(0).name("Delay").description("How much delay to use while erasing").min(0).max(1000).get());
+    Thread runner;
+    AtomicBoolean cancel = new AtomicBoolean(false);
+    Vec3d startPos = null;
+    Vec3d latest = null;
 
     public Voider() {
         super("Voider", "Transforms a radius around you to void", ModuleType.WORLD);
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
 
     }
 
@@ -47,34 +48,40 @@ public class Voider extends Module {
         setEnabled(false);
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
         startPos = CoffeeClientMain.client.player.getPos();
         cancel.set(false);
         runner = new Thread(this::run);
         runner.start();
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
         Notification.create(6000, "Voider", "Waiting for cleanup...");
         cancel.set(true);
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return null;
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
         if (latest != null) {
             Renderer.R3D.renderFilled(new Vec3d(latest.x - 2, CoffeeClientMain.client.world.getBottomY(), latest.z - 2), new Vec3d(5, 0.001, 5), Utils.getCurrentRGB(), matrices);
             Renderer.R3D.line(new Vec3d(latest.x + .5, CoffeeClientMain.client.world.getBottomY(), latest.z + .5), new Vec3d(latest.x + .5, CoffeeClientMain.client.world.getTopY(), latest.z + .5), Color.RED, matrices);
         }
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
 
     }
 
-    @Override public void onFastTick() {
+    @Override
+    public void onFastTick() {
         super.onFastTick();
     }
 }

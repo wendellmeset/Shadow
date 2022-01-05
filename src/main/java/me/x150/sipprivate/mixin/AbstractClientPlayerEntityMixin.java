@@ -9,8 +9,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(AbstractClientPlayerEntity.class) public class AbstractClientPlayerEntityMixin {
-    @Inject(method = "getSkinTexture", at = @At("HEAD"), cancellable = true) void replaceSkinTex(CallbackInfoReturnable<Identifier> cir) {
+@Mixin(AbstractClientPlayerEntity.class)
+public class AbstractClientPlayerEntityMixin {
+    @Inject(method = "getSkinTexture", at = @At("HEAD"), cancellable = true)
+    void replaceSkinTex(CallbackInfoReturnable<Identifier> cir) {
         SkinChangeExploit sce = ModuleRegistry.getByClass(SkinChangeExploit.class);
         if (!sce.isEnabled()) {
             return;

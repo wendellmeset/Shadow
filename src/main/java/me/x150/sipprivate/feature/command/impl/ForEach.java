@@ -23,7 +23,8 @@ public class ForEach extends Command {
         super("ForEach", "Do something for each player", "foreach", "for", "fe");
     }
 
-    @Override public String[] getSuggestions(String fullCommand, String[] args) {
+    @Override
+    public String[] getSuggestions(String fullCommand, String[] args) {
         if (args.length == 1) {
             return new String[]{"(delay in ms)"};
         } else if (args.length == 2) {
@@ -32,7 +33,8 @@ public class ForEach extends Command {
         return super.getSuggestions(fullCommand, args);
     }
 
-    @Override public void onExecute(String[] args) {
+    @Override
+    public void onExecute(String[] args) {
         if (args.length < 2) {
             message("Syntax: foreach (delayMS) (message)");
             message("%s in the message gets replaced with the player name");

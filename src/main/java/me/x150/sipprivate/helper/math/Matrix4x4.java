@@ -10,7 +10,8 @@ import org.lwjgl.system.MemoryStack;
 
 import java.nio.FloatBuffer;
 
-@SuppressWarnings("UnusedReturnValue") public class Matrix4x4 {
+@SuppressWarnings("UnusedReturnValue")
+public class Matrix4x4 {
 
     public float a00;
     public float a01;

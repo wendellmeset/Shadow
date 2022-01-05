@@ -7,7 +7,7 @@ import me.x150.sipprivate.helper.font.FontRenderers;
 import me.x150.sipprivate.helper.render.Renderer;
 import net.minecraft.client.util.math.MatrixStack;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +30,8 @@ public class EnumSettingEditor extends ConfigBase<EnumSetting<?>> {
         return configValue.getValue().equals(value) ? theme.getActive().getRGB() : theme.getInactive().getRGB();
     }
 
-    @Override public boolean clicked(double x, double y, int button) {
+    @Override
+    public boolean clicked(double x, double y, int button) {
         if (inBounds(x, y)) {
             for (EnumSelectorClickable<?> value : values) {
                 if (value.inBounds(x, y)) {
@@ -42,19 +43,23 @@ public class EnumSettingEditor extends ConfigBase<EnumSetting<?>> {
         return false;
     }
 
-    @Override public boolean dragged(double x, double y, double deltaX, double deltaY, int button) {
+    @Override
+    public boolean dragged(double x, double y, double deltaX, double deltaY, int button) {
         return false;
     }
 
-    @Override public boolean released() {
+    @Override
+    public boolean released() {
         return false;
     }
 
-    @Override public boolean keyPressed(int keycode) {
+    @Override
+    public boolean keyPressed(int keycode) {
         return false;
     }
 
-    @Override public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
+    @Override
+    public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
         double pad = 0;
         FontRenderers.getNormal().drawString(matrices, configValue.name, x, y + 1, 0xFFFFFF);
         double yOffset = FontRenderers.getNormal().getMarginHeight() + 2;
@@ -71,13 +76,14 @@ public class EnumSettingEditor extends ConfigBase<EnumSetting<?>> {
         this.height = yOffset + pad;
     }
 
-    @Override public void tickAnim() {
+    @Override
+    public void tickAnim() {
 
     }
 
     static class EnumSelectorClickable<T extends Enum<?>> {
         EnumSettingEditor instance;
-        double            x, y, width, height;
+        double x, y, width, height;
         T value;
 
         public EnumSelectorClickable(EnumSettingEditor instance, double x, double y, double width, double height, T value) {

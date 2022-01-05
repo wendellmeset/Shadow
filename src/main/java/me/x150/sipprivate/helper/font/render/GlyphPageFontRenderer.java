@@ -2,58 +2,50 @@ package me.x150.sipprivate.helper.font.render;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.BufferRenderer;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormat;
-import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 
-import java.awt.Font;
+import java.awt.*;
 import java.io.InputStream;
 import java.util.Objects;
 
-import static org.lwjgl.opengl.GL11.GL_LINEAR;
-import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
+import static org.lwjgl.opengl.GL11.*;
 
 public class GlyphPageFontRenderer {
 
     /**
      * Array of RGB triplets defining the 16 standard chat colors followed by 16 darker version of the same colors for drop shadows.
      */
-    private final int[]     colorCode = new int[32];
+    private final int[] colorCode = new int[32];
     private final GlyphPage regularGlyphPage;
     private final GlyphPage boldGlyphPage;
     private final GlyphPage italicGlyphPage;
     private final GlyphPage boldItalicGlyphPage;
-    public        int       size      = -1;
+    public int size = -1;
     /**
      * Current X coordinate at which to draw the next character.
      */
-    private       float     posX;
+    private float posX;
     /**
      * Current Y coordinate at which to draw the next character.
      */
-    private       float     posY;
+    private float posY;
     /**
      * Set if the "l" style (bold) is active in currently rendering string
      */
-    private       boolean   boldStyle;
+    private boolean boldStyle;
     /**
      * Set if the "o" style (italic) is active in currently rendering string
      */
-    private       boolean   italicStyle;
+    private boolean italicStyle;
     /**
      * Set if the "n" style (underlined) is active in currently rendering string
      */
-    private       boolean   underlineStyle;
+    private boolean underlineStyle;
     /**
      * Set if the "m" style (strikethrough) is active in currently rendering string
      */
-    private       boolean   strikethroughStyle;
+    private boolean strikethroughStyle;
 
     public GlyphPageFontRenderer(GlyphPage regularGlyphPage, GlyphPage boldGlyphPage, GlyphPage italicGlyphPage, GlyphPage boldItalicGlyphPage) {
         this.regularGlyphPage = regularGlyphPage;
@@ -464,14 +456,14 @@ public class GlyphPageFontRenderer {
     /**
      * Trims a string to fit a specified Width.
      */
-    public String trimStringToWidth(String text, int width) {
+    public String trimStringToWidth(String text, double width) {
         return this.trimStringToWidth(text, width, false);
     }
 
     /**
      * Trims a string to a specified width, and will reverse it if par3 is set.
      */
-    public String trimStringToWidth(String text, int maxWidth, boolean reverse) {
+    public String trimStringToWidth(String text, double maxWidth, boolean reverse) {
         StringBuilder stringbuilder = new StringBuilder();
 
         boolean on = false;
@@ -482,7 +474,7 @@ public class GlyphPageFontRenderer {
 
         GlyphPage currentPage;
 
-        for (int i = j; i >= 0 && i < text.length() && i < maxWidth; i += k) {
+        for (int i = j; i >= 0 && i < text.length(); i += k) {
             char character = text.charAt(i);
 
             if (character == '§') {
@@ -502,24 +494,17 @@ public class GlyphPageFontRenderer {
                 }
                 on = false;
             } else {
-                if (on) {
-                    i--; // include the §, because color code is invalid
-                }
-                character = text.charAt(i);
-
-                currentPage = getCurrentGlyphPage();
-
-                width += (currentPage.getWidth(character) - 8) / 2;
-            }
-
-            if (i > width) {
-                break;
+                on = false;
             }
 
             if (reverse) {
                 stringbuilder.insert(0, character);
             } else {
                 stringbuilder.append(character);
+            }
+            String currentText = stringbuilder.toString();
+            if (getStringWidth(currentText) >= maxWidth) {
+                break;
             }
         }
 

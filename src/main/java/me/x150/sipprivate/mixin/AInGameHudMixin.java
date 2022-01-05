@@ -16,8 +16,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(InGameHud.class) public abstract class AInGameHudMixin extends DrawableHelper {
-    @Inject(method = "render", at = @At("RETURN")) public void atomic_postRender(MatrixStack matrices, float tickDelta, CallbackInfo ci) {
+@Mixin(InGameHud.class)
+public abstract class AInGameHudMixin extends DrawableHelper {
+    @Inject(method = "render", at = @At("RETURN"))
+    public void atomic_postRender(MatrixStack matrices, float tickDelta, CallbackInfo ci) {
         MSAAFramebuffer.use(MSAAFramebuffer.MAX_SAMPLES, () -> {
             for (Module module : ModuleRegistry.getModules()) {
                 if (module.isEnabled()) {

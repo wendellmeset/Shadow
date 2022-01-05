@@ -19,7 +19,7 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Vec3d;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -27,25 +27,29 @@ import java.util.stream.StreamSupport;
 public class Tracers extends Module {
 
     BooleanSetting entities = this.config.create(new BooleanSetting.Builder(false).name("Show entities").description("Render entities").get());
-    BooleanSetting players  = this.config.create(new BooleanSetting.Builder(true).name("Show players").description("Render players").get());
+    BooleanSetting players = this.config.create(new BooleanSetting.Builder(true).name("Show players").description("Render players").get());
 
     public Tracers() {
         super("Tracers", "shows where shit is", ModuleType.RENDER);
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
 
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
 
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
 
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         if (CoffeeClientMain.client.world == null || CoffeeClientMain.client.player == null) {
             return null;
         }
@@ -54,7 +58,8 @@ public class Tracers extends Module {
                 .count() + "";
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
         if (CoffeeClientMain.client.world == null || CoffeeClientMain.client.player == null) {
             return;
         }
@@ -96,7 +101,8 @@ public class Tracers extends Module {
         return (v instanceof PlayerEntity && players.getValue()) || entities.getValue();
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
 
     }
 }

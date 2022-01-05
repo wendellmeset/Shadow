@@ -25,24 +25,26 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.util.ArrayList;
 
-@SuppressWarnings("ResultOfMethodCallIgnored") public class CoffeeClientMain implements ModInitializer {
+@SuppressWarnings("ResultOfMethodCallIgnored")
+public class CoffeeClientMain implements ModInitializer {
 
-    public static final String           MOD_ID           = "sipoverprivate";
-    public static final String           MOD_NAME         = "SipoverPrivate";
-    public static final Logger           LOGGER           = LogManager.getLogger();
-    public static final MinecraftClient  client           = MinecraftClient.getInstance();
-    public static final File             BASE             = new File(MinecraftClient.getInstance().runDirectory, "sip");
-    public static       long             lastScreenChange = System.currentTimeMillis();
-    public static       CoffeeClientMain INSTANCE;
-    public static       Thread           MODULE_FTTICKER;
-    public static       Thread           FAST_TICKER;
-    public              boolean          initialized      = false;
+    public static final String MOD_ID = "sipoverprivate";
+    public static final String MOD_NAME = "SipoverPrivate";
+    public static final Logger LOGGER = LogManager.getLogger();
+    public static final MinecraftClient client = MinecraftClient.getInstance();
+    public static final File BASE = new File(MinecraftClient.getInstance().runDirectory, "sip");
+    public static long lastScreenChange = System.currentTimeMillis();
+    public static CoffeeClientMain INSTANCE;
+    public static Thread MODULE_FTTICKER;
+    public static Thread FAST_TICKER;
+    public boolean initialized = false;
 
     public static void log(Level level, String message) {
         LOGGER.log(level, "[" + MOD_NAME + "] " + message);
     }
 
-    @Override public void onInitialize() {
+    @Override
+    public void onInitialize() {
         INSTANCE = this;
         log(Level.INFO, "Initializing");
         Runtime.getRuntime().addShutdownHook(new Thread(ConfigManager::saveState));

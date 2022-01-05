@@ -15,9 +15,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Objects;
 
-@Mixin(AbstractBlock.AbstractBlockState.class) public class AbstractBlockStateMixin {
+@Mixin(AbstractBlock.AbstractBlockState.class)
+public class AbstractBlockStateMixin {
 
-    @Inject(method = "getLuminance", at = @At("HEAD"), cancellable = true) public void atomic_overwriteBlockLuminance(CallbackInfoReturnable<Integer> cir) {
+    @Inject(method = "getLuminance", at = @At("HEAD"), cancellable = true)
+    public void atomic_overwriteBlockLuminance(CallbackInfoReturnable<Integer> cir) {
         if (Objects.requireNonNull(ModuleRegistry.getByClass(XRAY.class)).isEnabled()) {
             cir.setReturnValue(15);
         }

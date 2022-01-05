@@ -5,50 +5,21 @@
 
 package me.x150.sipprivate.feature.module;
 
-import me.x150.sipprivate.feature.module.impl.exploit.AntiReducedDebugInfo;
-import me.x150.sipprivate.feature.module.impl.exploit.Boaty;
-import me.x150.sipprivate.feature.module.impl.exploit.CarpetBomb;
-import me.x150.sipprivate.feature.module.impl.exploit.InstaBow;
-import me.x150.sipprivate.feature.module.impl.exploit.NoComCrash;
-import me.x150.sipprivate.feature.module.impl.exploit.OOBCrash;
-import me.x150.sipprivate.feature.module.impl.exploit.OffhandCrash;
-import me.x150.sipprivate.feature.module.impl.exploit.SkinChangeExploit;
-import me.x150.sipprivate.feature.module.impl.exploit.VanillaSpoof;
+import me.x150.sipprivate.feature.module.impl.exploit.*;
 import me.x150.sipprivate.feature.module.impl.fun.AutoTrap;
 import me.x150.sipprivate.feature.module.impl.fun.FakeHacker;
 import me.x150.sipprivate.feature.module.impl.fun.TpRange;
-import me.x150.sipprivate.feature.module.impl.misc.AntiOffhandCrash;
-import me.x150.sipprivate.feature.module.impl.misc.AntiPacketKick;
-import me.x150.sipprivate.feature.module.impl.misc.FireballDeflector;
-import me.x150.sipprivate.feature.module.impl.misc.NoFall;
-import me.x150.sipprivate.feature.module.impl.misc.ShulkerDeflector;
-import me.x150.sipprivate.feature.module.impl.movement.AntiAnvil;
-import me.x150.sipprivate.feature.module.impl.movement.BoatPhase;
-import me.x150.sipprivate.feature.module.impl.movement.Flight;
-import me.x150.sipprivate.feature.module.impl.movement.Hyperspeed;
-import me.x150.sipprivate.feature.module.impl.movement.Phase;
-import me.x150.sipprivate.feature.module.impl.movement.Sprint;
-import me.x150.sipprivate.feature.module.impl.movement.Swing;
-import me.x150.sipprivate.feature.module.impl.render.CaveMapper;
-import me.x150.sipprivate.feature.module.impl.render.ClickGUI;
-import me.x150.sipprivate.feature.module.impl.render.ESP;
-import me.x150.sipprivate.feature.module.impl.render.Fullbright;
-import me.x150.sipprivate.feature.module.impl.render.Hud;
-import me.x150.sipprivate.feature.module.impl.render.TargetHud;
-import me.x150.sipprivate.feature.module.impl.render.Tracers;
-import me.x150.sipprivate.feature.module.impl.world.AnyPlacer;
-import me.x150.sipprivate.feature.module.impl.world.AutoTnt;
-import me.x150.sipprivate.feature.module.impl.world.Boom;
-import me.x150.sipprivate.feature.module.impl.world.LetThereBeLight;
-import me.x150.sipprivate.feature.module.impl.world.Voider;
-import me.x150.sipprivate.feature.module.impl.world.XRAY;
+import me.x150.sipprivate.feature.module.impl.misc.*;
+import me.x150.sipprivate.feature.module.impl.movement.*;
+import me.x150.sipprivate.feature.module.impl.render.*;
+import me.x150.sipprivate.feature.module.impl.world.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ModuleRegistry {
-    static final List<Module> modules     = new ArrayList<>();
-    static       boolean      initialized = false;
+    static final List<Module> modules = new ArrayList<>();
+    static boolean initialized = false;
 
     public static void init() {
         initialized = true;
@@ -98,7 +69,8 @@ public class ModuleRegistry {
         return modules;
     }
 
-    @SuppressWarnings("unchecked") public static <T extends Module> T getByClass(Class<T> clazz) {
+    @SuppressWarnings("unchecked")
+    public static <T extends Module> T getByClass(Class<T> clazz) {
         if (!initialized) {
             init();
         }

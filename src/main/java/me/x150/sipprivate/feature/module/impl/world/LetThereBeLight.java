@@ -17,7 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -30,7 +30,8 @@ public class LetThereBeLight extends Module {
         super("LetThereBeLight", "Places torches everywhere", ModuleType.WORLD);
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
         int torchSlot = -1;
         for (int i = 0; i < 9; i++) {
             ItemStack is = CoffeeClientMain.client.player.getInventory().getStack(i);
@@ -71,19 +72,23 @@ public class LetThereBeLight extends Module {
         }
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
 
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
 
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return noBlocksAck ? "No torches!" : null;
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
         Vec3d ppos = CoffeeClientMain.client.player.getPos();
         Vec3d camPos = CoffeeClientMain.client.player.getCameraPosVec(1);
         for (int x = -3; x < 4; x++) {
@@ -107,7 +112,8 @@ public class LetThereBeLight extends Module {
         }
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
 
     }
 }

@@ -12,7 +12,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(BlockEntityRenderDispatcher.class) public class BlockEntityRenderDispatcherMixin {
+@Mixin(BlockEntityRenderDispatcher.class)
+public class BlockEntityRenderDispatcherMixin {
 
     @Inject(method = "render(Lnet/minecraft/block/entity/BlockEntity;FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;)V", at = @At("HEAD"),
             cancellable = true)

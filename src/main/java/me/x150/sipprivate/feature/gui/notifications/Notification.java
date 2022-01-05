@@ -12,17 +12,17 @@ import java.util.List;
 
 public class Notification {
 
-    public final String   title;
-    public final long     creationDate;
-    public       String[] contents;
-    public       long     duration;
-    public       double   posX;
-    public       double   posY;
-    public       double   renderPosX        = 0;
-    public       double   renderPosY        = 0;
-    public       double   animationProgress = 0;
-    public       double   animationGoal     = 0;
-    public       boolean  shouldDoAnimation = false;
+    public final String title;
+    public final long creationDate;
+    public String[] contents;
+    public long duration;
+    public double posX;
+    public double posY;
+    public double renderPosX = 0;
+    public double renderPosY = 0;
+    public double animationProgress = 0;
+    public double animationGoal = 0;
+    public boolean shouldDoAnimation = false;
 
 
     public Notification(long duration, String title, String... contents) {
@@ -61,7 +61,8 @@ public class Notification {
         return create(duration, title, false, contents);
     }
 
-    @SuppressWarnings("UnusedReturnValue") public static Notification create(long duration, String title, String split) {
+    @SuppressWarnings("UnusedReturnValue")
+    public static Notification create(long duration, String title, String split) {
         List<String> splitContent = new ArrayList<>();
         StringBuilder line = new StringBuilder();
         for (String c : split.split(" +")) {

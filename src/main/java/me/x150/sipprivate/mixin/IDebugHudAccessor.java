@@ -6,8 +6,11 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 
 import java.util.List;
 
-@Mixin(DebugHud.class) public interface IDebugHudAccessor {
-    @Invoker("getLeftText") List<String> callGetLeftText();
+@Mixin(DebugHud.class)
+public interface IDebugHudAccessor {
+    @Invoker("getLeftText")
+    List<String> callGetLeftText();
 
-    @Invoker("getRightText") List<String> callGetRightText();
+    @Invoker("getRightText")
+    List<String> callGetRightText();
 }

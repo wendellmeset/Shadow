@@ -21,7 +21,8 @@ public class Hologram extends Command {
         super("Hologram", "Generates a hologram without needing op (requires creative)", "hologram", "holo", "hlg");
     }
 
-    @Override public String[] getSuggestions(String fullCommand, String[] args) {
+    @Override
+    public String[] getSuggestions(String fullCommand, String[] args) {
         if (args.length == 1) {
             return new String[]{"(flags)"};
         }
@@ -31,7 +32,8 @@ public class Hologram extends Command {
         return super.getSuggestions(fullCommand, args);
     }
 
-    @Override public void onExecute(String[] args) {
+    @Override
+    public void onExecute(String[] args) {
         if (args.length < 2) {
             message("i need options and text pls. example: \".hologram eb your text\". specify option \"h\" to show help");
             return;

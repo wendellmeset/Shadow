@@ -19,13 +19,7 @@ import me.x150.sipprivate.helper.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.BufferRenderer;
-import net.minecraft.client.render.Camera;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormat;
-import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -33,42 +27,38 @@ import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3d;
 import org.lwjgl.opengl.GL11;
 
-import java.awt.Color;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.awt.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class CaveMapper extends Module {
 
-    final Map<Block, Color>                      oreColors     = new HashMap<>();
-    final List<BlockPos>                         scannedBlocks = new ArrayList<>();
-    final List<BlockPos>                         ores          = new ArrayList<>();
-    final List<BlockPos>                         toScan        = new ArrayList<>();
-    final List<Map.Entry<BlockPos, List<Vec3d>>> circ          = new ArrayList<>();
-    BooleanSetting coal               = this.config.create(new BooleanSetting.Builder(false).name("Coal").description("Whether to show coal").get());
-    BooleanSetting iron               = this.config.create(new BooleanSetting.Builder(false).name("Iron").description("Whether to show iron").get());
-    BooleanSetting gold               = this.config.create(new BooleanSetting.Builder(false).name("Gold").description("Whether to show gold").get());
-    BooleanSetting redstone           = this.config.create(new BooleanSetting.Builder(false).name("Redstone").description("Whether to show redstone ore").get());
-    BooleanSetting diamond            = this.config.create(new BooleanSetting.Builder(true).name("Diamond").description("Whether to show diamonds").get());
-    BooleanSetting lapis              = this.config.create(new BooleanSetting.Builder(false).name("Lapis").description("Whether to show lapis").get());
-    BooleanSetting copper             = this.config.create(new BooleanSetting.Builder(false).name("Copper").description("Whether to show copper").get());
-    BooleanSetting emerald            = this.config.create(new BooleanSetting.Builder(false).name("Emerald").description("Whether to show emeralds").get());
-    BooleanSetting quartz             = this.config.create(new BooleanSetting.Builder(false).name("Quartz").description("Whether to show quartz").get());
-    BooleanSetting debris             = this.config.create(new BooleanSetting.Builder(true).name("Ancient debris").description("Whether to show ancient debris").get());
-    BooleanSetting showScanned        = this.config.create(new BooleanSetting.Builder(true).name("Show scanned").description("Whether to show the scanned area").get());
-    BooleanSetting showEntire         = this.config.create(new BooleanSetting.Builder(false).name("Show entire area")
+    final Map<Block, Color> oreColors = new HashMap<>();
+    final List<BlockPos> scannedBlocks = new ArrayList<>();
+    final List<BlockPos> ores = new ArrayList<>();
+    final List<BlockPos> toScan = new ArrayList<>();
+    final List<Map.Entry<BlockPos, List<Vec3d>>> circ = new ArrayList<>();
+    BooleanSetting coal = this.config.create(new BooleanSetting.Builder(false).name("Coal").description("Whether to show coal").get());
+    BooleanSetting iron = this.config.create(new BooleanSetting.Builder(false).name("Iron").description("Whether to show iron").get());
+    BooleanSetting gold = this.config.create(new BooleanSetting.Builder(false).name("Gold").description("Whether to show gold").get());
+    BooleanSetting redstone = this.config.create(new BooleanSetting.Builder(false).name("Redstone").description("Whether to show redstone ore").get());
+    BooleanSetting diamond = this.config.create(new BooleanSetting.Builder(true).name("Diamond").description("Whether to show diamonds").get());
+    BooleanSetting lapis = this.config.create(new BooleanSetting.Builder(false).name("Lapis").description("Whether to show lapis").get());
+    BooleanSetting copper = this.config.create(new BooleanSetting.Builder(false).name("Copper").description("Whether to show copper").get());
+    BooleanSetting emerald = this.config.create(new BooleanSetting.Builder(false).name("Emerald").description("Whether to show emeralds").get());
+    BooleanSetting quartz = this.config.create(new BooleanSetting.Builder(false).name("Quartz").description("Whether to show quartz").get());
+    BooleanSetting debris = this.config.create(new BooleanSetting.Builder(true).name("Ancient debris").description("Whether to show ancient debris").get());
+    BooleanSetting showScanned = this.config.create(new BooleanSetting.Builder(true).name("Show scanned").description("Whether to show the scanned area").get());
+    BooleanSetting showEntire = this.config.create(new BooleanSetting.Builder(false).name("Show entire area")
             .description("Whether to show the entire scanned area (VERY performance intensive)").get());
-    DoubleSetting  cacheSize          = this.config.create(new DoubleSetting.Builder(10000).precision(0).name("Cache size")
+    DoubleSetting cacheSize = this.config.create(new DoubleSetting.Builder(10000).precision(0).name("Cache size")
             .description("How big the cache should be (bigger = more time + more memory)").min(5000).max(30000).get());
     BooleanSetting includeTranslucent = this.config.create(new BooleanSetting.Builder(true).name("Scan transparent").description("Scan through transparent blocks as well").get());
-    SettingsGroup  scanner            = this.config.create(new SettingsGroup.Builder().name("Scanner").description("The scanner configuration")
+    SettingsGroup scanner = this.config.create(new SettingsGroup.Builder().name("Scanner").description("The scanner configuration")
             .settings(coal, iron, gold, redstone, diamond, lapis, copper, emerald, quartz, debris, cacheSize, includeTranslucent).get());
-    SettingsGroup  rendering          = this.config.create(new SettingsGroup.Builder().name("Rendering").description("The sexy stuff").settings(showScanned, showEntire).get());
-    BlockPos       start              = null;
-    boolean        scanned            = false;
+    SettingsGroup rendering = this.config.create(new SettingsGroup.Builder().name("Rendering").description("The sexy stuff").settings(showScanned, showEntire).get());
+    BlockPos start = null;
+    boolean scanned = false;
 
     public CaveMapper() {
         super("CaveMapper", "Maps a cave for ores, scanning for exposed ones, to bypass antixray plugins", ModuleType.RENDER);
@@ -93,7 +83,8 @@ public class CaveMapper extends Module {
         oreColors.put(Blocks.DEEPSLATE_EMERALD_ORE, new Color(27, 209, 45));
     }
 
-    @Override public void onFastTick() {
+    @Override
+    public void onFastTick() {
         for (int i = 0; i < 10; i++) {
             if (scannedBlocks.size() > cacheSize.getValue() || toScan.isEmpty()) {
                 toScan.clear();
@@ -248,10 +239,12 @@ public class CaveMapper extends Module {
         return Objects.requireNonNull(CoffeeClientMain.client.world).getBlockState(bp);
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
         scannedBlocks.clear();
         toScan.clear();
         ores.clear();
@@ -261,17 +254,20 @@ public class CaveMapper extends Module {
         scanned = false;
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return scannedBlocks.size() + "S|" + new ArrayList<>(this.ores).stream()
                 .filter(blockPos -> shouldRenderOre(Objects.requireNonNull(CoffeeClientMain.client.world).getBlockState(blockPos).getBlock()))
                 .count() + "F|" + Utils.Math.roundToDecimal((double) new ArrayList<>(this.ores).stream()
                 .filter(blockPos -> shouldRenderOre(Objects.requireNonNull(CoffeeClientMain.client.world).getBlockState(blockPos).getBlock())).count() / scannedBlocks.size() * 100, 2) + "%D";
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
         for (BlockPos hit : new ArrayList<>(toScan)) {
             if (hit == null) {
                 continue;
@@ -348,7 +344,8 @@ public class CaveMapper extends Module {
         }
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
     }
 }
 

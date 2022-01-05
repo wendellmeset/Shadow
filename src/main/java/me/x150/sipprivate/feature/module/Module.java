@@ -13,14 +13,14 @@ import net.minecraft.client.util.math.MatrixStack;
 
 public abstract class Module {
 
-    public final  ModuleConfig   config;
-    public final  DoubleSetting  keybind;
+    public final ModuleConfig config;
+    public final DoubleSetting keybind;
     private final BooleanSetting debuggerEnabled;
-    private final String         name;
-    private final String         description;
-    private final ModuleType     moduleType;
+    private final String name;
+    private final String description;
+    private final ModuleType moduleType;
     private final BooleanSetting toasts;
-    private       boolean        enabled = false;
+    private boolean enabled = false;
 
     public Module(String n, String d, ModuleType type) {
         this.name = n;

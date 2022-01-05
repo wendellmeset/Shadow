@@ -10,7 +10,8 @@ public class HomeScreen extends Screen {
         super(Text.of(""));
     }
 
-    @Override protected void init() {
+    @Override
+    protected void init() {
         CoffeeClientMain.client.setScreen(new TitleScreen());
         super.init();
     }

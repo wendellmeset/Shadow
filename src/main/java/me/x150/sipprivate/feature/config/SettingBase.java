@@ -23,7 +23,7 @@ public abstract class SettingBase<V> {
     /**
      * The current value of this setting
      */
-    V                     value;
+    V value;
 
     /**
      * Constructs a new Setting
@@ -119,7 +119,8 @@ public abstract class SettingBase<V> {
      * @param <V> The type of value we want to parse
      * @param <S> The setting class
      */
-    @SuppressWarnings("unchecked") public abstract static class Builder<B extends Builder<?, ?, ?>, V, S extends SettingBase<?>> {
+    @SuppressWarnings("unchecked")
+    public abstract static class Builder<B extends Builder<?, ?, ?>, V, S extends SettingBase<?>> {
         /**
          * Name and description
          */
@@ -127,7 +128,7 @@ public abstract class SettingBase<V> {
         /**
          * The default value
          */
-        V           defaultValue;
+        V defaultValue;
         /**
          * Event listener when the value changed
          */

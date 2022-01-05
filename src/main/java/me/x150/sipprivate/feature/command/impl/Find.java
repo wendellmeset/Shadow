@@ -26,8 +26,8 @@ import java.util.UUID;
 public class Find extends Command {
 
     boolean pendingBook = false;
-    boolean sent2nd     = false;
-    int     bookSlot    = -1;
+    boolean sent2nd = false;
+    int bookSlot = -1;
 
     public Find() {
         super("Find", "NoCom 2 (requires creative)", "find", "cfind");
@@ -92,14 +92,16 @@ public class Find extends Command {
         }
     }
 
-    @Override public String[] getSuggestions(String fullCommand, String[] args) {
+    @Override
+    public String[] getSuggestions(String fullCommand, String[] args) {
         if (args.length == 1) {
             return new String[]{"(uuid)"};
         }
         return super.getSuggestions(fullCommand, args);
     }
 
-    @Override public void onExecute(String[] args) {
+    @Override
+    public void onExecute(String[] args) {
         if (!CoffeeClientMain.client.interactionManager.hasCreativeInventory()) {
             error("Cant find the player, need GMC");
             return;

@@ -13,9 +13,10 @@ public abstract class AntiAliasedScreen extends Screen {
         this.samples = samples;
     }
 
-    protected abstract void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta);
+    public abstract void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta);
 
-    @Override public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    @Override
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         if (samples != -1) {
             MSAAFramebuffer.use(samples, () -> renderInternal(matrices, mouseX, mouseY, delta));
         } else {

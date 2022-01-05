@@ -33,7 +33,7 @@ import net.minecraft.world.World;
 import org.lwjgl.BufferUtils;
 
 import javax.imageio.ImageIO;
-import java.awt.Color;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.net.URI;
@@ -42,12 +42,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.ByteBuffer;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public class Utils {
 
@@ -111,7 +107,8 @@ public class Utils {
         return splits.toArray(new String[0]);
     }
 
-    @SuppressWarnings("UnusedReturnValue") public static NbtCompound putPos(Vec3d pos, NbtCompound comp) {
+    @SuppressWarnings("UnusedReturnValue")
+    public static NbtCompound putPos(Vec3d pos, NbtCompound comp) {
         NbtList list = new NbtList();
         list.add(NbtDouble.of(pos.x));
         list.add(NbtDouble.of(pos.y));
@@ -214,7 +211,7 @@ public class Utils {
 
         static final Map<String, UUID> UUID_CACHE = new HashMap<>();
         static final Map<UUID, String> NAME_CACHE = new HashMap<>();
-        static final HttpClient        client     = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build();
+        static final HttpClient client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build();
 
         public static String getNameFromUUID(UUID uuid) {
             if (NAME_CACHE.containsKey(uuid)) {
@@ -311,8 +308,8 @@ public class Utils {
 
     public static class TickManager {
 
-        static final List<TickEntry> entries         = new ArrayList<>();
-        static final List<Runnable>  nextTickRunners = new ArrayList<>();
+        static final List<TickEntry> entries = new ArrayList<>();
+        static final List<Runnable> nextTickRunners = new ArrayList<>();
 
         public static void runInNTicks(int n, Runnable toRun) {
             entries.add(new TickEntry(n, toRun));

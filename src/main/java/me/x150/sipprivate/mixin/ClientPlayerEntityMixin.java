@@ -10,8 +10,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(ClientPlayerEntity.class) public class ClientPlayerEntityMixin {
-    @Inject(method = "tick", at = @At("HEAD")) public void atomic_preTick(CallbackInfo ci) {
+@Mixin(ClientPlayerEntity.class)
+public class ClientPlayerEntityMixin {
+    @Inject(method = "tick", at = @At("HEAD"))
+    public void atomic_preTick(CallbackInfo ci) {
         Utils.TickManager.tick();
         if (!ConfigManager.enabled) {
             ConfigManager.enableModules();

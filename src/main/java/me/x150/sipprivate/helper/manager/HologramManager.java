@@ -7,11 +7,7 @@ package me.x150.sipprivate.helper.manager;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtByte;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtDouble;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtString;
+import net.minecraft.nbt.*;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
 
@@ -23,8 +19,8 @@ public class HologramManager {
 
     public static class Hologram {
 
-        String  text;
-        Vec3d   pos;
+        String text;
+        Vec3d pos;
         boolean isEgg = false, isChild = false, isVisible = false, hasGravity = false, wrapName = true, isMarker = true;
 
         public Hologram() {
@@ -57,7 +53,8 @@ public class HologramManager {
             return this;
         }
 
-        @SuppressWarnings("UnusedReturnValue") public Hologram wrapsName(boolean wrapName) {
+        @SuppressWarnings("UnusedReturnValue")
+        public Hologram wrapsName(boolean wrapName) {
             this.wrapName = wrapName;
             return this;
         }

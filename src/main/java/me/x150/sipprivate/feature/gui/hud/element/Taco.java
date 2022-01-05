@@ -13,7 +13,8 @@ public class Taco extends HudElement {
         super("Taco", 0, CoffeeClientMain.client.getWindow().getScaledHeight(), 100, 100);
     }
 
-    @Override public void renderIntern(MatrixStack stack) {
+    @Override
+    public void renderIntern(MatrixStack stack) {
         if (!me.x150.sipprivate.feature.command.impl.Taco.config.enabled) {
             return;
         }

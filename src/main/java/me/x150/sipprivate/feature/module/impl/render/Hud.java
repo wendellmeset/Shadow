@@ -33,18 +33,18 @@ import java.util.Comparator;
 import java.util.List;
 
 public class Hud extends Module {
-    public static double             currentTps = 0;
-    static        ClientFontRenderer titleFr;
-    final         DateFormat         minSec     = new SimpleDateFormat("mm:ss");
-    BooleanSetting    fps                 = this.config.create(new BooleanSetting.Builder(true).name("FPS").description("Whether to show FPS").get());
-    BooleanSetting    tps                 = this.config.create(new BooleanSetting.Builder(true).name("TPS").description("Whether to show TPS").get());
-    BooleanSetting    coords              = this.config.create(new BooleanSetting.Builder(true).name("Coordinates").description("Whether to show current coordinates").get());
-    BooleanSetting    ping                = this.config.create(new BooleanSetting.Builder(true).name("Ping").description("Whether to show current ping").get());
-    BooleanSetting    modules             = this.config.create(new BooleanSetting.Builder(true).name("Array list").description("Whether to show currently enabled modules").get());
-    long              lastTimePacketReceived;
-    double            rNoConnectionPosY   = -10d;
-    Notification      serverNotResponding = null;
-    List<ModuleEntry> moduleList          = new ArrayList<>();
+    public static double currentTps = 0;
+    static ClientFontRenderer titleFr;
+    final DateFormat minSec = new SimpleDateFormat("mm:ss");
+    BooleanSetting fps = this.config.create(new BooleanSetting.Builder(true).name("FPS").description("Whether to show FPS").get());
+    BooleanSetting tps = this.config.create(new BooleanSetting.Builder(true).name("TPS").description("Whether to show TPS").get());
+    BooleanSetting coords = this.config.create(new BooleanSetting.Builder(true).name("Coordinates").description("Whether to show current coordinates").get());
+    BooleanSetting ping = this.config.create(new BooleanSetting.Builder(true).name("Ping").description("Whether to show current ping").get());
+    BooleanSetting modules = this.config.create(new BooleanSetting.Builder(true).name("Array list").description("Whether to show currently enabled modules").get());
+    long lastTimePacketReceived;
+    double rNoConnectionPosY = -10d;
+    Notification serverNotResponding = null;
+    List<ModuleEntry> moduleList = new ArrayList<>();
 
     public Hud() {
         super("Hud", "Shows information about the player on screen", ModuleType.RENDER);
@@ -70,27 +70,33 @@ public class Hud extends Module {
         return (20.0 / Math.max((n - 1000.0) / (500.0), 1.0));
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
 
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
 
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
 
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return null;
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override public void onHudRenderNoMSAA() {
+    @Override
+    public void onHudRenderNoMSAA() {
         if (CoffeeClientMain.client.getNetworkHandler() == null) {
             return;
         }
@@ -135,7 +141,8 @@ public class Hud extends Module {
         HudRenderer.getInstance().render();
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
         if (CoffeeClientMain.client.getNetworkHandler() == null) {
             return;
         }
@@ -247,7 +254,8 @@ public class Hud extends Module {
         }
     }
 
-    @Override public void onFastTick() {
+    @Override
+    public void onFastTick() {
         rNoConnectionPosY = Transitions.transition(rNoConnectionPosY, shouldNoConnectionDropDown() ? 10 : -10, 10);
         HudRenderer.getInstance().fastTick();
         makeSureIsInitialized();
@@ -263,7 +271,7 @@ public class Hud extends Module {
     static class ModuleEntry {
         Module module;
         double animationProgress = 0;
-        double renderWidth       = getWidth();
+        double renderWidth = getWidth();
 
         void animate() {
             double a = 0.02;

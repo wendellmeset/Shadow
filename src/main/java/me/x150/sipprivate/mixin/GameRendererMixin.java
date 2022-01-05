@@ -14,7 +14,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(GameRenderer.class) public class GameRendererMixin {
+@Mixin(GameRenderer.class)
+public class GameRendererMixin {
 
     private boolean vb;
     private boolean dis;
@@ -40,17 +41,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
         }
     }
 
-    @Inject(method = "render", at = @At("HEAD")) void atomic_initShit(float tickDelta, long startTime, boolean tick, CallbackInfo ci) {
+    @Inject(method = "render", at = @At("HEAD"))
+    void atomic_initShit(float tickDelta, long startTime, boolean tick, CallbackInfo ci) {
         if (!ImGuiManager.isInitialized()) {
             ImGuiManager.init();
         }
     }
 
-    @Inject(at = @At("HEAD"), method = "renderWorld") private void atomic_preRenderWorld(float tickDelta, long limitTime, MatrixStack matrix, CallbackInfo ci) {
+    @Inject(at = @At("HEAD"), method = "renderWorld")
+    private void atomic_preRenderWorld(float tickDelta, long limitTime, MatrixStack matrix, CallbackInfo ci) {
         dis = true;
     }
 
-    @Inject(at = @At("HEAD"), method = "bobView", cancellable = true) private void atomic_stopCursorBob(MatrixStack matrices, float f, CallbackInfo ci) {
+    @Inject(at = @At("HEAD"), method = "bobView", cancellable = true)
+    private void atomic_stopCursorBob(MatrixStack matrices, float f, CallbackInfo ci) {
         if (CoffeeClientMain.client.options.bobView && dis) {
             vb = true;
             CoffeeClientMain.client.options.bobView = false;

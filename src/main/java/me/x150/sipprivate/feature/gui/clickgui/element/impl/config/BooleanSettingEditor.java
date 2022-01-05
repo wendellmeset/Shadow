@@ -9,25 +9,28 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 
 public class BooleanSettingEditor extends ConfigBase<BooleanSetting> {
-    double rw           = 14;
-    double rh           = 5;
-    double rid          = 4;
-    double margin       = .5;
+    double rw = 14;
+    double rh = 5;
+    double rid = 4;
+    double margin = .5;
     double animProgress = 0;
 
     public BooleanSettingEditor(double x, double y, double width, BooleanSetting configValue) {
         super(x, y, width, FontRenderers.getNormal().getFontHeight() + 2, configValue);
     }
 
-    @Override public boolean dragged(double x, double y, double deltaX, double deltaY, int button) {
+    @Override
+    public boolean dragged(double x, double y, double deltaX, double deltaY, int button) {
         return false;
     }
 
-    @Override public boolean released() {
+    @Override
+    public boolean released() {
         return false;
     }
 
-    @Override public boolean clicked(double x, double y, int button) {
+    @Override
+    public boolean clicked(double x, double y, int button) {
         //        System.out.println(x+", "+y+", "+button);
         if (inBounds(x, y) && button == 0) {
             //            System.out.println("clicked");
@@ -46,11 +49,13 @@ public class BooleanSettingEditor extends ConfigBase<BooleanSetting> {
     //    double xSmooth = -1;
 
 
-    @Override public boolean keyPressed(int keycode) {
+    @Override
+    public boolean keyPressed(int keycode) {
         return false;
     }
 
-    @Override public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
+    @Override
+    public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
         Theme theme = ClickGUI.theme;
         double smoothAnimProgress = easeInOutCubic(animProgress);
         Renderer.R2D.renderRoundedQuad(matrices, Renderer.Util.lerp(theme.getActive(), theme.getInactive(), smoothAnimProgress), x, y + height / 2d - rh / 2d, x + rw, y + height / 2d + rh / 2d, rh / 2d, 5);
@@ -66,7 +71,8 @@ public class BooleanSettingEditor extends ConfigBase<BooleanSetting> {
 
     }
 
-    @Override public void tickAnim() {
+    @Override
+    public void tickAnim() {
         double a = 0.03;
         if (!configValue.getValue()) {
             a *= -1;

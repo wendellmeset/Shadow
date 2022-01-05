@@ -5,29 +5,7 @@
 
 package me.x150.sipprivate.feature.command;
 
-import me.x150.sipprivate.feature.command.impl.Bind;
-import me.x150.sipprivate.feature.command.impl.Config;
-import me.x150.sipprivate.feature.command.impl.ConfigUtils;
-import me.x150.sipprivate.feature.command.impl.Drop;
-import me.x150.sipprivate.feature.command.impl.Effect;
-import me.x150.sipprivate.feature.command.impl.FakeItem;
-import me.x150.sipprivate.feature.command.impl.Find;
-import me.x150.sipprivate.feature.command.impl.ForEach;
-import me.x150.sipprivate.feature.command.impl.Gamemode;
-import me.x150.sipprivate.feature.command.impl.Help;
-import me.x150.sipprivate.feature.command.impl.Hologram;
-import me.x150.sipprivate.feature.command.impl.Invsee;
-import me.x150.sipprivate.feature.command.impl.Kill;
-import me.x150.sipprivate.feature.command.impl.Panic;
-import me.x150.sipprivate.feature.command.impl.Plugins;
-import me.x150.sipprivate.feature.command.impl.RageQuit;
-import me.x150.sipprivate.feature.command.impl.Rename;
-import me.x150.sipprivate.feature.command.impl.Say;
-import me.x150.sipprivate.feature.command.impl.SkinExploit;
-import me.x150.sipprivate.feature.command.impl.Taco;
-import me.x150.sipprivate.feature.command.impl.Test;
-import me.x150.sipprivate.feature.command.impl.Toggle;
-import me.x150.sipprivate.feature.command.impl.ViewNbt;
+import me.x150.sipprivate.feature.command.impl.*;
 import me.x150.sipprivate.feature.gui.screen.CoffeeConsoleScreen;
 
 import java.io.PrintWriter;

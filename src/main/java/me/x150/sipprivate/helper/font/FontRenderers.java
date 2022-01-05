@@ -9,7 +9,7 @@ import java.util.List;
 
 public class FontRenderers {
     private static final List<ClientFontRenderer> fontRenderers = new ArrayList<>();
-    private static       FontAdapter              normal, title, mono, vanilla;
+    private static FontAdapter normal, title, mono, vanilla;
 
     public static FontAdapter getNormal() {
         return normal;

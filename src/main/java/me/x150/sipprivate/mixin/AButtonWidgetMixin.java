@@ -18,24 +18,34 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.awt.Color;
+import java.awt.*;
 
-@SuppressWarnings("ConstantConditions") @Mixin(ClickableWidget.class) public abstract class AButtonWidgetMixin implements FastTickable {
+@SuppressWarnings("ConstantConditions")
+@Mixin(ClickableWidget.class)
+public abstract class AButtonWidgetMixin implements FastTickable {
 
-    final             Color   unselectedColor = new Color(25, 44, 49, 70);
-    final             Color   disabledColor   = new Color(0, 0, 0, 70);
-    @Shadow public    int     x;
-    @Shadow public    int     y;
-    @Shadow public    boolean active;
-    @Shadow protected int     width;
-    @Shadow protected int     height;
+    final Color unselectedColor = new Color(25, 44, 49, 70);
+    final Color disabledColor = new Color(0, 0, 0, 70);
+    @Shadow
+    public int x;
+    @Shadow
+    public int y;
+    @Shadow
+    public boolean active;
+    @Shadow
+    protected int width;
+    @Shadow
+    protected int height;
     double animProg = 0;
 
-    @Shadow public abstract boolean isHovered();
+    @Shadow
+    public abstract boolean isHovered();
 
-    @Shadow public abstract Text getMessage();
+    @Shadow
+    public abstract Text getMessage();
 
-    @Override public void onFastTick() {
+    @Override
+    public void onFastTick() {
         double e = 0.03d;
         if (!this.isHovered() || !this.active) {
             e *= -1;
@@ -45,7 +55,8 @@ import java.awt.Color;
         animProg = MathHelper.clamp(animProg, 0, 1);
     }
 
-    @Inject(method = "renderButton", at = @At("HEAD"), cancellable = true) public void atomic_renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    @Inject(method = "renderButton", at = @At("HEAD"), cancellable = true)
+    public void atomic_renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         double dxStart, dyStart, dWidth, dHeight;
 
         if ((((Object) this) instanceof ButtonWidget) || (((Object) this) instanceof CyclingButtonWidget<?>)) {

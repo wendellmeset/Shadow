@@ -23,7 +23,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class AnyPlacer extends Module {
     public AnyPlacer() {
@@ -62,22 +62,27 @@ public class AnyPlacer extends Module {
         });
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
 
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
 
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return null;
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
         if (isDebuggerEnabled()) {
             HitResult hr = CoffeeClientMain.client.player.raycast(500, 0, true);
             Vec3d spawnPos = hr.getPos();
@@ -85,7 +90,8 @@ public class AnyPlacer extends Module {
         }
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
 
     }
 }

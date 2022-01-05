@@ -16,7 +16,8 @@ public class TestScreen extends Screen {
         super(Text.of(""));
     }
 
-    @Override public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    @Override
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         MSAAFramebuffer.use(MSAAFramebuffer.MAX_SAMPLES, () -> {
             RenderSystem.enableBlend();
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);

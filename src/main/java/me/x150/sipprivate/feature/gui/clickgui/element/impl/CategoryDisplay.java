@@ -16,9 +16,9 @@ import java.util.List;
 
 public class CategoryDisplay extends Element {
     static ClientFontRenderer cfr = FontRenderers.getCustomNormal(20);
-    boolean             selected = false;
-    List<ModuleDisplay> md       = new ArrayList<>();
-    ModuleType          mt;
+    boolean selected = false;
+    List<ModuleDisplay> md = new ArrayList<>();
+    ModuleType mt;
 
     public CategoryDisplay(double x, double y, ModuleType mt) {
         super(x, y, 100, 500);
@@ -31,7 +31,8 @@ public class CategoryDisplay extends Element {
         }
     }
 
-    @Override public boolean clicked(double x, double y, int button) {
+    @Override
+    public boolean clicked(double x, double y, int button) {
         if (x >= this.x && x < this.x + this.width && y >= this.y && y < this.y + headerHeight()) {
             if (button == 0) {
                 selected = true;
@@ -47,7 +48,8 @@ public class CategoryDisplay extends Element {
         return false;
     }
 
-    @Override public boolean dragged(double x, double y, double deltaX, double deltaY, int button) {
+    @Override
+    public boolean dragged(double x, double y, double deltaX, double deltaY, int button) {
         if (selected) {
             this.x += deltaX;
             this.y += deltaY;
@@ -62,7 +64,8 @@ public class CategoryDisplay extends Element {
         return false;
     }
 
-    @Override public boolean released() {
+    @Override
+    public boolean released() {
         selected = false;
         for (ModuleDisplay moduleDisplay : md) {
             moduleDisplay.released();
@@ -70,7 +73,8 @@ public class CategoryDisplay extends Element {
         return false;
     }
 
-    @Override public boolean keyPressed(int keycode) {
+    @Override
+    public boolean keyPressed(int keycode) {
         for (ModuleDisplay moduleDisplay : md) {
             if (moduleDisplay.keyPressed(keycode)) {
                 return true;
@@ -84,7 +88,8 @@ public class CategoryDisplay extends Element {
         return padding + cfr.getFontHeight() + padding;
     }
 
-    @Override public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
+    @Override
+    public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
         Theme theme = ClickGUI.theme;
         //        Renderer.R2D.fill(matrices, theme.getHeader(), x, y, x + width, y + headerHeight());
         double r = ModuleRegistry.getByClass(me.x150.sipprivate.feature.module.impl.render.ClickGUI.class).radius.getValue();
@@ -101,7 +106,8 @@ public class CategoryDisplay extends Element {
         this.height = y;
     }
 
-    @Override public void tickAnim() {
+    @Override
+    public void tickAnim() {
         for (ModuleDisplay moduleDisplay : md) {
             moduleDisplay.tickAnim();
         }

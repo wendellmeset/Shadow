@@ -10,7 +10,7 @@ import net.minecraft.text.Text;
 
 public abstract class ImGuiProxyScreen extends Screen {
     public static final boolean imguiDebugWindow = false;
-    boolean closed    = false;
+    boolean closed = false;
     boolean closedAck = false;
 
     public ImGuiProxyScreen() {
@@ -20,16 +20,19 @@ public abstract class ImGuiProxyScreen extends Screen {
 
     protected abstract void renderInternal();
 
-    @Override protected void init() {
+    @Override
+    protected void init() {
         closed = closedAck = false;
     }
 
-    @Override public void onClose() {
+    @Override
+    public void onClose() {
         closed = true;
         //        super.onClose();
     }
 
-    @Override public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    @Override
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         if (closed && closedAck) {
             super.onClose();
             return;

@@ -11,9 +11,9 @@ import org.lwjgl.glfw.GLFW;
 import java.lang.reflect.Field;
 
 public class BindScreen extends Screen {
-    Module             a;
-    long               closeAt = -1;
-    ClientFontRenderer cfr     = FontRenderers.getCustomNormal(30);
+    Module a;
+    long closeAt = -1;
+    ClientFontRenderer cfr = FontRenderers.getCustomNormal(30);
     ClientFontRenderer smaller = FontRenderers.getCustomNormal(20);
 
     public BindScreen(Module toBind) {
@@ -21,7 +21,8 @@ public class BindScreen extends Screen {
         this.a = toBind;
     }
 
-    @Override public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    @Override
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         renderBackground(matrices);
         cfr.drawCenteredString(matrices, "Press any key", width / 2d, height / 2d - cfr.getMarginHeight(), 0xAAAAAA);
         String kn = a.keybind.getValue() > 0 ? GLFW.glfwGetKeyName((int) (a.keybind.getValue() + 0), GLFW.glfwGetKeyScancode((int) (a.keybind.getValue() + 0))) : "None";
@@ -44,7 +45,8 @@ public class BindScreen extends Screen {
         super.render(matrices, mouseX, mouseY, delta);
     }
 
-    @Override public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if (closeAt != -1) {
             return false;
         }
@@ -56,7 +58,8 @@ public class BindScreen extends Screen {
         return true;
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
         if (closeAt != -1 && closeAt < System.currentTimeMillis()) {
             onClose();
         }

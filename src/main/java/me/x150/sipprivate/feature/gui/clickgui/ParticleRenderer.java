@@ -4,12 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.gui.clickgui.theme.Theme;
 import me.x150.sipprivate.helper.render.Renderer;
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.BufferRenderer;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormat;
-import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Matrix4f;
@@ -17,15 +12,15 @@ import net.minecraft.util.math.Quaternion;
 import net.minecraft.util.math.Vec3d;
 import org.lwjgl.opengl.GL11;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ParticleRenderer {
-    static Color          DYING     = new Color(255, 255, 255, 0); // it goes gradient so you can still see the white
+    static Color DYING = new Color(255, 255, 255, 0); // it goes gradient so you can still see the white
     public List<Particle> particles = new ArrayList<>();
-    public boolean        shouldAdd = true;
-    int  pc;
+    public boolean shouldAdd = true;
+    int pc;
     long lastTick = System.currentTimeMillis();
 
     public ParticleRenderer(int pc) {
@@ -71,11 +66,11 @@ public class ParticleRenderer {
     }
 
     static class Particle {
-        long   rotSpeed  = (long) MathHelper.lerp(Math.random(), 3000, 10000);
-        long   rotSpeed2 = (long) MathHelper.lerp(Math.random(), 3000, 10000);
-        double x         = 0, y = 0, size = 10, decline = 0.1;
+        long rotSpeed = (long) MathHelper.lerp(Math.random(), 3000, 10000);
+        long rotSpeed2 = (long) MathHelper.lerp(Math.random(), 3000, 10000);
+        double x = 0, y = 0, size = 10, decline = 0.1;
         double velX = 0, velY = 0;
-        boolean spinsReverse  = Math.random() > .5;
+        boolean spinsReverse = Math.random() > .5;
         boolean spinsReverse2 = Math.random() > .5;
 
         public static BufferBuilder renderPrepare(Color color) {

@@ -14,7 +14,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(PlayerEntity.class) public class PlayerEntityMixin {
+@Mixin(PlayerEntity.class)
+public class PlayerEntityMixin {
     @Redirect(method = "tick", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/player/PlayerEntity;noClip:Z", opcode = Opcodes.PUTFIELD))
     void atomic_tickNoClip(PlayerEntity playerEntity, boolean value) {
         PlayerNoClipQueryEvent q = new PlayerNoClipQueryEvent(playerEntity);
@@ -22,7 +23,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
         playerEntity.noClip = q.getNoClip();
     }
 
-    @Inject(method = "getMovementSpeed", at = @At("RETURN"), cancellable = true) void a(CallbackInfoReturnable<Float> cir) {
+    @Inject(method = "getMovementSpeed", at = @At("RETURN"), cancellable = true)
+    void a(CallbackInfoReturnable<Float> cir) {
         Hyperspeed hs = ModuleRegistry.getByClass(Hyperspeed.class);
         if (!hs.isEnabled() || !equals(CoffeeClientMain.client.player)) {
             return;

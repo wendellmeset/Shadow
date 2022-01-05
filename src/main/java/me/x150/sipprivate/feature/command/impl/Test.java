@@ -10,7 +10,8 @@ public class Test extends Command {
         super("Test", "REAL", "test");
     }
 
-    @Override public void onExecute(String[] args) {
+    @Override
+    public void onExecute(String[] args) {
         Utils.TickManager.runInNTicks(5, () -> {
             CoffeeClientMain.client.setScreen(new TestScreen());
         });

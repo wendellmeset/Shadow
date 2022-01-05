@@ -15,11 +15,7 @@ import me.x150.sipprivate.feature.command.Command;
 import me.x150.sipprivate.feature.config.SettingBase;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleRegistry;
-import net.minecraft.text.ClickEvent;
-import net.minecraft.text.HoverEvent;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
+import net.minecraft.text.*;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -36,7 +32,8 @@ public class ConfigUtils extends Command {
         super("ConfigUtils", "Config file management", "configUtils", "cu");
     }
 
-    @Override public String[] getSuggestions(String fullCommand, String[] args) {
+    @Override
+    public String[] getSuggestions(String fullCommand, String[] args) {
         if (args.length == 1) {
             return new String[]{"load", "save"};
         } else if (args.length == 2 && args[0].equalsIgnoreCase("load")) {
@@ -45,7 +42,8 @@ public class ConfigUtils extends Command {
         return super.getSuggestions(fullCommand, args);
     }
 
-    @Override public void onExecute(String[] args) {
+    @Override
+    public void onExecute(String[] args) {
         if (args.length == 0) {
             error("I need an action, load or save");
             return;

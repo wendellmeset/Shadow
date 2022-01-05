@@ -5,7 +5,7 @@
 
 package me.x150.sipprivate.helper.util;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class Transitions {
 
