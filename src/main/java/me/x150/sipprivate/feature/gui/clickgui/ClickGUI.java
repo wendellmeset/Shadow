@@ -147,7 +147,7 @@ public class ClickGUI extends Screen implements FastTickable {
             if (descX + width > CoffeeClientMain.client.getWindow().getScaledWidth()) {
                 descX -= (descX + width - CoffeeClientMain.client.getWindow().getScaledWidth()) + 4;
             }
-            Renderer.R2D.fill(new Color(20, 20, 30, 200), descX - 1, descY, descX + width + 3, descY + FontRenderers.getNormal().getMarginHeight() + 1);
+            Renderer.R2D.renderQuad(new Color(20, 20, 30, 200), descX - 1, descY, descX + width + 3, descY + FontRenderers.getNormal().getMarginHeight() + 1);
             FontRenderers.getNormal().drawString(Renderer.R3D.getEmptyMatrixStack(), desc, descX, descY, 0xFFFFFF);
             desc = null;
         }

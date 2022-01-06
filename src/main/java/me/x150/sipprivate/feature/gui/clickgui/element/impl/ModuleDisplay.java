@@ -76,18 +76,18 @@ public class ModuleDisplay extends Element {
             ClickGUI.instance().renderDescription(Utils.Mouse.getMouseX(), Utils.Mouse.getMouseY() + 10, module.getDescription());
         }
         hoveredBefore = hovered;
-        Renderer.R2D.fill(matrices, hovered ? theme.getModule().darker() : theme.getModule(), x, y, x + width, y + height);
+        Renderer.R2D.renderQuad(matrices, hovered ? theme.getModule().darker() : theme.getModule(), x, y, x + width, y + height);
         FontRenderers.getNormal().drawCenteredString(matrices, module.getName(), x + width / 2d, y + height / 2d - FontRenderers.getNormal().getMarginHeight() / 2d, 0xFFFFFF);
         if (module.isEnabled()) {
-            Renderer.R2D.fill(matrices, theme.getAccent(), x, y, x + 1, y + height);
+            Renderer.R2D.renderQuad(matrices, theme.getAccent(), x, y, x + 1, y + height);
         }
         cd.setX(this.x);
         cd.setY(this.y + height);
-        Renderer.R2D.scissor(matrices, x, y, x + width, y + getHeight());
+        Renderer.R2D.beginScissor(matrices, x, y, x + width, y + getHeight());
         if (extendAnim > 0) {
             cd.render(matrices, mouseX, mouseY, scrollBeingUsed);
         }
-        Renderer.R2D.unscissor();
+        Renderer.R2D.endScissor();
     }
 
     @Override

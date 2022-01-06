@@ -57,10 +57,10 @@ public abstract class HudElement {
         Color v3 = Color.getHSBColor(timeOffset(0.5), 0.6f, 1f);
         Color v4 = Color.getHSBColor(timeOffset(0.75), 0.6f, 1f);
 
-        Renderer.R2D.gradientLineScreen(v1, v2, posX, posY, posX + width, posY);
-        Renderer.R2D.gradientLineScreen(v2, v3, posX + width, posY, posX + width, posY + height);
-        Renderer.R2D.gradientLineScreen(v3, v4, posX + width, posY + height, posX, posY + height);
-        Renderer.R2D.gradientLineScreen(v4, v1, posX, posY + height, posX, posY);
+        Renderer.R2D.renderGradientLine(v1, v2, posX, posY, posX + width, posY);
+        Renderer.R2D.renderGradientLine(v2, v3, posX + width, posY, posX + width, posY + height);
+        Renderer.R2D.renderGradientLine(v3, v4, posX + width, posY + height, posX, posY + height);
+        Renderer.R2D.renderGradientLine(v4, v1, posX, posY + height, posX, posY);
 
         double rpoY = posY - FontRenderers.getNormal().getFontHeight();
         if (posY < FontRenderers.getNormal().getFontHeight()) { // too small to render text properly

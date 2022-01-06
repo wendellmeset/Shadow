@@ -140,7 +140,7 @@ public class TpRange extends Module {
     @Override
     public void onWorldRender(MatrixStack matrices) {
         if (isDebuggerEnabled() && spoofedPos != null && previousSpoofedPos != null) {
-            Renderer.R3D.line(spoofedPos, previousSpoofedPos, Color.RED, matrices);
+            Renderer.R3D.renderLine(spoofedPos, previousSpoofedPos, Color.RED, matrices);
         }
     }
 

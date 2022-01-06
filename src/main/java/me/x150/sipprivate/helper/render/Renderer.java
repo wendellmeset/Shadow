@@ -211,7 +211,7 @@ public class Renderer {
             RenderSystem.disableBlend();
         }
 
-        public static void line(Vec3d start, Vec3d end, Color color, MatrixStack matrices) {
+        public static void renderLine(Vec3d start, Vec3d end, Color color, MatrixStack matrices) {
             float red = color.getRed() / 255f;
             float green = color.getGreen() / 255f;
             float blue = color.getBlue() / 255f;
@@ -269,7 +269,7 @@ public class Renderer {
 
         public static final Identifier OPTIONS_BACKGROUND_TEXTURE = new Identifier("sipoverprivate", "background.jpg");
 
-        public static void scissor(MatrixStack stack, double x, double y, double endX, double endY) {
+        public static void beginScissor(MatrixStack stack, double x, double y, double endX, double endY) {
             Matrix4f matrix = stack.peek().getPositionMatrix();
             Vector4f coord = new Vector4f((float) x, (float) y, 0, 1);
             Vector4f end = new Vector4f((float) (endX), (float) (endY), 0, 1);
@@ -286,19 +286,55 @@ public class Renderer {
             RenderSystem.enableScissor((int) (x * d), ay, (int) (width * d), (int) (height * d));
         }
 
-        public static void unscissor() {
+        public static void endScissor() {
             RenderSystem.disableScissor();
         }
 
-        public static void drawTexture(MatrixStack matrices, double x0, double y0, double width, double height, float u, float v, double regionWidth, double regionHeight, double textureWidth, double textureHeight) {
+        public static void renderTexture(MatrixStack matrices, double x0, double y0, double width, double height, float u, float v, double regionWidth, double regionHeight, double textureWidth, double textureHeight) {
             double x1 = x0 + width;
             double y1 = y0 + height;
             double z = 0;
-            drawTexturedQuad(matrices.peek()
+            renderTexturedQuad(matrices.peek()
                     .getPositionMatrix(), x0, x1, y0, y1, z, (u + 0.0F) / (float) textureWidth, (u + (float) regionWidth) / (float) textureWidth, (v + 0.0F) / (float) textureHeight, (v + (float) regionHeight) / (float) textureHeight);
         }
 
-        private static void drawTexturedQuad(Matrix4f matrix, double x0, double x1, double y0, double y1, double z, float u0, float u1, float v0, float v1) {
+        public static void renderLoadingSpinner(MatrixStack stack, Color c, double x, double y, double rad, double segments) {
+            stack.push();
+            stack.translate(x, y, 0);
+            stack.multiply(new Quaternion(0,0,(System.currentTimeMillis()%2000)/2000f*360f,true));
+            segments = MathHelper.clamp(segments, 2, 90);
+            RenderSystem.setShaderColor(1, 1, 1, 1);
+            int color = c.getRGB();
+
+            Matrix4f matrix = stack.peek().getPositionMatrix();
+            float f = (float) (color >> 24 & 255) / 255.0F;
+            float g = (float) (color >> 16 & 255) / 255.0F;
+            float h = (float) (color >> 8 & 255) / 255.0F;
+            float k = (float) (color & 255) / 255.0F;
+            BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
+            RenderSystem.defaultBlendFunc();
+            RenderSystem.enableBlend();
+            RenderSystem.disableTexture();
+            RenderSystem.setShader(GameRenderer::getPositionColorShader);
+            bufferBuilder.begin(VertexFormat.DrawMode.TRIANGLE_STRIP, VertexFormats.POSITION_COLOR);
+            for(double r = 0;r<90;r+=(90/segments)) {
+                double rad1 = Math.toRadians(r);
+                double sin = Math.sin(rad1);
+                double cos = Math.cos(rad1);
+                double offX = sin*rad;
+                double offY = cos*rad;
+                bufferBuilder.vertex(matrix, (float) offX, (float) offY, 0).color(g, h, k, f).next();
+                bufferBuilder.vertex(matrix, (float) (offX+sin), (float) (offY+cos), 0).color(g, h, k, f).next();
+
+            }
+            bufferBuilder.end();
+            BufferRenderer.draw(bufferBuilder);
+            RenderSystem.enableTexture();
+            RenderSystem.disableBlend();
+            stack.pop();
+        }
+
+        private static void renderTexturedQuad(Matrix4f matrix, double x0, double x1, double y0, double y1, double z, float u0, float u1, float v0, float v1) {
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
             BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
             bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
@@ -411,7 +447,7 @@ public class Renderer {
             return getScreenSpaceCoordinate(pos, R3D.getLastRenderStack());
         }
 
-        public static void gradientLineScreen(Color start, Color end, double x, double y, double x1, double y1) {
+        public static void renderGradientLine(Color start, Color end, double x, double y, double x1, double y1) {
             float g = start.getRed() / 255f;
             float h = start.getGreen() / 255f;
             float k = start.getBlue() / 255f;
@@ -435,7 +471,7 @@ public class Renderer {
             RenderSystem.disableBlend();
         }
 
-        public static void fill(MatrixStack matrices, Color c, double x1, double y1, double x2, double y2) {
+        public static void renderQuad(MatrixStack matrices, Color c, double x1, double y1, double x2, double y2) {
             RenderSystem.setShaderColor(1, 1, 1, 1);
             int color = c.getRGB();
             double j;
@@ -513,7 +549,7 @@ public class Renderer {
         //
         //        }
 
-        public static void fillGradientH(MatrixStack matrices, Color c2, Color c1, double x1, double y1, double x2, double y2) {
+        public static void renderQuadGradient(MatrixStack matrices, Color c2, Color c1, double x1, double y1, double x2, double y2) {
             float r1 = c1.getRed() / 255f;
             float g1 = c1.getGreen() / 255f;
             float b1 = c1.getBlue() / 255f;
@@ -555,8 +591,8 @@ public class Renderer {
 
         }
 
-        public static void fill(Color c, double x1, double y1, double x2, double y2) {
-            fill(R3D.getEmptyMatrixStack(), c, x1, y1, x2, y2);
+        public static void renderQuad(Color c, double x1, double y1, double x2, double y2) {
+            renderQuad(R3D.getEmptyMatrixStack(), c, x1, y1, x2, y2);
         }
 
         public static void renderRoundedQuadInternal(Matrix4f matrix, float cr, float cg, float cb, float ca, double fromX, double fromY, double toX, double toY, double rad, double samples) {
@@ -601,7 +637,7 @@ public class Renderer {
             RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
         }
 
-        public static void lineScreenD(Color c, double x, double y, double x1, double y1) {
+        public static void renderLine(Color c, double x, double y, double x1, double y1) {
             float g = c.getRed() / 255f;
             float h = c.getGreen() / 255f;
             float k = c.getBlue() / 255f;

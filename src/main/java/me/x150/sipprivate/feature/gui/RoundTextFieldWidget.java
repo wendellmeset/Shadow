@@ -366,7 +366,7 @@ public class RoundTextFieldWidget {
                 cursorToX = cursorRenderPos + .5;
 
                 Objects.requireNonNull(this.textRenderer);
-                Renderer.R2D.fill(matrices, Color.BLACK, cursorRenderPos, cursorFromY, cursorToX, cursorFromY + textRenderer.getMarginHeight());
+                Renderer.R2D.renderQuad(matrices, Color.BLACK, cursorRenderPos, cursorFromY, cursorToX, cursorFromY + textRenderer.getMarginHeight());
             }
 
             if (selEndRelative != cursorIndexRelative) {

@@ -85,8 +85,8 @@ public class ConfigDisplay extends Element {
     public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
         double yOffset = 2;
         Theme theme = ClickGUI.theme;
-        Renderer.R2D.fill(matrices, theme.getConfig(), x, this.y, x + width, this.y + height);
-        Renderer.R2D.fill(matrices, theme.getAccent(), x, this.y, x + 1, this.y + height);
+        Renderer.R2D.renderQuad(matrices, theme.getConfig(), x, this.y, x + width, this.y + height);
+        Renderer.R2D.renderQuad(matrices, theme.getAccent(), x, this.y, x + 1, this.y + height);
         boolean hovered = inBounds(mouseX, mouseY);
         if (!hoveredBefore && hovered) {
             hoverStart = System.currentTimeMillis();

@@ -84,13 +84,13 @@ public abstract class AButtonWidgetMixin implements FastTickable {
             //            double rw = Renderer.Util.lerp(width, 0, interpolatedAProg) / 2d;
             if (interpolatedAProg != 0) {
                 //                Renderer.R2D.fill(matrices, ClickGUI.theme.getAccent(), x + (width / 2d) - rw, y + height - 1, x + (width / 2d) + rw, y + height);
-                Renderer.R2D.fill(matrices, ClickGUI.theme.getAccent(), x, y, x + 1, y + interpolatedAProg * height);
+                Renderer.R2D.renderQuad(matrices, ClickGUI.theme.getAccent(), x, y, x + 1, y + interpolatedAProg * height);
             }
         } else {
-            Renderer.R2D.fill(matrices, ClickGUI.theme.getAccent(), dxStart, dyStart, dxStart + dWidth, dyStart + dHeight);
+            Renderer.R2D.renderQuad(matrices, ClickGUI.theme.getAccent(), dxStart, dyStart, dxStart + dWidth, dyStart + dHeight);
         }
 
-        Renderer.R2D.fill(matrices, this.active ? Renderer.Util.lerp(new Color(38, 83, 92, 100), unselectedColor, interpolatedAProg) : disabledColor, x, y, x + width, y + height);
+        Renderer.R2D.renderQuad(matrices, this.active ? Renderer.Util.lerp(new Color(38, 83, 92, 100), unselectedColor, interpolatedAProg) : disabledColor, x, y, x + width, y + height);
         FontRenderers.getNormal()
                 .drawCenteredString(matrices, this.getMessage().getString(), this.x + this.width / 2f, this.y + (this.height - FontRenderers.getNormal().getFontHeight()) / 2f, 0xFFFFFF);
     }

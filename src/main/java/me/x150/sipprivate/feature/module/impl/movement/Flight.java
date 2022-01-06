@@ -140,7 +140,7 @@ public class Flight extends Module {
         if (isDebuggerEnabled()) {
             Vec3d a = Utils.getInterpolatedEntityPosition(CoffeeClientMain.client.player);
             Vec3d b = a.add(CoffeeClientMain.client.player.getVelocity());
-            Renderer.R3D.line(a, b, Color.CYAN, matrices);
+            Renderer.R3D.renderLine(a, b, Color.CYAN, matrices);
         }
     }
 

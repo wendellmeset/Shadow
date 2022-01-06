@@ -17,6 +17,7 @@ import me.x150.sipprivate.helper.font.adapter.impl.ClientFontRenderer;
 import me.x150.sipprivate.helper.render.MSAAFramebuffer;
 import me.x150.sipprivate.helper.render.Renderer;
 import me.x150.sipprivate.helper.util.Transitions;
+import me.x150.sipprivate.helper.util.Utils;
 import me.x150.sipprivate.mixin.IMinecraftClientAccessor;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.texture.NativeImage;
@@ -26,6 +27,7 @@ import net.minecraft.client.util.Session;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Quaternion;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.Level;
 import org.lwjgl.BufferUtils;
@@ -44,6 +46,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AltManagerScreen extends AntiAliasedScreen implements FastTickable {
     static HttpClient downloader = HttpClient.newHttpClient();
@@ -58,7 +61,8 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
             // Unless you REALLY KNOW WHAT YOU ARE DOING, DO NOT SEND THIS TO ANYONE
             """;
     ClientFontRenderer titleSmall = FontRenderers.getCustomNormal(30);
-    ThemedButton add, exit, remove, login;
+    ThemedButton add, exit, remove, login, session, censorMail;
+    boolean censorEmail = true;
     ClientFontRenderer title = FontRenderers.getCustomNormal(40);
     double scroll = 0;
     double scrollSmooth = 0;
@@ -66,6 +70,7 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
     private AltManagerScreen() {
         super(MSAAFramebuffer.MAX_SAMPLES);
         loadAlts();
+        updateCurrentAccount();
     }
 
     void saveAlts() {
@@ -113,7 +118,7 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
                 JsonObject jo = jsonElement.getAsJsonObject();
                 try {
                     AltStorage container = new AltStorage(jo.get("cachedUsername").getAsString(), jo.get("email").getAsString(), jo.get("password").getAsString(), UUID.fromString(jo.get("cachedUUID").getAsString()), AddScreenOverlay.AccountType.valueOf(jo.get("type").getAsString()));
-                    container.valid = jo.get("valid").getAsBoolean();
+                    container.valid = !jo.has("valid") || jo.get("valid").getAsBoolean();
                     AltContainer ac = new AltContainer(0, 0, 0, container);
                     ac.renderY = ac.renderX = -1;
                     alts.add(ac);
@@ -147,14 +152,18 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
 
     }
 
+    void toggleCensor() {
+        censorEmail = !censorEmail;
+        censorMail.text = censorEmail?"Show email":"Hide email";
+    }
+
     @Override
     protected void init() {
+        censorMail = new ThemedButton(width-100-5-60-5-20-getPadding(),10+title.getMarginHeight()/2d-20/2d,100,20,"Show email", this::toggleCensor);
         add = new ThemedButton(width - 60 - 5 - 20 - getPadding(), 10 + title.getMarginHeight() / 2d - 20 / 2d, 60, 20, "Add", () -> {
             client.setScreen(new AddScreenOverlay(this));
         });
-        exit = new ThemedButton(width - 20 - getPadding(), 10 + title.getMarginHeight() / 2d - 20 / 2d, 20, 20, "X", () -> {
-            onClose();
-        });
+        exit = new ThemedButton(width - 20 - getPadding(), 10 + title.getMarginHeight() / 2d - 20 / 2d, 20, 20, "X", this::onClose);
         double padding = 5;
         double widRHeight = 64 + padding * 2;
         double toX = width - getPadding();
@@ -166,24 +175,60 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
         login = new ThemedButton(fromX + texDim + padding * 2, toY - 20 - padding, buttonWidth - padding, 20, "Login", this::login);
         remove = new ThemedButton(fromX + texDim + padding * 2 + buttonWidth + padding / 2d, toY - 20 - padding, buttonWidth - padding, 20, "Remove", this::remove);
 
+        toY = height-getPadding();
+        buttonWidth = toX-fromX-padding*3-texDim;
+        session = new ThemedButton(fromX+texDim+padding*2,toY-20-padding,buttonWidth,20,"Session", () -> {
+            // TODO: 06.01.22 implement session editor 
+        });
     }
+
+    Identifier currentAccountTexture = new Identifier("atomic", "tex_currentaccount");
+    boolean currentAccountTextureLoaded = false;
 
     void updateCurrentAccount() {
-        // TODO: 05.01.22 finish this
-    }
+        UUID uid = CoffeeClientMain.client.getSession().getProfile().getId();
 
-    void login() {
-        if (this.selectedAlt == null) return;
-        System.out.println("Logging into " + this.selectedAlt.storage.cachedName);
-        this.selectedAlt.login();
-        if (!this.selectedAlt.storage.valid) {
-            System.out.println("login invalid, cancelling");
+        if (texCache.containsKey(uid)) {
+            this.currentAccountTexture = texCache.get(uid);
+            currentAccountTextureLoaded = true;
             return;
         }
-        System.out.println("login valid, continuing");
-        Session newSession = new Session(selectedAlt.storage.cachedName, selectedAlt.storage.cachedUuid.toString(), selectedAlt.storage.accessToken, Optional.empty(), Optional.empty(), Session.AccountType.MOJANG);
-        ((IMinecraftClientAccessor) CoffeeClientMain.client).setSession(newSession);
-        updateCurrentAccount();
+
+        HttpRequest hr = HttpRequest.newBuilder().uri(URI.create("https://crafatar.com/avatars/" + uid + "?overlay")).header("User-Agent", "why").build();
+        downloader.sendAsync(hr, HttpResponse.BodyHandlers.ofByteArray()).thenAccept(httpResponse -> {
+            try {
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                ImageIO.write(ImageIO.read(new ByteArrayInputStream(httpResponse.body())), "png", stream);
+                byte[] bytes = stream.toByteArray();
+
+                ByteBuffer data = BufferUtils.createByteBuffer(bytes.length).put(bytes);
+                data.flip();
+                NativeImage img = NativeImage.read(data);
+                NativeImageBackedTexture texture = new NativeImageBackedTexture(img);
+
+                CoffeeClientMain.client.execute(() -> {
+                    CoffeeClientMain.client.getTextureManager().registerTexture(currentAccountTexture, texture);
+                    currentAccountTextureLoaded = true;
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+    AtomicBoolean isLoggingIn = new AtomicBoolean(false);
+    void login() {
+        if (this.selectedAlt == null) return;
+        isLoggingIn.set(true);
+        new Thread(()->{
+            this.selectedAlt.login();
+            isLoggingIn.set(false);
+            if (!this.selectedAlt.storage.valid) {
+                return;
+            }
+            Session newSession = new Session(selectedAlt.storage.cachedName, selectedAlt.storage.cachedUuid.toString(), selectedAlt.storage.accessToken, Optional.empty(), Optional.empty(), Session.AccountType.MOJANG);
+            ((IMinecraftClientAccessor) CoffeeClientMain.client).setSession(newSession);
+            updateCurrentAccount();
+        }).start();
     }
 
     void remove() {
@@ -197,10 +242,12 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
         for (AltContainer alt : alts) {
             alt.tickAnim();
         }
+        censorMail.tickAnim();
         add.tickAnim();
         exit.tickAnim();
         remove.tickAnim();
         login.tickAnim();
+        session.tickAnim();
         scrollSmooth = Transitions.transition(scrollSmooth, scroll, 7, 0);
     }
 
@@ -220,13 +267,14 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
 
     @Override
     public void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
-        Renderer.R2D.fill(stack, new Color(220, 220, 220), 0, 0, width, height);
+        Renderer.R2D.renderQuad(stack, new Color(220, 220, 220), 0, 0, width, height);
         title.drawString(stack, "Coffee", 10, 10, 0, false);
         titleSmall.drawString(stack, "Alt manager", 10 + title.getStringWidth("Coffee") + 5, 10 + title.getMarginHeight() - titleSmall.getMarginHeight() - 1, 0, false);
+        censorMail.render(stack, mouseX, mouseY);
         add.render(stack, mouseX, mouseY);
         exit.render(stack, mouseX, mouseY);
 
-        Renderer.R2D.scissor(stack, getPadding(), getHeaderHeight(), getPadding() + (width - (getPadding() + leftWidth + getPadding() * 2)), height);
+        Renderer.R2D.beginScissor(stack, getPadding(), getHeaderHeight(), getPadding() + (width - (getPadding() + leftWidth + getPadding() * 2)), height);
         stack.push();
         stack.translate(0, -scrollSmooth, 0);
         mouseY += scrollSmooth;
@@ -236,14 +284,14 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
         for (AltContainer alt : alts) {
             alt.x = x;
             alt.y = y;
-            if (alt.renderX == -1) alt.renderX = x;
-            if (alt.renderY == -1) alt.renderY = -width;
             alt.width = wid;
+            if (alt.renderX == -1) alt.renderX = -alt.width;
+            if (alt.renderY == -1) alt.renderY = alt.y;
             alt.render(stack, mouseX, mouseY);
             y += alt.getHeight() + getPadding();
         }
         stack.pop();
-        Renderer.R2D.unscissor();
+        Renderer.R2D.endScissor();
 
         double padding = 5;
         double widRHeight = 64 + padding * 2;
@@ -267,10 +315,18 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
 
             RenderSystem.blendFunc(GL40C.GL_DST_ALPHA, GL40C.GL_ONE_MINUS_DST_ALPHA);
             RenderSystem.setShaderTexture(0, selectedAlt.tex);
-            Renderer.R2D.drawTexture(stack, fromX + padding, fromY + padding, texDim, texDim, 0, 0, 64, 64, 64, 64);
+            Renderer.R2D.renderTexture(stack, fromX + padding, fromY + padding, texDim, texDim, 0, 0, 64, 64, 64, 64);
             RenderSystem.defaultBlendFunc();
+            String mail = this.selectedAlt.storage.email;
+            String[] mailPart = mail.split("@");
+            String domain = mailPart[mailPart.length-1];
+            String mailN = String.join("@", Arrays.copyOfRange(mailPart,0,mailPart.length-1));
+            if (censorEmail) {
+                mailN = "*".repeat(mailN.length());
+            }
+            mail = mailN+"@"+domain;
             AltContainer.PropEntry[] props = new AltContainer.PropEntry[]{new AltContainer.PropEntry(selectedAlt.storage.cachedName, FontRenderers.getCustomNormal(22), 0),
-                    new AltContainer.PropEntry(selectedAlt.storage.email, FontRenderers.getNormal(), 0x555555),
+                    new AltContainer.PropEntry(mail, FontRenderers.getNormal(), 0x555555),
                     new AltContainer.PropEntry("Type: " + selectedAlt.storage.type.s, FontRenderers.getNormal(), 0x555555)};
             float propsOffset = (float) (fromY + padding);
             for (AltContainer.PropEntry prop : props) {
@@ -281,17 +337,53 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
             login.render(stack, mouseX, mouseY);
         }
 
-        // TODO: 05.01.22 add "current account" section
+        toY = height-getPadding();
+        fromY = toY-widRHeight;
+        Renderer.R2D.renderRoundedQuad(stack, new Color(255, 255, 255, 100), fromX, fromY, toX, toY, 10, 10);
+        double texDim = widRHeight - padding * 2;
+
+        RenderSystem.enableBlend();
+        RenderSystem.colorMask(false, false, false, true);
+        RenderSystem.clearColor(0.0F, 0.0F, 0.0F, 0.0F);
+        RenderSystem.clear(GL40C.GL_COLOR_BUFFER_BIT, false);
+        RenderSystem.colorMask(true, true, true, true);
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        Renderer.R2D.renderRoundedQuadInternal(stack.peek().getPositionMatrix(), 0, 0, 0, 1, fromX + padding, fromY + padding, fromX + padding + texDim, fromY + padding + texDim, 6, 10);
+
+        RenderSystem.blendFunc(GL40C.GL_DST_ALPHA, GL40C.GL_ONE_MINUS_DST_ALPHA);
+        RenderSystem.setShaderTexture(0, currentAccountTextureLoaded?currentAccountTexture:DefaultSkinHelper.getTexture());
+        if (currentAccountTextureLoaded) Renderer.R2D.renderTexture(stack, fromX + padding, fromY + padding, texDim, texDim, 0, 0, 64, 64, 64, 64);
+        else Renderer.R2D.renderTexture(stack, fromX + padding, fromY + padding, texDim, texDim, 8, 8, 8, 8, 64, 64);
+        RenderSystem.defaultBlendFunc();
+        String uuid = CoffeeClientMain.client.getSession().getUuid();
+        double uuidWid = FontRenderers.getNormal().getStringWidth(uuid);
+        double maxWid = leftWidth-texDim-padding*3;
+        if (uuidWid > maxWid) {
+            double threeDotWidth = FontRenderers.getNormal().getStringWidth("...");
+            uuid = FontRenderers.getNormal().trimStringToWidth(uuid,maxWid-1-threeDotWidth);
+            uuid += "...";
+        }
+        AltContainer.PropEntry[] props = new AltContainer.PropEntry[]{new AltContainer.PropEntry(CoffeeClientMain.client.getSession().getUsername(), FontRenderers.getCustomNormal(22), 0),
+                new AltContainer.PropEntry(uuid, FontRenderers.getNormal(), 0x555555)};
+        float propsOffset = (float) (fromY + padding);
+        for (AltContainer.PropEntry prop : props) {
+            prop.cfr.drawString(stack, prop.name, (float) (fromX + padding + texDim + padding), propsOffset, prop.color, false);
+            propsOffset += prop.cfr.getMarginHeight();
+        }
+        session.render(stack, mouseX, mouseY);
     }
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        censorMail.clicked(mouseX,mouseY);
+        if (isLoggingIn.get()) return false;
         add.clicked(mouseX, mouseY);
         exit.clicked(mouseX, mouseY);
         if (this.selectedAlt != null) {
             login.clicked(mouseX, mouseY);
             remove.clicked(mouseX, mouseY);
         }
+        session.clicked(mouseX, mouseY);
         for (AltContainer alt : alts) {
             alt.clicked(mouseX, mouseY + scrollSmooth);
         }
@@ -413,7 +505,7 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
             AltStorage as = new AltStorage("Unknown", email.getText(), passwd.getText(), UUID.randomUUID(), AccountType.values()[accountTypeI]);
             AltContainer ac = new AltContainer(-1, -1, 0, as);
             ac.renderX = -1;
-            ac.renderY = -100;
+            ac.renderY = -1;
             alts.add(ac);
             client.setScreen(parent);
         }
@@ -455,7 +547,7 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
             if (parent != null) {
                 parent.renderInternal(stack, mouseX, mouseY, delta);
             }
-            Renderer.R2D.fill(stack, new Color(0, 0, 0, 130), 0, 0, width, height);
+            Renderer.R2D.renderQuad(stack, new Color(0, 0, 0, 130), 0, 0, width, height);
 
             for (ThemedButton button : buttons) {
                 button.render(stack, mouseX, mouseY);
@@ -513,11 +605,10 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
         }
     }
 
+    public static Map<UUID, Identifier> texCache = new HashMap<>();
     class AltContainer {
-        static Map<UUID, Identifier> texCache = new HashMap<>();
-
-
         Identifier tex;
+        boolean texLoaded = false;
         float animProgress = 0;
         boolean isHovered = false;
         double x, y, width, renderX, renderY;
@@ -555,6 +646,7 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
                         this.tex = new Identifier("atomic", "tex_" + this.storage.cachedUuid.hashCode() + "_" + (Math.random() + "").split("\\.")[1]);
                         CoffeeClientMain.client.getTextureManager().registerTexture(this.tex, texture);
                         texCache.put(this.storage.cachedUuid, this.tex);
+                        texLoaded = true;
                     });
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -605,8 +697,8 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
             }
             animProgress += d;
             animProgress = MathHelper.clamp(animProgress, 0, 1);
-            renderX = Transitions.transition(renderX, x, 7, 0.0001);
-            renderY = Transitions.transition(renderY, y, 7, 0.0001);
+            if (renderX != -1) renderX = Transitions.transition(renderX, x, 7, 0.0001);
+            if (renderY != -1) renderY = Transitions.transition(renderY, y, 7, 0.0001);
         }
 
         boolean inBounds(double cx, double cy) {
@@ -642,10 +734,20 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
 
             RenderSystem.blendFunc(GL40C.GL_DST_ALPHA, GL40C.GL_ONE_MINUS_DST_ALPHA);
             RenderSystem.setShaderTexture(0, tex);
-            Renderer.R2D.drawTexture(stack, originX + padding, originY + padding, texWidth, texHeight, 0, 0, 64, 64, 64, 64);
+            if (texLoaded) Renderer.R2D.renderTexture(stack, originX + padding, originY + padding, texWidth, texHeight, 0, 0, 64, 64, 64, 64);
+            else Renderer.R2D.renderTexture(stack, originX+padding, originY+padding, texWidth, texHeight, 8, 8, 8, 8, 64, 64); // default skin
+
+            String mail = this.storage.email;
+            String[] mailPart = mail.split("@");
+            String domain = mailPart[mailPart.length-1];
+            String mailN = String.join("@", Arrays.copyOfRange(mailPart,0,mailPart.length-1));
+            if (censorEmail) {
+                mailN = "*".repeat(mailN.length());
+            }
+            mail = mailN+"@"+domain;
 
             PropEntry[] props = new PropEntry[]{new PropEntry(this.storage.cachedName, FontRenderers.getCustomNormal(22), 0),
-                    new PropEntry("Email: " + this.storage.email, FontRenderers.getNormal(), 0x555555)
+                    new PropEntry("Email: " + mail, FontRenderers.getNormal(), 0x555555)
                     , new PropEntry("Type: " + this.storage.type.s, FontRenderers.getNormal(), 0x555555),
                     new PropEntry(storage.valid ? "" : "Invalid alt!", FontRenderers.getNormal(), 0xFF3333)};
             float propsHeight = Arrays.stream(props).map(propEntry -> propEntry.cfr.getFontHeight()).reduce(Float::sum).orElse(0f);
@@ -654,12 +756,15 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
                 prop.cfr.drawString(stack, prop.name, (float) (originX + padding + texWidth + padding), (float) (originY + propsOffset), prop.color, false);
                 propsOffset += prop.cfr.getFontHeight();
             }
+            if (isLoggingIn.get() && selectedAlt == this) {
+                double fromTop = getHeight()/2d;
+                Renderer.R2D.renderLoadingSpinner(stack, Utils.getCurrentRGB(),originX+width-fromTop,originY+fromTop,10,10);
+            }
             stack.pop();
         }
 
         public void clicked(double mx, double my) {
             if (inBounds(mx, my)) {
-                System.out.println("Clicked " + this.storage.cachedName);
                 setSelectedAlt(this);
             }
         }

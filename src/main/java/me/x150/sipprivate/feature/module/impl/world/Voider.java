@@ -71,7 +71,7 @@ public class Voider extends Module {
     public void onWorldRender(MatrixStack matrices) {
         if (latest != null) {
             Renderer.R3D.renderFilled(new Vec3d(latest.x - 2, CoffeeClientMain.client.world.getBottomY(), latest.z - 2), new Vec3d(5, 0.001, 5), Utils.getCurrentRGB(), matrices);
-            Renderer.R3D.line(new Vec3d(latest.x + .5, CoffeeClientMain.client.world.getBottomY(), latest.z + .5), new Vec3d(latest.x + .5, CoffeeClientMain.client.world.getTopY(), latest.z + .5), Color.RED, matrices);
+            Renderer.R3D.renderLine(new Vec3d(latest.x + .5, CoffeeClientMain.client.world.getBottomY(), latest.z + .5), new Vec3d(latest.x + .5, CoffeeClientMain.client.world.getTopY(), latest.z + .5), Color.RED, matrices);
         }
     }
 

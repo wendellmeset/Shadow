@@ -93,11 +93,11 @@ public class FireballDeflector extends Module {
                 if (entity instanceof FireballEntity fe) {
                     if (fe.getOwner() != null) {
                         Entity owner = fe.getOwner();
-                        Renderer.R3D.line(Utils.getInterpolatedEntityPosition(owner).add(0, owner.getHeight() / 2, 0), Utils.getInterpolatedEntityPosition(fe)
+                        Renderer.R3D.renderLine(Utils.getInterpolatedEntityPosition(owner).add(0, owner.getHeight() / 2, 0), Utils.getInterpolatedEntityPosition(fe)
                                 .add(0, fe.getHeight() / 2, 0), Color.MAGENTA, matrices);
                     }
                     if (inHitRange(CoffeeClientMain.client.player, fe)) {
-                        Renderer.R3D.line(Utils.getInterpolatedEntityPosition(CoffeeClientMain.client.player)
+                        Renderer.R3D.renderLine(Utils.getInterpolatedEntityPosition(CoffeeClientMain.client.player)
                                 .add(0, CoffeeClientMain.client.player.getHeight() / 2, 0), Utils.getInterpolatedEntityPosition(fe).add(0, fe.getHeight() / 2, 0), Color.RED, matrices);
                     }
                 }

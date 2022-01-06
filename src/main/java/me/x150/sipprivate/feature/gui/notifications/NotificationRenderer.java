@@ -84,8 +84,8 @@ public class NotificationRenderer {
             float width = FontRenderers.getNormal().getStringWidth(contents) + 5;
             width = width / 2f;
             width = Math.max(minWidth, width);
-            Renderer.R2D.scissor(Renderer.R3D.getEmptyMatrixStack(), notification.renderPosX - width * notification.animationProgress, notification.renderPosY, notification.renderPosX + width * notification.animationProgress + 1, notification.renderPosY + height + 1);
-            Renderer.R2D.fill(ms, new Color(28, 28, 28, 200), notification.renderPosX - width, notification.renderPosY, notification.renderPosX + width + 1, notification.renderPosY + height);
+            Renderer.R2D.beginScissor(Renderer.R3D.getEmptyMatrixStack(), notification.renderPosX - width * notification.animationProgress, notification.renderPosY, notification.renderPosX + width * notification.animationProgress + 1, notification.renderPosY + height + 1);
+            Renderer.R2D.renderQuad(ms, new Color(28, 28, 28, 200), notification.renderPosX - width, notification.renderPosY, notification.renderPosX + width + 1, notification.renderPosY + height);
             FontRenderers.getNormal().drawCenteredString(ms, contents, notification.renderPosX, notification.renderPosY + height / 2f - FontRenderers.getNormal().getFontHeight() / 2f, 0xFFFFFF);
             double timeRemainingInv = 1 - timeRemaining;
             if (!notification.shouldDoAnimation && notification.animationProgress == 0 && notificationExpired) {
@@ -96,12 +96,12 @@ public class NotificationRenderer {
                 double seed = Math.abs((Math.sin(Math.toRadians(seedR * 360)) + 1) / 2);
                 Color start = Renderer.Util.lerp(ClickGUI.theme.getActive(), ClickGUI.theme.getAccent(), seed);
                 Color end = Renderer.Util.lerp(ClickGUI.theme.getActive(), ClickGUI.theme.getAccent(), 1 - seed);
-                Renderer.R2D.fillGradientH(ms, end, start, notification.renderPosX - width, notification.renderPosY + height - 1, notification.renderPosX + width + 1, notification.renderPosY + height);
+                Renderer.R2D.renderQuadGradient(ms, end, start, notification.renderPosX - width, notification.renderPosY + height - 1, notification.renderPosX + width + 1, notification.renderPosY + height);
             } else {
-                Renderer.R2D.fill(ms, ClickGUI.theme.getActive(), notification.renderPosX - width, notification.renderPosY + height - 1, notification.renderPosX + width + 1, notification.renderPosY + height);
-                Renderer.R2D.fill(ms, ClickGUI.theme.getAccent(), notification.renderPosX - width, notification.renderPosY + height - 1, notification.renderPosX - width + ((width + 1) * 2 * timeRemainingInv), notification.renderPosY + height);
+                Renderer.R2D.renderQuad(ms, ClickGUI.theme.getActive(), notification.renderPosX - width, notification.renderPosY + height - 1, notification.renderPosX + width + 1, notification.renderPosY + height);
+                Renderer.R2D.renderQuad(ms, ClickGUI.theme.getAccent(), notification.renderPosX - width, notification.renderPosY + height - 1, notification.renderPosX - width + ((width + 1) * 2 * timeRemainingInv), notification.renderPosY + height);
             }
-            Renderer.R2D.unscissor();
+            Renderer.R2D.endScissor();
             currentYOffset += height + 3;
         }
     }
@@ -139,9 +139,9 @@ public class NotificationRenderer {
             if (notification.renderPosX == 0) {
                 notification.renderPosX = baseX + 4;
             }
-            Renderer.R2D.fill(new Color(28, 28, 28), notification.renderPosX, notification.renderPosY, notification.renderPosX + notifWidth, notification.renderPosY + notifHeight);
-            Renderer.R2D.fill(ClickGUI.theme.getActive(), notification.renderPosX - 1, notification.renderPosY, notification.renderPosX, notification.renderPosY + notifHeight);
-            Renderer.R2D.fill(ClickGUI.theme.getAccent(), notification.renderPosX - 1, notification.renderPosY, notification.renderPosX, notification.renderPosY + (notifHeight * (1 - timeRemaining)));
+            Renderer.R2D.renderQuad(new Color(28, 28, 28), notification.renderPosX, notification.renderPosY, notification.renderPosX + notifWidth, notification.renderPosY + notifHeight);
+            Renderer.R2D.renderQuad(ClickGUI.theme.getActive(), notification.renderPosX - 1, notification.renderPosY, notification.renderPosX, notification.renderPosY + notifHeight);
+            Renderer.R2D.renderQuad(ClickGUI.theme.getAccent(), notification.renderPosX - 1, notification.renderPosY, notification.renderPosX, notification.renderPosY + (notifHeight * (1 - timeRemaining)));
             int currentYOffsetText = (int) (1 + FontRenderers.getNormal().getFontHeight());
             FontRenderers.getNormal().drawString(ms, notification.title, notification.renderPosX + 2, notification.renderPosY + 1, 0xFFFFFF);
             for (String content : notification.contents) {
