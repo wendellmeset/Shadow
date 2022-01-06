@@ -93,8 +93,8 @@ public class CategoryDisplay extends Element {
         Theme theme = ClickGUI.theme;
         //        Renderer.R2D.fill(matrices, theme.getHeader(), x, y, x + width, y + headerHeight());
         double r = ModuleRegistry.getByClass(me.x150.sipprivate.feature.module.impl.render.ClickGUI.class).radius.getValue();
-        double preCalcHeight = md.stream().map(ModuleDisplay::getHeight).reduce(Double::sum).orElse(0d) + headerHeight();
-        Renderer.R2D.renderRoundedQuad(matrices, theme.getHeader(), x, y, x + width, y + preCalcHeight + r, r, 15);
+        this.height = headerHeight()+md.stream().map(ModuleDisplay::getHeight).reduce(Double::sum).orElse(0d)+r; // pre calc height
+        Renderer.R2D.renderRoundedQuad(matrices, theme.getHeader(), x, y, x + width, y + this.height, r, 15);
         cfr.drawCenteredString(matrices, mt.getName(), x + width / 2d, y + headerHeight() / 2d - cfr.getFontHeight() / 2d, 0xFFFFFF);
         double y = headerHeight();
         for (ModuleDisplay moduleDisplay : md) {
@@ -103,7 +103,6 @@ public class CategoryDisplay extends Element {
             moduleDisplay.render(matrices, mouseX, mouseY, scrollBeingUsed);
             y += moduleDisplay.getHeight();
         }
-        this.height = y;
     }
 
     @Override

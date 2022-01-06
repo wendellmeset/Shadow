@@ -1,0 +1,199 @@
+/*
+ * This file is part of the atomic client distribution.
+ * Copyright (c) 2021-2021 0x150.
+ */
+
+package me.x150.sipprivate.feature.module.impl.combat;
+
+import me.x150.sipprivate.CoffeeClientMain;
+import me.x150.sipprivate.feature.config.BooleanSetting;
+import me.x150.sipprivate.feature.config.DoubleSetting;
+import me.x150.sipprivate.feature.config.EnumSetting;
+import me.x150.sipprivate.feature.module.Module;
+import me.x150.sipprivate.feature.module.ModuleType;
+import me.x150.sipprivate.helper.Rotations;
+import me.x150.sipprivate.helper.manager.AttackManager;
+import me.x150.sipprivate.helper.render.Renderer;
+import me.x150.sipprivate.helper.util.Utils;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.mob.Angerable;
+import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.entity.passive.PassiveEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.Vec2f;
+import net.minecraft.util.math.Vec3d;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+public class AimAssist extends Module {
+
+    BooleanSetting attackPlayers = this.config.create(new BooleanSetting.Builder(true)
+            .name("Attack players")
+            .description("Whether or not to aim at players")
+            .get());
+    BooleanSetting attackHostile = this.config.create(new BooleanSetting.Builder(true)
+            .name("Attack hostile")
+            .description("Whether or not to aim at hostile entities")
+            .get());
+    BooleanSetting attackNeutral = this.config.create(new BooleanSetting.Builder(true)
+            .name("Attack neutral")
+            .description("Whether or not to aim at neutral entities")
+            .get());
+    BooleanSetting attackPassive = this.config.create(new BooleanSetting.Builder(true)
+            .name("Attack passive")
+            .description("Whether or nott o aim at passive entities")
+            .get());
+    BooleanSetting attackEverything = this.config.create(new BooleanSetting.Builder(true)
+            .name("Attack everything")
+            .description("Whether or not to aim at everything else")
+            .get());
+    BooleanSetting aimAtCombatPartner = this.config.create(new BooleanSetting.Builder(true)
+            .name("Aim at combat")
+            .description("Whether or not to only aim at the combat partner")
+            .get());
+    EnumSetting<PriorityMode> priority = this.config.create(new EnumSetting.Builder<>(PriorityMode.Distance)
+            .name("Priority")
+            .description("What to prioritize when aiminig")
+            .get());
+    DoubleSetting laziness = this.config.create(new DoubleSetting.Builder(1)
+            .name("Laziness")
+            .description("How lazy to get when aiming")
+            .min(0.1)
+            .max(5)
+            .precision(1)
+            .get());
+    BooleanSetting aimInstant = this.config.create(new BooleanSetting.Builder(false)
+            .name("Aim instantly")
+            .description("Whether or not to aim instantly instead of smoothly")
+            .get());
+    Entity le;
+    public AimAssist() {
+        super("AimAssist", "Assists in pvp", ModuleType.COMBAT);
+        attackPlayers.showIf(() -> !aimAtCombatPartner.getValue());
+        attackHostile.showIf(() -> !aimAtCombatPartner.getValue());
+        attackNeutral.showIf(() -> !aimAtCombatPartner.getValue());
+        attackPassive.showIf(() -> !aimAtCombatPartner.getValue());
+        attackEverything.showIf(() -> !aimAtCombatPartner.getValue());
+        laziness.showIf(() -> !aimInstant.getValue());
+    }
+
+    @Override
+    public void tick() {
+        List<Entity> attacks = new ArrayList<>();
+        if (aimAtCombatPartner.getValue()) {
+            if (AttackManager.getLastAttackInTimeRange() != null) {
+                attacks.add(AttackManager.getLastAttackInTimeRange());
+            }
+        } else {
+            for (Entity entity : Objects.requireNonNull(CoffeeClientMain.client.world).getEntities()) {
+                if (!entity.isAttackable()) {
+                    continue;
+                }
+                if (entity.equals(CoffeeClientMain.client.player)) {
+                    continue;
+                }
+                if (!entity.isAlive()) {
+                    continue;
+                }
+                if (entity.getPos().distanceTo(CoffeeClientMain.client.player.getPos()) > Objects.requireNonNull(CoffeeClientMain.client.interactionManager).getReachDistance()) {
+                    continue;
+                }
+                boolean checked = false;
+                if (entity instanceof Angerable) {
+                    checked = true;
+                    if (attackNeutral.getValue()) {
+                        attacks.add(entity);
+                    } else {
+                        continue;
+                    }
+                }
+                if (entity instanceof PlayerEntity) {
+                    if (attackPlayers.getValue()) {
+                        attacks.add(entity);
+                    }
+                } else if (entity instanceof HostileEntity) {
+                    if (attackHostile.getValue()) {
+                        attacks.add(entity);
+                    }
+                } else if (entity instanceof PassiveEntity) {
+                    if (attackPassive.getValue()) {
+                        attacks.add(entity);
+                    }
+                } else if (attackEverything.getValue() && !checked) {
+                    attacks.add(entity);
+                }
+            }
+        }
+        if (attacks.isEmpty()) {
+            le = null;
+            return;
+        }
+        if (priority.getValue() == PriorityMode.Distance) {
+            le = attacks.stream().sorted(Comparator.comparingDouble(value -> value.getPos().distanceTo(Objects.requireNonNull(CoffeeClientMain.client.player).getPos()))).collect(Collectors.toList()).get(0);
+        } else {
+            // get entity with the least health if mode is ascending, else get most health
+            le = attacks.stream().sorted(Comparator.comparingDouble(value -> {
+                if (value instanceof LivingEntity e) {
+                    return e.getHealth() * (priority.getValue() == PriorityMode.Health_ascending ? -1 : 1);
+                }
+                return Integer.MAX_VALUE; // not a living entity, discard
+            })).collect(Collectors.toList()).get(0);
+        }
+
+    }
+
+    @Override
+    public void onFastTick() {
+        aimAtTarget();
+    }
+
+    @Override
+    public void enable() {
+
+    }
+
+    @Override
+    public void disable() {
+
+    }
+
+    @Override
+    public String getContext() {
+        return null;
+    }
+
+    void aimAtTarget() {
+        if (!aimInstant.getValue()) {
+            Rotations.lookAtPositionSmooth(le.getPos().add(0, le.getHeight() / 2d, 0), laziness.getValue());
+        } else {
+            Vec2f py = Rotations.getPitchYaw(le.getPos().add(0, le.getHeight() / 2d, 0));
+            Objects.requireNonNull(CoffeeClientMain.client.player).setPitch(py.x);
+            CoffeeClientMain.client.player.setYaw(py.y);
+        }
+    }
+
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
+        if (le != null) {
+            Vec3d origin = le.getPos();
+            float h = le.getHeight();
+            Renderer.R3D.renderLine(origin, origin.add(0, h, 0), Utils.getCurrentRGB(), matrices);
+        }
+    }
+
+    @Override
+    public void onHudRender() {
+
+    }
+
+    public enum PriorityMode {
+        Distance, Health_ascending, Health_descending
+    }
+}
+

@@ -5,6 +5,10 @@
 
 package me.x150.sipprivate.feature.module;
 
+import me.x150.sipprivate.feature.module.impl.combat.AimAssist;
+import me.x150.sipprivate.feature.module.impl.combat.Criticals;
+import me.x150.sipprivate.feature.module.impl.combat.Killaura;
+import me.x150.sipprivate.feature.module.impl.combat.Velocity;
 import me.x150.sipprivate.feature.module.impl.exploit.*;
 import me.x150.sipprivate.feature.module.impl.fun.AutoTrap;
 import me.x150.sipprivate.feature.module.impl.fun.FakeHacker;
@@ -60,6 +64,10 @@ public class ModuleRegistry {
         modules.add(new Hyperspeed());
         modules.add(new AntiAnvil());
         modules.add(new Swing());
+        modules.add(new AimAssist());
+        modules.add(new Criticals());
+        modules.add(new Killaura());
+        modules.add(new Velocity());
     }
 
     public static List<Module> getModules() {

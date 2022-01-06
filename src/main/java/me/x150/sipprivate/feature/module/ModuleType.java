@@ -6,7 +6,7 @@
 package me.x150.sipprivate.feature.module;
 
 public enum ModuleType {
-    RENDER("Render"), MOVEMENT("Movement"), MISC("Miscellaneous"), WORLD("World"), EXPLOIT("Exploit"), FUN("Fun");
+    RENDER("Render"), MOVEMENT("Movement"), MISC("Miscellaneous"), WORLD("World"), EXPLOIT("Exploit"), FUN("Fun"), COMBAT("Combat");
 
 
     final String name;

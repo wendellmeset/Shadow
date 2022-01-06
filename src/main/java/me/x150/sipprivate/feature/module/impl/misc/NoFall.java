@@ -10,10 +10,12 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 
 public class NoFall extends Module {
+    public boolean enabled = true;
+
     public NoFall() {
         super("NoFall", "Prevents you from taking fall damage", ModuleType.MISC);
         Events.registerEventHandler(EventType.PACKET_SEND, event -> {
-            if (!this.isEnabled()) {
+            if (!this.isEnabled() || !enabled) {
                 return;
             }
             PacketEvent pe = (PacketEvent) event;

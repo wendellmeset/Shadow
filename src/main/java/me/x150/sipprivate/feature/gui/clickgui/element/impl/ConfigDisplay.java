@@ -14,6 +14,7 @@ import net.minecraft.client.util.math.MatrixStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ConfigDisplay extends Element {
     List<ConfigBase<?>> bases = new ArrayList<>();
@@ -41,9 +42,13 @@ public class ConfigDisplay extends Element {
         this.height = bases.stream().map(Element::getHeight).reduce(Double::sum).orElse(0d);
     }
 
+    public List<ConfigBase<?>> getBases() {
+        return bases.stream().filter(configBase -> configBase.getConfigValue().shouldShow()).collect(Collectors.toList());
+    }
+
     @Override
     public boolean clicked(double x, double y, int button) {
-        for (ConfigBase<?> basis : bases) {
+        for (ConfigBase<?> basis : getBases()) {
             if (basis.getConfigValue().shouldShow() && basis.clicked(x, y, button)) {
                 return true;
             }
@@ -53,7 +58,7 @@ public class ConfigDisplay extends Element {
 
     @Override
     public boolean dragged(double x, double y, double deltaX, double deltaY, int button) {
-        for (ConfigBase<?> basis : bases) {
+        for (ConfigBase<?> basis : getBases()) {
             if (basis.getConfigValue().shouldShow() && basis.dragged(x, y, deltaX, deltaY, button)) {
                 return true;
             }
@@ -73,7 +78,7 @@ public class ConfigDisplay extends Element {
 
     @Override
     public boolean keyPressed(int keycode) {
-        for (ConfigBase<?> basis : bases) {
+        for (ConfigBase<?> basis : getBases()) {
             if (basis.getConfigValue().shouldShow() && basis.keyPressed(keycode)) {
                 return true;
             }
@@ -82,9 +87,16 @@ public class ConfigDisplay extends Element {
     }
 
     @Override
+    public double getHeight() {
+        this.height = 4+getBases().stream().map(Element::getHeight).reduce(Double::sum).orElse(0d);
+        return super.getHeight();
+    }
+
+    @Override
     public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
         double yOffset = 2;
         Theme theme = ClickGUI.theme;
+        double height = getHeight();
         Renderer.R2D.renderQuad(matrices, theme.getConfig(), x, this.y, x + width, this.y + height);
         Renderer.R2D.renderQuad(matrices, theme.getAccent(), x, this.y, x + 1, this.y + height);
         boolean hovered = inBounds(mouseX, mouseY);
@@ -93,7 +105,7 @@ public class ConfigDisplay extends Element {
         }
         hoveredBefore = hovered;
         String renderingDesc = null;
-        for (ConfigBase<?> basis : bases) {
+        for (ConfigBase<?> basis : getBases()) {
             basis.setX(x + padding);
             basis.setY(this.y + yOffset);
             if (!basis.getConfigValue().shouldShow()) {
@@ -108,7 +120,6 @@ public class ConfigDisplay extends Element {
         if (hoverStart + 500 < System.currentTimeMillis() && hovered && renderingDesc != null) {
             ClickGUI.instance().renderDescription(Utils.Mouse.getMouseX(), Utils.Mouse.getMouseY() + 10, renderingDesc);
         }
-        this.height = yOffset + 2;
     }
 
     @Override
