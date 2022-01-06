@@ -14,6 +14,7 @@
     "BlockRenderManagerMixin",
     "ClientConnectionMixin",
     "ClientPlayerEntityMixin",
+    "Deadmau5FeatureRendererMixin",
     "EntityRenderDispatcherMixin",
     "GameMenuMixin",
     "GameRendererMixin",
@@ -34,6 +35,7 @@
     "MouseMixin",
     "PlayerEntityMixin",
     "PlayerInteractEntityC2SPacketAccessor",
+    "SharedConstantsMixin",
     "TitleScreenMixin"
   ],
   "client": [],
