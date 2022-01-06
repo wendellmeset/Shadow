@@ -7,7 +7,9 @@ package me.x150.sipprivate.feature.module;
 
 
 import me.x150.sipprivate.feature.module.impl.exploit.*;
-import me.x150.sipprivate.feature.module.impl.fun.*;
+import me.x150.sipprivate.feature.module.impl.fun.AutoTrap;
+import me.x150.sipprivate.feature.module.impl.fun.FakeHacker;
+import me.x150.sipprivate.feature.module.impl.fun.TpRange;
 import me.x150.sipprivate.feature.module.impl.misc.*;
 import me.x150.sipprivate.feature.module.impl.movement.*;
 import me.x150.sipprivate.feature.module.impl.render.*;
@@ -75,6 +77,7 @@ public class ModuleRegistry {
         modules.add(new NoTitles());
         modules.add(new PortalGUI());
         modules.add(new Timer());
+        modules.add(new XCarry());
     }
 
     public static List<Module> getModules() {
