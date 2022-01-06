@@ -70,6 +70,7 @@ public class ModuleRegistry {
         modules.add(new PingSpoof());
         modules.add(new Nuker());
         modules.add(new AutoAttack());
+        modules.add(new XCarry());
     }
 
     public static List<Module> getModules() {
