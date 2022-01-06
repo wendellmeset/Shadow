@@ -76,6 +76,7 @@ public class ModuleRegistry {
         modules.add(new PortalGUI());
         modules.add(new Timer());
         modules.add(new XCarry());
+        modules.add(new InstantMine());
     }
 
     public static List<Module> getModules() {
