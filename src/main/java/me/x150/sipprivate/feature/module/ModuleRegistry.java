@@ -5,10 +5,7 @@
 
 package me.x150.sipprivate.feature.module;
 
-import me.x150.sipprivate.feature.module.impl.combat.AimAssist;
-import me.x150.sipprivate.feature.module.impl.combat.Criticals;
-import me.x150.sipprivate.feature.module.impl.combat.Killaura;
-import me.x150.sipprivate.feature.module.impl.combat.Velocity;
+
 import me.x150.sipprivate.feature.module.impl.exploit.*;
 import me.x150.sipprivate.feature.module.impl.fun.AutoTrap;
 import me.x150.sipprivate.feature.module.impl.fun.FakeHacker;
@@ -17,6 +14,7 @@ import me.x150.sipprivate.feature.module.impl.misc.*;
 import me.x150.sipprivate.feature.module.impl.movement.*;
 import me.x150.sipprivate.feature.module.impl.render.*;
 import me.x150.sipprivate.feature.module.impl.world.*;
+import me.x150.sipprivate.feature.module.impl.combat.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +68,8 @@ public class ModuleRegistry {
         modules.add(new Velocity());
         modules.add(new AntiAntiXray());
         modules.add(new PingSpoof());
+        modules.add(new Nuker());
+        modules.add(new AutoAttack());
     }
 
     public static List<Module> getModules() {
