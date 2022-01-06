@@ -68,6 +68,8 @@ public class ModuleRegistry {
         modules.add(new Criticals());
         modules.add(new Killaura());
         modules.add(new Velocity());
+        modules.add(new AntiAntiXray());
+        modules.add(new PingSpoof());
     }
 
     public static List<Module> getModules() {
