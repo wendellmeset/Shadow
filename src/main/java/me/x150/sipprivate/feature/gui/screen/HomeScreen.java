@@ -21,6 +21,7 @@ import net.minecraft.client.util.DefaultSkinHelper;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
+import org.apache.commons.io.IOUtils;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL40C;
 
@@ -72,11 +73,9 @@ public class HomeScreen extends AntiAliasedScreen implements FastTickable {
         loaded = true;
         try {
             File execF = new File(HomeScreen.class.getProtectionDomain().getCodeSource().getLocation().toURI());
-            File changelog = new File(Objects.requireNonNull(HomeScreen.class.getClassLoader().getResource("changelogLatest.txt")).toURI());
-            File version = new File(Objects.requireNonNull(HomeScreen.class.getClassLoader().getResource("version.txt")).toURI());
             isDev = execF.isDirectory();
-            HomeScreen.version = Files.readString(version.toPath(), StandardCharsets.UTF_8);
-            HomeScreen.changelog = Files.readString(changelog.toPath(), StandardCharsets.UTF_8);
+            HomeScreen.version = IOUtils.toString(Objects.requireNonNull(HomeScreen.class.getClassLoader().getResourceAsStream("version.txt")), StandardCharsets.UTF_8);
+            HomeScreen.changelog = IOUtils.toString(Objects.requireNonNull(HomeScreen.class.getClassLoader().getResourceAsStream("changelogLatest.txt")), StandardCharsets.UTF_8);
             updateCurrentAccount(this::complete);
         } catch (Exception e) {
             e.printStackTrace();

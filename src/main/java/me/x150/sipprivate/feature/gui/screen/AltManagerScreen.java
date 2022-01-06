@@ -685,6 +685,7 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
                 storage.cachedName = profile.getUsername();
                 storage.cachedUuid = profile.getUuid();
                 downloadTexture();
+                storage.valid = true;
             } catch (Exception ignored) {
                 storage.valid = false;
             }
