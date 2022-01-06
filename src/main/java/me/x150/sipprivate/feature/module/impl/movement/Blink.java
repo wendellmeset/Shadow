@@ -25,6 +25,7 @@ public class Blink extends Module {
             .name("Mode")
             .description("Whether to delay or remove the packets being sent")
             .get());
+
     public Blink() {
         super("Blink", "confuses chinese anticheats", ModuleType.MOVEMENT);
         Events.registerEventHandler(EventType.PACKET_SEND, event1 -> {

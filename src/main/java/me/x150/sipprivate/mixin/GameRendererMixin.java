@@ -1,17 +1,21 @@
 package me.x150.sipprivate.mixin;
 
 import me.x150.sipprivate.CoffeeClientMain;
+import me.x150.sipprivate.feature.gui.DoesMSAA;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleRegistry;
 import me.x150.sipprivate.helper.manager.ImGuiManager;
 import me.x150.sipprivate.helper.render.MSAAFramebuffer;
 import me.x150.sipprivate.helper.render.Renderer;
+import net.minecraft.client.gui.Element;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(GameRenderer.class)
@@ -46,6 +50,20 @@ public class GameRendererMixin {
         if (!ImGuiManager.isInitialized()) {
             ImGuiManager.init();
         }
+    }
+
+    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/Screen;render(Lnet/minecraft/client/util/math/MatrixStack;IIF)V"))
+    void coffee_msaaScreenRender(Screen instance, MatrixStack matrices, int mouseX, int mouseY, float delta) {
+        boolean shouldMsaa = false;
+        for (Element child : instance.children()) {
+            if (child instanceof DoesMSAA) {
+                shouldMsaa = true;
+                break;
+            }
+        }
+        if (shouldMsaa) {
+            MSAAFramebuffer.use(MSAAFramebuffer.MAX_SAMPLES, () -> instance.render(matrices, mouseX, mouseY, delta));
+        } else instance.render(matrices, mouseX, mouseY, delta);
     }
 
     @Inject(at = @At("HEAD"), method = "renderWorld")

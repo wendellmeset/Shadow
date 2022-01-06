@@ -17,11 +17,14 @@ public class Nuker extends Module {
 
     @Override
     public void tick() {
-        for(int x = -7; x < 8; x++) for(int y = -7; y < 8; y++) for(int z = -7; z < 8; z++){
-            BlockPos pos = CoffeeClientMain.client.player.getBlockPos().add(new BlockPos(x, y, z));
-            if(new Vec3d(pos.getX(), pos.getY(), pos.getZ()).distanceTo(CoffeeClientMain.client.player.getPos()) > CoffeeClientMain.client.interactionManager.getReachDistance() - 1 || CoffeeClientMain.client.world.getBlockState(pos).isAir() || CoffeeClientMain.client.world.getBlockState(pos).getBlock() == Blocks.WATER || CoffeeClientMain.client.world.getBlockState(pos).getBlock() == Blocks.LAVA) continue;
-            CoffeeClientMain.client.interactionManager.attackBlock(pos, Direction.DOWN);
-        }
+        for (int x = -7; x < 8; x++)
+            for (int y = -7; y < 8; y++)
+                for (int z = -7; z < 8; z++) {
+                    BlockPos pos = CoffeeClientMain.client.player.getBlockPos().add(new BlockPos(x, y, z));
+                    if (new Vec3d(pos.getX(), pos.getY(), pos.getZ()).distanceTo(CoffeeClientMain.client.player.getPos()) > CoffeeClientMain.client.interactionManager.getReachDistance() - 1 || CoffeeClientMain.client.world.getBlockState(pos).isAir() || CoffeeClientMain.client.world.getBlockState(pos).getBlock() == Blocks.WATER || CoffeeClientMain.client.world.getBlockState(pos).getBlock() == Blocks.LAVA)
+                        continue;
+                    CoffeeClientMain.client.interactionManager.attackBlock(pos, Direction.DOWN);
+                }
     }
 
     @Override

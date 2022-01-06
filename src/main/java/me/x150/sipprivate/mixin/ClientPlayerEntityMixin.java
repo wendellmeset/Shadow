@@ -30,7 +30,8 @@ public class ClientPlayerEntityMixin {
         }
     }
 
-    @Redirect(method = "updateNausea", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/Screen;isPauseScreen()Z")) public boolean atomic_overwriteIsPauseScreen(Screen screen) {
+    @Redirect(method = "updateNausea", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/Screen;isPauseScreen()Z"))
+    public boolean atomic_overwriteIsPauseScreen(Screen screen) {
         return Objects.requireNonNull(ModuleRegistry.getByClass(PortalGUI.class)).isEnabled() || screen.isPauseScreen();
     }
 }

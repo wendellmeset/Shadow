@@ -52,6 +52,7 @@ public class LongJump extends Module {
             .precision(3)
             .get());
     boolean jumped = false;
+
     public LongJump() {
         super("LongJump", "Jumps a long distance", ModuleType.MOVEMENT);
         glideVelocity.showIf(glide::getValue);

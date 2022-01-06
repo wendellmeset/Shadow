@@ -267,7 +267,7 @@ public class Renderer {
 
     public static class R2D {
 
-        public static final Identifier OPTIONS_BACKGROUND_TEXTURE = new Identifier("sipoverprivate", "background.jpg");
+        public static final Identifier OPTIONS_BACKGROUND_TEXTURE = new Identifier("coffeeclient", "background.jpg");
 
         public static void beginScissor(MatrixStack stack, double x, double y, double endX, double endY) {
             Matrix4f matrix = stack.peek().getPositionMatrix();
@@ -549,6 +549,48 @@ public class Renderer {
         //
         //        }
 
+        public static void renderQuadGradientVert(MatrixStack matrices, Color c1, Color c2, double x1, double y1, double x2, double y2) {
+            float r1 = c1.getRed() / 255f;
+            float g1 = c1.getGreen() / 255f;
+            float b1 = c1.getBlue() / 255f;
+            float a1 = c1.getAlpha() / 255f;
+            float r2 = c2.getRed() / 255f;
+            float g2 = c2.getGreen() / 255f;
+            float b2 = c2.getBlue() / 255f;
+            float a2 = c2.getAlpha() / 255f;
+
+            double j;
+
+            if (x1 < x2) {
+                j = x1;
+                x1 = x2;
+                x2 = j;
+            }
+
+            if (y1 < y2) {
+                j = y1;
+                y1 = y2;
+                y2 = j;
+            }
+            Matrix4f matrix = matrices.peek().getPositionMatrix();
+            BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
+            RenderSystem.enableBlend();
+            RenderSystem.defaultBlendFunc();
+            RenderSystem.disableTexture();
+
+            RenderSystem.setShader(GameRenderer::getPositionColorShader);
+            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+            bufferBuilder.vertex(matrix, (float) x1, (float) y1, 0.0F).color(r1, g1, b1, a1).next();
+            bufferBuilder.vertex(matrix, (float) x1, (float) y2, 0.0F).color(r2, g2, b2, a2).next();
+            bufferBuilder.vertex(matrix, (float) x2, (float) y2, 0.0F).color(r2, g2, b2, a2).next();
+            bufferBuilder.vertex(matrix, (float) x2, (float) y1, 0.0F).color(r1, g1, b1, a1).next();
+            bufferBuilder.end();
+            BufferRenderer.draw(bufferBuilder);
+            RenderSystem.enableTexture();
+            RenderSystem.disableBlend();
+
+        }
+
         public static void renderQuadGradient(MatrixStack matrices, Color c2, Color c1, double x1, double y1, double x2, double y2) {
             float r1 = c1.getRed() / 255f;
             float g1 = c1.getGreen() / 255f;
@@ -637,12 +679,12 @@ public class Renderer {
             RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
         }
 
-        public static void renderLine(Color c, double x, double y, double x1, double y1) {
+        public static void renderLine(MatrixStack stack, Color c, double x, double y, double x1, double y1) {
             float g = c.getRed() / 255f;
             float h = c.getGreen() / 255f;
             float k = c.getBlue() / 255f;
             float f = c.getAlpha() / 255f;
-            Matrix4f m = R3D.getEmptyMatrixStack().peek().getPositionMatrix();
+            Matrix4f m = stack.peek().getPositionMatrix();
             BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
             RenderSystem.defaultBlendFunc();
             RenderSystem.enableBlend();

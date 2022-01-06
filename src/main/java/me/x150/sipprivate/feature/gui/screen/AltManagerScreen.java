@@ -66,7 +66,7 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
     ClientFontRenderer title = FontRenderers.getCustomNormal(40);
     double scroll = 0;
     double scrollSmooth = 0;
-    Identifier currentAccountTexture = new Identifier("atomic", "tex_currentaccount");
+    Identifier currentAccountTexture = new Identifier("coffee", "tex_currentaccount");
     boolean currentAccountTextureLoaded = false;
     AtomicBoolean isLoggingIn = new AtomicBoolean(false);
 
@@ -606,7 +606,7 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
         }
     }
 
-    class AltContainer {
+    public class AltContainer {
         Identifier tex;
         boolean texLoaded = false;
         float animProgress = 0;
@@ -643,7 +643,7 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
                     NativeImageBackedTexture texture = new NativeImageBackedTexture(img);
 
                     CoffeeClientMain.client.execute(() -> {
-                        this.tex = new Identifier("atomic", "tex_" + this.storage.cachedUuid.hashCode() + "_" + (Math.random() + "").split("\\.")[1]);
+                        this.tex = new Identifier("coffee", "tex_" + this.storage.cachedUuid.hashCode() + "_" + (Math.random() + "").split("\\.")[1]);
                         CoffeeClientMain.client.getTextureManager().registerTexture(this.tex, texture);
                         texCache.put(this.storage.cachedUuid, this.tex);
                         texLoaded = true;
@@ -674,7 +674,7 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
                     storage.valid = true;
                     storage.cachedUuid = UUID.randomUUID();
                     storage.cachedName = storage.email;
-                    storage.accessToken = "AtomicOnTop";
+                    storage.accessToken = "coffee";
                     return;
                 }
                 if (token == null) {
@@ -771,7 +771,7 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
             }
         }
 
-        record PropEntry(String name, FontAdapter cfr, int color) {
+        public static record PropEntry(String name, FontAdapter cfr, int color) {
 
         }
     }

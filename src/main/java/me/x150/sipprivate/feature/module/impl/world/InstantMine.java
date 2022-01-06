@@ -3,13 +3,11 @@ package me.x150.sipprivate.feature.module.impl.world;
 import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleType;
-import net.minecraft.block.Blocks;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.hit.BlockHitResult;
 
 public class InstantMine extends Module {
 
@@ -19,11 +17,13 @@ public class InstantMine extends Module {
 
     @Override
     public void tick() {
-        if(CoffeeClientMain.client.interactionManager.isBreakingBlock()){
-            try{
+        if (CoffeeClientMain.client.interactionManager.isBreakingBlock()) {
+            try {
                 BlockPos killmeplz = ((BlockHitResult) CoffeeClientMain.client.crosshairTarget).getBlockPos();
-                for(int i = 0; i < 20; i++) CoffeeClientMain.client.player.networkHandler.sendPacket(new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK, killmeplz, Direction.UP));
-            }catch(ClassCastException e){}
+                for (int i = 0; i < 20; i++)
+                    CoffeeClientMain.client.player.networkHandler.sendPacket(new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK, killmeplz, Direction.UP));
+            } catch (ClassCastException e) {
+            }
         }
     }
 

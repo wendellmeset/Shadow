@@ -5,7 +5,6 @@
   "mixins": [
     "AbstractBlockStateMixin",
     "AbstractClientPlayerEntityMixin",
-    "AButtonWidgetMixin",
     "AChatScreenMixin",
     "AEntityRendererMixin",
     "AGenericContainerScreenMixin",

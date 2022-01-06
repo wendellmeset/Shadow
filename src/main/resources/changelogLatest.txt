@@ -1,1 +1,4 @@
-k
+Added home screen
+Removed custom buttons
+Reformat
+Fixed stupid bug with the alt screen

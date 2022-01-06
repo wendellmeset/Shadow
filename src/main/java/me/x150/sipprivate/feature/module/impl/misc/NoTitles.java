@@ -18,7 +18,7 @@ import net.minecraft.network.packet.s2c.play.TitleFadeS2CPacket;
 import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
 
 public class NoTitles extends Module {
-    long         blocked   = 0L;
+    long blocked = 0L;
     Notification lastShown = null;
 
     public NoTitles() {
@@ -46,26 +46,32 @@ public class NoTitles extends Module {
         });
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
 
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
 
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return null;
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
 
     }
 }
