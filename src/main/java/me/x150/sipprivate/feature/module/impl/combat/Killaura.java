@@ -109,7 +109,6 @@ public class Killaura extends Module {
             .get());
 
 
-
     BooleanSetting enableConfuse = this.config.create(new BooleanSetting.Builder(false)
             .name("Enable confuse")
             .description("Whether or not to enable confuse")
@@ -125,6 +124,7 @@ public class Killaura extends Module {
     Entity combatPartner;
     double circleProg = 0;
     List<Entity> attacks = new ArrayList<>();
+
     public Killaura() {
         super("Killaura", "anime", ModuleType.COMBAT);
         range.showIf(() -> !capRangeAtMax.getValue());

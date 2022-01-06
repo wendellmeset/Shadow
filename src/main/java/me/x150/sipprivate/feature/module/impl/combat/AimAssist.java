@@ -73,6 +73,7 @@ public class AimAssist extends Module {
             .description("Whether or not to aim instantly instead of smoothly")
             .get());
     Entity le;
+
     public AimAssist() {
         super("AimAssist", "Assists in pvp", ModuleType.COMBAT);
         attackPlayers.showIf(() -> !aimAtCombatPartner.getValue());

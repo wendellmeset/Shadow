@@ -88,7 +88,7 @@ public class ConfigDisplay extends Element {
 
     @Override
     public double getHeight() {
-        this.height = 4+getBases().stream().map(Element::getHeight).reduce(Double::sum).orElse(0d);
+        this.height = 4 + getBases().stream().map(Element::getHeight).reduce(Double::sum).orElse(0d);
         return super.getHeight();
     }
 

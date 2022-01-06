@@ -301,7 +301,7 @@ public class Renderer {
         public static void renderLoadingSpinner(MatrixStack stack, Color c, double x, double y, double rad, double segments) {
             stack.push();
             stack.translate(x, y, 0);
-            stack.multiply(new Quaternion(0,0,(System.currentTimeMillis()%2000)/2000f*360f,true));
+            stack.multiply(new Quaternion(0, 0, (System.currentTimeMillis() % 2000) / 2000f * 360f, true));
             segments = MathHelper.clamp(segments, 2, 90);
             RenderSystem.setShaderColor(1, 1, 1, 1);
             int color = c.getRGB();
@@ -317,14 +317,14 @@ public class Renderer {
             RenderSystem.disableTexture();
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
             bufferBuilder.begin(VertexFormat.DrawMode.TRIANGLE_STRIP, VertexFormats.POSITION_COLOR);
-            for(double r = 0;r<90;r+=(90/segments)) {
+            for (double r = 0; r < 90; r += (90 / segments)) {
                 double rad1 = Math.toRadians(r);
                 double sin = Math.sin(rad1);
                 double cos = Math.cos(rad1);
-                double offX = sin*rad;
-                double offY = cos*rad;
+                double offX = sin * rad;
+                double offY = cos * rad;
                 bufferBuilder.vertex(matrix, (float) offX, (float) offY, 0).color(g, h, k, f).next();
-                bufferBuilder.vertex(matrix, (float) (offX+sin), (float) (offY+cos), 0).color(g, h, k, f).next();
+                bufferBuilder.vertex(matrix, (float) (offX + sin), (float) (offY + cos), 0).color(g, h, k, f).next();
 
             }
             bufferBuilder.end();
