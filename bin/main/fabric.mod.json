@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "coffeeclient",
+  "version": "${version}",
+  "name": "Coffee client",
+  "description": "YOOOOO 2500 KROMER WE GETTIN RICH BOYYS",
+  "authors": [
+    "0x150",
+    "Kopamed"
+  ],
+  "contributors": [],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/sipoverprivate/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "me.x150.sipprivate.CoffeeClientMain"
+    ],
+    "client": [],
+    "server": []
+  },
+  "mixins": [
+    "sipoverprivate.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.12.12",
+    "fabric": "*"
+  }
+}

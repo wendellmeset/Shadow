@@ -13,7 +13,7 @@ public class SipoverV1 implements Theme {
 
     @Override
     public Color getAccent() {
-        return new Color(0x29FFB4);
+        return new Color(0xc7f4ff);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class SipoverV1 implements Theme {
 
     @Override
     public Color getActive() {
-        return new Color(222, 67, 0, 255);
+        return new Color(200, 200, 225, 255);
     }
 
     @Override
