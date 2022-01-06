@@ -9,20 +9,28 @@ import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleType;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.math.Box;
 
-public class Sprint extends Module {
+public class EdgeJump extends Module {
 
-    public Sprint() {
-        super("Sprint", "togglesprint for jewish people", ModuleType.MOVEMENT);
+    public EdgeJump() {
+        super("EdgeJump", "Jumps automatically at the edges of blocks", ModuleType.MOVEMENT);
     }
 
     @Override
     public void tick() {
-        if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.getNetworkHandler() == null) {
+        if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.world == null) {
             return;
         }
-        if (CoffeeClientMain.client.options.keyForward.isPressed() && !CoffeeClientMain.client.options.keyBack.isPressed() && !CoffeeClientMain.client.player.isSneaking() && !CoffeeClientMain.client.player.horizontalCollision) {
-            client.player.setSprinting(true);
+        if (!CoffeeClientMain.client.player.isOnGround() || CoffeeClientMain.client.player.isSneaking()) {
+            return;
+        }
+
+        Box bounding = CoffeeClientMain.client.player.getBoundingBox();
+        bounding = bounding.offset(0, -0.5, 0);
+        bounding = bounding.expand(-0.001, 0, -0.001);
+        if (!CoffeeClientMain.client.world.getBlockCollisions(client.player, bounding).iterator().hasNext()) {
+            client.player.jump();
         }
     }
 
@@ -51,4 +59,3 @@ public class Sprint extends Module {
 
     }
 }
-

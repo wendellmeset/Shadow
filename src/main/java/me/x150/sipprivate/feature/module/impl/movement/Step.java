@@ -6,14 +6,24 @@
 package me.x150.sipprivate.feature.module.impl.movement;
 
 import me.x150.sipprivate.CoffeeClientMain;
+import me.x150.sipprivate.feature.config.DoubleSetting;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleType;
 import net.minecraft.client.util.math.MatrixStack;
 
-public class Sprint extends Module {
+public class Step extends Module {
 
-    public Sprint() {
-        super("Sprint", "togglesprint for jewish people", ModuleType.MOVEMENT);
+    //    final SliderValue height = (SliderValue) this.config.create("Step height", 3, 1, 50, 0).description("How high to step");
+    DoubleSetting height = this.config.create(new DoubleSetting.Builder(3)
+            .name("Height")
+            .description("How high to step")
+            .min(1)
+            .max(50)
+            .precision(0)
+            .get());
+
+    public Step() {
+        super("Step", "spiders would like to learn this power", ModuleType.MOVEMENT);
     }
 
     @Override
@@ -21,9 +31,7 @@ public class Sprint extends Module {
         if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.getNetworkHandler() == null) {
             return;
         }
-        if (CoffeeClientMain.client.options.keyForward.isPressed() && !CoffeeClientMain.client.options.keyBack.isPressed() && !CoffeeClientMain.client.player.isSneaking() && !CoffeeClientMain.client.player.horizontalCollision) {
-            client.player.setSprinting(true);
-        }
+        CoffeeClientMain.client.player.stepHeight = (float) (height.getValue() + 0);
     }
 
     @Override
@@ -33,7 +41,10 @@ public class Sprint extends Module {
 
     @Override
     public void disable() {
-
+        if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.getNetworkHandler() == null) {
+            return;
+        }
+        client.player.stepHeight = 0.6f;
     }
 
     @Override

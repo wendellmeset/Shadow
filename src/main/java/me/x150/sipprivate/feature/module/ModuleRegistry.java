@@ -6,13 +6,13 @@
 package me.x150.sipprivate.feature.module;
 
 
+import me.x150.sipprivate.feature.module.impl.combat.*;
 import me.x150.sipprivate.feature.module.impl.exploit.*;
 import me.x150.sipprivate.feature.module.impl.fun.*;
 import me.x150.sipprivate.feature.module.impl.misc.*;
 import me.x150.sipprivate.feature.module.impl.movement.*;
 import me.x150.sipprivate.feature.module.impl.render.*;
 import me.x150.sipprivate.feature.module.impl.world.*;
-import me.x150.sipprivate.feature.module.impl.combat.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,6 +76,22 @@ public class ModuleRegistry {
         modules.add(new PortalGUI());
         modules.add(new Timer());
         modules.add(new XCarry());
+        modules.add(new AirJump());
+        modules.add(new AutoElytra());
+        modules.add(new Blink());
+        modules.add(new Boost());
+        modules.add(new EdgeJump());
+        modules.add(new EdgeSneak());
+        modules.add(new EntityFly());
+        modules.add(new IgnoreWorldBorder());
+        modules.add(new InventoryWalk());
+        modules.add(new Jesus());
+        modules.add(new LongJump());
+        modules.add(new MoonGravity());
+        modules.add(new NoJumpCooldown());
+        modules.add(new NoLevitation());
+        modules.add(new NoPush());
+        modules.add(new Step());
     }
 
     public static List<Module> getModules() {

@@ -10,10 +10,10 @@ import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleType;
 import net.minecraft.client.util.math.MatrixStack;
 
-public class Sprint extends Module {
+public class MoonGravity extends Module {
 
-    public Sprint() {
-        super("Sprint", "togglesprint for jewish people", ModuleType.MOVEMENT);
+    public MoonGravity() {
+        super("MoonGravity", "what would you do if you'd be on the moon?", ModuleType.MOVEMENT);
     }
 
     @Override
@@ -21,9 +21,8 @@ public class Sprint extends Module {
         if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.getNetworkHandler() == null) {
             return;
         }
-        if (CoffeeClientMain.client.options.keyForward.isPressed() && !CoffeeClientMain.client.options.keyBack.isPressed() && !CoffeeClientMain.client.player.isSneaking() && !CoffeeClientMain.client.player.horizontalCollision) {
-            client.player.setSprinting(true);
-        }
+        CoffeeClientMain.client.player.addVelocity(0, 0.0568000030517578, 0);
+        // yea that's literally it
     }
 
     @Override

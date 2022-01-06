@@ -10,10 +10,10 @@ import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleType;
 import net.minecraft.client.util.math.MatrixStack;
 
-public class Sprint extends Module {
+public class AirJump extends Module {
 
-    public Sprint() {
-        super("Sprint", "togglesprint for jewish people", ModuleType.MOVEMENT);
+    public AirJump() {
+        super("AirJump", "Jumps in le air", ModuleType.MOVEMENT);
     }
 
     @Override
@@ -21,8 +21,9 @@ public class Sprint extends Module {
         if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.getNetworkHandler() == null) {
             return;
         }
-        if (CoffeeClientMain.client.options.keyForward.isPressed() && !CoffeeClientMain.client.options.keyBack.isPressed() && !CoffeeClientMain.client.player.isSneaking() && !CoffeeClientMain.client.player.horizontalCollision) {
-            client.player.setSprinting(true);
+        if (CoffeeClientMain.client.options.keyJump.isPressed()) {
+            CoffeeClientMain.client.player.setOnGround(true);
+            CoffeeClientMain.client.player.fallDistance = 0f;
         }
     }
 
@@ -51,4 +52,3 @@ public class Sprint extends Module {
 
     }
 }
-

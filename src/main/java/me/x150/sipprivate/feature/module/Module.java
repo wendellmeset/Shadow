@@ -5,10 +5,12 @@
 
 package me.x150.sipprivate.feature.module;
 
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.config.BooleanSetting;
 import me.x150.sipprivate.feature.config.DoubleSetting;
 import me.x150.sipprivate.feature.config.ModuleConfig;
 import me.x150.sipprivate.feature.gui.notifications.Notification;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
 
 public abstract class Module {
@@ -21,6 +23,8 @@ public abstract class Module {
     private final ModuleType moduleType;
     private final BooleanSetting toasts;
     private boolean enabled = false;
+
+    protected static MinecraftClient client = CoffeeClientMain.client;
 
     public Module(String n, String d, ModuleType type) {
         this.name = n;

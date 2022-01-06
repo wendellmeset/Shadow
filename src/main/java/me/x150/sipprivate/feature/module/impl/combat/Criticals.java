@@ -10,7 +10,7 @@ import me.x150.sipprivate.feature.config.EnumSetting;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleRegistry;
 import me.x150.sipprivate.feature.module.ModuleType;
-import me.x150.sipprivate.feature.module.impl.misc.NoFall;
+import me.x150.sipprivate.feature.module.impl.movement.NoFall;
 import me.x150.sipprivate.helper.event.EventType;
 import me.x150.sipprivate.helper.event.Events;
 import me.x150.sipprivate.helper.event.events.PacketEvent;

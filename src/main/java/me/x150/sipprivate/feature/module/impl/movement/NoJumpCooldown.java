@@ -8,12 +8,13 @@ package me.x150.sipprivate.feature.module.impl.movement;
 import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleType;
+import me.x150.sipprivate.mixin.ILivingEntityAccessor;
 import net.minecraft.client.util.math.MatrixStack;
 
-public class Sprint extends Module {
+public class NoJumpCooldown extends Module {
 
-    public Sprint() {
-        super("Sprint", "togglesprint for jewish people", ModuleType.MOVEMENT);
+    public NoJumpCooldown() {
+        super("NoJumpCool", "hold it and jump beneath a 2 block space to confuse chinese anticheats", ModuleType.MOVEMENT);
     }
 
     @Override
@@ -21,9 +22,7 @@ public class Sprint extends Module {
         if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.getNetworkHandler() == null) {
             return;
         }
-        if (CoffeeClientMain.client.options.keyForward.isPressed() && !CoffeeClientMain.client.options.keyBack.isPressed() && !CoffeeClientMain.client.player.isSneaking() && !CoffeeClientMain.client.player.horizontalCollision) {
-            client.player.setSprinting(true);
-        }
+        ((ILivingEntityAccessor) CoffeeClientMain.client.player).setJumpingCooldown(0);
     }
 
     @Override
