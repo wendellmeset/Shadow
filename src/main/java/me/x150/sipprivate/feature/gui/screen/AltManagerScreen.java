@@ -494,8 +494,8 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
         protected void init() {
             ThemedButton exit = new ThemedButton(width - 20 - 5, 5, 20, 20, "X", () -> client.setScreen(parent));
             buttons.add(exit);
-            email = new RoundTextFieldWidget(width / 2d - (widgetWid - padding * 2) / 2d, height / 2d - widgetHei / 2d + padding, widgetWid - padding * 2, 20, "E-Mail or username");
-            passwd = new RoundTextFieldWidget(width / 2d - (widgetWid - padding * 2) / 2d, height / 2d - widgetHei / 2d + padding * 2 + 20, widgetWid - padding * 2, 20, "Password");
+            email = new RoundTextFieldWidget(width / 2d - (widgetWid - padding * 2) / 2d, height / 2d - widgetHei / 2d + padding, widgetWid - padding * 2, 20, "E-Mail or username", 10);
+            passwd = new RoundTextFieldWidget(width / 2d - (widgetWid - padding * 2) / 2d, height / 2d - widgetHei / 2d + padding * 2 + 20, widgetWid - padding * 2, 20, "Password", 10);
             type = new ThemedButton(0, 0, widgetWid / 2d - padding * 1.5, 20, "Type: " + AccountType.values()[accountTypeI].s, this::cycle);
             add = new ThemedButton(0, 0, widgetWid / 2d - padding * 1.5, 20, "Add", this::add);
         }

@@ -16,6 +16,8 @@ import org.lwjgl.glfw.GLFW;
 import java.awt.*;
 
 public class RoundTextFieldWidget implements Element, Drawable, Selectable {
+    public Runnable changeListener = () -> {
+    };
 
     protected String text = "";
     protected String suggestion;
@@ -29,16 +31,19 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable {
     boolean mouseOver = false;
     double x, y, width, height;
 
-    public RoundTextFieldWidget(double x, double y, double width, double height, String text) {
+    double rad;
+
+    public RoundTextFieldWidget(double x, double y, double width, double height, String text, double rad) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.suggestion = text;
+        this.rad = rad;
     }
 
     protected double maxTextWidth() {
-        return width - pad() * 3; // * 3 because extra space right, dont ask me why but it looks better
+        return width - pad() * 2 - 1;
     }
 
     @Override
@@ -315,6 +320,14 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable {
         return true;
     }
 
+    public void setText(String text) {
+        clearSelection();
+        this.text = text;
+        cursor = this.text.length();
+        resetSelection();
+        runAction();
+    }
+
     boolean inBounds(double cx, double cy) {
         return cx >= x && cx < x + width && cy >= y && cy < y + height;
     }
@@ -328,8 +341,8 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable {
         double centerY = y + height / 2d - innerHeight / 2d;
 
 //        Renderer.R2D.renderQuad(stack,Color.RED,x,y+height,x+width,y+height+.5);
-        Renderer.R2D.renderRoundedQuad(stack, new Color(230, 230, 230), x, y, x + width, y + height, 10, 15);
-        Renderer.R2D.beginScissor(stack, x + pad, y + pad, x + width - pad, y + height - pad);
+        Renderer.R2D.renderRoundedQuad(stack, new Color(230, 230, 230), x, y, x + width, y + height, rad, 15);
+        Renderer.R2D.beginScissor(stack, x + pad, y, x + width - pad, y + height);
         // Text content
         if (!text.isEmpty()) {
             FontRenderers.getNormal().drawString(stack, text, (float) (x + pad - overflowWidth), (float) (centerY), 0, false);
@@ -392,6 +405,7 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable {
 
     private void runAction() {
         cursorChanged();
+        if (changeListener != null) changeListener.run();
     }
 
     private double textWidth() {

@@ -50,7 +50,7 @@ public class BooleanSettingEditor extends ConfigBase<BooleanSetting> {
 
 
     @Override
-    public boolean keyPressed(int keycode) {
+    public boolean keyPressed(int keycode, int modifiers) {
         return false;
     }
 
@@ -79,5 +79,10 @@ public class BooleanSettingEditor extends ConfigBase<BooleanSetting> {
         }
         animProgress += a;
         animProgress = MathHelper.clamp(animProgress, 0, 1);
+    }
+
+    @Override
+    public boolean charTyped(char c, int mods) {
+        return false;
     }
 }

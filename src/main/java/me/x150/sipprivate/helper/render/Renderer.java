@@ -74,7 +74,7 @@ public class Renderer {
 
         //you can call renderOutlineIntern multiple times to save performance
         public static void renderOutline(Vec3d start, Vec3d dimensions, Color color, MatrixStack stack) {
-            RenderSystem.defaultBlendFunc();
+//            RenderSystem.defaultBlendFunc();
             RenderSystem.enableBlend();
             BufferBuilder buffer = renderPrepare(color);
 
@@ -137,7 +137,7 @@ public class Renderer {
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
             GL11.glDepthFunc(GLMODE);
             RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-            RenderSystem.defaultBlendFunc();
+//            RenderSystem.defaultBlendFunc();
             RenderSystem.enableBlend();
             RenderSystem.disableCull();
             buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
@@ -195,7 +195,7 @@ public class Renderer {
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
             GL11.glDepthFunc(GL11.GL_ALWAYS);
             RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-            RenderSystem.defaultBlendFunc();
+//            RenderSystem.defaultBlendFunc();
             RenderSystem.enableBlend();
             buffer.begin(VertexFormat.DrawMode.DEBUG_LINES, VertexFormats.POSITION_COLOR);
 
@@ -231,7 +231,7 @@ public class Renderer {
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
             GL11.glDepthFunc(GL11.GL_ALWAYS);
             RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-            RenderSystem.defaultBlendFunc();
+//            RenderSystem.defaultBlendFunc();
             RenderSystem.enableBlend();
             buffer.begin(VertexFormat.DrawMode.DEBUG_LINES, VertexFormats.POSITION_COLOR);
 
@@ -312,7 +312,7 @@ public class Renderer {
             float h = (float) (color >> 8 & 255) / 255.0F;
             float k = (float) (color & 255) / 255.0F;
             BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
-            RenderSystem.defaultBlendFunc();
+//            RenderSystem.defaultBlendFunc();
             RenderSystem.enableBlend();
             RenderSystem.disableTexture();
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
@@ -357,7 +357,7 @@ public class Renderer {
             float h = (float) (color >> 8 & 255) / 255.0F;
             float k = (float) (color & 255) / 255.0F;
             BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
-            RenderSystem.defaultBlendFunc();
+//            RenderSystem.defaultBlendFunc();
             RenderSystem.enableBlend();
             RenderSystem.disableTexture();
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
@@ -458,7 +458,7 @@ public class Renderer {
             float f1 = end.getAlpha() / 255f;
             Matrix4f m = R3D.getEmptyMatrixStack().peek().getPositionMatrix();
             BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
-            RenderSystem.defaultBlendFunc();
+////            RenderSystem.defaultBlendFunc();
             RenderSystem.enableBlend();
             RenderSystem.disableTexture();
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
@@ -492,7 +492,7 @@ public class Renderer {
             float h = (float) (color >> 8 & 255) / 255.0F;
             float k = (float) (color & 255) / 255.0F;
             BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
-            RenderSystem.defaultBlendFunc();
+////            RenderSystem.defaultBlendFunc();
             RenderSystem.enableBlend();
             RenderSystem.disableTexture();
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
@@ -532,7 +532,7 @@ public class Renderer {
         //            }
         //            Matrix4f matrix = matrices.peek().getPositionMatrix();
         //            BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
-        //            RenderSystem.defaultBlendFunc();
+//        //            RenderSystem.defaultBlendFunc();
         //            RenderSystem.enableBlend();
         //            RenderSystem.disableTexture();
         //
@@ -575,7 +575,7 @@ public class Renderer {
             Matrix4f matrix = matrices.peek().getPositionMatrix();
             BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
             RenderSystem.enableBlend();
-            RenderSystem.defaultBlendFunc();
+//            RenderSystem.defaultBlendFunc();
             RenderSystem.disableTexture();
 
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
@@ -616,7 +616,7 @@ public class Renderer {
             }
             Matrix4f matrix = matrices.peek().getPositionMatrix();
             BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
-            RenderSystem.defaultBlendFunc();
+//            RenderSystem.defaultBlendFunc();
             RenderSystem.enableBlend();
             RenderSystem.disableTexture();
 
@@ -660,7 +660,7 @@ public class Renderer {
         }
 
         public static void renderRoundedQuad(MatrixStack matrices, Color c, double fromX, double fromY, double toX, double toY, double rad, double samples) {
-            RenderSystem.defaultBlendFunc();
+//            RenderSystem.defaultBlendFunc();
 
             int color = c.getRGB();
             Matrix4f matrix = matrices.peek().getPositionMatrix();
@@ -686,7 +686,7 @@ public class Renderer {
             float f = c.getAlpha() / 255f;
             Matrix4f m = stack.peek().getPositionMatrix();
             BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
-            RenderSystem.defaultBlendFunc();
+//            RenderSystem.defaultBlendFunc();
             RenderSystem.enableBlend();
             RenderSystem.disableTexture();
             RenderSystem.setShader(GameRenderer::getPositionColorShader);

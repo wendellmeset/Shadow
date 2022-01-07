@@ -22,11 +22,13 @@ public abstract class Element {
 
     abstract public boolean released();
 
-    abstract public boolean keyPressed(int keycode);
+    abstract public boolean keyPressed(int keycode, int modifiers);
 
     abstract public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed);
 
     abstract public void tickAnim();
+
+    abstract public boolean charTyped(char c, int mods);
 
     public double getWidth() {
         return width;

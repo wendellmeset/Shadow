@@ -74,9 +74,9 @@ public class CategoryDisplay extends Element {
     }
 
     @Override
-    public boolean keyPressed(int keycode) {
+    public boolean keyPressed(int keycode, int modifiers) {
         for (ModuleDisplay moduleDisplay : md) {
-            if (moduleDisplay.keyPressed(keycode)) {
+            if (moduleDisplay.keyPressed(keycode, modifiers)) {
                 return true;
             }
         }
@@ -93,7 +93,8 @@ public class CategoryDisplay extends Element {
         Theme theme = ClickGUI.theme;
         //        Renderer.R2D.fill(matrices, theme.getHeader(), x, y, x + width, y + headerHeight());
         double r = ModuleRegistry.getByClass(me.x150.sipprivate.feature.module.impl.render.ClickGUI.class).radius.getValue();
-        this.height = headerHeight() + md.stream().map(ModuleDisplay::getHeight).reduce(Double::sum).orElse(0d) + r; // pre calc height
+        double modHeight = FontRenderers.getNormal().getFontHeight() + 2;
+        this.height = headerHeight() + md.stream().map(ModuleDisplay::getHeight).reduce(Double::sum).orElse(0d) + Math.max(modHeight, r); // pre calc height
         Renderer.R2D.renderRoundedQuad(matrices, theme.getHeader(), x, y, x + width, y + this.height, r, 15);
         cfr.drawCenteredString(matrices, mt.getName(), x + width / 2d, y + headerHeight() / 2d - cfr.getFontHeight() / 2d, 0xFFFFFF);
         double y = headerHeight();
@@ -103,6 +104,7 @@ public class CategoryDisplay extends Element {
             moduleDisplay.render(matrices, mouseX, mouseY, scrollBeingUsed);
             y += moduleDisplay.getHeight();
         }
+        FontRenderers.getNormal().drawCenteredString(matrices, md.size() + " modules", this.x + this.width / 2d, this.y + this.height - 1 - FontRenderers.getNormal().getMarginHeight(), 0xFFFFFF);
     }
 
     @Override
@@ -110,5 +112,15 @@ public class CategoryDisplay extends Element {
         for (ModuleDisplay moduleDisplay : md) {
             moduleDisplay.tickAnim();
         }
+    }
+
+    @Override
+    public boolean charTyped(char c, int mods) {
+        for (ModuleDisplay moduleDisplay : md) {
+            if (moduleDisplay.charTyped(c, mods)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

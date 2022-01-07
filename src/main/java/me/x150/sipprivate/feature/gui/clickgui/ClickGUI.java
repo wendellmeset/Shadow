@@ -191,7 +191,7 @@ public class ClickGUI extends Screen implements FastTickable {
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         for (Element element : elements) {
-            if (element.keyPressed(keyCode)) {
+            if (element.keyPressed(keyCode, modifiers)) {
                 return true;
             }
         }
@@ -215,5 +215,13 @@ public class ClickGUI extends Screen implements FastTickable {
         for (Element element : elements) {
             element.tickAnim();
         }
+    }
+
+    @Override
+    public boolean charTyped(char chr, int modifiers) {
+        for (Element element : elements) {
+            if (element.charTyped(chr, modifiers)) break;
+        }
+        return false;
     }
 }

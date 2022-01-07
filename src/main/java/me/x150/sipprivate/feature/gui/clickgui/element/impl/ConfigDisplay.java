@@ -3,10 +3,7 @@ package me.x150.sipprivate.feature.gui.clickgui.element.impl;
 import me.x150.sipprivate.feature.config.*;
 import me.x150.sipprivate.feature.gui.clickgui.ClickGUI;
 import me.x150.sipprivate.feature.gui.clickgui.element.Element;
-import me.x150.sipprivate.feature.gui.clickgui.element.impl.config.BooleanSettingEditor;
-import me.x150.sipprivate.feature.gui.clickgui.element.impl.config.ConfigBase;
-import me.x150.sipprivate.feature.gui.clickgui.element.impl.config.DoubleSettingEditor;
-import me.x150.sipprivate.feature.gui.clickgui.element.impl.config.EnumSettingEditor;
+import me.x150.sipprivate.feature.gui.clickgui.element.impl.config.*;
 import me.x150.sipprivate.feature.gui.clickgui.theme.Theme;
 import me.x150.sipprivate.helper.render.Renderer;
 import me.x150.sipprivate.helper.util.Utils;
@@ -37,6 +34,9 @@ public class ConfigDisplay extends Element {
             } else if (setting instanceof EnumSetting<?> set) {
                 EnumSettingEditor ese = new EnumSettingEditor(0, 0, width - padding - paddingLeft, set);
                 bases.add(ese);
+            } else if (setting instanceof StringSetting set) {
+                StringSettingEditor sse = new StringSettingEditor(0, 0, width - padding - paddingLeft, set);
+                bases.add(sse);
             }
         }
         this.height = bases.stream().map(Element::getHeight).reduce(Double::sum).orElse(0d);
@@ -77,9 +77,9 @@ public class ConfigDisplay extends Element {
     }
 
     @Override
-    public boolean keyPressed(int keycode) {
+    public boolean keyPressed(int keycode, int modifiers) {
         for (ConfigBase<?> basis : getBases()) {
-            if (basis.getConfigValue().shouldShow() && basis.keyPressed(keycode)) {
+            if (basis.getConfigValue().shouldShow() && basis.keyPressed(keycode, modifiers)) {
                 return true;
             }
         }
@@ -111,9 +111,11 @@ public class ConfigDisplay extends Element {
             if (!basis.getConfigValue().shouldShow()) {
                 continue;
             }
-            basis.render(matrices, 0, 0, 0);
-            if (basis.inBounds(mouseX, mouseY) && renderingDesc == null) {
-                renderingDesc = basis.getConfigValue().description;
+            if (y + scrollBeingUsed > basis.getY()) {
+                basis.render(matrices, mouseX, mouseY, scrollBeingUsed);
+                if (basis.inBounds(mouseX, mouseY) && renderingDesc == null) {
+                    renderingDesc = basis.getConfigValue().description;
+                }
             }
             yOffset += basis.getHeight();
         }
@@ -128,5 +130,15 @@ public class ConfigDisplay extends Element {
             basis.tickAnim();
         }
 
+    }
+
+    @Override
+    public boolean charTyped(char c, int mods) {
+        for (ConfigBase<?> basis : getBases()) {
+            if (basis.getConfigValue().shouldShow() && basis.charTyped(c, mods)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

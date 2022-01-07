@@ -61,12 +61,13 @@ public class ModuleDisplay extends Element {
     }
 
     @Override
-    public boolean keyPressed(int keycode) {
-        return extended && cd.keyPressed(keycode);
+    public boolean keyPressed(int keycode, int modifiers) {
+        return extended && cd.keyPressed(keycode, modifiers);
     }
 
     @Override
     public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
+
         Theme theme = ClickGUI.theme;
         boolean hovered = inBounds(mouseX, mouseY);
         if (!hoveredBefore && hovered) {
@@ -83,9 +84,10 @@ public class ModuleDisplay extends Element {
         }
         cd.setX(this.x);
         cd.setY(this.y + height);
+
         Renderer.R2D.beginScissor(matrices, x, y, x + width, y + getHeight());
         if (extendAnim > 0) {
-            cd.render(matrices, mouseX, mouseY, scrollBeingUsed);
+            cd.render(matrices, mouseX, mouseY, getHeight() - super.getHeight());
         }
         Renderer.R2D.endScissor();
     }
@@ -99,5 +101,10 @@ public class ModuleDisplay extends Element {
         extendAnim += a;
         extendAnim = MathHelper.clamp(extendAnim, 0, 1);
         cd.tickAnim();
+    }
+
+    @Override
+    public boolean charTyped(char c, int mods) {
+        return extended && cd.charTyped(c, mods);
     }
 }

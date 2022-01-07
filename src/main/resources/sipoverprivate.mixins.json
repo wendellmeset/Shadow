@@ -40,7 +40,8 @@
     "PlayerEntityMixin",
     "PlayerInteractEntityC2SPacketAccessor",
     "SharedConstantsMixin",
-    "TitleScreenMixin"
+    "TitleScreenMixin",
+    "WorldRendererMixin"
   ],
   "client": [],
   "server": [],
