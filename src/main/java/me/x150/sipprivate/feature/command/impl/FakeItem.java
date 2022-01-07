@@ -3,7 +3,6 @@ package me.x150.sipprivate.feature.command.impl;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.command.Command;
-import me.x150.sipprivate.feature.gui.screen.CoffeeConsoleScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
@@ -13,8 +12,6 @@ import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -94,11 +91,11 @@ public class FakeItem extends Command {
                     stack.setNbt(StringNbtReader.parse(String.join(" ", Arrays.copyOfRange(args, 2, args.length))));
                 } catch (CommandSyntaxException e) {
                     error("Invalid NBT: " + e.getContext());
-                    StringWriter sw = new StringWriter();
-                    e.printStackTrace(new PrintWriter(sw));
-                    for (String s : sw.toString().split("\n")) {
-                        CoffeeConsoleScreen.instance().log(s, CoffeeConsoleScreen.BACKGROUND);
-                    }
+//                    StringWriter sw = new StringWriter();
+//                    e.printStackTrace(new PrintWriter(sw));
+//                    for (String s : sw.toString().split("\n")) {
+//                        CoffeeConsoleScreen.instance().log(s, CoffeeConsoleScreen.BACKGROUND);
+//                    }
                     return;
                 }
             }

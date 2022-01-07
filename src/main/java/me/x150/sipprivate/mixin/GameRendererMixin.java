@@ -7,7 +7,6 @@ import me.x150.sipprivate.feature.module.ModuleRegistry;
 import me.x150.sipprivate.feature.module.impl.render.FreeLook;
 import me.x150.sipprivate.feature.module.impl.render.Zoom;
 import me.x150.sipprivate.helper.Rotations;
-import me.x150.sipprivate.helper.manager.ImGuiManager;
 import me.x150.sipprivate.helper.render.MSAAFramebuffer;
 import me.x150.sipprivate.helper.render.Renderer;
 import me.x150.sipprivate.helper.util.Utils;
@@ -52,13 +51,6 @@ public class GameRendererMixin {
             if (module.isEnabled()) {
                 module.onWorldRenderNoMSAA(matrix);
             }
-        }
-    }
-
-    @Inject(method = "render", at = @At("HEAD"))
-    void atomic_initShit(float tickDelta, long startTime, boolean tick, CallbackInfo ci) {
-        if (!ImGuiManager.isInitialized()) {
-            ImGuiManager.init();
         }
     }
 

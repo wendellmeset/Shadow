@@ -8,7 +8,6 @@ package me.x150.sipprivate.helper.util;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import me.x150.sipprivate.CoffeeClientMain;
-import me.x150.sipprivate.feature.gui.screen.CoffeeConsoleScreen;
 import me.x150.sipprivate.helper.font.adapter.FontAdapter;
 import me.x150.sipprivate.mixin.IMinecraftClientAccessor;
 import me.x150.sipprivate.mixin.IRenderTickCounterAccessor;
@@ -23,7 +22,8 @@ import net.minecraft.nbt.NbtDouble;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.screen.slot.SlotActionType;
-import net.minecraft.text.Text;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.TextColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.MathHelper;
@@ -282,26 +282,30 @@ public class Utils {
         }
 
         public static void success(String n) {
-            message0(n, CoffeeConsoleScreen.SUCCESS);
+            message0(n, new Color(65, 217, 101));
         }
 
         public static void error(String n) {
-            message0(n, CoffeeConsoleScreen.ERROR);
+            message0(n, new Color(214, 93, 62));
         }
 
         public static void message(String n) {
-            message0(n, CoffeeConsoleScreen.DEFAULT);
+            message0(n, Color.WHITE);
         }
 
         public static void message0(String n, Color c) {
-            CoffeeConsoleScreen.instance().log(n, c);
+//            CoffeeConsoleScreen.instance().log(n, c);
+//            messageChat("§#"+f0+f1+f2+n);
+            LiteralText t = new LiteralText(n);
+            t.setStyle(t.getStyle().withColor(TextColor.fromRgb(c.getRGB())));
+            CoffeeClientMain.client.player.sendMessage(t, false);
         }
 
         public static void messageChat(String n) {
             if (CoffeeClientMain.client.player == null) {
                 return;
             }
-            CoffeeClientMain.client.player.sendMessage(Text.of("[§9A§r] " + n), false);
+
         }
 
     }

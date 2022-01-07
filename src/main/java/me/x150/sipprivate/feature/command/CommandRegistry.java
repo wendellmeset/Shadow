@@ -6,10 +6,8 @@
 package me.x150.sipprivate.feature.command;
 
 import me.x150.sipprivate.feature.command.impl.*;
-import me.x150.sipprivate.feature.gui.screen.CoffeeConsoleScreen;
+import me.x150.sipprivate.helper.util.Utils;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -60,18 +58,18 @@ public class CommandRegistry {
         String[] args = Arrays.copyOfRange(spl, 1, spl.length);
         Command c = CommandRegistry.getByAlias(cmd);
         if (c == null) {
-            CoffeeConsoleScreen.instance().log("Command \"" + cmd + "\" not found", CoffeeConsoleScreen.ERROR);
+            Utils.Logging.error("Command \"" + cmd + "\" not found");
         } else {
-            CoffeeConsoleScreen.instance().log("> " + command, CoffeeConsoleScreen.CLIENT);
+//            CoffeeConsoleScreen.instance().log("> " + command, CoffeeConsoleScreen.CLIENT);
             try {
                 c.onExecute(args);
             } catch (Exception e) {
-                CoffeeConsoleScreen.instance().log("Error while running command " + command, CoffeeConsoleScreen.ERROR);
-                StringWriter sw = new StringWriter();
-                e.printStackTrace(new PrintWriter(sw));
-                for (String s : sw.toString().split("\n")) {
-                    CoffeeConsoleScreen.instance().log(s, CoffeeConsoleScreen.BACKGROUND);
-                }
+                Utils.Logging.error("Error while running command " + command);
+//                StringWriter sw = new StringWriter();
+//                e.printStackTrace(new PrintWriter(sw));
+//                for (String s : sw.toString().split("\n")) {
+//                    CoffeeConsoleScreen.instance().log(s, CoffeeConsoleScreen.BACKGROUND);
+//                }
             }
         }
     }

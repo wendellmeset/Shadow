@@ -10,7 +10,7 @@ import me.x150.authlib.login.mojang.MinecraftToken;
 import me.x150.authlib.login.mojang.profile.MinecraftProfile;
 import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.gui.FastTickable;
-import me.x150.sipprivate.feature.gui.RoundTextFieldWidget;
+import me.x150.sipprivate.feature.gui.widget.RoundTextFieldWidget;
 import me.x150.sipprivate.helper.font.FontRenderers;
 import me.x150.sipprivate.helper.font.adapter.FontAdapter;
 import me.x150.sipprivate.helper.font.adapter.impl.ClientFontRenderer;
@@ -492,12 +492,10 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
 
         @Override
         protected void init() {
-            ThemedButton exit = new ThemedButton(width - 20 - 5, 5, 20, 20, "X", () -> {
-                client.setScreen(parent);
-            });
+            ThemedButton exit = new ThemedButton(width - 20 - 5, 5, 20, 20, "X", () -> client.setScreen(parent));
             buttons.add(exit);
-            email = new RoundTextFieldWidget(FontRenderers.getNormal(), width / 2d - (widgetWid - padding * 2) / 2d, height / 2d - widgetHei / 2d + padding, widgetWid - padding * 2, 20, "E-Mail or username");
-            passwd = new RoundTextFieldWidget(FontRenderers.getNormal(), width / 2d - (widgetWid - padding * 2) / 2d, height / 2d - widgetHei / 2d + padding * 2 + 20, widgetWid - padding * 2, 20, "Password");
+            email = new RoundTextFieldWidget(width / 2d - (widgetWid - padding * 2) / 2d, height / 2d - widgetHei / 2d + padding, widgetWid - padding * 2, 20, "E-Mail or username");
+            passwd = new RoundTextFieldWidget(width / 2d - (widgetWid - padding * 2) / 2d, height / 2d - widgetHei / 2d + padding * 2 + 20, widgetWid - padding * 2, 20, "Password");
             type = new ThemedButton(0, 0, widgetWid / 2d - padding * 1.5, 20, "Type: " + AccountType.values()[accountTypeI].s, this::cycle);
             add = new ThemedButton(0, 0, widgetWid / 2d - padding * 1.5, 20, "Add", this::add);
         }
@@ -565,11 +563,11 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
             email.setX(originX + padding);
             email.setY(originY + padding + title.getMarginHeight() + FontRenderers.getNormal().getMarginHeight() + padding);
             email.setWidth(widgetWid - padding * 2);
-            email.render(stack);
+            email.render(stack, mouseX, mouseY, 0);
             passwd.setX(originX + padding);
             passwd.setY(originY + padding + title.getMarginHeight() + FontRenderers.getNormal().getMarginHeight() + padding + email.getHeight() + padding);
             passwd.setWidth(widgetWid - padding * 2);
-            passwd.render(stack);
+            passwd.render(stack, mouseX, mouseY, 0);
             type.x = originX + padding;
             type.y = originY + padding + title.getMarginHeight() + FontRenderers.getNormal().getMarginHeight() + padding + email.getHeight() + padding + passwd.getHeight() + padding;
             type.render(stack, mouseX, mouseY);
@@ -583,15 +581,15 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
 
         @Override
         public boolean charTyped(char chr, int modifiers) {
-            email.charTyped(chr);
-            passwd.charTyped(chr);
+            email.charTyped(chr, modifiers);
+            passwd.charTyped(chr, modifiers);
             return super.charTyped(chr, modifiers);
         }
 
         @Override
         public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-            email.keyPressed(keyCode);
-            passwd.keyPressed(keyCode);
+            email.keyPressed(keyCode, scanCode, modifiers);
+            passwd.keyPressed(keyCode, scanCode, modifiers);
             return super.keyPressed(keyCode, scanCode, modifiers);
         }
 
