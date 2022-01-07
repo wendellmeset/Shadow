@@ -1,4 +1,5 @@
-Added home screen
-Removed custom buttons
-Reformat
-Fixed stupid bug with the alt screen
+Ported over a few modules
+Fixed a few bugs
+Increased performance of the hud
+Updated theme
+

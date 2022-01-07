@@ -13,7 +13,7 @@ import net.minecraft.client.util.math.MatrixStack;
 public class AirJump extends Module {
 
     public AirJump() {
-        super("AirJump", "Jumps in le air", ModuleType.MOVEMENT);
+        super("AirJump", "Allows you to jump mid air", ModuleType.MOVEMENT);
     }
 
     @Override

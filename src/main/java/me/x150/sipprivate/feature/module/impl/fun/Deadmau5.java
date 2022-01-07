@@ -12,7 +12,7 @@ import net.minecraft.client.util.math.MatrixStack;
 public class Deadmau5 extends Module {
 
     public Deadmau5() {
-        super("Deadmau5", "deadmau5 ears for everyone", ModuleType.FUN);
+        super("Deadmau5", "Shows the Deadmau5 skin ears for every player", ModuleType.FUN);
     }
 
     @Override

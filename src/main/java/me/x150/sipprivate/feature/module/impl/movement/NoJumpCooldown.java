@@ -14,7 +14,7 @@ import net.minecraft.client.util.math.MatrixStack;
 public class NoJumpCooldown extends Module {
 
     public NoJumpCooldown() {
-        super("NoJumpCool", "hold it and jump beneath a 2 block space to confuse chinese anticheats", ModuleType.MOVEMENT);
+        super("NoJumpCool", "Removes the jump cooldown", ModuleType.MOVEMENT);
     }
 
     @Override

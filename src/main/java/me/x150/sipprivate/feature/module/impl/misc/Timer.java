@@ -23,7 +23,7 @@ public class Timer extends Module {
             .get());
 
     public Timer() {
-        super("Timer", "changes client side tps", ModuleType.MISC);
+        super("Timer", "Changes the speed of the game client side", ModuleType.MISC);
     }
 
     @Override

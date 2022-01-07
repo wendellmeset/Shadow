@@ -24,8 +24,4 @@ public class MouseEvent extends Event {
     public int getAction() {
         return type;
     }
-
-    public enum MouseEventType {
-        MOUSE_CLICKED, MOUSE_RELEASED
-    }
 }

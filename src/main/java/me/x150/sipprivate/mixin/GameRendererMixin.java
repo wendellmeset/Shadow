@@ -4,19 +4,29 @@ import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.gui.DoesMSAA;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleRegistry;
+import me.x150.sipprivate.feature.module.impl.render.FreeLook;
+import me.x150.sipprivate.feature.module.impl.render.Zoom;
+import me.x150.sipprivate.helper.Rotations;
 import me.x150.sipprivate.helper.manager.ImGuiManager;
 import me.x150.sipprivate.helper.render.MSAAFramebuffer;
 import me.x150.sipprivate.helper.render.Renderer;
+import me.x150.sipprivate.helper.util.Utils;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.RaycastContext;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(GameRenderer.class)
 public class GameRendererMixin {
@@ -79,5 +89,23 @@ public class GameRendererMixin {
             dis = false;
             ci.cancel();
         }
+    }
+
+    @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;raycast(DFZ)Lnet/minecraft/util/hit/HitResult;"), method = "updateTargetedEntity")
+    HitResult atomic_replaceFreelookHitResult(Entity instance, double maxDistance, float tickDelta, boolean includeFluids) {
+        if (ModuleRegistry.getByClass(FreeLook.class).isEnabled()) {
+            Vec3d vec3d = instance.getCameraPosVec(tickDelta);
+            Vec3d vec3d2 = Utils.Math.getRotationVector(Rotations.getClientPitch(), Rotations.getClientYaw());
+            Vec3d vec3d3 = vec3d.add(vec3d2.x * maxDistance, vec3d2.y * maxDistance, vec3d2.z * maxDistance);
+            return instance.world.raycast(new RaycastContext(vec3d, vec3d3, RaycastContext.ShapeType.OUTLINE, includeFluids ? RaycastContext.FluidHandling.ANY : RaycastContext.FluidHandling.NONE, instance));
+        } else {
+            return instance.raycast(maxDistance, tickDelta, includeFluids);
+        }
+    }
+
+    @Inject(method = "getFov", at = @At("RETURN"), cancellable = true)
+    public void atomic_overwriteFov(Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<Double> cir) {
+        double zv = ModuleRegistry.getByClass(Zoom.class).getZoomValue(cir.getReturnValue());
+        cir.setReturnValue(zv);
     }
 }

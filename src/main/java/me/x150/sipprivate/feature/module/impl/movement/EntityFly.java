@@ -24,7 +24,7 @@ public class EntityFly extends Module {
     Entity lastRide = null;
 
     public EntityFly() {
-        super("EntityFly", "boatfly but yes", ModuleType.MOVEMENT);
+        super("EntityFly", "Allows you to fly with any entity", ModuleType.MOVEMENT);
     }
 
     @Override
@@ -73,7 +73,11 @@ public class EntityFly extends Module {
         nz += ts * mx * -s;
         Vec3d nv3 = new Vec3d(nx, ny, nz);
         entityPos = entityPos.add(nv3.multiply(0.4));
-        vehicle.updatePosition(entityPos.x, entityPos.y, entityPos.z);
+        boolean isOnGround = CoffeeClientMain.client.world.getBlockState(vehicle.getBlockPos().down()).getMaterial().blocksMovement();
+        double off = Math.random() / 5;
+        if (isOnGround) off /= 2;
+        else off -= 0.1;
+        vehicle.updatePosition(entityPos.x, entityPos.y + off, entityPos.z); // vanilla bypass
         vehicle.setVelocity(0, 0, 0);
         vehicle.setYaw(client.player.getYaw());
         VehicleMoveC2SPacket p = new VehicleMoveC2SPacket(vehicle);

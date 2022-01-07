@@ -126,7 +126,7 @@ public class Killaura extends Module {
     List<Entity> attacks = new ArrayList<>();
 
     public Killaura() {
-        super("Killaura", "anime", ModuleType.COMBAT);
+        super("Killaura", "Automatically attacks entities around you", ModuleType.COMBAT);
         range.showIf(() -> !capRangeAtMax.getValue());
         delay.showIf(() -> !automaticDelay.getValue());
         multiLimit.showIf(() -> mode.getValue() == SelectMode.Multi && !attackOnlyCombatPartner.getValue());

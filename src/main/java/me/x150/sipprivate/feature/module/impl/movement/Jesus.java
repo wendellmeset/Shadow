@@ -32,7 +32,7 @@ public class Jesus extends Module {
             .get());
 
     public Jesus() {
-        super("Jesus", "water is no enemy anymore", ModuleType.MOVEMENT);
+        super("Jesus", "Allows you to walk on water", ModuleType.MOVEMENT);
 //        mode = this.config.create("Mode", "solid", "jump", "velocity", "solid", "legit");
 //        mode.description("The mode of the module");
         velStrength.showIf(() -> mode.getValue() == Mode.Velocity);

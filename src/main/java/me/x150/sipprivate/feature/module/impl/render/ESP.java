@@ -32,7 +32,7 @@ public class ESP extends Module {
     DoubleSetting range = this.config.create(new DoubleSetting.Builder(64).name("Range").description("How far to render the entities").min(32).max(128).precision(1).get());
 
     public ESP() {
-        super("ESP", "shows where shit is but its the walmart version", ModuleType.RENDER);
+        super("ESP", "Shows where entities are", ModuleType.RENDER);
     }
 
     @Override

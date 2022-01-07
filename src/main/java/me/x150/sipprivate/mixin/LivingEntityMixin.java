@@ -5,6 +5,7 @@ import me.x150.sipprivate.feature.module.ModuleRegistry;
 import me.x150.sipprivate.feature.module.impl.movement.Jesus;
 import me.x150.sipprivate.feature.module.impl.movement.NoLevitation;
 import me.x150.sipprivate.feature.module.impl.movement.NoPush;
+import me.x150.sipprivate.feature.module.impl.render.FreeLook;
 import me.x150.sipprivate.helper.manager.AttackManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -71,5 +72,13 @@ public class LivingEntityMixin {
                 ci.cancel();
             }
         }
+    }
+
+    @Redirect(method = "jump", at = @At(value = "INVOKE", target = "net/minecraft/entity/LivingEntity.getYaw()F"))
+    private float atomic_overwriteFreelookYaw(LivingEntity instance) {
+        if (instance.equals(CoffeeClientMain.client.player) && ModuleRegistry.getByClass(FreeLook.class).isEnabled()) {
+            return ModuleRegistry.getByClass(FreeLook.class).newyaw;
+        }
+        return instance.getYaw();
     }
 }

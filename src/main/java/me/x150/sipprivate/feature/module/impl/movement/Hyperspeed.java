@@ -10,7 +10,7 @@ public class Hyperspeed extends Module {
     public DoubleSetting speed = this.config.create(new DoubleSetting.Builder(3).name("Speed").description("The speed multiplier to apply").min(1).max(10).precision(3).get());
 
     public Hyperspeed() {
-        super("Hyperspeed", "Makes you go weee extemely fast", ModuleType.MOVEMENT);
+        super("Hyperspeed", "Gives you an extreme speed boost", ModuleType.MOVEMENT);
     }
 
     @Override

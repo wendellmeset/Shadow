@@ -11,12 +11,12 @@ import net.minecraft.util.hit.EntityHitResult;
 public class AutoAttack extends Module {
 
     public AutoAttack() {
-        super("AutoAttack", "kek", ModuleType.COMBAT);
+        super("AutoAttack", "Automatically attacks the entity you're looking at", ModuleType.COMBAT);
     }
 
     @Override
     public void tick() {
-        if (CoffeeClientMain.client.crosshairTarget == null || !(CoffeeClientMain.client.crosshairTarget instanceof EntityHitResult) || CoffeeClientMain.client.player.getAttackCooldownProgress(0) < 1)
+        if (!(CoffeeClientMain.client.crosshairTarget instanceof EntityHitResult) || CoffeeClientMain.client.player.getAttackCooldownProgress(0) < 1)
             return;
         CoffeeClientMain.client.interactionManager.attackEntity(CoffeeClientMain.client.player, ((EntityHitResult) CoffeeClientMain.client.crosshairTarget).getEntity());
         CoffeeClientMain.client.player.swingHand(Hand.MAIN_HAND);

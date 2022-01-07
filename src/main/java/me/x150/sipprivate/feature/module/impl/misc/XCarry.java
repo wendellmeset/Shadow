@@ -11,11 +11,11 @@ import net.minecraft.network.packet.c2s.play.CloseHandledScreenC2SPacket;
 public class XCarry extends Module {
 
     public XCarry() {
-        super("XCarry", "lets you store stuff in your crafting grid", ModuleType.MISC);
+        super("XCarry", "Allows you to store items in your crafting grid", ModuleType.MISC);
         Events.registerEventHandler(EventType.PACKET_SEND, event -> {
             if (!this.isEnabled()) return;
             PacketEvent pe = (PacketEvent) event;
-            if (pe.getPacket() instanceof CloseHandledScreenC2SPacket packet) {
+            if (pe.getPacket() instanceof CloseHandledScreenC2SPacket) {
                 pe.setCancelled(true);
             }
         });

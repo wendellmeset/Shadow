@@ -44,7 +44,7 @@ public class Boom extends Module {
     long lastFired = 0L;
 
     public Boom() {
-        super("Boom", "Spawns fireballs whereever you click", ModuleType.WORLD);
+        super("Boom", "Spawns fireballs wherever you click", ModuleType.WORLD);
         Events.registerEventHandler(EventType.MOUSE_EVENT, event -> {
             if (!this.isEnabled() || CoffeeClientMain.client.currentScreen != null) {
                 return;

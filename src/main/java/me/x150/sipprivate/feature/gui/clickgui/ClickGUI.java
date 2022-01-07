@@ -7,6 +7,7 @@ import me.x150.sipprivate.feature.gui.clickgui.element.Element;
 import me.x150.sipprivate.feature.gui.clickgui.element.impl.CategoryDisplay;
 import me.x150.sipprivate.feature.gui.clickgui.theme.Theme;
 import me.x150.sipprivate.feature.gui.clickgui.theme.impl.SipoverV1;
+import me.x150.sipprivate.feature.module.ModuleRegistry;
 import me.x150.sipprivate.feature.module.ModuleType;
 import me.x150.sipprivate.helper.event.EventType;
 import me.x150.sipprivate.helper.event.Events;
@@ -20,9 +21,9 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ClickGUI extends Screen implements FastTickable {
     public static Theme theme = new SipoverV1();
@@ -94,7 +95,7 @@ public class ClickGUI extends Screen implements FastTickable {
         double x = 5;
         double y = 5;
         double tallestInTheRoom = 0;
-        for (ModuleType value : ModuleType.values()) {
+        for (ModuleType value : Arrays.stream(ModuleType.values()).sorted(Comparator.comparingLong(value -> -ModuleRegistry.getModules().stream().filter(module -> module.getModuleType() == value).count())).collect(Collectors.toList())) {
             CategoryDisplay cd = new CategoryDisplay(x, y, value);
             tallestInTheRoom = Math.max(tallestInTheRoom, cd.getHeight());
             x += cd.getWidth() + 5;

@@ -9,6 +9,11 @@ while [[ true ]]; do
   echo $line >> ./src/main/resources/changelogLatest.txt
 done
 
+ver=`cat ./src/main/resources/version.txt`
+verNew=$((ver+1))
+echo "Version: $ver -> $verNew"
+echo -n "$verNew" > ./src/main/resources/version.txt
+
 echo "Running build"
 export JAVA_HOME="$HOME/.jdks/openjdk-17.0.1/"
 ./gradlew build

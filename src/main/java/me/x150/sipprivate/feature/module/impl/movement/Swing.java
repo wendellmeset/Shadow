@@ -22,11 +22,10 @@ import java.awt.*;
 
 public class Swing extends Module {
     static BlockPos swinging;
-    static int t = 0;
 
 
     public Swing() {
-        super("Swing", "swing around like an unnamed spider from comic books", ModuleType.MOVEMENT);
+        super("Swing", "Swing around like spiderman", ModuleType.MOVEMENT);
         Events.registerEventHandler(EventType.MOUSE_EVENT, event -> {
             if (!this.isEnabled() || CoffeeClientMain.client.currentScreen != null) {
                 return;

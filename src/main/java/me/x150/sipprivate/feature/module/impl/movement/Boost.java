@@ -30,7 +30,7 @@ public class Boost extends Module {
             .get());
 
     public Boost() {
-        super("Boost", "rocket", ModuleType.MOVEMENT);
+        super("Boost", "Boosts you into the air", ModuleType.MOVEMENT);
     }
 
     @Override

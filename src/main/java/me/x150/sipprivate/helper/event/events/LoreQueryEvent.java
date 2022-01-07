@@ -34,6 +34,6 @@ public class LoreQueryEvent extends NonCancellableEvent {
     }
 
     public void addClientLore(String v) {
-        addLore("[§9A§r] §7" + v + "§r");
+        addLore("§7" + v + "§r");
     }
 }

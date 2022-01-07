@@ -5,8 +5,10 @@
 
 package me.x150.sipprivate.mixin;
 
+import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.module.ModuleRegistry;
 import me.x150.sipprivate.feature.module.impl.movement.IgnoreWorldBorder;
+import me.x150.sipprivate.feature.module.impl.render.FreeLook;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.border.WorldBorder;
@@ -22,5 +24,10 @@ public abstract class EntityMixin {
             at = @At(value = "INVOKE", target = "net/minecraft/world/border/WorldBorder.canCollide(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/Box;)Z"))
     private static boolean real(WorldBorder instance, Entity entity, Box box) {
         return !ModuleRegistry.getByClass(IgnoreWorldBorder.class).isEnabled() && instance.canCollide(entity, box);
+    }
+
+    @Redirect(method = "updateVelocity", at = @At(value = "INVOKE", target = "net/minecraft/entity/Entity.getYaw()F"))
+    float atomic_overwriteFreelookYaw(Entity instance) {
+        return instance.equals(CoffeeClientMain.client.player) && ModuleRegistry.getByClass(FreeLook.class).isEnabled() ? ModuleRegistry.getByClass(FreeLook.class).newyaw : instance.getYaw();
     }
 }

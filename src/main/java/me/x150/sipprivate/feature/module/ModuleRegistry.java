@@ -66,17 +66,15 @@ public class ModuleRegistry {
         modules.add(new Velocity());
         modules.add(new AntiAntiXray());
         modules.add(new PingSpoof());
-        modules.add(new Nuker());
         modules.add(new AutoAttack());
         modules.add(new Deadmau5());
-        modules.add(new SpinAutism());
+        modules.add(new Spinner());
         modules.add(new AllowFormatCodes());
         modules.add(new InfChatLength());
         modules.add(new NoTitles());
         modules.add(new PortalGUI());
         modules.add(new Timer());
         modules.add(new XCarry());
-        modules.add(new InstantMine());
         modules.add(new AirJump());
         modules.add(new AutoElytra());
         modules.add(new Blink());
@@ -93,6 +91,21 @@ public class ModuleRegistry {
         modules.add(new NoLevitation());
         modules.add(new NoPush());
         modules.add(new Step());
+        modules.add(new Freecam());
+        modules.add(new FreeLook());
+        modules.add(new ItemByteSize());
+        modules.add(new Zoom());
+        modules.add(new AutoTool());
+        modules.add(new BlockTagViewer());
+        modules.add(new ClickNuke());
+        modules.add(new FastUse());
+        modules.add(new Flattener());
+        modules.add(new GodBridge());
+        modules.add(new InstantBreak());
+        modules.add(new MassUse());
+        modules.add(new NoBreakDelay());
+        modules.add(new Nuker());
+        modules.add(new Scaffold());
     }
 
     public static List<Module> getModules() {

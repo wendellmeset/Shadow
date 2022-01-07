@@ -35,7 +35,7 @@ public class NoFall extends Module {
             .get());
 
     public NoFall() {
-        super("NoFall", "no fall damage", ModuleType.MOVEMENT);
+        super("NoFall", "Prevents fall damage", ModuleType.MOVEMENT);
 
 //        mode = this.config.create("Mode", "OnGround", "OnGround", "Packet", "BreakFall");
 //        mode.description("The mode of the module");

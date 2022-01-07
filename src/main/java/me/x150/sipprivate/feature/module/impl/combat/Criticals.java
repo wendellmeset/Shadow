@@ -27,7 +27,7 @@ public class Criticals extends Module {
             .get());
 
     public Criticals() {
-        super("Criticals", "dont enable this on hypixel", ModuleType.COMBAT);
+        super("Criticals", "Makes you deal a perfect 10/10 crit every time", ModuleType.COMBAT);
         Events.registerEventHandler(EventType.PACKET_SEND, event1 -> {
             PacketEvent event = (PacketEvent) event1;
             if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.getNetworkHandler() == null) {

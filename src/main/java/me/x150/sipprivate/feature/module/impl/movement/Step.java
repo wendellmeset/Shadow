@@ -23,7 +23,7 @@ public class Step extends Module {
             .get());
 
     public Step() {
-        super("Step", "spiders would like to learn this power", ModuleType.MOVEMENT);
+        super("Step", "Allows you to step up full blocks", ModuleType.MOVEMENT);
     }
 
     @Override
