@@ -36,7 +36,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -87,6 +86,7 @@ public class HomeScreen extends AntiAliasedScreen implements FastTickable {
     public void resize(MinecraftClient client, int width, int height) {
         this.width = width;
         this.height = height;
+        clearChildren();
         initWidgets();
     }
 
