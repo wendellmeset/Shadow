@@ -1,6 +1,7 @@
 package me.x150.sipprivate.feature.gui.widget;
 
 import me.x150.sipprivate.CoffeeClientMain;
+import me.x150.sipprivate.feature.gui.DoesMSAA;
 import me.x150.sipprivate.helper.font.FontRenderers;
 import me.x150.sipprivate.helper.render.Renderer;
 import net.minecraft.client.MinecraftClient;
@@ -15,7 +16,7 @@ import org.lwjgl.glfw.GLFW;
 
 import java.awt.*;
 
-public class RoundTextFieldWidget implements Element, Drawable, Selectable {
+public class RoundTextFieldWidget implements Element, Drawable, Selectable, DoesMSAA {
     public Runnable changeListener = () -> {
     };
 

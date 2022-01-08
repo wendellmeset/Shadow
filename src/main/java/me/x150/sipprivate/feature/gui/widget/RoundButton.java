@@ -1,5 +1,6 @@
 package me.x150.sipprivate.feature.gui.widget;
 
+import me.x150.sipprivate.feature.gui.DoesMSAA;
 import me.x150.sipprivate.feature.gui.FastTickable;
 import me.x150.sipprivate.helper.font.FontRenderers;
 import me.x150.sipprivate.helper.render.Renderer;
@@ -12,7 +13,7 @@ import net.minecraft.util.math.MathHelper;
 
 import java.awt.*;
 
-public class RoundButton implements Element, Drawable, Selectable, FastTickable {
+public class RoundButton implements Element, Drawable, Selectable, FastTickable, DoesMSAA {
     String text;
     Runnable onPress;
     double x, y, width, height;

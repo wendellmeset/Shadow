@@ -2,6 +2,7 @@ package me.x150.sipprivate.mixin;
 
 import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.gui.DoesMSAA;
+import me.x150.sipprivate.feature.gui.screen.AntiAliasedScreen;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleRegistry;
 import me.x150.sipprivate.feature.module.impl.render.FreeLook;
@@ -63,7 +64,7 @@ public class GameRendererMixin {
                 break;
             }
         }
-        if (shouldMsaa) {
+        if (shouldMsaa && !(instance instanceof AntiAliasedScreen)) { // only do msaa if we dont already do it and need it
             MSAAFramebuffer.use(MSAAFramebuffer.MAX_SAMPLES, () -> instance.render(matrices, mouseX, mouseY, delta));
         } else instance.render(matrices, mouseX, mouseY, delta);
     }

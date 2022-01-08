@@ -162,6 +162,7 @@ public class HomeScreen extends AntiAliasedScreen implements FastTickable {
 
         RenderSystem.setShaderTexture(0, background);
         Renderer.R2D.renderTexture(stack, 0, 0, width, height, 0, 0, width, height, width, height);
+        RenderSystem.defaultBlendFunc();
 
         stack.push();
         double ap = 1 - easeOutBack(MathHelper.clamp(initProg, .5, 1.5) - .5);

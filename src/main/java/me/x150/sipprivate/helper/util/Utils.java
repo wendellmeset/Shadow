@@ -8,6 +8,7 @@ package me.x150.sipprivate.helper.util;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import me.x150.sipprivate.CoffeeClientMain;
+import me.x150.sipprivate.feature.gui.screen.CoffeeConsoleScreen;
 import me.x150.sipprivate.helper.font.adapter.FontAdapter;
 import me.x150.sipprivate.mixin.IMinecraftClientAccessor;
 import me.x150.sipprivate.mixin.IRenderTickCounterAccessor;
@@ -299,6 +300,8 @@ public class Utils {
             LiteralText t = new LiteralText(n);
             t.setStyle(t.getStyle().withColor(TextColor.fromRgb(c.getRGB())));
             CoffeeClientMain.client.player.sendMessage(t, false);
+            if (c.equals(Color.WHITE)) c = Color.BLACK;
+            CoffeeConsoleScreen.instance().addLog(new CoffeeConsoleScreen.LogEntry(n,c));
         }
 
         public static void messageChat(String n) {
