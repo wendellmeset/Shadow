@@ -258,4 +258,9 @@ public class CoffeeConsoleScreen extends AntiAliasedScreen implements FastTickab
     }
 
     protected record LogEntryIntern(String[] text, Color color) {}
+
+    @Override
+    public boolean isPauseScreen() {
+        return false;
+    }
 }
