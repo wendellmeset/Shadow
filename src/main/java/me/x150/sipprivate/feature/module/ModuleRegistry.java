@@ -106,6 +106,7 @@ public class ModuleRegistry {
         modules.add(new NoBreakDelay());
         modules.add(new Nuker());
         modules.add(new Scaffold());
+        modules.add(new Test());
     }
 
     public static List<Module> getModules() {

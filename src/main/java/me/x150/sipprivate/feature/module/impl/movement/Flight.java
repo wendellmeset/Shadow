@@ -4,6 +4,7 @@ import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.config.BooleanSetting;
 import me.x150.sipprivate.feature.config.DoubleSetting;
 import me.x150.sipprivate.feature.config.EnumSetting;
+import me.x150.sipprivate.feature.gui.clickgui.ParticleRenderer;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleType;
 import me.x150.sipprivate.helper.event.EventType;
@@ -103,9 +104,9 @@ public class Flight extends Module {
                     assert CoffeeClientMain.client.player != null;
                     CoffeeClientMain.client.player.addVelocity(0, speed / 30, 0);
                     Vec3d vp = CoffeeClientMain.client.player.getPos();
+                    Random r = new Random();
                     for (int i = 0; i < 10; i++) {
-                        Random r = new Random();
-                        CoffeeClientMain.client.world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, vp.x, vp.y, vp.z, (r.nextDouble() * 0.25) - .125, (r.nextDouble() * 0.25) - .125, (r.nextDouble() * 0.25) - .125);
+                        CoffeeClientMain.client.world.addImportantParticle(ParticleTypes.SOUL_FIRE_FLAME,true,vp.x,vp.y,vp.z,(r.nextDouble() * 0.25) - .125, (r.nextDouble() * 0.25) - .125, (r.nextDouble() * 0.25) - .125);
                     }
                 }
                 break;

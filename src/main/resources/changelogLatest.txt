@@ -1,5 +1,4 @@
-Ported over a few modules
-Fixed a few bugs
-Increased performance of the hud
-Updated theme
-
+Ported some more modules
+Made gui sexier
+Optimized stuff
+ed

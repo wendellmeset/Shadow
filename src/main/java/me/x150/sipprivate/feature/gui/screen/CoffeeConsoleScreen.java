@@ -52,6 +52,7 @@ public class CoffeeConsoleScreen extends AntiAliasedScreen implements FastTickab
         command = this.addDrawableChild(new RoundTextFieldWidget(padding(),height-padding()-20,inputWidth,20,"Command", 10));
         RoundButton submit = new RoundButton(new Color(230,230,230),padding()*2+inputWidth,height-padding()-20,buttonWidth,20,"Execute",this::execute);
         addDrawableChild(submit);
+        setInitialFocus(command);
     }
 
     static Color NORMAL = Color.BLACK;
@@ -174,8 +175,7 @@ public class CoffeeConsoleScreen extends AntiAliasedScreen implements FastTickab
 
     @Override
     public void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
-        setFocused(command);
-        setInitialFocus(command);
+
         command.setFocused(true);
         if (parent != null) parent.renderInternal(stack, mouseX, mouseY, delta);
         Renderer.R2D.renderQuad(stack,background,0,0,width,height);

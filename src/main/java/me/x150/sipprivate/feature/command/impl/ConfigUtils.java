@@ -30,6 +30,7 @@ public class ConfigUtils extends Command {
 
     public ConfigUtils() {
         super("ConfigUtils", "Config file management", "configUtils", "cu");
+        if (!CONFIG_STORAGE.exists()) CONFIG_STORAGE.mkdir();
     }
 
     @Override
