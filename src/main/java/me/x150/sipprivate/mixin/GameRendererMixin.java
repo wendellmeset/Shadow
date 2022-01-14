@@ -9,7 +9,6 @@ import me.x150.sipprivate.feature.module.impl.render.FreeLook;
 import me.x150.sipprivate.feature.module.impl.render.Zoom;
 import me.x150.sipprivate.helper.Rotations;
 import me.x150.sipprivate.helper.render.MSAAFramebuffer;
-import me.x150.sipprivate.helper.render.Renderer;
 import me.x150.sipprivate.helper.util.Utils;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
@@ -36,7 +35,6 @@ public class GameRendererMixin {
 
     @Inject(at = @At(value = "FIELD", target = "Lnet/minecraft/client/render/GameRenderer;renderHand:Z", opcode = Opcodes.GETFIELD, ordinal = 0), method = "renderWorld")
     void atomic_dispatchWorldRender(float tickDelta, long limitTime, MatrixStack matrix, CallbackInfo ci) {
-        Renderer.R3D.setLastRenderStack(matrix);
         if (vb) {
             CoffeeClientMain.client.options.bobView = true;
             vb = false;

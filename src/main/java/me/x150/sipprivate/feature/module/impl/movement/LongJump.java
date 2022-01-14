@@ -10,6 +10,8 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
+import java.util.Objects;
+
 public class LongJump extends Module {
 
     //    final SliderValue  xz            = (SliderValue) this.config.create("Speed", 5, 0, 20, 2).description("How fast to yeet forwards");
@@ -18,33 +20,33 @@ public class LongJump extends Module {
 //    final SliderValue  glideVelocity = (SliderValue) this.config.create("Glide velocity", 0.05, -0.08, 0.07, 2).description("How much upwards velocity to apply while gliding");
 //    final BooleanValue keepApplying  = (BooleanValue) this.config.create("Keep applying", true).description("Whether or not to keep applying the effect when falling from a jump");
 //    final SliderValue  applyStrength = (SliderValue) this.config.create("Apply strength", 0.3, 0.01, 0.3, 3).description("How strong the effect should be when applying in post");
-    DoubleSetting xz = this.config.create(new DoubleSetting.Builder(5)
+    final DoubleSetting xz = this.config.create(new DoubleSetting.Builder(5)
             .name("Speed")
             .description("How fast to throw you forwards")
             .min(0)
             .max(20)
             .precision(2)
             .get());
-    EnumSetting<FocusType> focus = this.config.create(new EnumSetting.Builder<>(FocusType.Direction)
+    final EnumSetting<FocusType> focus = this.config.create(new EnumSetting.Builder<>(FocusType.Direction)
             .name("Focus on")
             .description("What to focus on when throwing you forwards")
             .get());
-    BooleanSetting glide = this.config.create(new BooleanSetting.Builder(true)
+    final BooleanSetting glide = this.config.create(new BooleanSetting.Builder(true)
             .name("Glide")
             .description("Whether to glide after the initial jump")
             .get());
-    DoubleSetting glideVelocity = this.config.create(new DoubleSetting.Builder(0.05)
+    final DoubleSetting glideVelocity = this.config.create(new DoubleSetting.Builder(0.05)
             .name("Glide velocity")
             .description("How strong to glide")
             .min(-0.08)
             .max(0.07)
             .precision(2)
             .get());
-    BooleanSetting keepApplying = this.config.create(new BooleanSetting.Builder(true)
+    final BooleanSetting keepApplying = this.config.create(new BooleanSetting.Builder(true)
             .name("Keep applying")
             .description("Whether to keep applying velocity after the jump")
             .get());
-    DoubleSetting applyStrength = this.config.create(new DoubleSetting.Builder(0.3)
+    final DoubleSetting applyStrength = this.config.create(new DoubleSetting.Builder(0.3)
             .name("Apply strength")
             .description("How much to apply after the jump")
             .min(0.01)
@@ -60,7 +62,7 @@ public class LongJump extends Module {
     }
 
     Vec3d getVel() {
-        float f = CoffeeClientMain.client.player.getYaw() * 0.017453292F;
+        float f = Objects.requireNonNull(CoffeeClientMain.client.player).getYaw() * 0.017453292F;
         double scaled = xz.getValue() / 5;
         return switch (focus.getValue()) {
             case Direction -> new Vec3d(-MathHelper.sin(f) * scaled, 0.0D, MathHelper.cos(f) * scaled);
@@ -70,7 +72,7 @@ public class LongJump extends Module {
 
     public void applyLongJumpVelocity() {
         Vec3d v = getVel();
-        client.player.addVelocity(v.x, v.y, v.z);
+        Objects.requireNonNull(client.player).addVelocity(v.x, v.y, v.z);
         jumped = true;
     }
 
@@ -79,7 +81,7 @@ public class LongJump extends Module {
         if (!client.options.keyJump.isPressed()) {
             jumped = false;
         }
-        if (client.player.getVelocity().y < 0 && !client.player.isOnGround() && client.player.fallDistance > 0 && jumped) {
+        if (Objects.requireNonNull(client.player).getVelocity().y < 0 && !client.player.isOnGround() && client.player.fallDistance > 0 && jumped) {
             if (glide.getValue()) {
                 client.player.addVelocity(0, glideVelocity.getValue(), 0);
             }

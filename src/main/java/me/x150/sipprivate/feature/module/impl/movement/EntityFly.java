@@ -18,9 +18,11 @@ import net.minecraft.network.packet.c2s.play.VehicleMoveC2SPacket;
 import net.minecraft.util.math.Vec3d;
 import org.lwjgl.glfw.GLFW;
 
+import java.util.Objects;
+
 public class EntityFly extends Module {
 
-    KeyBinding down = new KeyBinding("", GLFW.GLFW_KEY_LEFT_SHIFT, "");
+    final KeyBinding down = new KeyBinding("", GLFW.GLFW_KEY_LEFT_SHIFT, "");
     Entity lastRide = null;
 
     public EntityFly() {
@@ -43,7 +45,7 @@ public class EntityFly extends Module {
         }
         Vec3d entityPos = vehicle.getPos();
         GameOptions go = CoffeeClientMain.client.options;
-        float y = client.player.getYaw();
+        float y = Objects.requireNonNull(client.player).getYaw();
         int mx = 0, my = 0, mz = 0;
         if (go.keyJump.isPressed()) {
             my++;
@@ -73,7 +75,7 @@ public class EntityFly extends Module {
         nz += ts * mx * -s;
         Vec3d nv3 = new Vec3d(nx, ny, nz);
         entityPos = entityPos.add(nv3.multiply(0.4));
-        boolean isOnGround = CoffeeClientMain.client.world.getBlockState(vehicle.getBlockPos().down()).getMaterial().blocksMovement();
+        boolean isOnGround = Objects.requireNonNull(CoffeeClientMain.client.world).getBlockState(vehicle.getBlockPos().down()).getMaterial().blocksMovement();
         double off = Math.random() / 5;
         if (isOnGround) off /= 2;
         else off -= 0.1;
@@ -81,12 +83,12 @@ public class EntityFly extends Module {
         vehicle.setVelocity(0, 0, 0);
         vehicle.setYaw(client.player.getYaw());
         VehicleMoveC2SPacket p = new VehicleMoveC2SPacket(vehicle);
-        client.getNetworkHandler().sendPacket(p);
+        Objects.requireNonNull(client.getNetworkHandler()).sendPacket(p);
     }
 
     @Override
     public void enable() {
-        Utils.Logging.messageChat("Press left alt to descend");
+        Utils.Logging.message("Press left alt to descend");
     }
 
     @Override

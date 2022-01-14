@@ -11,6 +11,8 @@ import me.x150.sipprivate.feature.module.ModuleType;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Box;
 
+import java.util.Objects;
+
 public class EdgeJump extends Module {
 
     public EdgeJump() {
@@ -30,7 +32,7 @@ public class EdgeJump extends Module {
         bounding = bounding.offset(0, -0.5, 0);
         bounding = bounding.expand(-0.001, 0, -0.001);
         if (!CoffeeClientMain.client.world.getBlockCollisions(client.player, bounding).iterator().hasNext()) {
-            client.player.jump();
+            Objects.requireNonNull(client.player).jump();
         }
     }
 

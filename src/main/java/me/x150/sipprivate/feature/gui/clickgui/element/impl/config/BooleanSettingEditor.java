@@ -9,10 +9,10 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 
 public class BooleanSettingEditor extends ConfigBase<BooleanSetting> {
-    double rw = 14;
-    double rh = 5;
-    double rid = 4;
-    double margin = .5;
+    final double rw = 14;
+    final double rh = 5;
+    final double rid = 4;
+    final double margin = .5;
     double animProgress = 0;
 
     public BooleanSettingEditor(double x, double y, double width, BooleanSetting configValue) {

@@ -14,10 +14,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ConfigDisplay extends Element {
-    List<ConfigBase<?>> bases = new ArrayList<>();
-    ModuleConfig mc;
-    double padding = 4;
-    double paddingLeft = 3;
+    final List<ConfigBase<?>> bases = new ArrayList<>();
+    final ModuleConfig mc;
+    final double padding = 4;
+    final double paddingLeft = 3;
     long hoverStart = System.currentTimeMillis();
     boolean hoveredBefore = false;
 

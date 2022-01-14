@@ -17,22 +17,17 @@ import org.lwjgl.glfw.GLFW;
 import java.awt.*;
 
 public class RoundTextFieldWidget implements Element, Drawable, Selectable, DoesMSAA {
+    protected final String suggestion;
+    final double rad;
     public Runnable changeListener = () -> {
     };
-
     protected String text = "";
-    protected String suggestion;
-
     protected boolean focused;
-
     protected int cursor;
     protected double textStart;
-
     protected int selectionStart, selectionEnd;
     boolean mouseOver = false;
     double x, y, width, height;
-
-    double rad;
 
     public RoundTextFieldWidget(double x, double y, double width, double height, String text, double rad) {
         this.x = x;
@@ -306,6 +301,14 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
         return text;
     }
 
+    public void setText(String text) {
+        clearSelection();
+        this.text = text;
+        cursor = this.text.length();
+        resetSelection();
+        runAction();
+    }
+
     @Override
     public boolean charTyped(char c, int modifiers) {
         if (!focused) return false;
@@ -319,14 +322,6 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
 
         runAction();
         return true;
-    }
-
-    public void setText(String text) {
-        clearSelection();
-        this.text = text;
-        cursor = this.text.length();
-        resetSelection();
-        runAction();
     }
 
     boolean inBounds(double cx, double cy) {

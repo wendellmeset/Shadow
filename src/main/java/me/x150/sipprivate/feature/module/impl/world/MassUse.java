@@ -14,11 +14,12 @@ import net.minecraft.network.packet.c2s.play.PlayerInteractItemC2SPacket;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MassUse extends Module {
-    List<Packet<?>> dontRepeat = new ArrayList<>();
+    final List<Packet<?>> dontRepeat = new ArrayList<>();
     //    SliderValue     uses       = (SliderValue) this.config.create("Uses", 3, 1, 100, 0).description("How many times to use the item");
-    DoubleSetting uses = this.config.create(new DoubleSetting.Builder(3)
+    final DoubleSetting uses = this.config.create(new DoubleSetting.Builder(3)
             .name("Uses")
             .description("How many times to use the item")
             .min(1)
@@ -41,13 +42,13 @@ public class MassUse extends Module {
                 PlayerInteractBlockC2SPacket pp = new PlayerInteractBlockC2SPacket(p1.getHand(), p1.getBlockHitResult());
                 for (int i = 0; i < uses.getValue(); i++) {
                     dontRepeat.add(pp);
-                    client.getNetworkHandler().sendPacket(pp);
+                    Objects.requireNonNull(client.getNetworkHandler()).sendPacket(pp);
                 }
             } else if (pe.getPacket() instanceof PlayerInteractItemC2SPacket p1) {
                 PlayerInteractItemC2SPacket pp = new PlayerInteractItemC2SPacket(p1.getHand());
                 for (int i = 0; i < uses.getValue(); i++) {
                     dontRepeat.add(pp);
-                    client.getNetworkHandler().sendPacket(pp);
+                    Objects.requireNonNull(client.getNetworkHandler()).sendPacket(pp);
                 }
             }
         });

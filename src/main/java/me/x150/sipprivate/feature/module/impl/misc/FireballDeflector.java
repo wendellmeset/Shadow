@@ -16,11 +16,12 @@ import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
 
 import java.awt.*;
+import java.util.Objects;
 
 public class FireballDeflector extends Module {
-    EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.DeflectSomewhere).name("Mode")
+    final EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.DeflectSomewhere).name("Mode")
             .description("How to change the fireball's motion (ReflectBack = reflect back at shooter, DeflectSomewhere = idc get it away)").get());
-    BooleanSetting checkVel = this.config.create(new BooleanSetting.Builder(false).name("Check velocity")
+    final BooleanSetting checkVel = this.config.create(new BooleanSetting.Builder(false).name("Check velocity")
             .description("Checks if the fireball is actually approaching before hitting. Can get funky with a lot of them").get());
 
     public FireballDeflector() {
@@ -45,21 +46,21 @@ public class FireballDeflector extends Module {
             if (mode.getValue() == Mode.ReflectBack) {
                 Vec2f pitchYaw = Rotations.getPitchYawFromOtherEntity(fe.getPos().add(0, fe.getHeight() / 2, 0), owner.getPos().add(0, owner.getHeight() / 2, 0));
                 PlayerMoveC2SPacket p = new PlayerMoveC2SPacket.LookAndOnGround(pitchYaw.y, pitchYaw.x, CoffeeClientMain.client.player.isOnGround());
-                CoffeeClientMain.client.getNetworkHandler().sendPacket(p);
+                Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).sendPacket(p);
             }
         }
-        CoffeeClientMain.client.interactionManager.attackEntity(CoffeeClientMain.client.player, fe);
+        Objects.requireNonNull(CoffeeClientMain.client.interactionManager).attackEntity(CoffeeClientMain.client.player, fe);
     }
 
     boolean inHitRange(Entity attacker, Entity target) {
-        return attacker.getCameraPosVec(1f).distanceTo(target.getPos().add(0, target.getHeight() / 2, 0)) <= CoffeeClientMain.client.interactionManager.getReachDistance();
+        return attacker.getCameraPosVec(1f).distanceTo(target.getPos().add(0, target.getHeight() / 2, 0)) <= Objects.requireNonNull(CoffeeClientMain.client.interactionManager).getReachDistance();
     }
 
     @Override
     public void onFastTick() {
-        for (Entity entity : CoffeeClientMain.client.world.getEntities()) {
+        for (Entity entity : Objects.requireNonNull(CoffeeClientMain.client.world).getEntities()) {
             if (entity instanceof FireballEntity fe) {
-                if (inHitRange(CoffeeClientMain.client.player, fe) && isApproaching(CoffeeClientMain.client.player.getPos(), fe.getPos(), fe.getVelocity())) {
+                if (inHitRange(Objects.requireNonNull(CoffeeClientMain.client.player), fe) && isApproaching(CoffeeClientMain.client.player.getPos(), fe.getPos(), fe.getVelocity())) {
                     hit(fe);
                 }
             }
@@ -89,14 +90,14 @@ public class FireballDeflector extends Module {
     @Override
     public void onWorldRender(MatrixStack matrices) {
         if (isDebuggerEnabled()) {
-            for (Entity entity : CoffeeClientMain.client.world.getEntities()) {
+            for (Entity entity : Objects.requireNonNull(CoffeeClientMain.client.world).getEntities()) {
                 if (entity instanceof FireballEntity fe) {
                     if (fe.getOwner() != null) {
                         Entity owner = fe.getOwner();
                         Renderer.R3D.renderLine(Utils.getInterpolatedEntityPosition(owner).add(0, owner.getHeight() / 2, 0), Utils.getInterpolatedEntityPosition(fe)
                                 .add(0, fe.getHeight() / 2, 0), Color.MAGENTA, matrices);
                     }
-                    if (inHitRange(CoffeeClientMain.client.player, fe)) {
+                    if (inHitRange(Objects.requireNonNull(CoffeeClientMain.client.player), fe)) {
                         Renderer.R3D.renderLine(Utils.getInterpolatedEntityPosition(CoffeeClientMain.client.player)
                                 .add(0, CoffeeClientMain.client.player.getHeight() / 2, 0), Utils.getInterpolatedEntityPosition(fe).add(0, fe.getHeight() / 2, 0), Color.RED, matrices);
                     }

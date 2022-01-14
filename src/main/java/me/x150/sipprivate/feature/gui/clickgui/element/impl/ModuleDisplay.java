@@ -11,8 +11,8 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 
 public class ModuleDisplay extends Element {
-    Module module;
-    ConfigDisplay cd;
+    final Module module;
+    final ConfigDisplay cd;
     boolean extended = false;
     double extendAnim = 0;
     long hoverStart = System.currentTimeMillis();

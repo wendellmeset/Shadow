@@ -27,28 +27,28 @@ public class ClickNuke extends Module {
 //    final SliderValue  rangeZ  = (SliderValue) this.config.create("Range Z", 5, 1, 10, 0).description("How big the affected radius should be in the Z dimension");
 //    final SliderValue  rangeY  = (SliderValue) this.config.create("Range Y", 5, 1, 10, 0).description("How big the affected radius should be in the Y dimension");
 //    final BooleanValue destroy = (BooleanValue) this.config.create("Destroy particles", false).description("Makes particles appear when a block gets destroyed");
-    DoubleSetting rangeX = this.config.create(new DoubleSetting.Builder(5)
+    final DoubleSetting rangeX = this.config.create(new DoubleSetting.Builder(5)
             .name("Range X")
             .description("How big of an area to fill in the X direction")
             .min(1)
             .max(10)
             .precision(0)
             .get());
-    DoubleSetting rangeY = this.config.create(new DoubleSetting.Builder(5)
+    final DoubleSetting rangeY = this.config.create(new DoubleSetting.Builder(5)
             .name("Range Y")
             .description("How big of an area to fill in the Y direction")
             .min(1)
             .max(10)
             .precision(0)
             .get());
-    DoubleSetting rangeZ = this.config.create(new DoubleSetting.Builder(5)
+    final DoubleSetting rangeZ = this.config.create(new DoubleSetting.Builder(5)
             .name("Range Z")
             .description("How big of an area to fill in the Z direction")
             .min(1)
             .max(10)
             .precision(0)
             .get());
-    BooleanSetting destroy = this.config.create(new BooleanSetting.Builder(false)
+    final BooleanSetting destroy = this.config.create(new BooleanSetting.Builder(false)
             .name("Destroy particles")
             .description("makes the block breaking particles appear")
             .get());
@@ -77,7 +77,7 @@ public class ClickNuke extends Module {
         HitResult hr = Objects.requireNonNull(client.player).raycast(200d, 0f, true);
         Vec3d pos1 = hr.getPos();
         BlockPos pos = new BlockPos(pos1);
-        int startY = MathHelper.clamp(r(pos.getY() - rangeY.getValue()), CoffeeClientMain.client.world.getBottomY(), CoffeeClientMain.client.world.getTopY());
+        int startY = MathHelper.clamp(r(pos.getY() - rangeY.getValue()), Objects.requireNonNull(CoffeeClientMain.client.world).getBottomY(), CoffeeClientMain.client.world.getTopY());
         int endY = MathHelper.clamp(r(pos.getY() + rangeY.getValue()), CoffeeClientMain.client.world.getBottomY(), CoffeeClientMain.client.world.getTopY());
         String cmd = "/fill " + r(pos.getX() - rangeX.getValue()) + " " + startY + " " + r(pos.getZ() - rangeZ.getValue()) + " " + r(pos.getX() + rangeX.getValue()) + " " + endY + " " + r(pos.getZ() + rangeZ.getValue()) + " " + "minecraft:air" + (destroy.getValue() ? " destroy" : "");
         System.out.println(cmd);

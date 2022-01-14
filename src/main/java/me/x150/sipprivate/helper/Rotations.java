@@ -102,7 +102,7 @@ public class Rotations {
     }
 
     public static Vec2f getPitchYaw(Vec3d targetV3) {
-        return getPitchYawFromOtherEntity(CoffeeClientMain.client.player.getEyePos(), targetV3);
+        return getPitchYawFromOtherEntity(Objects.requireNonNull(CoffeeClientMain.client.player).getEyePos(), targetV3);
     }
 
     public static Vec2f getPitchYawFromOtherEntity(Vec3d eyePos, Vec3d targetV3) {

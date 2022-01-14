@@ -41,21 +41,21 @@ import java.util.UUID;
 
 public class HomeScreen extends AntiAliasedScreen implements FastTickable {
     static final double padding = 5;
+    static final Identifier background = new Identifier("coffeeclient", "background.jpg");
+    static final HttpClient downloader = HttpClient.newHttpClient();
     static boolean isDev = false;
     static String version = "unknown";
     static String changelog = "";
-    static Identifier background = new Identifier("coffeeclient", "background.jpg");
-    static HttpClient downloader = HttpClient.newHttpClient();
     private static HomeScreen instance;
+    final ClientFontRenderer title = FontRenderers.getCustomNormal(40);
+    final ClientFontRenderer smaller = FontRenderers.getCustomNormal(30);
+    final ClientFontRenderer propFr = FontRenderers.getCustomNormal(22);
+    final Identifier currentAccountTexture = new Identifier("coffee", "tex_currentaccount_home");
     boolean loaded = false;
     long initTime = System.currentTimeMillis();
     double prog = 0;
     boolean fadeOut = false;
-    ClientFontRenderer title = FontRenderers.getCustomNormal(40);
-    ClientFontRenderer smaller = FontRenderers.getCustomNormal(30);
-    ClientFontRenderer propFr = FontRenderers.getCustomNormal(22);
     double initProg = 0;
-    Identifier currentAccountTexture = new Identifier("coffee", "tex_currentaccount_home");
     boolean currentAccountTextureLoaded = false;
     UUID previousChecked = null;
 

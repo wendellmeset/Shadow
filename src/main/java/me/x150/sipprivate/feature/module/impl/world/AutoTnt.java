@@ -32,7 +32,7 @@ public class AutoTnt extends Module {
     public void tick() {
         int tntSlot = -1;
         for (int i = 0; i < 9; i++) {
-            ItemStack is = CoffeeClientMain.client.player.getInventory().getStack(i);
+            ItemStack is = Objects.requireNonNull(CoffeeClientMain.client.player).getInventory().getStack(i);
             if (is.getItem() == Items.TNT) {
                 tntSlot = i;
                 break;
@@ -53,7 +53,7 @@ public class AutoTnt extends Module {
             for (double z = -10; z < 11; z++) {
                 List<Map.Entry<BlockPos, Double>> airs = new ArrayList<>();
 
-                for (int y = CoffeeClientMain.client.world.getTopY(); y > CoffeeClientMain.client.world.getBottomY(); y--) {
+                for (int y = Objects.requireNonNull(CoffeeClientMain.client.world).getTopY(); y > CoffeeClientMain.client.world.getBottomY(); y--) {
                     Vec3d currentOffset = new Vec3d(x, y, z);
                     BlockPos bp = new BlockPos(new Vec3d(ppos.x + currentOffset.x, y, ppos.z + currentOffset.z));
                     BlockState bs = CoffeeClientMain.client.world.getBlockState(bp);
@@ -82,7 +82,7 @@ public class AutoTnt extends Module {
                         int sel = CoffeeClientMain.client.player.getInventory().selectedSlot;
                         CoffeeClientMain.client.player.getInventory().selectedSlot = finalTntSlot;
                         BlockHitResult bhr = new BlockHitResult(lmao, Direction.DOWN, best, false);
-                        CoffeeClientMain.client.interactionManager.interactBlock(CoffeeClientMain.client.player, CoffeeClientMain.client.world, Hand.MAIN_HAND, bhr);
+                        Objects.requireNonNull(CoffeeClientMain.client.interactionManager).interactBlock(CoffeeClientMain.client.player, CoffeeClientMain.client.world, Hand.MAIN_HAND, bhr);
                         CoffeeClientMain.client.player.getInventory().selectedSlot = sel;
                     });
                 }
@@ -110,13 +110,13 @@ public class AutoTnt extends Module {
 
     @Override
     public void onWorldRender(MatrixStack matrices) {
-        Vec3d ppos = CoffeeClientMain.client.player.getPos();
+        Vec3d ppos = Objects.requireNonNull(CoffeeClientMain.client.player).getPos();
 
         for (double x = -10; x < 11; x++) {
             for (double z = -10; z < 11; z++) {
                 List<Map.Entry<BlockPos, Double>> airs = new ArrayList<>();
 
-                for (int y = CoffeeClientMain.client.world.getTopY(); y > CoffeeClientMain.client.world.getBottomY(); y--) {
+                for (int y = Objects.requireNonNull(CoffeeClientMain.client.world).getTopY(); y > CoffeeClientMain.client.world.getBottomY(); y--) {
                     Vec3d currentOffset = new Vec3d(x, y, z);
                     BlockPos bp = new BlockPos(new Vec3d(ppos.x + currentOffset.x, y, ppos.z + currentOffset.z));
                     BlockState bs = CoffeeClientMain.client.world.getBlockState(bp);

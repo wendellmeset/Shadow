@@ -4,7 +4,6 @@ import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.config.BooleanSetting;
 import me.x150.sipprivate.feature.config.DoubleSetting;
 import me.x150.sipprivate.feature.config.EnumSetting;
-import me.x150.sipprivate.feature.gui.clickgui.ParticleRenderer;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleType;
 import me.x150.sipprivate.helper.event.EventType;
@@ -106,7 +105,7 @@ public class Flight extends Module {
                     Vec3d vp = CoffeeClientMain.client.player.getPos();
                     Random r = new Random();
                     for (int i = 0; i < 10; i++) {
-                        CoffeeClientMain.client.world.addImportantParticle(ParticleTypes.SOUL_FIRE_FLAME,true,vp.x,vp.y,vp.z,(r.nextDouble() * 0.25) - .125, (r.nextDouble() * 0.25) - .125, (r.nextDouble() * 0.25) - .125);
+                        CoffeeClientMain.client.world.addImportantParticle(ParticleTypes.SOUL_FIRE_FLAME, true, vp.x, vp.y, vp.z, (r.nextDouble() * 0.25) - .125, (r.nextDouble() * 0.25) - .125, (r.nextDouble() * 0.25) - .125);
                     }
                 }
                 break;
@@ -122,7 +121,7 @@ public class Flight extends Module {
         bypassTimer = 0;
         flewBefore = Objects.requireNonNull(CoffeeClientMain.client.player).getAbilities().flying;
         CoffeeClientMain.client.player.setOnGround(false);
-        CoffeeClientMain.client.getNetworkHandler().sendPacket(new ClientCommandC2SPacket(CoffeeClientMain.client.player, ClientCommandC2SPacket.Mode.RELEASE_SHIFT_KEY));
+        Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).sendPacket(new ClientCommandC2SPacket(CoffeeClientMain.client.player, ClientCommandC2SPacket.Mode.RELEASE_SHIFT_KEY));
     }
 
     @Override
@@ -139,7 +138,7 @@ public class Flight extends Module {
     @Override
     public void onWorldRender(MatrixStack matrices) {
         if (isDebuggerEnabled()) {
-            Vec3d a = Utils.getInterpolatedEntityPosition(CoffeeClientMain.client.player);
+            Vec3d a = Utils.getInterpolatedEntityPosition(Objects.requireNonNull(CoffeeClientMain.client.player));
             Vec3d b = a.add(CoffeeClientMain.client.player.getVelocity());
             Renderer.R3D.renderLine(a, b, Color.CYAN, matrices);
         }

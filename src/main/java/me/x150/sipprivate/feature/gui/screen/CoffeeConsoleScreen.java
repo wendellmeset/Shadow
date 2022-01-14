@@ -18,26 +18,38 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class CoffeeConsoleScreen extends AntiAliasedScreen implements FastTickable {
+    static final Color BACKGROUND = new Color(60, 60, 60);
+    static Color NORMAL = Color.BLACK;
+    static Color ERROR = new Color(214, 93, 62);
+    static Color SUCCESS = new Color(65, 217, 101);
+    static Color WARNING = Color.YELLOW;
     private static CoffeeConsoleScreen instance;
+    final Color background = new Color(0, 0, 0, 120);
+    final List<LogEntry> logs = new ArrayList<>();
     AntiAliasedScreen parent = null;
+    RoundTextFieldWidget command;
+    double scroll = 0;
+    double smoothScroll = 0;
+    double lastLogsHeight = 0;
+
+    private CoffeeConsoleScreen() {
+        super(MSAAFramebuffer.MAX_SAMPLES);
+    }
+
     public static CoffeeConsoleScreen instance(AntiAliasedScreen parent) {
-        if(instance == null) instance = new CoffeeConsoleScreen();
+        if (instance == null) instance = new CoffeeConsoleScreen();
         instance.parent = parent;
         return instance;
     }
 
     public static CoffeeConsoleScreen instance() {
-        if(instance == null) instance = new CoffeeConsoleScreen();
+        if (instance == null) instance = new CoffeeConsoleScreen();
         return instance;
     }
-    private CoffeeConsoleScreen() {
-        super(MSAAFramebuffer.MAX_SAMPLES);
-    }
-
-    RoundTextFieldWidget command;
 
     double padding() {
         return 5;
@@ -46,26 +58,20 @@ public class CoffeeConsoleScreen extends AntiAliasedScreen implements FastTickab
     @Override
     protected void init() {
         super.init();
-        double widgetWidthA = width-padding()*2;
+        double widgetWidthA = width - padding() * 2;
         double buttonWidth = 60;
-        double inputWidth = widgetWidthA-buttonWidth-padding();
-        command = this.addDrawableChild(new RoundTextFieldWidget(padding(),height-padding()-20,inputWidth,20,"Command", 10));
-        RoundButton submit = new RoundButton(new Color(230,230,230),padding()*2+inputWidth,height-padding()-20,buttonWidth,20,"Execute",this::execute);
+        double inputWidth = widgetWidthA - buttonWidth - padding();
+        command = this.addDrawableChild(new RoundTextFieldWidget(padding(), height - padding() - 20, inputWidth, 20, "Command", 10));
+        RoundButton submit = new RoundButton(new Color(230, 230, 230), padding() * 2 + inputWidth, height - padding() - 20, buttonWidth, 20, "Execute", this::execute);
         addDrawableChild(submit);
         setInitialFocus(command);
     }
-
-    static Color NORMAL = Color.BLACK;
-    static Color ERROR = new Color(214, 93, 62);
-    static Color SUCCESS = new Color(65, 217, 101);
-    static Color WARNING = Color.YELLOW;
-    static Color BACKGROUND = new Color(60,60,60);
 
     void execute() {
         String cmd = command.get();
         command.setText("");
         if (cmd.isEmpty()) return;
-        addLog(new LogEntry("> "+cmd, BACKGROUND));
+        addLog(new LogEntry("> " + cmd, BACKGROUND));
         CommandRegistry.execute(cmd);
     }
 
@@ -86,7 +92,6 @@ public class CoffeeConsoleScreen extends AntiAliasedScreen implements FastTickab
         if (parent != null) parent.resize(client, width, height);
         super.resize(client, width, height);
     }
-    Color background = new Color(0,0,0,120);
 
     void autocomplete() {
         String cmd = command.get();
@@ -94,14 +99,14 @@ public class CoffeeConsoleScreen extends AntiAliasedScreen implements FastTickab
         List<String> suggestions = getSuggestions(cmd);
         if (suggestions.isEmpty()) return;
         String[] cmdSplit = cmd.split(" +");
-        if  (cmd.endsWith(" ")) {
-            String[] cmdSplitNew = new String[cmdSplit.length+1];
-            System.arraycopy(cmdSplit,0,cmdSplitNew,0,cmdSplit.length);
-            cmdSplitNew[cmdSplitNew.length-1] = "";
+        if (cmd.endsWith(" ")) {
+            String[] cmdSplitNew = new String[cmdSplit.length + 1];
+            System.arraycopy(cmdSplit, 0, cmdSplitNew, 0, cmdSplit.length);
+            cmdSplitNew[cmdSplitNew.length - 1] = "";
             cmdSplit = cmdSplitNew;
         }
-        cmdSplit[cmdSplit.length-1] = suggestions.get(0);
-        command.setText(String.join(" ",cmdSplit)+" ");
+        cmdSplit[cmdSplit.length - 1] = suggestions.get(0);
+        command.setText(String.join(" ", cmdSplit) + " ");
     }
 
     List<String> getSuggestions(String command) {
@@ -134,26 +139,25 @@ public class CoffeeConsoleScreen extends AntiAliasedScreen implements FastTickab
         String[] finalArgs = args;
         return finalArgs.length > 0 ? a.stream().filter(s -> s.toLowerCase().startsWith(finalArgs[finalArgs.length - 1].toLowerCase())).collect(Collectors.toList()) : a;
     }
+
     void renderSuggestions(MatrixStack stack) {
         String cmd = command.get();
         if (cmd.isEmpty()) return;
         List<String> suggestions = getSuggestions(cmd);
         if (suggestions.isEmpty()) return;
-        double probableHeight = suggestions.size()* FontRenderers.getNormal().getMarginHeight()+padding();
-        float yC = (float) (height-padding()-20-padding()-probableHeight)-5;
+        double probableHeight = suggestions.size() * FontRenderers.getNormal().getMarginHeight() + padding();
+        float yC = (float) (height - padding() - 20 - padding() - probableHeight) - 5;
         double probableWidth = 0;
         for (String suggestion : suggestions) {
-            probableWidth = Math.max(probableWidth, FontRenderers.getNormal().getStringWidth(suggestion)+1);
+            probableWidth = Math.max(probableWidth, FontRenderers.getNormal().getStringWidth(suggestion) + 1);
         }
-        float xC = (float) (width-padding()-probableWidth-padding()-padding()*2+5);
-        Renderer.R2D.renderRoundedQuad(stack,new Color(0,0,0,50),xC-padding(),yC-padding(),xC+probableWidth+padding(),yC+probableHeight,10,15);
+        float xC = (float) (width - padding() - probableWidth - padding() - padding() * 2 + 5);
+        Renderer.R2D.renderRoundedQuad(stack, new Color(0, 0, 0, 50), xC - padding(), yC - padding(), xC + probableWidth + padding(), yC + probableHeight, 10, 15);
         for (String suggestion : suggestions) {
-            FontRenderers.getNormal().drawString(stack,suggestion,xC,yC,0, false);
+            FontRenderers.getNormal().drawString(stack, suggestion, xC, yC, 0, false);
             yC += FontRenderers.getNormal().getMarginHeight();
         }
     }
-
-    List<LogEntry> logs = new ArrayList<>();
 
     public void addLog(LogEntry le) {
         logs.add(le);
@@ -163,35 +167,30 @@ public class CoffeeConsoleScreen extends AntiAliasedScreen implements FastTickab
         }
     }
 
-    double scroll = 0;
-    double smoothScroll = 0;
-
     @Override
     public void onFastTick() {
         smoothScroll = Transitions.transition(smoothScroll, scroll, 7, 0);
     }
-
-    double lastLogsHeight = 0;
 
     @Override
     public void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
 
         command.setFocused(true);
         if (parent != null) parent.renderInternal(stack, mouseX, mouseY, delta);
-        Renderer.R2D.renderQuad(stack,background,0,0,width,height);
+        Renderer.R2D.renderQuad(stack, background, 0, 0, width, height);
 
         // log field
-        Renderer.R2D.renderRoundedQuad(stack,new Color(200,200,200),padding(),padding(),width-padding(),height-padding()-20-padding(),10,15);
-        Renderer.R2D.beginScissor(stack,padding(),padding(),width-padding(),height-padding()-20-padding());
+        Renderer.R2D.renderRoundedQuad(stack, new Color(200, 200, 200), padding(), padding(), width - padding(), height - padding() - 20 - padding(), 10, 15);
+        Renderer.R2D.beginScissor(stack, padding(), padding(), width - padding(), height - padding() - 20 - padding());
 
         // logs
-        float startingY = (float) (padding()+5);
-        float startingX = (float) (padding()+5);
-        double availWidth = width-padding()-10;
-        double availHeight = height-padding()-20-padding()-13.5;
+        float startingY = (float) (padding() + 5);
+        float startingX = (float) (padding() + 5);
+        double availWidth = width - padding() - 10;
+        double availHeight = height - padding() - 20 - padding() - 13.5;
 
         List<LogEntryIntern> processedLogs = new ArrayList<>();
-        while(logs.size() > 300) logs.remove(0); // max log size of 300 before we clear
+        while (logs.size() > 300) logs.remove(0); // max log size of 300 before we clear
         for (LogEntry log : logs) {
             List<String> logSplitToWidth = new ArrayList<>();
             StringBuilder currentLog = new StringBuilder();
@@ -200,27 +199,29 @@ public class CoffeeConsoleScreen extends AntiAliasedScreen implements FastTickab
                 char current = logChr[i];
                 currentLog.append(current);
                 if (FontRenderers.getNormal().getStringWidth(currentLog.toString()) > availWidth) {
-                    currentLog.delete(currentLog.length()-2,currentLog.length());
-                    while(currentLog.charAt(currentLog.length()-1) == ' ') currentLog.deleteCharAt(currentLog.length()-1); // clear trailing whitespaces
+                    currentLog.delete(currentLog.length() - 2, currentLog.length());
+                    while (currentLog.charAt(currentLog.length() - 1) == ' ')
+                        currentLog.deleteCharAt(currentLog.length() - 1); // clear trailing whitespaces
                     currentLog.append("-");
                     logSplitToWidth.add(currentLog.toString());
                     currentLog = new StringBuilder();
-                    i-=2;
+                    i -= 2;
                 }
             }
             logSplitToWidth.add(currentLog.toString());
-            processedLogs.add(new LogEntryIntern(logSplitToWidth.toArray(String[]::new),log.color));
+            processedLogs.add(new LogEntryIntern(logSplitToWidth.toArray(String[]::new), log.color));
         }
-        double logsHeight = processedLogs.stream().map(logEntryIntern -> logEntryIntern.text.length*FontRenderers.getNormal().getMarginHeight()).reduce(Float::sum).orElse(0f);
+        double logsHeight = processedLogs.stream().map(logEntryIntern -> logEntryIntern.text.length * FontRenderers.getNormal().getMarginHeight()).reduce(Float::sum).orElse(0f);
         lastLogsHeight = logsHeight;
         if (logsHeight > availHeight) {
-            startingY -= (logsHeight-availHeight); // scroll up to fit
+            startingY -= (logsHeight - availHeight); // scroll up to fit
         }
         startingY += smoothScroll;
         for (LogEntryIntern processedLog : processedLogs) {
             for (String s : processedLog.text) {
                 // we're in bounds, render
-                if (startingY+FontRenderers.getNormal().getMarginHeight() >= padding()) FontRenderers.getNormal().drawString(stack,s,startingX,startingY,processedLog.color.getRGB(),false);
+                if (startingY + FontRenderers.getNormal().getMarginHeight() >= padding())
+                    FontRenderers.getNormal().drawString(stack, s, startingX, startingY, processedLog.color.getRGB(), false);
                 // else, just add
                 startingY += FontRenderers.getNormal().getMarginHeight();
             }
@@ -229,12 +230,12 @@ public class CoffeeConsoleScreen extends AntiAliasedScreen implements FastTickab
         Renderer.R2D.endScissor();
 
         if (logsHeight > availHeight) {
-            double perScrolledIndex = smoothScroll/Math.max(1, lastLogsHeight-(height-padding()-20-padding()-13.5));
-            perScrolledIndex = 1-perScrolledIndex;
-            double cursorY = MathHelper.lerp(perScrolledIndex,padding()*2+3,height-padding()-20-padding()*2-3);
-            double cursorX = width-padding()*2-3;
-            Renderer.R2D.renderRoundedQuad(stack,new Color(0,0,0,20),cursorX-3,padding()*2,cursorX+3,height-padding()-20-padding()*2,3,10);
-            Renderer.R2D.renderCircle(stack,new Color(0,0,0,60),cursorX,cursorY,3,10);
+            double perScrolledIndex = smoothScroll / Math.max(1, lastLogsHeight - (height - padding() - 20 - padding() - 13.5));
+            perScrolledIndex = 1 - perScrolledIndex;
+            double cursorY = MathHelper.lerp(perScrolledIndex, padding() * 2 + 3, height - padding() - 20 - padding() * 2 - 3);
+            double cursorX = width - padding() * 2 - 3;
+            Renderer.R2D.renderRoundedQuad(stack, new Color(0, 0, 0, 20), cursorX - 3, padding() * 2, cursorX + 3, height - padding() - 20 - padding() * 2, 3, 10);
+            Renderer.R2D.renderCircle(stack, new Color(0, 0, 0, 60), cursorX, cursorY, 3, 10);
         }
 
         renderSuggestions(stack);
@@ -243,24 +244,25 @@ public class CoffeeConsoleScreen extends AntiAliasedScreen implements FastTickab
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
-        scroll += (amount*10);
-        scroll = MathHelper.clamp(scroll, 0, Math.max(0, lastLogsHeight-(height-padding()-20-padding()-13.5)));
+        scroll += (amount * 10);
+        scroll = MathHelper.clamp(scroll, 0, Math.max(0, lastLogsHeight - (height - padding() - 20 - padding() - 13.5)));
         return super.mouseScrolled(mouseX, mouseY, amount);
     }
 
     @Override
     public void onClose() {
-        client.setScreen(parent);
+        Objects.requireNonNull(client).setScreen(parent);
+    }
+
+    @Override
+    public boolean isPauseScreen() {
+        return false;
     }
 
     public record LogEntry(String text, Color color) {
 
     }
 
-    protected record LogEntryIntern(String[] text, Color color) {}
-
-    @Override
-    public boolean isPauseScreen() {
-        return false;
+    protected record LogEntryIntern(String[] text, Color color) {
     }
 }

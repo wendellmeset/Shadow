@@ -6,7 +6,7 @@ import me.x150.sipprivate.helper.font.FontRenderers;
 import net.minecraft.client.util.math.MatrixStack;
 
 public class StringSettingEditor extends ConfigBase<StringSetting> {
-    RoundTextFieldWidget input;
+    final RoundTextFieldWidget input;
 
     public StringSettingEditor(double x, double y, double width, StringSetting configValue) {
         super(x, y, width, 0, configValue);

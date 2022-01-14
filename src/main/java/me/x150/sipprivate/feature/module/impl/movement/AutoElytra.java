@@ -20,7 +20,7 @@ public class AutoElytra extends Module {
 
 //    final SliderValue fallDist = (SliderValue) this.config.create("Fall distance", 3, 2, 10, 1).description("How far to fall for the elytra to equip");
 
-    DoubleSetting fallDist = this.config.create(new DoubleSetting.Builder(3)
+    final DoubleSetting fallDist = this.config.create(new DoubleSetting.Builder(3)
             .name("Fall distance")
             .description("How long to fall for the elytra to equip")
             .min(2)

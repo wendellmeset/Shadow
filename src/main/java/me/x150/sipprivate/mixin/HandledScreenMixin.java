@@ -15,6 +15,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Objects;
+
 @Mixin(HandledScreen.class)
 public class HandledScreenMixin extends Screen {
     private static HandledScreen<?> spoofedScreen = null;
@@ -42,14 +44,14 @@ public class HandledScreenMixin extends Screen {
             spoofedScreen = (HandledScreen<?>) (Object) this;
             // go off menu client side but save it in spoofedScreen
             CoffeeClientMain.client.setScreen(null);
-            CoffeeClientMain.client.player.currentScreenHandler = CoffeeClientMain.client.player.playerScreenHandler;
+            Objects.requireNonNull(CoffeeClientMain.client.player).currentScreenHandler = CoffeeClientMain.client.player.playerScreenHandler;
         });
         addDrawableChild(closeSpoof);
         openSpoof = new ButtonWidget(5, 30, 100, 20, Text.of("Open spoofed"), button -> {
             if (spoofedScreen == null) {
                 return;
             }
-            CoffeeClientMain.client.player.currentScreenHandler = spoofedScreen.getScreenHandler();
+            Objects.requireNonNull(CoffeeClientMain.client.player).currentScreenHandler = spoofedScreen.getScreenHandler();
             CoffeeClientMain.client.setScreen(spoofedScreen);
         });
         addDrawableChild(openSpoof);

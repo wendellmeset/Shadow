@@ -10,6 +10,7 @@ import me.x150.authlib.login.mojang.MinecraftToken;
 import me.x150.authlib.login.mojang.profile.MinecraftProfile;
 import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.gui.FastTickable;
+import me.x150.sipprivate.feature.gui.widget.RoundButton;
 import me.x150.sipprivate.feature.gui.widget.RoundTextFieldWidget;
 import me.x150.sipprivate.helper.font.FontRenderers;
 import me.x150.sipprivate.helper.font.adapter.FontAdapter;
@@ -19,6 +20,8 @@ import me.x150.sipprivate.helper.render.Renderer;
 import me.x150.sipprivate.helper.util.Transitions;
 import me.x150.sipprivate.helper.util.Utils;
 import me.x150.sipprivate.mixin.IMinecraftClientAccessor;
+import me.x150.sipprivate.mixin.SessionAccessor;
+import net.minecraft.client.gui.Element;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.NativeImageBackedTexture;
@@ -48,27 +51,27 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AltManagerScreen extends AntiAliasedScreen implements FastTickable {
+    public static final Map<UUID, Identifier> texCache = new HashMap<>();
     static final File ALTS_FILE = new File(CoffeeClientMain.BASE, "alts.sip");
     static final String TOP_NOTE = """
             // DO NOT SHARE THIS FILE
             // This file contains sensitive information about your accounts
             // Unless you REALLY KNOW WHAT YOU ARE DOING, DO NOT SEND THIS TO ANYONE
             """;
-    public static Map<UUID, Identifier> texCache = new HashMap<>();
-    static HttpClient downloader = HttpClient.newHttpClient();
+    static final HttpClient downloader = HttpClient.newHttpClient();
     private static AltManagerScreen instance = null;
-    List<AltContainer> alts = new ArrayList<>();
-    double leftWidth = 200;
+    final List<AltContainer> alts = new ArrayList<>();
+    final double leftWidth = 200;
+    final ClientFontRenderer titleSmall = FontRenderers.getCustomNormal(30);
+    final ClientFontRenderer title = FontRenderers.getCustomNormal(40);
+    final AtomicBoolean isLoggingIn = new AtomicBoolean(false);
     AltContainer selectedAlt;
-    ClientFontRenderer titleSmall = FontRenderers.getCustomNormal(30);
     ThemedButton add, exit, remove, login, session, censorMail;
     boolean censorEmail = true;
-    ClientFontRenderer title = FontRenderers.getCustomNormal(40);
     double scroll = 0;
     double scrollSmooth = 0;
     Identifier currentAccountTexture = new Identifier("coffee", "tex_currentaccount");
     boolean currentAccountTextureLoaded = false;
-    AtomicBoolean isLoggingIn = new AtomicBoolean(false);
 
     private AltManagerScreen() {
         super(MSAAFramebuffer.MAX_SAMPLES);
@@ -163,9 +166,7 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
     @Override
     protected void init() {
         censorMail = new ThemedButton(width - 100 - 5 - 60 - 5 - 20 - getPadding(), 10 + title.getMarginHeight() / 2d - 20 / 2d, 100, 20, "Show email", this::toggleCensor);
-        add = new ThemedButton(width - 60 - 5 - 20 - getPadding(), 10 + title.getMarginHeight() / 2d - 20 / 2d, 60, 20, "Add", () -> {
-            client.setScreen(new AddScreenOverlay(this));
-        });
+        add = new ThemedButton(width - 60 - 5 - 20 - getPadding(), 10 + title.getMarginHeight() / 2d - 20 / 2d, 60, 20, "Add", () -> client.setScreen(new AddScreenOverlay(this)));
         exit = new ThemedButton(width - 20 - getPadding(), 10 + title.getMarginHeight() / 2d - 20 / 2d, 20, 20, "X", this::onClose);
         double padding = 5;
         double widRHeight = 64 + padding * 2;
@@ -182,8 +183,10 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
         buttonWidth = toX - fromX - padding * 3 - texDim;
         session = new ThemedButton(fromX + texDim + padding * 2, toY - 20 - padding, buttonWidth, 20, "Session", () -> {
             // TODO: 06.01.22 implement session editor
+            Objects.requireNonNull(client).setScreen(new SessionEditor(this, CoffeeClientMain.client.getSession())); // this is not a session stealer
         });
     }
+
 
     void updateCurrentAccount() {
         UUID uid = CoffeeClientMain.client.getSession().getProfile().getId();
@@ -393,9 +396,12 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
     }
 
     static class ThemedButton {
+        final Runnable onPress;
+        final double width;
+        final double height;
         String text;
-        Runnable onPress;
-        double x, y, width, height;
+        double x;
+        double y;
         double animProgress = 0;
         boolean isHovered = false;
         boolean enabled = true;
@@ -457,11 +463,14 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
     }
 
     static class AltStorage {
-        String cachedName, email, password, accessToken;
+        final String email;
+        final String password;
+        final AddScreenOverlay.AccountType type;
+        String cachedName;
+        String accessToken;
         UUID cachedUuid;
         boolean valid = true;
         boolean didLogin = false;
-        AddScreenOverlay.AccountType type;
 
         public AltStorage(String n, String e, String p, UUID u, AddScreenOverlay.AccountType type) {
             this.cachedName = n;
@@ -472,18 +481,112 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
         }
     }
 
-    class AddScreenOverlay extends AntiAliasedScreen implements FastTickable {
-        static int accountTypeI = 0;
-        static double widgetWid = 200;
+    static class SessionEditor extends AntiAliasedScreen {
+        static final double widgetWid = 300;
         static double widgetHei = 0;
-        List<ThemedButton> buttons = new ArrayList<>();
+        final Session session;
+        final AntiAliasedScreen parent;
+        final double padding = 5;
+        final ClientFontRenderer title = FontRenderers.getCustomNormal(40);
+        RoundTextFieldWidget access, name, uuid;
+        RoundButton save;
+
+        public SessionEditor(AntiAliasedScreen parent, Session s) {
+            super(MSAAFramebuffer.MAX_SAMPLES);
+            this.session = s;
+            this.parent = parent;
+        }
+
+        @Override
+        protected void init() {
+            RoundButton exit = new RoundButton(new Color(230, 230, 230), width - 20 - 5, 5, 20, 20, "X", () -> Objects.requireNonNull(client).setScreen(parent));
+            addDrawableChild(exit);
+            double y = height / 2d - widgetHei / 2d + padding + title.getMarginHeight() + FontRenderers.getNormal().getMarginHeight() + padding;
+            RoundTextFieldWidget accessToken = new RoundTextFieldWidget(width / 2d - (widgetWid - padding * 2) / 2d, y, widgetWid - padding * 2, 20, "Access token", 10);
+            accessToken.setText(session.getAccessToken());
+            y += accessToken.getHeight() + padding;
+            RoundTextFieldWidget username = new RoundTextFieldWidget(width / 2d - (widgetWid - padding * 2) / 2d, y, widgetWid - padding * 2, 20, "Username", 10);
+            username.setText(session.getUsername());
+            y += username.getHeight() + padding;
+            RoundTextFieldWidget uuid = new RoundTextFieldWidget(width / 2d - (widgetWid - padding * 2) / 2d, y, widgetWid - padding * 2, 20, "UUID", 10);
+            uuid.setText(session.getUuid());
+            y += uuid.getHeight() + padding;
+            RoundButton save = new RoundButton(new Color(230, 230, 230), width / 2d - (widgetWid - padding * 2) / 2d, y, widgetWid - padding * 2, 20, "Save", () -> {
+                SessionAccessor sa = (SessionAccessor) session;
+                sa.setUsername(username.get());
+                sa.setAccessToken(accessToken.get());
+                sa.setUuid(uuid.get());
+                Objects.requireNonNull(client).setScreen(parent);
+            });
+            y += 20 + padding;
+            this.save = save;
+            access = accessToken;
+            name = username;
+            this.uuid = uuid;
+            addDrawableChild(save);
+            addDrawableChild(access);
+            addDrawableChild(name);
+            addDrawableChild(uuid);
+            widgetHei = y - (height / 2d - widgetHei / 2d);
+            super.init();
+        }
+
+        @Override
+        public void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
+            if (parent != null) {
+                parent.renderInternal(stack, mouseX, mouseY, delta);
+            }
+
+            double y = height / 2d - widgetHei / 2d + padding + title.getMarginHeight() + FontRenderers.getNormal().getMarginHeight() + padding;
+            access.setY(y);
+            y += access.getHeight() + padding;
+            name.setY(y);
+            y += name.getHeight() + padding;
+            uuid.setY(y);
+            y += uuid.getHeight() + padding;
+            save.setY(y);
+            y += 20 + padding;
+            widgetHei = y - (height / 2d - widgetHei / 2d);
+
+
+            save.setEnabled(!name.get().isEmpty() && !uuid.get().isEmpty()); // enable when both name and uuid are set
+            Renderer.R2D.renderQuad(stack, new Color(0, 0, 0, 130), 0, 0, width, height);
+
+
+            double centerX = width / 2d;
+            double centerY = height / 2d;
+            Renderer.R2D.renderRoundedQuad(stack, new Color(220, 220, 220), centerX - widgetWid / 2d, centerY - widgetHei / 2d, centerX + widgetWid / 2d, centerY + widgetHei / 2d, 10, 10);
+            stack.push();
+
+            double originX = width / 2d - widgetWid / 2d;
+            double originY = height / 2d - widgetHei / 2d;
+            title.drawString(stack, "Edit session", (float) (originX + padding), (float) (originY + padding), 0, false);
+            FontRenderers.getNormal().drawString(stack, "Edit your user session here", (float) (originX + padding), (float) (originY + padding + title.getMarginHeight()), 0x444444, false);
+            stack.pop();
+            super.renderInternal(stack, mouseX, mouseY, delta);
+        }
+
+        @Override
+        public boolean mouseClicked(double mouseX, double mouseY, int button) {
+            for (Element child : children()) {
+                child.mouseClicked(-1, -1, button);
+            }
+            return super.mouseClicked(mouseX, mouseY, button);
+        }
+    }
+
+    class AddScreenOverlay extends AntiAliasedScreen implements FastTickable {
+        static final double widgetWid = 200;
+        static int accountTypeI = 0;
+        static double widgetHei = 0;
+        final List<ThemedButton> buttons = new ArrayList<>();
+        final AntiAliasedScreen parent;
+        final double padding = 5;
+        final ClientFontRenderer title = FontRenderers.getCustomNormal(40);
         RoundTextFieldWidget email;
         RoundTextFieldWidget passwd;
         ThemedButton type;
         ThemedButton add;
-        AntiAliasedScreen parent;
-        double padding = 5;
-        ClientFontRenderer title = FontRenderers.getCustomNormal(40);
 
         public AddScreenOverlay(AntiAliasedScreen parent) {
             super(MSAAFramebuffer.MAX_SAMPLES);
@@ -492,7 +595,7 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
 
         @Override
         protected void init() {
-            ThemedButton exit = new ThemedButton(width - 20 - 5, 5, 20, 20, "X", () -> client.setScreen(parent));
+            ThemedButton exit = new ThemedButton(width - 20 - 5, 5, 20, 20, "X", () -> Objects.requireNonNull(client).setScreen(parent));
             buttons.add(exit);
             email = new RoundTextFieldWidget(width / 2d - (widgetWid - padding * 2) / 2d, height / 2d - widgetHei / 2d + padding, widgetWid - padding * 2, 20, "E-Mail or username", 10);
             passwd = new RoundTextFieldWidget(width / 2d - (widgetWid - padding * 2) / 2d, height / 2d - widgetHei / 2d + padding * 2 + 20, widgetWid - padding * 2, 20, "Password", 10);
@@ -506,7 +609,7 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
             ac.renderX = -1;
             ac.renderY = -1;
             alts.add(ac);
-            client.setScreen(parent);
+            Objects.requireNonNull(client).setScreen(parent);
         }
 
         boolean isAddApplicable() {
@@ -596,7 +699,7 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
         enum AccountType {
             MOJANG("Mojang"), MICROSOFT("Microsoft"), CRACKED("Cracked");
 
-            String s;
+            final String s;
 
             AccountType(String s) {
                 this.s = s;
@@ -605,12 +708,12 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
     }
 
     public class AltContainer {
+        final AltStorage storage;
         Identifier tex;
         boolean texLoaded = false;
         float animProgress = 0;
         boolean isHovered = false;
         double x, y, width, renderX, renderY;
-        AltStorage storage;
 
 
         public AltContainer(double x, double y, double width, AltStorage inner) {

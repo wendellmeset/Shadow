@@ -33,42 +33,42 @@ import java.util.stream.Collectors;
 
 public class AimAssist extends Module {
 
-    BooleanSetting attackPlayers = this.config.create(new BooleanSetting.Builder(true)
+    final BooleanSetting attackPlayers = this.config.create(new BooleanSetting.Builder(true)
             .name("Attack players")
             .description("Whether or not to aim at players")
             .get());
-    BooleanSetting attackHostile = this.config.create(new BooleanSetting.Builder(true)
+    final BooleanSetting attackHostile = this.config.create(new BooleanSetting.Builder(true)
             .name("Attack hostile")
             .description("Whether or not to aim at hostile entities")
             .get());
-    BooleanSetting attackNeutral = this.config.create(new BooleanSetting.Builder(true)
+    final BooleanSetting attackNeutral = this.config.create(new BooleanSetting.Builder(true)
             .name("Attack neutral")
             .description("Whether or not to aim at neutral entities")
             .get());
-    BooleanSetting attackPassive = this.config.create(new BooleanSetting.Builder(true)
+    final BooleanSetting attackPassive = this.config.create(new BooleanSetting.Builder(true)
             .name("Attack passive")
             .description("Whether or nott o aim at passive entities")
             .get());
-    BooleanSetting attackEverything = this.config.create(new BooleanSetting.Builder(true)
+    final BooleanSetting attackEverything = this.config.create(new BooleanSetting.Builder(true)
             .name("Attack everything")
             .description("Whether or not to aim at everything else")
             .get());
-    BooleanSetting aimAtCombatPartner = this.config.create(new BooleanSetting.Builder(true)
+    final BooleanSetting aimAtCombatPartner = this.config.create(new BooleanSetting.Builder(true)
             .name("Aim at combat")
             .description("Whether or not to only aim at the combat partner")
             .get());
-    EnumSetting<PriorityMode> priority = this.config.create(new EnumSetting.Builder<>(PriorityMode.Distance)
+    final EnumSetting<PriorityMode> priority = this.config.create(new EnumSetting.Builder<>(PriorityMode.Distance)
             .name("Priority")
             .description("What to prioritize when aiminig")
             .get());
-    DoubleSetting laziness = this.config.create(new DoubleSetting.Builder(1)
+    final DoubleSetting laziness = this.config.create(new DoubleSetting.Builder(1)
             .name("Laziness")
             .description("How lazy to get when aiming")
             .min(0.1)
             .max(5)
             .precision(1)
             .get());
-    BooleanSetting aimInstant = this.config.create(new BooleanSetting.Builder(false)
+    final BooleanSetting aimInstant = this.config.create(new BooleanSetting.Builder(false)
             .name("Aim instantly")
             .description("Whether or not to aim instantly instead of smoothly")
             .get());

@@ -21,7 +21,7 @@ import java.util.List;
 public class Blink extends Module {
 
     final List<Packet<?>> queue = new ArrayList<>();
-    EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.Delay)
+    final EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.Delay)
             .name("Mode")
             .description("Whether to delay or remove the packets being sent")
             .get());

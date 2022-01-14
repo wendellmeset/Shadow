@@ -24,7 +24,7 @@ import java.util.Objects;
 public class Scaffold extends Module {
 
     //    final SliderValue extend = this.config.create("Extend", 3, 0, 5, 1);
-    DoubleSetting extend = this.config.create(new DoubleSetting.Builder(3)
+    final DoubleSetting extend = this.config.create(new DoubleSetting.Builder(3)
             .name("Extend")
             .description("How many blocks to extend outwards")
             .min(0)

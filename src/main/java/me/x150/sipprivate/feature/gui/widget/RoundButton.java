@@ -14,13 +14,13 @@ import net.minecraft.util.math.MathHelper;
 import java.awt.*;
 
 public class RoundButton implements Element, Drawable, Selectable, FastTickable, DoesMSAA {
-    String text;
-    Runnable onPress;
+    final String text;
+    final Runnable onPress;
+    final Color color;
     double x, y, width, height;
     double animProgress = 0;
     boolean isHovered = false;
     boolean enabled = true;
-    Color color;
 
 
     public RoundButton(Color color, double x, double y, double w, double h, String t, Runnable a) {
@@ -31,6 +31,22 @@ public class RoundButton implements Element, Drawable, Selectable, FastTickable,
         this.height = h;
         this.text = t;
         this.color = color;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
+    public void setWidth(double width) {
+        this.width = width;
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
     }
 
     public boolean isEnabled() {

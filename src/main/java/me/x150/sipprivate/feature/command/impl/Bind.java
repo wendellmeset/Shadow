@@ -35,8 +35,6 @@ public class Bind extends Command {
             return;
         }
         BindScreen bs = new BindScreen(module);
-        Utils.TickManager.runInNTicks(5, () -> {
-            CoffeeClientMain.client.setScreen(bs);
-        });
+        Utils.TickManager.runInNTicks(5, () -> CoffeeClientMain.client.setScreen(bs));
     }
 }

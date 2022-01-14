@@ -17,10 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ParticleRenderer {
-    static Color DYING = new Color(255, 255, 255, 0); // it goes gradient so you can still see the white
-    public List<Particle> particles = new ArrayList<>();
+    static final Color DYING = new Color(255, 255, 255, 0); // it goes gradient so you can still see the white
+    public final List<Particle> particles = new ArrayList<>();
+    final int pc;
     public boolean shouldAdd = true;
-    int pc;
     long lastTick = System.currentTimeMillis();
 
     public ParticleRenderer(int pc) {
@@ -66,12 +66,13 @@ public class ParticleRenderer {
     }
 
     static class Particle {
-        long rotSpeed = (long) MathHelper.lerp(Math.random(), 3000, 10000);
-        long rotSpeed2 = (long) MathHelper.lerp(Math.random(), 3000, 10000);
+        final long rotSpeed = (long) MathHelper.lerp(Math.random(), 3000, 10000);
+        final long rotSpeed2 = (long) MathHelper.lerp(Math.random(), 3000, 10000);
+        final double velX = 0;
+        final boolean spinsReverse = Math.random() > .5;
+        final boolean spinsReverse2 = Math.random() > .5;
         double x = 0, y = 0, size = 10, decline = 0.1;
-        double velX = 0, velY = 0;
-        boolean spinsReverse = Math.random() > .5;
-        boolean spinsReverse2 = Math.random() > .5;
+        double velY = 0;
 
         public static BufferBuilder renderPrepare(Color color) {
             float red = color.getRed() / 255f;

@@ -19,6 +19,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
 import java.awt.*;
+import java.util.Objects;
 
 public class Swing extends Module {
     static BlockPos swinging;
@@ -33,7 +34,7 @@ public class Swing extends Module {
             MouseEvent me = (MouseEvent) event;
             if (me.getButton() == 0 && me.getAction() == 1) {
                 try {
-                    HitResult hit = CoffeeClientMain.client.player.raycast(200, CoffeeClientMain.client.getTickDelta(), true);
+                    HitResult hit = Objects.requireNonNull(CoffeeClientMain.client.player).raycast(200, CoffeeClientMain.client.getTickDelta(), true);
                     swinging = new BlockPos(hit.getPos());
                 } catch (Exception ignored) {
                 }
@@ -71,7 +72,7 @@ public class Swing extends Module {
         if (swinging == null) {
             return;
         }
-        double[] looks = vecCalc(swinging.getX() + 0.5, swinging.getY() + 0.5, swinging.getZ() + 0.5, CoffeeClientMain.client.player);
+        double[] looks = vecCalc(swinging.getX() + 0.5, swinging.getY() + 0.5, swinging.getZ() + 0.5, Objects.requireNonNull(CoffeeClientMain.client.player));
         Vec3d forces = Vec3d.fromPolar((float) looks[1], (float) looks[0]).normalize().multiply(0.4);
         CoffeeClientMain.client.player.addVelocity(forces.x, forces.y, forces.z);
         CoffeeClientMain.client.player.addVelocity(0, 0.0668500030517578, 0);

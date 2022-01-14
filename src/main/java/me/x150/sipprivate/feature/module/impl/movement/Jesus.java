@@ -12,6 +12,8 @@ import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleType;
 import net.minecraft.client.util.math.MatrixStack;
 
+import java.util.Objects;
+
 
 public class Jesus extends Module {
 
@@ -19,11 +21,11 @@ public class Jesus extends Module {
 
 //    final SliderValue velStrength = this.config.create("Velocity strength", 0.1, 0.001, 0.3, 3);
 
-    public EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.Solid)
+    public final EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.Solid)
             .name("Mode")
             .description("How to keep you up")
             .get());
-    DoubleSetting velStrength = this.config.create(new DoubleSetting.Builder(0.1)
+    final DoubleSetting velStrength = this.config.create(new DoubleSetting.Builder(0.1)
             .name("Velocity strength")
             .description("How much velocity to apply")
             .min(0.001)
@@ -45,9 +47,9 @@ public class Jesus extends Module {
         }
         if (CoffeeClientMain.client.player.isWet()) {
             switch (mode.getValue()) {
-                case Jump -> client.player.jump();
-                case Velocity -> client.player.setVelocity(client.player.getVelocity().x, velStrength.getValue(), client.player.getVelocity().z);
-                case Legit -> client.player.addVelocity(0, 0.03999999910593033, 0); // LivingEntity:1978, vanilla velocity
+                case Jump -> Objects.requireNonNull(client.player).jump();
+                case Velocity -> Objects.requireNonNull(client.player).setVelocity(client.player.getVelocity().x, velStrength.getValue(), client.player.getVelocity().z);
+                case Legit -> Objects.requireNonNull(client.player).addVelocity(0, 0.03999999910593033, 0); // LivingEntity:1978, vanilla velocity
             }
         }
     }

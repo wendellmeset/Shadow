@@ -19,21 +19,21 @@ import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 
 public class Velocity extends Module {
 
-    DoubleSetting multiplierX = this.config.create(new DoubleSetting.Builder(0.2)
+    final DoubleSetting multiplierX = this.config.create(new DoubleSetting.Builder(0.2)
             .name("Horizontal velocity")
             .description("How much to multiply X and Z velocity by")
             .min(-2.5)
             .max(2.5)
             .precision(1)
             .get());
-    DoubleSetting multiplierY = this.config.create(new DoubleSetting.Builder(0.2)
+    final DoubleSetting multiplierY = this.config.create(new DoubleSetting.Builder(0.2)
             .name("Vertical velocity")
             .description("How much to multiply Y velocity by")
             .min(-2.5)
             .max(2.5)
             .precision(1)
             .get());
-    EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.Modify)
+    final EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.Modify)
             .name("Mode")
             .description("How to modify velocity")
             .get());

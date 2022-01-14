@@ -39,48 +39,49 @@ public class Nuker extends Module {
 //    final MultiValue     mv                = (MultiValue) this.config.create("Sort", "Out -> In", "Out -> In", "In -> Out", "Strength", "Random").description("How to sort");
 //    final BooleanValue   ignoreUnbreakable = (BooleanValue) this.config.create("Ignore unbreakable", true).description("Ignore survival unbreakable blocks");
 
-    DoubleSetting range = this.config.create(new DoubleSetting.Builder(4)
+    final DoubleSetting range = this.config.create(new DoubleSetting.Builder(4)
             .name("Range")
             .description("How far to break blocks")
             .min(0)
             .max(4)
             .precision(1)
             .get());
-    DoubleSetting blocksPerTick = this.config.create(new DoubleSetting.Builder(1)
+    final DoubleSetting blocksPerTick = this.config.create(new DoubleSetting.Builder(1)
             .name("Blocks per tick")
             .description("How many blocks to break per tick")
             .min(1)
             .max(20)
             .precision(0)
             .get());
-    DoubleSetting delay = this.config.create(new DoubleSetting.Builder(0)
+    final DoubleSetting delay = this.config.create(new DoubleSetting.Builder(0)
             .name("Delay")
             .description("How much to wait between ticks")
             .min(0)
             .max(20)
             .precision(0)
             .get());
-    BooleanSetting ignoreXray = this.config.create(new BooleanSetting.Builder(true)
+    final BooleanSetting ignoreXray = this.config.create(new BooleanSetting.Builder(true)
             .name("Ignore XRAY")
             .description("Ignores XRAY blocks")
             .get());
-    EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.Everything)
+    final EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.Everything)
             .name("Mode")
             .description("What to break")
             .get());
-    BooleanSetting autoTool = this.config.create(new BooleanSetting.Builder(true)
+    final BooleanSetting autoTool = this.config.create(new BooleanSetting.Builder(true)
             .name("Auto tool")
             .description("Automatically picks the best tool for the block")
             .get());
-    EnumSetting<SortMode> mv = this.config.create(new EnumSetting.Builder<>(SortMode.OutIn)
+    final EnumSetting<SortMode> mv = this.config.create(new EnumSetting.Builder<>(SortMode.OutIn)
             .name("Sorting")
             .description("In which order to break the blocks")
             .get());
-    BooleanSetting ignoreUnbreakable = this.config.create(new BooleanSetting.Builder(true)
+    final BooleanSetting ignoreUnbreakable = this.config.create(new BooleanSetting.Builder(true)
             .name("Ignore unbreakable")
             .description("Ignores unbreakable blocks")
             .get());
     int delayPassed = 0;
+
     public Nuker() {
         super("Nuker", "Breaks a lot of blocks around you fast", ModuleType.WORLD);
     }
@@ -192,17 +193,17 @@ public class Nuker extends Module {
     public void disable() {
     }
 
+    @Override
+    public void onHudRender() {
+
+    }
+
     public enum Mode {
         Everything, Torches, Fire, Wood, Grass
     }
 
     public enum SortMode {
         OutIn, InOut, Strength, Random
-    }
-
-    @Override
-    public void onHudRender() {
-
     }
 }
 

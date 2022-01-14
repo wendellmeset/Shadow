@@ -299,16 +299,9 @@ public class Utils {
 //            messageChat("§#"+f0+f1+f2+n);
             LiteralText t = new LiteralText(n);
             t.setStyle(t.getStyle().withColor(TextColor.fromRgb(c.getRGB())));
-            CoffeeClientMain.client.player.sendMessage(t, false);
+            Objects.requireNonNull(CoffeeClientMain.client.player).sendMessage(t, false);
             if (c.equals(Color.WHITE)) c = Color.BLACK;
-            CoffeeConsoleScreen.instance().addLog(new CoffeeConsoleScreen.LogEntry(n,c));
-        }
-
-        public static void messageChat(String n) {
-            if (CoffeeClientMain.client.player == null) {
-                return;
-            }
-
+            CoffeeConsoleScreen.instance().addLog(new CoffeeConsoleScreen.LogEntry(n, c));
         }
 
     }

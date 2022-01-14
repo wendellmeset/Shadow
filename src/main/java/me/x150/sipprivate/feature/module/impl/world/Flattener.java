@@ -23,6 +23,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 public class Flattener extends Module {
     final List<RenderEntry> renders = new ArrayList<>();
@@ -31,19 +32,19 @@ public class Flattener extends Module {
 //    final BooleanValue      asyncPlaceBreak = (BooleanValue) this.config.create("Async place / break", true).description("Whether or not to place blocks and break them at the same time");
 //    final BooleanValue      breakSides      = (BooleanValue) this.config.create("Break sides", true).description("Whether or not to clear the area so you can walk on it");
 //    final SliderValue       amountPerTick   = (SliderValue) this.config.create("Amount Per Tick", 3, 1, 20, 0).description("How many actions to do / tick");
-    BooleanSetting makeSame = this.config.create(new BooleanSetting.Builder(false)
+    final BooleanSetting makeSame = this.config.create(new BooleanSetting.Builder(false)
             .name("Make same")
             .description("Makes the floor the same material you're holding")
             .get());
-    BooleanSetting asyncPlaceBreak = this.config.create(new BooleanSetting.Builder(true)
+    final BooleanSetting asyncPlaceBreak = this.config.create(new BooleanSetting.Builder(true)
             .name("Async place / break")
             .description("Does block breaking and placing at the same time")
             .get());
-    BooleanSetting breakSides = this.config.create(new BooleanSetting.Builder(true)
+    final BooleanSetting breakSides = this.config.create(new BooleanSetting.Builder(true)
             .name("Break sides")
             .description("Clears the area 3 blocks up so you can walk into it")
             .get());
-    DoubleSetting amountPerTick = this.config.create(new DoubleSetting.Builder(3)
+    final DoubleSetting amountPerTick = this.config.create(new DoubleSetting.Builder(3)
             .name("Amount per tick")
             .description("How many actions to do per tick")
             .min(1)
@@ -60,7 +61,7 @@ public class Flattener extends Module {
 
     @Override
     public void tick() {
-        Vec3d eyep = client.player.getEyePos();
+        Vec3d eyep = Objects.requireNonNull(client.player).getEyePos();
         double rangeMid = range / 2d;
         List<BlockPos> toPlace = new ArrayList<>();
         List<BlockPos> toBreak = new ArrayList<>();
@@ -72,11 +73,11 @@ public class Flattener extends Module {
             for (double z = -rangeMid; z < rangeMid + 1; z++) {
                 Vec3d offset = eyep.add(x, 0, z);
                 Vec3d actual = new Vec3d(offset.x + .5, origin.y - .5, offset.z + .5);
-                if (actual.distanceTo(eyep) > client.interactionManager.getReachDistance()) {
+                if (actual.distanceTo(eyep) > Objects.requireNonNull(client.interactionManager).getReachDistance()) {
                     continue;
                 }
                 BlockPos c = new BlockPos(actual);
-                BlockState state = client.world.getBlockState(c);
+                BlockState state = Objects.requireNonNull(client.world).getBlockState(c);
                 if (state.getMaterial().isReplaceable()) {
                     toPlace.add(c);
                 }
@@ -103,12 +104,12 @@ public class Flattener extends Module {
         }
         int done = 0;
         for (BlockPos blockPos : toBreak) {
-            BlockState bs = client.world.getBlockState(blockPos);
+            BlockState bs = Objects.requireNonNull(client.world).getBlockState(blockPos);
             if (ModuleRegistry.getByClass(AutoTool.class).isEnabled()) {
                 AutoTool.pick(bs);
             }
             Rotations.lookAtV3(Vec3d.of(blockPos).add(.5, .5, .5));
-            client.interactionManager.updateBlockBreakingProgress(blockPos, Direction.DOWN);
+            Objects.requireNonNull(client.interactionManager).updateBlockBreakingProgress(blockPos, Direction.DOWN);
             renders.add(new RenderEntry(blockPos, new Vec3d(1, 1, 1), new Color(31, 232, 148, 70)));
             done++;
             if (done > amountPerTick.getValue()) {
@@ -129,7 +130,7 @@ public class Flattener extends Module {
                 renders.add(new RenderEntry(blockPos.up(), new Vec3d(1, -0.01, 1), Utils.getCurrentRGB()));
                 Vec3d actual = Vec3d.of(blockPos).add(.5, .5, .5);
                 Rotations.lookAtV3(actual);
-                client.interactionManager.interactBlock(client.player, client.world, Hand.MAIN_HAND, new BlockHitResult(actual, Direction.DOWN, blockPos, false));
+                Objects.requireNonNull(client.interactionManager).interactBlock(client.player, client.world, Hand.MAIN_HAND, new BlockHitResult(actual, Direction.DOWN, blockPos, false));
             }
             done++;
             if (done > amountPerTick.getValue()) {
@@ -140,7 +141,7 @@ public class Flattener extends Module {
 
     @Override
     public void enable() {
-        origin = client.player.getPos();
+        origin = Objects.requireNonNull(client.player).getPos();
         prevSlot = client.player.getInventory().selectedSlot;
     }
 

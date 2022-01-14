@@ -12,8 +12,6 @@ public class Test extends Command {
 
     @Override
     public void onExecute(String[] args) {
-        Utils.TickManager.runInNTicks(5, () -> {
-            CoffeeClientMain.client.setScreen(new TestScreen());
-        });
+        Utils.TickManager.runInNTicks(5, () -> CoffeeClientMain.client.setScreen(new TestScreen()));
     }
 }

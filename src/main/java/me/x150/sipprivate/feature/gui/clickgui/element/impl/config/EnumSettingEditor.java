@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EnumSettingEditor extends ConfigBase<EnumSetting<?>> {
-    List<EnumSelectorClickable<?>> values = new ArrayList<>();
+    final List<EnumSelectorClickable<?>> values = new ArrayList<>();
 
     public EnumSettingEditor(double x, double y, double width, EnumSetting<?> configValue) {
         super(x, y, width, 0, configValue);
@@ -87,9 +87,12 @@ public class EnumSettingEditor extends ConfigBase<EnumSetting<?>> {
     }
 
     static class EnumSelectorClickable<T extends Enum<?>> {
-        EnumSettingEditor instance;
-        double x, y, width, height;
-        T value;
+        final EnumSettingEditor instance;
+        final double height;
+        final T value;
+        double x;
+        double y;
+        double width;
 
         public EnumSelectorClickable(EnumSettingEditor instance, double x, double y, double width, double height, T value) {
             this.instance = instance;

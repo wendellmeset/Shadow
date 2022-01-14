@@ -43,11 +43,11 @@ import java.util.stream.Collectors;
 public class Killaura extends Module {
 
     final Timer delayExec = new Timer();
-    BooleanSetting capRangeAtMax = this.config.create(new BooleanSetting.Builder(true)
+    final BooleanSetting capRangeAtMax = this.config.create(new BooleanSetting.Builder(true)
             .name("Auto range")
             .description("Whether or not to set the range to the vanilla one")
             .get());
-    DoubleSetting range = this.config.create(new DoubleSetting.Builder(3.2)
+    final DoubleSetting range = this.config.create(new DoubleSetting.Builder(3.2)
             .name("Range")
             .description("How far to reach")
             .min(0.1)
@@ -55,11 +55,11 @@ public class Killaura extends Module {
             .precision(1)
             .get());
 
-    BooleanSetting automaticDelay = this.config.create(new BooleanSetting.Builder(true)
+    final BooleanSetting automaticDelay = this.config.create(new BooleanSetting.Builder(true)
             .name("Auto delay")
             .description("Whether or not to automatically calculate perfect delay")
             .get());
-    DoubleSetting delay = this.config.create(new DoubleSetting.Builder(0)
+    final DoubleSetting delay = this.config.create(new DoubleSetting.Builder(0)
             .name("Delay")
             .description("How much to wait between attacks")
             .min(0)
@@ -67,63 +67,63 @@ public class Killaura extends Module {
             .precision(1)
             .get());
 
-    BooleanSetting attackOnlyCombatPartner = this.config.create(new BooleanSetting.Builder(true)
+    final BooleanSetting attackOnlyCombatPartner = this.config.create(new BooleanSetting.Builder(true)
             .name("Aim at combat")
             .description("Whether or not to only aim at the combat partner")
             .get());
-    BooleanSetting attackPlayers = this.config.create(new BooleanSetting.Builder(true)
+    final BooleanSetting attackPlayers = this.config.create(new BooleanSetting.Builder(true)
             .name("Attack players")
             .description("Whether or not to aim at players")
             .get());
-    BooleanSetting attackHostile = this.config.create(new BooleanSetting.Builder(true)
+    final BooleanSetting attackHostile = this.config.create(new BooleanSetting.Builder(true)
             .name("Attack hostile")
             .description("Whether or not to aim at hostile entities")
             .get());
-    BooleanSetting attackNeutral = this.config.create(new BooleanSetting.Builder(true)
+    final BooleanSetting attackNeutral = this.config.create(new BooleanSetting.Builder(true)
             .name("Attack neutral")
             .description("Whether or not to aim at neutral entities")
             .get());
-    BooleanSetting attackPassive = this.config.create(new BooleanSetting.Builder(true)
+    final BooleanSetting attackPassive = this.config.create(new BooleanSetting.Builder(true)
             .name("Attack passive")
             .description("Whether or nott o aim at passive entities")
             .get());
-    BooleanSetting attackEverything = this.config.create(new BooleanSetting.Builder(true)
+    final BooleanSetting attackEverything = this.config.create(new BooleanSetting.Builder(true)
             .name("Attack everything")
             .description("Whether or not to aim at everything else")
             .get());
 
-    EnumSetting<SelectMode> mode = this.config.create(new EnumSetting.Builder<>(SelectMode.Single)
+    final EnumSetting<SelectMode> mode = this.config.create(new EnumSetting.Builder<>(SelectMode.Single)
             .name("Mode")
             .description("How to attack the entities")
             .get());
-    DoubleSetting multiLimit = this.config.create(new DoubleSetting.Builder(1)
+    final DoubleSetting multiLimit = this.config.create(new DoubleSetting.Builder(1)
             .name("Targets")
             .description("How many multi targets to attack")
             .min(1)
             .max(10)
             .precision(0)
             .get());
-    EnumSetting<PriorityMode> prio = this.config.create(new EnumSetting.Builder<>(PriorityMode.Distance)
+    final EnumSetting<PriorityMode> prio = this.config.create(new EnumSetting.Builder<>(PriorityMode.Distance)
             .name("Priority")
             .description("What to prioritize when aiming")
             .get());
 
 
-    BooleanSetting enableConfuse = this.config.create(new BooleanSetting.Builder(false)
+    final BooleanSetting enableConfuse = this.config.create(new BooleanSetting.Builder(false)
             .name("Enable confuse")
             .description("Whether or not to enable confuse")
             .get());
-    EnumSetting<ConfuseMode> confuseMode = this.config.create(new EnumSetting.Builder<>(ConfuseMode.TP)
+    final EnumSetting<ConfuseMode> confuseMode = this.config.create(new EnumSetting.Builder<>(ConfuseMode.TP)
             .name("Confuse mode")
             .description("How to confuse the enemy")
             .get());
-    BooleanSetting confuseAllowClip = this.config.create(new BooleanSetting.Builder(false)
+    final BooleanSetting confuseAllowClip = this.config.create(new BooleanSetting.Builder(false)
             .name("Confuse into solid")
             .description("Allow confuse to tp into blocks")
             .get());
+    final List<Entity> attacks = new ArrayList<>();
     Entity combatPartner;
     double circleProg = 0;
-    List<Entity> attacks = new ArrayList<>();
 
     public Killaura() {
         super("Killaura", "Automatically attacks entities around you", ModuleType.COMBAT);
@@ -179,7 +179,7 @@ public class Killaura extends Module {
     }
 
     void doConfuse(Entity e) { // This also contains a range check
-        Vec3d updatePos = CoffeeClientMain.client.player.getPos();
+        Vec3d updatePos = Objects.requireNonNull(CoffeeClientMain.client.player).getPos();
         switch (confuseMode.getValue()) {
             case Behind -> {
                 Vec3d p = e.getRotationVecClient();
@@ -196,7 +196,7 @@ public class Killaura extends Module {
                 updatePos = new Vec3d(e.getX() + sin, e.getY(), e.getZ() + cos);
             }
         }
-        if (!confuseAllowClip.getValue() && CoffeeClientMain.client.world.getBlockState(new BlockPos(updatePos)).getMaterial().blocksMovement()) {
+        if (!confuseAllowClip.getValue() && Objects.requireNonNull(CoffeeClientMain.client.world).getBlockState(new BlockPos(updatePos)).getMaterial().blocksMovement()) {
             return;
         }
         if (e.getPos().distanceTo(updatePos) <= getRange()) {

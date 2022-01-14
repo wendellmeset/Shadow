@@ -40,13 +40,13 @@ public class AChatScreenMixin extends Screen {
         }
     }
 
-    @Inject(method="render",at=@At("RETURN"))
+    @Inject(method = "render", at = @At("RETURN"))
     void renderText(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         String t = chatField.getText();
         if (t.startsWith(".")) {
             String note = "If you need a bigger console, do \".console\"";
-            double len = FontRenderers.getNormal().getStringWidth(note)+1;
-            FontRenderers.getNormal().drawString(matrices,note,width-len-2,height-15-FontRenderers.getNormal().getMarginHeight(),0xFFFFFF);
+            double len = FontRenderers.getNormal().getStringWidth(note) + 1;
+            FontRenderers.getNormal().drawString(matrices, note, width - len - 2, height - 15 - FontRenderers.getNormal().getMarginHeight(), 0xFFFFFF);
         }
     }
 

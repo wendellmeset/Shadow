@@ -21,7 +21,7 @@ import net.minecraft.util.math.Vec3d;
 
 public class Criticals extends Module {
 
-    EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.Packet)
+    final EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.Packet)
             .name("Mode")
             .description("How to deal crits")
             .get());

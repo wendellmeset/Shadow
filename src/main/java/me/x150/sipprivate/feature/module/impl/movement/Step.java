@@ -11,10 +11,12 @@ import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleType;
 import net.minecraft.client.util.math.MatrixStack;
 
+import java.util.Objects;
+
 public class Step extends Module {
 
     //    final SliderValue height = (SliderValue) this.config.create("Step height", 3, 1, 50, 0).description("How high to step");
-    DoubleSetting height = this.config.create(new DoubleSetting.Builder(3)
+    final DoubleSetting height = this.config.create(new DoubleSetting.Builder(3)
             .name("Height")
             .description("How high to step")
             .min(1)
@@ -44,7 +46,7 @@ public class Step extends Module {
         if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.getNetworkHandler() == null) {
             return;
         }
-        client.player.stepHeight = 0.6f;
+        Objects.requireNonNull(client.player).stepHeight = 0.6f;
     }
 
     @Override

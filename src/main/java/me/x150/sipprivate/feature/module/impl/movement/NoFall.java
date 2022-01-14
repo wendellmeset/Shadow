@@ -21,18 +21,18 @@ import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
  */
 public class NoFall extends Module {
 
-    public boolean enabled = true;
-    EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.OnGround)
+    final EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.OnGround)
             .name("Mode")
             .description("How to spoof packets (packet drowns the others out, use with caution)")
             .get());
-    DoubleSetting fallDist = this.config.create(new DoubleSetting.Builder(3)
+    final DoubleSetting fallDist = this.config.create(new DoubleSetting.Builder(3)
             .name("Fall distance")
             .description("How much to fall before breaking the fall")
             .min(1)
             .max(10)
             .precision(1)
             .get());
+    public boolean enabled = true;
 
     public NoFall() {
         super("NoFall", "Prevents fall damage", ModuleType.MOVEMENT);

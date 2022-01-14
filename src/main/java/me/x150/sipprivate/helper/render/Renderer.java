@@ -2,19 +2,13 @@ package me.x150.sipprivate.helper.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.x150.sipprivate.CoffeeClientMain;
-import me.x150.sipprivate.feature.gui.screen.HomeScreen;
 import me.x150.sipprivate.helper.math.Matrix4x4;
 import me.x150.sipprivate.helper.math.Vector3D;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.multiplayer.SocialInteractionsScreen;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
 import org.lwjgl.opengl.GL11;
@@ -26,7 +20,6 @@ public class Renderer {
     public static class R3D {
 
         static final MatrixStack empty = new MatrixStack();
-        private static MatrixStack lastRenderStack = new MatrixStack();
 
         public static void renderOutlineIntern(Vec3d start, Vec3d dimensions, MatrixStack stack, BufferBuilder buffer) {
             Camera c = CoffeeClientMain.client.gameRenderer.getCamera();
@@ -102,14 +95,6 @@ public class Renderer {
 
         public static void renderFilled(Vec3d start, Vec3d dimensions, Color color, MatrixStack stack) {
             renderFilled(start, dimensions, color, stack, GL11.GL_ALWAYS);
-        }
-
-        public static MatrixStack getLastRenderStack() {
-            return lastRenderStack;
-        }
-
-        public static void setLastRenderStack(MatrixStack lastRenderStack) {
-            R3D.lastRenderStack = lastRenderStack;
         }
 
         public static MatrixStack getEmptyMatrixStack() {
@@ -231,7 +216,6 @@ public class Renderer {
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
             GL11.glDepthFunc(GL11.GL_ALWAYS);
             RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-//            RenderSystem.defaultBlendFunc();
             RenderSystem.enableBlend();
             buffer.begin(VertexFormat.DrawMode.DEBUG_LINES, VertexFormats.POSITION_COLOR);
 
@@ -249,16 +233,13 @@ public class Renderer {
 
             Camera camera = CoffeeClientMain.client.gameRenderer.getCamera();
 
-            ClientPlayerEntity player = CoffeeClientMain.client.player;
-
-            float f = 0.017453292F;
+            float vec = 0.017453292F;
             float pi = (float) Math.PI;
 
-            assert player != null;
-            float f1 = MathHelper.cos(-player.getYaw() * f - pi);
-            float f2 = MathHelper.sin(-player.getYaw() * f - pi);
-            float f3 = -MathHelper.cos(-player.getPitch() * f);
-            float f4 = MathHelper.sin(-player.getPitch() * f);
+            float f1 = MathHelper.cos(-camera.getYaw() * vec - pi);
+            float f2 = MathHelper.sin(-camera.getYaw() * vec - pi);
+            float f3 = -MathHelper.cos(-camera.getPitch() * vec);
+            float f4 = MathHelper.sin(-camera.getPitch() * vec);
 
             return new Vec3d(f2 * f3, f4, f1 * f3).add(camera.getPos());
         }
@@ -266,8 +247,6 @@ public class Renderer {
     }
 
     public static class R2D {
-
-        public static final Identifier OPTIONS_BACKGROUND_TEXTURE = new Identifier("coffeeclient", "background.jpg");
 
         public static void beginScissor(MatrixStack stack, double x, double y, double endX, double endY) {
             Matrix4f matrix = stack.peek().getPositionMatrix();
@@ -443,10 +422,6 @@ public class Renderer {
                     .getScaleFactor(), screenCoords.z);
         }
 
-        public static Vec3d getScreenSpaceCoordinate(Vec3d pos) {
-            return getScreenSpaceCoordinate(pos, R3D.getLastRenderStack());
-        }
-
         public static void renderGradientLine(Color start, Color end, double x, double y, double x1, double y1) {
             float g = start.getRed() / 255f;
             float h = start.getGreen() / 255f;
@@ -505,90 +480,6 @@ public class Renderer {
             BufferRenderer.draw(bufferBuilder);
             RenderSystem.enableTexture();
             RenderSystem.disableBlend();
-        }
-
-        //        public static void fillGradientV(MatrixStack matrices, Color c2, Color c1, double x1, double y1, double x2, double y2) {
-        //            float r1 = c1.getRed() / 255f;
-        //            float g1 = c1.getGreen() / 255f;
-        //            float b1 = c1.getBlue() / 255f;
-        //            float a1 = c1.getAlpha() / 255f;
-        //            float r2 = c2.getRed() / 255f;
-        //            float g2 = c2.getGreen() / 255f;
-        //            float b2 = c2.getBlue() / 255f;
-        //            float a2 = c2.getAlpha() / 255f;
-        //
-        //            double j;
-        //
-        //            if (x1 < x2) {
-        //                j = x1;
-        //                x1 = x2;
-        //                x2 = j;
-        //            }
-        //
-        //            if (y1 < y2) {
-        //                j = y1;
-        //                y1 = y2;
-        //                y2 = j;
-        //            }
-        //            Matrix4f matrix = matrices.peek().getPositionMatrix();
-        //            BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
-//        //            RenderSystem.defaultBlendFunc();
-        //            RenderSystem.enableBlend();
-        //            RenderSystem.disableTexture();
-        //
-        //            RenderSystem.setShader(GameRenderer::getPositionColorShader);
-        //            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-        //            bufferBuilder.vertex(matrix, (float) x1, (float) y2, 0.0F).color(r1, g1, b1, a1).next();
-        //            bufferBuilder.vertex(matrix, (float) x2, (float) y2, 0.0F).color(r1, g1, b1, a1).next();
-        //            bufferBuilder.vertex(matrix, (float) x2, (float) y1, 0.0F).color(r2, g2, b2, a2).next();
-        //            bufferBuilder.vertex(matrix, (float) x1, (float) y1, 0.0F).color(r2, g2, b2, a2).next();
-        //            bufferBuilder.end();
-        //            BufferRenderer.draw(bufferBuilder);
-        //            RenderSystem.enableTexture();
-        //            RenderSystem.disableBlend();
-        //
-        //        }
-
-        public static void renderQuadGradientVert(MatrixStack matrices, Color c1, Color c2, double x1, double y1, double x2, double y2) {
-            float r1 = c1.getRed() / 255f;
-            float g1 = c1.getGreen() / 255f;
-            float b1 = c1.getBlue() / 255f;
-            float a1 = c1.getAlpha() / 255f;
-            float r2 = c2.getRed() / 255f;
-            float g2 = c2.getGreen() / 255f;
-            float b2 = c2.getBlue() / 255f;
-            float a2 = c2.getAlpha() / 255f;
-
-            double j;
-
-            if (x1 < x2) {
-                j = x1;
-                x1 = x2;
-                x2 = j;
-            }
-
-            if (y1 < y2) {
-                j = y1;
-                y1 = y2;
-                y2 = j;
-            }
-            Matrix4f matrix = matrices.peek().getPositionMatrix();
-            BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
-            RenderSystem.enableBlend();
-//            RenderSystem.defaultBlendFunc();
-            RenderSystem.disableTexture();
-
-            RenderSystem.setShader(GameRenderer::getPositionColorShader);
-            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-            bufferBuilder.vertex(matrix, (float) x1, (float) y1, 0.0F).color(r1, g1, b1, a1).next();
-            bufferBuilder.vertex(matrix, (float) x1, (float) y2, 0.0F).color(r2, g2, b2, a2).next();
-            bufferBuilder.vertex(matrix, (float) x2, (float) y2, 0.0F).color(r2, g2, b2, a2).next();
-            bufferBuilder.vertex(matrix, (float) x2, (float) y1, 0.0F).color(r1, g1, b1, a1).next();
-            bufferBuilder.end();
-            BufferRenderer.draw(bufferBuilder);
-            RenderSystem.enableTexture();
-            RenderSystem.disableBlend();
-
         }
 
         public static void renderQuadGradient(MatrixStack matrices, Color c2, Color c1, double x1, double y1, double x2, double y2) {
@@ -699,19 +590,6 @@ public class Renderer {
             RenderSystem.disableBlend();
         }
 
-        public static void renderBackgroundTexture() {
-            if (CoffeeClientMain.client.currentScreen instanceof SocialInteractionsScreen) {
-                return;
-            }
-            int width = CoffeeClientMain.client.getWindow().getScaledWidth();
-            int height = CoffeeClientMain.client.getWindow().getScaledHeight();
-            RenderSystem.setShaderColor(1, 1, 1, 1);
-            RenderSystem.setShaderTexture(0, OPTIONS_BACKGROUND_TEXTURE);
-            Screen.drawTexture(R3D.getEmptyMatrixStack(), 0, 0, 0, 0, width, height, width, height);
-            if (!(CoffeeClientMain.client.currentScreen instanceof HomeScreen)) {
-                DrawableHelper.fill(R3D.getEmptyMatrixStack(), 0, 0, width, height, new Color(0, 0, 0, 60).getRGB());
-            }
-        }
     }
 
     public static class Util {

@@ -11,7 +11,7 @@
   "contributors": [],
   "contact": {},
   "license": "All-Rights-Reserved",
-  "icon": "assets/sipoverprivate/icon.png",
+  "icon": "assets/coffeeclient/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [

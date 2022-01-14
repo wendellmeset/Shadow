@@ -15,7 +15,7 @@ import net.minecraft.client.util.math.MatrixStack;
 
 public abstract class Module {
 
-    protected static MinecraftClient client = CoffeeClientMain.client;
+    protected static final MinecraftClient client = CoffeeClientMain.client;
     public final ModuleConfig config;
     public final DoubleSetting keybind;
     private final BooleanSetting debuggerEnabled;

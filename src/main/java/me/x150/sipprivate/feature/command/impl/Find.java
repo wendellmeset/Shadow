@@ -102,7 +102,7 @@ public class Find extends Command {
 
     @Override
     public void onExecute(String[] args) {
-        if (!CoffeeClientMain.client.interactionManager.hasCreativeInventory()) {
+        if (!Objects.requireNonNull(CoffeeClientMain.client.interactionManager).hasCreativeInventory()) {
             error("Cant find the player, need GMC");
             return;
         }

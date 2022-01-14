@@ -7,6 +7,8 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.EntityHitResult;
 
+import java.util.Objects;
+
 
 public class AutoAttack extends Module {
 
@@ -16,9 +18,9 @@ public class AutoAttack extends Module {
 
     @Override
     public void tick() {
-        if (!(CoffeeClientMain.client.crosshairTarget instanceof EntityHitResult) || CoffeeClientMain.client.player.getAttackCooldownProgress(0) < 1)
+        if (!(CoffeeClientMain.client.crosshairTarget instanceof EntityHitResult) || Objects.requireNonNull(CoffeeClientMain.client.player).getAttackCooldownProgress(0) < 1)
             return;
-        CoffeeClientMain.client.interactionManager.attackEntity(CoffeeClientMain.client.player, ((EntityHitResult) CoffeeClientMain.client.crosshairTarget).getEntity());
+        Objects.requireNonNull(CoffeeClientMain.client.interactionManager).attackEntity(CoffeeClientMain.client.player, ((EntityHitResult) CoffeeClientMain.client.crosshairTarget).getEntity());
         CoffeeClientMain.client.player.swingHand(Hand.MAIN_HAND);
     }
 

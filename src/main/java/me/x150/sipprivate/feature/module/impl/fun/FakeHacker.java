@@ -18,6 +18,7 @@ import net.minecraft.util.hit.HitResult;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.StreamSupport;
 
 public class FakeHacker extends Module {
@@ -48,7 +49,7 @@ public class FakeHacker extends Module {
     @Override
     public void tick() {
         if (target != null) {
-            Iterable<Entity> entities = CoffeeClientMain.client.world.getEntities();
+            Iterable<Entity> entities = Objects.requireNonNull(CoffeeClientMain.client.world).getEntities();
             List<Entity> entities1 = new ArrayList<>(StreamSupport.stream(entities.spliterator(), false).toList());
             Collections.shuffle(entities1);
             for (Entity entity : entities1) {

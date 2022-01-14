@@ -18,7 +18,6 @@
     "Deadmau5FeatureRendererMixin",
     "EntityMixin",
     "EntityRenderDispatcherMixin",
-    "GameMenuMixin",
     "GameRendererMixin",
     "HandledScreenMixin",
     "IClientPlayerInteractionManagerAccessor",
@@ -39,6 +38,7 @@
     "MouseMixin",
     "PlayerEntityMixin",
     "PlayerInteractEntityC2SPacketAccessor",
+    "SessionAccessor",
     "SharedConstantsMixin",
     "TitleScreenMixin",
     "WorldRendererMixin"

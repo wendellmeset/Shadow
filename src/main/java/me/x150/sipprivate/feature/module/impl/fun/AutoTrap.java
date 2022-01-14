@@ -18,11 +18,12 @@ import net.minecraft.util.math.Vec3d;
 
 import java.awt.*;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class AutoTrap extends Module {
-    static double[][] buildOffsetsSmall = new double[][]{new double[]{0, 2, 0}, new double[]{1, 1, 0}, new double[]{0, 1, 1}, new double[]{-1, 1, 0}, new double[]{0, 1, -1}, new double[]{0, -1, 0}};
-    static double[][] buildOffsetsBig = new double[][]{
+    static final double[][] buildOffsetsSmall = new double[][]{new double[]{0, 2, 0}, new double[]{1, 1, 0}, new double[]{0, 1, 1}, new double[]{-1, 1, 0}, new double[]{0, 1, -1}, new double[]{0, -1, 0}};
+    static final double[][] buildOffsetsBig = new double[][]{
             // begin bottom
             new double[]{-.5, -1, -.5}, new double[]{-.5, -1, .5}, new double[]{.5, -1, .5}, new double[]{.5, -1, -.5},
 
@@ -55,7 +56,7 @@ public class AutoTrap extends Module {
 
         boolean smallMatches = Arrays.stream(buildOffsetsSmall).allMatch(ints -> {
             BlockPos a = bp.add(ints[0], ints[1], ints[2]);
-            return CoffeeClientMain.client.world.getBlockState(a).getMaterial().blocksMovement();
+            return Objects.requireNonNull(CoffeeClientMain.client.world).getBlockState(a).getMaterial().blocksMovement();
         });
         if (smallMatches) {
             return true;
@@ -76,12 +77,12 @@ public class AutoTrap extends Module {
     }
 
     boolean inHitRange(Entity attacker, Vec3d pos) {
-        return attacker.getCameraPosVec(1f).distanceTo(pos) <= CoffeeClientMain.client.interactionManager.getReachDistance() + .5;
+        return attacker.getCameraPosVec(1f).distanceTo(pos) <= Objects.requireNonNull(CoffeeClientMain.client.interactionManager).getReachDistance() + .5;
     }
 
     @Override
     public void onFastTick() {
-        for (Entity player : CoffeeClientMain.client.world.getPlayers()) {
+        for (Entity player : Objects.requireNonNull(CoffeeClientMain.client.world).getPlayers()) {
             if (player.equals(CoffeeClientMain.client.player)) {
                 continue;
             }
@@ -129,7 +130,7 @@ public class AutoTrap extends Module {
                     }
                     BlockHitResult bhr = new BlockHitResult(Vec3d.of(current), Direction.DOWN, current, false);
 
-                    CoffeeClientMain.client.interactionManager.interactBlock(CoffeeClientMain.client.player, CoffeeClientMain.client.world, Hand.MAIN_HAND, bhr);
+                    Objects.requireNonNull(CoffeeClientMain.client.interactionManager).interactBlock(CoffeeClientMain.client.player, CoffeeClientMain.client.world, Hand.MAIN_HAND, bhr);
                 }
                 CoffeeClientMain.client.player.getInventory().selectedSlot = selSlot;
             });
@@ -159,7 +160,7 @@ public class AutoTrap extends Module {
     @Override
     public void onWorldRender(MatrixStack matrices) {
         if (isDebuggerEnabled()) {
-            for (Entity player : CoffeeClientMain.client.world.getPlayers()) {
+            for (Entity player : Objects.requireNonNull(CoffeeClientMain.client.world).getPlayers()) {
                 if (player.equals(CoffeeClientMain.client.player)) {
                     continue;
                 }

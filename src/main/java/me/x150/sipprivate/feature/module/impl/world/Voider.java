@@ -12,13 +12,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
 import java.awt.*;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Voider extends Module {
-    DoubleSetting radius = this.config.create(new DoubleSetting.Builder(100).precision(0).name("Radius").description("How much to erase on X and Z").min(20).max(500).get());
-    DoubleSetting delay = this.config.create(new DoubleSetting.Builder(30).precision(0).name("Delay").description("How much delay to use while erasing").min(0).max(1000).get());
+    final DoubleSetting radius = this.config.create(new DoubleSetting.Builder(100).precision(0).name("Radius").description("How much to erase on X and Z").min(20).max(500).get());
+    final DoubleSetting delay = this.config.create(new DoubleSetting.Builder(30).precision(0).name("Delay").description("How much delay to use while erasing").min(0).max(1000).get());
+    final AtomicBoolean cancel = new AtomicBoolean(false);
     Thread runner;
-    AtomicBoolean cancel = new AtomicBoolean(false);
     Vec3d startPos = null;
     Vec3d latest = null;
 
@@ -40,8 +41,8 @@ public class Voider extends Module {
                 Vec3d root = startPos.add(ox, 0, oz);
                 BlockPos pp = new BlockPos(root);
                 latest = Vec3d.of(pp);
-                String chat = String.format("/fill %d %d %d %d %d %d minecraft:air", pp.getX() - 2, CoffeeClientMain.client.world.getBottomY(), pp.getZ() - 2, pp.getX() + 2, CoffeeClientMain.client.world.getTopY() - 1, pp.getZ() + 2);
-                CoffeeClientMain.client.player.sendChatMessage(chat);
+                String chat = String.format("/fill %d %d %d %d %d %d minecraft:air", pp.getX() - 2, Objects.requireNonNull(CoffeeClientMain.client.world).getBottomY(), pp.getZ() - 2, pp.getX() + 2, CoffeeClientMain.client.world.getTopY() - 1, pp.getZ() + 2);
+                Objects.requireNonNull(CoffeeClientMain.client.player).sendChatMessage(chat);
                 Utils.sleep((long) (delay.getValue() + 0));
             }
         }
@@ -50,7 +51,7 @@ public class Voider extends Module {
 
     @Override
     public void enable() {
-        startPos = CoffeeClientMain.client.player.getPos();
+        startPos = Objects.requireNonNull(CoffeeClientMain.client.player).getPos();
         cancel.set(false);
         runner = new Thread(this::run);
         runner.start();
@@ -70,7 +71,7 @@ public class Voider extends Module {
     @Override
     public void onWorldRender(MatrixStack matrices) {
         if (latest != null) {
-            Renderer.R3D.renderFilled(new Vec3d(latest.x - 2, CoffeeClientMain.client.world.getBottomY(), latest.z - 2), new Vec3d(5, 0.001, 5), Utils.getCurrentRGB(), matrices);
+            Renderer.R3D.renderFilled(new Vec3d(latest.x - 2, Objects.requireNonNull(CoffeeClientMain.client.world).getBottomY(), latest.z - 2), new Vec3d(5, 0.001, 5), Utils.getCurrentRGB(), matrices);
             Renderer.R3D.renderLine(new Vec3d(latest.x + .5, CoffeeClientMain.client.world.getBottomY(), latest.z + .5), new Vec3d(latest.x + .5, CoffeeClientMain.client.world.getTopY(), latest.z + .5), Color.RED, matrices);
         }
     }
@@ -78,10 +79,5 @@ public class Voider extends Module {
     @Override
     public void onHudRender() {
 
-    }
-
-    @Override
-    public void onFastTick() {
-        super.onFastTick();
     }
 }

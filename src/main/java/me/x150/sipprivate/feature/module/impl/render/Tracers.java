@@ -26,8 +26,8 @@ import java.util.stream.StreamSupport;
 
 public class Tracers extends Module {
 
-    BooleanSetting entities = this.config.create(new BooleanSetting.Builder(false).name("Show entities").description("Render entities").get());
-    BooleanSetting players = this.config.create(new BooleanSetting.Builder(true).name("Show players").description("Render players").get());
+    final BooleanSetting entities = this.config.create(new BooleanSetting.Builder(false).name("Show entities").description("Render entities").get());
+    final BooleanSetting players = this.config.create(new BooleanSetting.Builder(true).name("Show players").description("Render players").get());
 
     public Tracers() {
         super("Tracers", "Shows where entities are in relation to you", ModuleType.RENDER);

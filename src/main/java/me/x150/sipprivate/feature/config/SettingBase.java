@@ -19,7 +19,7 @@ public abstract class SettingBase<V> {
      * The default value of this setting
      */
     final V defaultValue;
-    List<BooleanSupplier> suppliers = new ArrayList<>();
+    final List<BooleanSupplier> suppliers = new ArrayList<>();
     /**
      * The current value of this setting
      */

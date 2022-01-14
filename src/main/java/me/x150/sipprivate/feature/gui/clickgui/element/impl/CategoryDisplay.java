@@ -15,10 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryDisplay extends Element {
-    static ClientFontRenderer cfr = FontRenderers.getCustomNormal(20);
+    static final ClientFontRenderer cfr = FontRenderers.getCustomNormal(20);
+    final List<ModuleDisplay> md = new ArrayList<>();
+    final ModuleType mt;
     boolean selected = false;
-    List<ModuleDisplay> md = new ArrayList<>();
-    ModuleType mt;
 
     public CategoryDisplay(double x, double y, ModuleType mt) {
         super(x, y, 100, 500);

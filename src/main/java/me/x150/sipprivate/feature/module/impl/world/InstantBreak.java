@@ -28,10 +28,11 @@ public class InstantBreak extends Module {
 
     final List<Vec3d> positions = new ArrayList<>();
     final List<PlayerActionC2SPacket> whitelist = new ArrayList<>();
-    EnumSetting<Priority> prio = this.config.create(new EnumSetting.Builder<>(Priority.Speed)
+    final EnumSetting<Priority> prio = this.config.create(new EnumSetting.Builder<>(Priority.Speed)
             .name("Priority")
             .description("What to do with the blocks being broken")
             .get());
+
     public InstantBreak() {
         super("InstantBreak", "Breaks a block a lot faster", ModuleType.WORLD);
         Events.registerEventHandler(EventType.PACKET_SEND, event -> {

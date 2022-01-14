@@ -24,6 +24,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 
 import java.awt.*;
+import java.util.Objects;
 
 public class AnyPlacer extends Module {
     public AnyPlacer() {
@@ -53,7 +54,7 @@ public class AnyPlacer extends Module {
                     nl.add(NbtDouble.of(spawnPos.z));
                     entityTag.put("Pos", nl);
                     CreativeInventoryActionC2SPacket a = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(CoffeeClientMain.client.player.getInventory().selectedSlot), sex);
-                    CoffeeClientMain.client.getNetworkHandler().sendPacket(a);
+                    Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).sendPacket(a);
                     BlockHitResult bhr = new BlockHitResult(CoffeeClientMain.client.player.getPos(), Direction.DOWN, new BlockPos(CoffeeClientMain.client.player.getPos()), false);
                     PlayerInteractBlockC2SPacket ib = new PlayerInteractBlockC2SPacket(Hand.MAIN_HAND, bhr);
                     CoffeeClientMain.client.getNetworkHandler().sendPacket(ib);
@@ -84,7 +85,7 @@ public class AnyPlacer extends Module {
     @Override
     public void onWorldRender(MatrixStack matrices) {
         if (isDebuggerEnabled()) {
-            HitResult hr = CoffeeClientMain.client.player.raycast(500, 0, true);
+            HitResult hr = Objects.requireNonNull(CoffeeClientMain.client.player).raycast(500, 0, true);
             Vec3d spawnPos = hr.getPos();
             Renderer.R3D.renderFilled(spawnPos.subtract(.3, 0, .3), new Vec3d(.6, 0.001, .6), Color.WHITE, matrices);
         }

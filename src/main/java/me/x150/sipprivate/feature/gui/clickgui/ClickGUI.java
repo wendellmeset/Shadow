@@ -26,10 +26,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class ClickGUI extends Screen implements FastTickable {
-    public static Theme theme = new SipoverV1();
+    public static final Theme theme = new SipoverV1();
     private static ClickGUI instance;
-    List<Element> elements = new ArrayList<>();
-    ParticleRenderer real = new ParticleRenderer(100);
+    final List<Element> elements = new ArrayList<>();
+    final ParticleRenderer real = new ParticleRenderer(100);
     String desc = null;
     double descX, descY;
     double scroll = 0;
@@ -116,7 +116,7 @@ public class ClickGUI extends Screen implements FastTickable {
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         if (closing && introAnimation == 0) {
-            client.setScreen(null);
+            Objects.requireNonNull(client).setScreen(null);
             return;
         }
         MSAAFramebuffer.use(MSAAFramebuffer.MAX_SAMPLES, () -> renderIntern(matrices, mouseX, mouseY, delta));

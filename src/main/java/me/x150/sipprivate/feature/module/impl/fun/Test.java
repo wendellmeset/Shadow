@@ -6,17 +6,19 @@ import me.x150.sipprivate.feature.module.ModuleType;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.packet.c2s.play.RequestCommandCompletionsC2SPacket;
 
+import java.util.Objects;
+
 public class Test extends Module {
 
     public Test() {
-        super("Test","Shit fuck", ModuleType.FUN);
+        super("Test", "Shit fuck", ModuleType.FUN);
     }
 
     @Override
     public void tick() {
-        for(int i = 0;i<4;i++) {
-            RequestCommandCompletionsC2SPacket p = new RequestCommandCompletionsC2SPacket((int) Math.floor(Math.random()*9999),"/");
-            CoffeeClientMain.client.getNetworkHandler().sendPacket(p);
+        for (int i = 0; i < 4; i++) {
+            RequestCommandCompletionsC2SPacket p = new RequestCommandCompletionsC2SPacket((int) Math.floor(Math.random() * 9999), "/");
+            Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).sendPacket(p);
         }
     }
 

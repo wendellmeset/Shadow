@@ -31,20 +31,21 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 public class Hud extends Module {
     public static double currentTps = 0;
     static ClientFontRenderer titleFr;
     final DateFormat minSec = new SimpleDateFormat("mm:ss");
-    BooleanSetting fps = this.config.create(new BooleanSetting.Builder(true).name("FPS").description("Whether to show FPS").get());
-    BooleanSetting tps = this.config.create(new BooleanSetting.Builder(true).name("TPS").description("Whether to show TPS").get());
-    BooleanSetting coords = this.config.create(new BooleanSetting.Builder(true).name("Coordinates").description("Whether to show current coordinates").get());
-    BooleanSetting ping = this.config.create(new BooleanSetting.Builder(true).name("Ping").description("Whether to show current ping").get());
-    BooleanSetting modules = this.config.create(new BooleanSetting.Builder(true).name("Array list").description("Whether to show currently enabled modules").get());
+    final BooleanSetting fps = this.config.create(new BooleanSetting.Builder(true).name("FPS").description("Whether to show FPS").get());
+    final BooleanSetting tps = this.config.create(new BooleanSetting.Builder(true).name("TPS").description("Whether to show TPS").get());
+    final BooleanSetting coords = this.config.create(new BooleanSetting.Builder(true).name("Coordinates").description("Whether to show current coordinates").get());
+    final BooleanSetting ping = this.config.create(new BooleanSetting.Builder(true).name("Ping").description("Whether to show current ping").get());
+    final BooleanSetting modules = this.config.create(new BooleanSetting.Builder(true).name("Array list").description("Whether to show currently enabled modules").get());
+    final List<ModuleEntry> moduleList = new ArrayList<>();
     long lastTimePacketReceived;
     double rNoConnectionPosY = -10d;
     Notification serverNotResponding = null;
-    List<ModuleEntry> moduleList = new ArrayList<>();
 
     public Hud() {
         super("Hud", "Shows information about the player on screen", ModuleType.RENDER);
@@ -198,11 +199,11 @@ public class Hud extends Module {
             values.add(currentTps + " tps");
         }
         if (this.ping.getValue()) {
-            PlayerListEntry ple = CoffeeClientMain.client.getNetworkHandler().getPlayerListEntry(CoffeeClientMain.client.player.getUuid());
+            PlayerListEntry ple = Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).getPlayerListEntry(Objects.requireNonNull(CoffeeClientMain.client.player).getUuid());
             values.add((ple == null || ple.getLatency() == 0 ? "?" : ple.getLatency() + "") + " ms");
         }
         if (this.coords.getValue()) {
-            BlockPos bp = CoffeeClientMain.client.player.getBlockPos();
+            BlockPos bp = Objects.requireNonNull(CoffeeClientMain.client.player).getBlockPos();
             values.add(bp.getX() + " " + bp.getY() + " " + bp.getZ());
         }
         String drawStr = String.join(" | ", values);

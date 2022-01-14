@@ -10,6 +10,8 @@ import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleType;
 import net.minecraft.client.util.math.MatrixStack;
 
+import java.util.Objects;
+
 public class Sprint extends Module {
 
     public Sprint() {
@@ -22,7 +24,7 @@ public class Sprint extends Module {
             return;
         }
         if (CoffeeClientMain.client.options.keyForward.isPressed() && !CoffeeClientMain.client.options.keyBack.isPressed() && !CoffeeClientMain.client.player.isSneaking() && !CoffeeClientMain.client.player.horizontalCollision) {
-            client.player.setSprinting(true);
+            Objects.requireNonNull(client.player).setSprinting(true);
         }
     }
 

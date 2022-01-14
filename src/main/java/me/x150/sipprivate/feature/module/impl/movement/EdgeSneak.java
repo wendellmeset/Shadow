@@ -15,6 +15,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 
+import java.util.Objects;
+
 public class EdgeSneak extends Module {
 
     public EdgeSneak() {
@@ -44,7 +46,7 @@ public class EdgeSneak extends Module {
         }
         //STL.notifyUser(sneak+"");
         boolean previousState = InputUtil.isKeyPressed(CoffeeClientMain.client.getWindow().getHandle(), client.options.keySneak.getDefaultKey().getCode());
-        if (client.player.isOnGround()) {
+        if (Objects.requireNonNull(client.player).isOnGround()) {
             client.options.keySneak.setPressed(sneak || previousState);
         }
     }

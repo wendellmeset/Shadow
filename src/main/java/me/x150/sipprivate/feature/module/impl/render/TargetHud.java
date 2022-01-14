@@ -35,12 +35,12 @@ public class TargetHud extends Module {
 
     public static final int modalWidth = 160;
     public static final int modalHeight = 70;
-    BooleanSetting renderPing = this.config.create(new BooleanSetting.Builder(true).name("Render ping").description("Shows the ping of the enemy").get());
-    BooleanSetting renderHP = this.config.create(new BooleanSetting.Builder(true).name("Render health").description("Shows the HP of the enemy").get());
-    BooleanSetting renderMaxHP = this.config.create(new BooleanSetting.Builder(true).name("Render max health").description("Shows the max HP of the enemy").get());
-    BooleanSetting renderDistance = this.config.create(new BooleanSetting.Builder(true).name("Render distance").description("Shows the enemy's distance to you").get());
-    BooleanSetting renderLook = this.config.create(new BooleanSetting.Builder(true).name("Render look").description("Shows if the enemy is looking near you").get());
-    BooleanSetting renderLoseWin = this.config.create(new BooleanSetting.Builder(true).name("Render lose / win").description("Shows if you're currently losing or winning against the enemy").get());
+    final BooleanSetting renderPing = this.config.create(new BooleanSetting.Builder(true).name("Render ping").description("Shows the ping of the enemy").get());
+    final BooleanSetting renderHP = this.config.create(new BooleanSetting.Builder(true).name("Render health").description("Shows the HP of the enemy").get());
+    final BooleanSetting renderMaxHP = this.config.create(new BooleanSetting.Builder(true).name("Render max health").description("Shows the max HP of the enemy").get());
+    final BooleanSetting renderDistance = this.config.create(new BooleanSetting.Builder(true).name("Render distance").description("Shows the enemy's distance to you").get());
+    final BooleanSetting renderLook = this.config.create(new BooleanSetting.Builder(true).name("Render look").description("Shows if the enemy is looking near you").get());
+    final BooleanSetting renderLoseWin = this.config.create(new BooleanSetting.Builder(true).name("Render lose / win").description("Shows if you're currently losing or winning against the enemy").get());
     double wX = 0;
     double renderWX1 = 0;
     Entity e = null;

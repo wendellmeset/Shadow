@@ -4,7 +4,7 @@ import me.x150.sipprivate.CoffeeClientMain;
 import net.minecraft.client.util.InputUtil;
 
 public class Keybind {
-    int keycode;
+    final int keycode;
 
     public Keybind(int keycode) {
         this.keycode = keycode;

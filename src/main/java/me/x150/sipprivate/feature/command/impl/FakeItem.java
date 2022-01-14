@@ -13,6 +13,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -24,7 +25,7 @@ public class FakeItem extends Command {
     @Override
     public String[] getSuggestions(String fullCommand, String[] args) {
         if (args.length == 1) {
-            return CoffeeClientMain.client.world.getPlayers().stream().map(abstractClientPlayerEntity -> abstractClientPlayerEntity.getGameProfile().getName()).collect(Collectors.toList())
+            return Objects.requireNonNull(CoffeeClientMain.client.world).getPlayers().stream().map(abstractClientPlayerEntity -> abstractClientPlayerEntity.getGameProfile().getName()).collect(Collectors.toList())
                     .toArray(String[]::new);
         } else if (args.length == 2) {
             return new String[]{"hand", "custom:(item id) [item nbt]"};
@@ -52,7 +53,7 @@ public class FakeItem extends Command {
             nameTarget = args[0];
         }
         PlayerEntity le = null;
-        for (Entity entity : CoffeeClientMain.client.world.getEntities()) {
+        for (Entity entity : Objects.requireNonNull(CoffeeClientMain.client.world).getEntities()) {
             if (entity instanceof PlayerEntity le1) {
                 if (u != null && entity.getUuid().equals(u)) {
                     le = le1;
@@ -66,7 +67,7 @@ public class FakeItem extends Command {
             return;
         }
         if (args[1].equalsIgnoreCase("hand")) {
-            ItemStack main = CoffeeClientMain.client.player.getMainHandStack().copy();
+            ItemStack main = Objects.requireNonNull(CoffeeClientMain.client.player).getMainHandStack().copy();
             if (main.isEmpty()) {
                 error("You're not holding anything");
                 return;

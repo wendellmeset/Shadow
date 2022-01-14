@@ -25,7 +25,7 @@ public class GodBridge extends Module {
     final float mOffset = 0.20f;
     final Direction[] allowedSides = new Direction[]{Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
     //    final BooleanValue courseCorrect = (BooleanValue) this.config.create("Course correct", true).description("Prevent you from falling off the track by accident");
-    BooleanSetting courseCorrect = this.config.create(new BooleanSetting.Builder(true)
+    final BooleanSetting courseCorrect = this.config.create(new BooleanSetting.Builder(true)
             .name("Course correct")
             .description("Prevents you from accidentally falling off a side of the bridge")
             .get());
