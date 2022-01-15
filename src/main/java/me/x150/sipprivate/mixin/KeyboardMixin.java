@@ -34,4 +34,10 @@ public class KeyboardMixin {
             Events.fireEvent(EventType.KEYBOARD, new KeyboardEvent(key, action));
         }
     }
+
+    @Inject(method="setRepeatEvents",at=@At("HEAD"),cancellable = true)
+    void repeatEvents(boolean repeatEvents, CallbackInfo ci) {
+        this.repeatEvents = true;
+        ci.cancel();
+    }
 }

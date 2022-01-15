@@ -43,7 +43,6 @@ public class Flight extends Module {
             }
         });
     }
-
     @Override
     public void tick() {
         if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.world == null || CoffeeClientMain.client.getNetworkHandler() == null) {

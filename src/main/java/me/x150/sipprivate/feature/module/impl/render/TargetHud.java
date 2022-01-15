@@ -125,7 +125,9 @@ public class TargetHud extends Module {
     public void onHudRender() {
 
     }
-
+    static Color GREEN = new Color(100, 255, 20);
+    static Color RED = new Color(255, 50, 20);
+    static Color bg = new Color(37, 50, 56, 200);
     public void draw(MatrixStack stack) {
         if (!this.isEnabled()) {
             return;
@@ -149,7 +151,7 @@ public class TargetHud extends Module {
             double y = rwxI * (modalHeight / 2d);
             stack.translate(x, y, 0);
             stack.scale((float) renderWX, (float) renderWX, 1);
-            Renderer.R2D.renderQuad(stack, new Color(37, 50, 56, 200), 0, 0, modalWidth, modalHeight);
+            Renderer.R2D.renderQuad(stack, bg, 0, 0, modalWidth, modalHeight);
             FontRenderers.getNormal().drawString(stack, entity.getEntityName(), 40, yOffset, 0xFFFFFF);
             yOffset += FontRenderers.getNormal().getFontHeight();
             PlayerListEntry ple = Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).getPlayerListEntry(entity.getUuid());
@@ -169,8 +171,7 @@ public class TargetHud extends Module {
             //hPer = MathHelper.clamp(hPer,0,1);
             double renderToX = modalWidth * hPer;
             renderToX = MathHelper.clamp(renderToX, 0, modalWidth);
-            Color GREEN = new Color(100, 255, 20);
-            Color RED = new Color(255, 50, 20);
+
             Color MID_END = Renderer.Util.lerp(GREEN, RED, hPer);
             Renderer.R2D.renderQuadGradient(stack, RED, MID_END, 0, modalHeight - 2, renderToX, modalHeight);
             if (renderHP.getValue()) {

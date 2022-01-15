@@ -107,6 +107,7 @@ public class ModuleRegistry {
         modules.add(new Nuker());
         modules.add(new Scaffold());
         modules.add(new Test());
+        modules.add(new BlocksmcFlight());
     }
 
     public static List<Module> getModules() {

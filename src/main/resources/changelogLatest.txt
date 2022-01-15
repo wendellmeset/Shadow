@@ -1,5 +1,1 @@
-Added session editor
-Improved modules
-Improved overall GUI system
-Made release friendly
-hi sippy :)
+real

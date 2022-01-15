@@ -57,14 +57,14 @@ public class EnumSettingEditor extends ConfigBase<EnumSetting<?>> {
     public boolean keyPressed(int keycode, int modifiers) {
         return false;
     }
-
+    static Color idk2 = new Color(0, 0, 20, 60);
     @Override
     public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
         double pad = 0;
         FontRenderers.getNormal().drawString(matrices, configValue.name, x, y + 1, 0xFFFFFF);
         double yOffset = FontRenderers.getNormal().getMarginHeight() + 2;
         //        Renderer.R2D.fill(matrices, new Color(0, 0, 0, 30), x, y + yOffset, x + width, y + height);
-        Renderer.R2D.renderRoundedQuad(matrices, new Color(0, 0, 20, 60), x, y + yOffset, x + width, y + height - pad, 5, 5);
+        Renderer.R2D.renderRoundedQuad(matrices, idk2, x, y + yOffset, x + width, y + height - pad, 5, 5);
         yOffset += 1;
         for (EnumSelectorClickable<?> value : values) {
             value.x = x + 1;

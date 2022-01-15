@@ -58,7 +58,7 @@ public class Flattener extends Module {
     public Flattener() {
         super("Flattener", "Makes everything around you flat, good for making a floor or base", ModuleType.WORLD);
     }
-
+    static Color breakCol = new Color(31, 232, 148, 70);
     @Override
     public void tick() {
         Vec3d eyep = Objects.requireNonNull(client.player).getEyePos();
@@ -110,7 +110,7 @@ public class Flattener extends Module {
             }
             Rotations.lookAtV3(Vec3d.of(blockPos).add(.5, .5, .5));
             Objects.requireNonNull(client.interactionManager).updateBlockBreakingProgress(blockPos, Direction.DOWN);
-            renders.add(new RenderEntry(blockPos, new Vec3d(1, 1, 1), new Color(31, 232, 148, 70)));
+            renders.add(new RenderEntry(blockPos, new Vec3d(1, 1, 1), breakCol));
             done++;
             if (done > amountPerTick.getValue()) {
                 if (!asyncPlaceBreak.getValue()) {

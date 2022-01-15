@@ -267,10 +267,10 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
         scroll = MathHelper.clamp(scroll, 0, max);
         return super.mouseScrolled(mouseX, mouseY, amount);
     }
-
+    static Color bg = new Color(220, 220, 220);
     @Override
     public void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
-        Renderer.R2D.renderQuad(stack, new Color(220, 220, 220), 0, 0, width, height);
+        Renderer.R2D.renderQuad(stack, bg, 0, 0, width, height);
         title.drawString(stack, "Coffee", 10, 10, 0, false);
         titleSmall.drawString(stack, "Alt manager", 10 + title.getStringWidth("Coffee") + 5, 10 + title.getMarginHeight() - titleSmall.getMarginHeight() - 1, 0, false);
         censorMail.render(stack, mouseX, mouseY);
@@ -304,7 +304,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
         double fromY = getHeaderHeight();
         double toY = fromY + widRHeight;
 
-        Renderer.R2D.renderRoundedQuad(stack, new Color(255, 255, 255, 100), fromX, fromY, toX, toY, 10, 10);
+        Renderer.R2D.renderRoundedQuad(stack, idk1, fromX, fromY, toX, toY, 10, 10);
         if (selectedAlt != null) {
             double texDim = widRHeight - padding * 2;
 
@@ -342,7 +342,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
 
         toY = height - getPadding();
         fromY = toY - widRHeight;
-        Renderer.R2D.renderRoundedQuad(stack, new Color(255, 255, 255, 100), fromX, fromY, toX, toY, 10, 10);
+        Renderer.R2D.renderRoundedQuad(stack, idk2, fromX, fromY, toX, toY, 10, 10);
         double texDim = widRHeight - padding * 2;
 
         RenderSystem.enableBlend();
@@ -450,7 +450,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
             matrices.scale(MathHelper.lerp(animProgress, 1f, 0.95f), MathHelper.lerp(animProgress, 1f, 0.95f), 1f);
             double originX = -width / 2d;
             double originY = -height / 2d;
-            Renderer.R2D.renderRoundedQuad(matrices, new Color(230, 230, 230), originX, originY, width / 2d, height / 2d, 10, 10);
+            Renderer.R2D.renderRoundedQuad(matrices, idk3, originX, originY, width / 2d, height / 2d, 10, 10);
             FontRenderers.getNormal().drawString(matrices, text, -(FontRenderers.getNormal().getStringWidth(text) + 2) / 2f, -FontRenderers.getNormal().getMarginHeight() / 2f, isEnabled() ? 0 : 0x333333, false);
             matrices.pop();
         }
@@ -461,7 +461,16 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
             }
         }
     }
-
+    static Color idk1 = new Color(255, 255, 255, 100);
+    static Color idk2 = idk1;
+    static Color idk3 = new Color(230, 230, 230);
+    static Color idk4 = idk3;
+    static Color idk5 = idk3;
+    static Color idk6 = new Color(0, 0, 0, 130);
+    static Color idk7 = new Color(220, 220, 220);
+    static Color idk8 = idk6;
+    static Color idk9 = idk7;
+    static Color idk10 = idk1;
     static class AltStorage {
         final String email;
         final String password;
@@ -499,7 +508,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
 
         @Override
         protected void init() {
-            RoundButton exit = new RoundButton(new Color(230, 230, 230), width - 20 - 5, 5, 20, 20, "X", () -> Objects.requireNonNull(client).setScreen(parent));
+            RoundButton exit = new RoundButton(idk4, width - 20 - 5, 5, 20, 20, "X", () -> Objects.requireNonNull(client).setScreen(parent));
             addDrawableChild(exit);
             double y = height / 2d - widgetHei / 2d + padding + title.getMarginHeight() + FontRenderers.getNormal().getMarginHeight() + padding;
             RoundTextFieldWidget accessToken = new RoundTextFieldWidget(width / 2d - (widgetWid - padding * 2) / 2d, y, widgetWid - padding * 2, 20, "Access token", 10);
@@ -511,7 +520,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
             RoundTextFieldWidget uuid = new RoundTextFieldWidget(width / 2d - (widgetWid - padding * 2) / 2d, y, widgetWid - padding * 2, 20, "UUID", 10);
             uuid.setText(session.getUuid());
             y += uuid.getHeight() + padding;
-            RoundButton save = new RoundButton(new Color(230, 230, 230), width / 2d - (widgetWid - padding * 2) / 2d, y, widgetWid - padding * 2, 20, "Save", () -> {
+            RoundButton save = new RoundButton(idk5, width / 2d - (widgetWid - padding * 2) / 2d, y, widgetWid - padding * 2, 20, "Save", () -> {
                 SessionAccessor sa = (SessionAccessor) session;
                 sa.setUsername(username.get());
                 sa.setAccessToken(accessToken.get());
@@ -550,12 +559,12 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
 
 
             save.setEnabled(!name.get().isEmpty() && !uuid.get().isEmpty()); // enable when both name and uuid are set
-            Renderer.R2D.renderQuad(stack, new Color(0, 0, 0, 130), 0, 0, width, height);
+            Renderer.R2D.renderQuad(stack, idk6, 0, 0, width, height);
 
 
             double centerX = width / 2d;
             double centerY = height / 2d;
-            Renderer.R2D.renderRoundedQuad(stack, new Color(220, 220, 220), centerX - widgetWid / 2d, centerY - widgetHei / 2d, centerX + widgetWid / 2d, centerY + widgetHei / 2d, 10, 10);
+            Renderer.R2D.renderRoundedQuad(stack, idk7, centerX - widgetWid / 2d, centerY - widgetHei / 2d, centerX + widgetWid / 2d, centerY + widgetHei / 2d, 10, 10);
             stack.push();
 
             double originX = width / 2d - widgetWid / 2d;
@@ -649,14 +658,14 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
             if (parent != null) {
                 parent.renderInternal(stack, mouseX, mouseY, delta);
             }
-            Renderer.R2D.renderQuad(stack, new Color(0, 0, 0, 130), 0, 0, width, height);
+            Renderer.R2D.renderQuad(stack, idk8, 0, 0, width, height);
 
             for (ThemedButton button : buttons) {
                 button.render(stack, mouseX, mouseY);
             }
             double centerX = width / 2d;
             double centerY = height / 2d;
-            Renderer.R2D.renderRoundedQuad(stack, new Color(220, 220, 220), centerX - widgetWid / 2d, centerY - widgetHei / 2d, centerX + widgetWid / 2d, centerY + widgetHei / 2d, 10, 10);
+            Renderer.R2D.renderRoundedQuad(stack, idk9, centerX - widgetWid / 2d, centerY - widgetHei / 2d, centerX + widgetWid / 2d, centerY + widgetHei / 2d, 10, 10);
             stack.push();
 
             double originX = width / 2d - widgetWid / 2d;
@@ -819,7 +828,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
             stack.translate(renderX + width / 2d, renderY + getHeight() / 2d, 0);
             float animProgress = (float) easeInOutQuint(this.animProgress);
             stack.scale(MathHelper.lerp(animProgress, 1f, 0.99f), MathHelper.lerp(animProgress, 1f, 0.99f), 1f);
-            Renderer.R2D.renderRoundedQuad(stack, new Color(255, 255, 255, 100), originX, originY, originX + width, originY + getHeight(), 10, 10);
+            Renderer.R2D.renderRoundedQuad(stack, idk10, originX, originY, originX + width, originY + getHeight(), 10, 10);
             double padding = 5;
             double texWidth = getHeight() - padding * 2;
             double texHeight = getHeight() - padding * 2;

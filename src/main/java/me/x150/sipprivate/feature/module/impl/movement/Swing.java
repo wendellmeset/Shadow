@@ -95,7 +95,7 @@ public class Swing extends Module {
     public String getContext() {
         return null;
     }
-
+    static Color line = new Color(50, 50, 50, 255);
     @Override
     public void onWorldRender(MatrixStack matrices) {
         if (swinging == null || CoffeeClientMain.client.player == null) {
@@ -107,7 +107,7 @@ public class Swing extends Module {
         Vec3d eSource = new Vec3d(MathHelper.lerp(CoffeeClientMain.client.getTickDelta(), entity.prevX, entity.getX()), MathHelper.lerp(CoffeeClientMain.client.getTickDelta(), entity.prevY, entity.getY()), MathHelper.lerp(CoffeeClientMain.client.getTickDelta(), entity.prevZ, entity.getZ()));
         //        Renderer.R3D.renderFilled(cringe, new Vec3d(1, 1, 1), new Color(150, 150, 150, 150), matrices)
         Renderer.R3D.renderFilled(cringe.add(.5, .5, .5).subtract(.25, .25, .25), new Vec3d(.5, .5, .5), ClickGUI.theme.getInactive(), matrices);
-        Renderer.R3D.renderLine(eSource, cringe2, new Color(50, 50, 50, 255), matrices);
+        Renderer.R3D.renderLine(eSource, cringe2, line, matrices);
     }
 
     @Override

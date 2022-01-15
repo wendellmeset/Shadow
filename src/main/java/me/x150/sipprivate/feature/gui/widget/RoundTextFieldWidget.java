@@ -57,7 +57,7 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
     @Override
     public boolean keyPressed(int key, int scanCode, int mods) {
         if (!focused) return false;
-
+        System.out.println(mods);
         boolean control = MinecraftClient.IS_SYSTEM_MAC ? mods == GLFW.GLFW_MOD_SUPER : mods == GLFW.GLFW_MOD_CONTROL;
 
         if (control && key == GLFW.GLFW_KEY_C) {
@@ -91,8 +91,8 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
 
         boolean control = MinecraftClient.IS_SYSTEM_MAC ? mods == GLFW.GLFW_MOD_SUPER : mods == GLFW.GLFW_MOD_CONTROL;
         boolean shift = mods == GLFW.GLFW_MOD_SHIFT;
-        int fuckShit1 = SystemUtils.IS_OS_WINDOWS ? GLFW.GLFW_MOD_ALT : MinecraftClient.IS_SYSTEM_MAC ? GLFW.GLFW_MOD_SUPER : GLFW.GLFW_MOD_CONTROL;
-        boolean controlShift = mods == (fuckShit1 | GLFW.GLFW_MOD_SHIFT);
+        int isCtrlPressed = SystemUtils.IS_OS_WINDOWS ? GLFW.GLFW_MOD_ALT : MinecraftClient.IS_SYSTEM_MAC ? GLFW.GLFW_MOD_SUPER : GLFW.GLFW_MOD_CONTROL;
+        boolean controlShift = mods == (isCtrlPressed | GLFW.GLFW_MOD_SHIFT);
         boolean altShift = mods == ((SystemUtils.IS_OS_WINDOWS ? GLFW.GLFW_MOD_CONTROL : GLFW.GLFW_MOD_ALT) | GLFW.GLFW_MOD_SHIFT);
 
         if (control && key == GLFW.GLFW_KEY_V) {
@@ -123,7 +123,7 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
             if (cursor > 0 && cursor == selectionStart && cursor == selectionEnd) {
                 String preText = text;
 
-                int count = (mods == fuckShit1)
+                int count = (mods == isCtrlPressed)
                         ? cursor
                         : (mods == (SystemUtils.IS_OS_WINDOWS ? GLFW.GLFW_MOD_CONTROL : GLFW.GLFW_MOD_ALT))
                         ? countToNextSpace(true)
@@ -140,13 +140,13 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
 
             return true;
         } else {
-            boolean fuckShit2 = mods == fuckShit1;
+            boolean ctrl = mods == isCtrlPressed;
             if (key == GLFW.GLFW_KEY_DELETE) {
                 if (cursor < text.length()) {
                     if (cursor == selectionStart && cursor == selectionEnd) {
                         String preText = text;
 
-                        int count = fuckShit2
+                        int count = ctrl
                                 ? text.length() - cursor
                                 : (mods == (SystemUtils.IS_OS_WINDOWS ? GLFW.GLFW_MOD_CONTROL : GLFW.GLFW_MOD_ALT))
                                 ? countToNextSpace(false)
@@ -166,7 +166,7 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
                     if (mods == (SystemUtils.IS_OS_WINDOWS ? GLFW.GLFW_MOD_CONTROL : GLFW.GLFW_MOD_ALT)) {
                         cursor -= countToNextSpace(true);
                         resetSelection();
-                    } else if (fuckShit2) {
+                    } else if (ctrl) {
                         cursor = 0;
                         resetSelection();
                     } else if (altShift) {
@@ -215,7 +215,7 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
                     if (mods == (SystemUtils.IS_OS_WINDOWS ? GLFW.GLFW_MOD_CONTROL : GLFW.GLFW_MOD_ALT)) {
                         cursor += countToNextSpace(false);
                         resetSelection();
-                    } else if (fuckShit2) {
+                    } else if (ctrl) {
                         cursor = text.length();
                         resetSelection();
                     } else if (altShift) {

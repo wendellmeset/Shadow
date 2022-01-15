@@ -42,7 +42,7 @@ public class NotificationRenderer {
             }
         }
     }
-
+    static Color topBg = new Color(28, 28, 28, 200);
     public static void renderTop() {
         MatrixStack ms = Renderer.R3D.getEmptyMatrixStack();
         int baseX = CoffeeClientMain.client.getWindow().getScaledWidth() / 2;
@@ -85,7 +85,7 @@ public class NotificationRenderer {
             width = width / 2f;
             width = Math.max(minWidth, width);
             Renderer.R2D.beginScissor(Renderer.R3D.getEmptyMatrixStack(), notification.renderPosX - width * notification.animationProgress, notification.renderPosY, notification.renderPosX + width * notification.animationProgress + 1, notification.renderPosY + height + 1);
-            Renderer.R2D.renderQuad(ms, new Color(28, 28, 28, 200), notification.renderPosX - width, notification.renderPosY, notification.renderPosX + width + 1, notification.renderPosY + height);
+            Renderer.R2D.renderQuad(ms, topBg, notification.renderPosX - width, notification.renderPosY, notification.renderPosX + width + 1, notification.renderPosY + height);
             FontRenderers.getNormal().drawCenteredString(ms, contents, notification.renderPosX, notification.renderPosY + height / 2f - FontRenderers.getNormal().getFontHeight() / 2f, 0xFFFFFF);
             double timeRemainingInv = 1 - timeRemaining;
             if (!notification.shouldDoAnimation && notification.animationProgress == 0 && notificationExpired) {
@@ -105,7 +105,7 @@ public class NotificationRenderer {
             currentYOffset += height + 3;
         }
     }
-
+    static Color rightBg = new Color(28, 28, 28);
     public static void renderSide() {
         MatrixStack ms = Renderer.R3D.getEmptyMatrixStack();
         int currentYOffset = 0;
@@ -139,7 +139,7 @@ public class NotificationRenderer {
             if (notification.renderPosX == 0) {
                 notification.renderPosX = baseX + 4;
             }
-            Renderer.R2D.renderQuad(new Color(28, 28, 28), notification.renderPosX, notification.renderPosY, notification.renderPosX + notifWidth, notification.renderPosY + notifHeight);
+            Renderer.R2D.renderQuad(rightBg, notification.renderPosX, notification.renderPosY, notification.renderPosX + notifWidth, notification.renderPosY + notifHeight);
             Renderer.R2D.renderQuad(ClickGUI.theme.getActive(), notification.renderPosX - 1, notification.renderPosY, notification.renderPosX, notification.renderPosY + notifHeight);
             Renderer.R2D.renderQuad(ClickGUI.theme.getAccent(), notification.renderPosX - 1, notification.renderPosY, notification.renderPosX, notification.renderPosY + (notifHeight * (1 - timeRemaining)));
             int currentYOffsetText = (int) (1 + FontRenderers.getNormal().getFontHeight());
