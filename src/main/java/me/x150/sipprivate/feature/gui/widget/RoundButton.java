@@ -14,7 +14,7 @@ import net.minecraft.util.math.MathHelper;
 import java.awt.*;
 
 public class RoundButton implements Element, Drawable, Selectable, FastTickable, DoesMSAA {
-    final String text;
+    String text;
     final Runnable onPress;
     final Color color;
     double x, y, width, height;
@@ -22,6 +22,9 @@ public class RoundButton implements Element, Drawable, Selectable, FastTickable,
     boolean isHovered = false;
     boolean enabled = true;
 
+    public void setText(String text) {
+        this.text = text;
+    }
 
     public RoundButton(Color color, double x, double y, double w, double h, String t, Runnable a) {
         this.onPress = a;
@@ -93,6 +96,7 @@ public class RoundButton implements Element, Drawable, Selectable, FastTickable,
     public SelectionType getType() {
         return isHovered ? SelectionType.HOVERED : SelectionType.NONE;
     }
+
 
     @Override
     public void appendNarrations(NarrationMessageBuilder builder) {

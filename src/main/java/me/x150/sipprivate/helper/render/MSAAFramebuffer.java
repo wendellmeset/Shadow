@@ -29,6 +29,10 @@ public class MSAAFramebuffer extends Framebuffer {
     private int rboDepth;
     private boolean inUse;
 
+    public static boolean framebufferInUse() {
+        return !ACTIVE_INSTANCES.isEmpty();
+    }
+
     private MSAAFramebuffer(int samples) {
         super(true);
         if (samples < MIN_SAMPLES || samples > MAX_SAMPLES) {

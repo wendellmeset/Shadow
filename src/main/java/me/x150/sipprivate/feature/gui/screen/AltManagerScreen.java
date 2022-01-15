@@ -50,7 +50,7 @@ import java.util.List;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class AltManagerScreen extends AntiAliasedScreen implements FastTickable {
+public class AltManagerScreen extends ClientScreen implements FastTickable {
     public static final Map<UUID, Identifier> texCache = new HashMap<>();
     static final File ALTS_FILE = new File(CoffeeClientMain.BASE, "alts.sip");
     static final String TOP_NOTE = """
@@ -481,17 +481,17 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
         }
     }
 
-    static class SessionEditor extends AntiAliasedScreen {
+    static class SessionEditor extends ClientScreen {
         static final double widgetWid = 300;
         static double widgetHei = 0;
         final Session session;
-        final AntiAliasedScreen parent;
+        final ClientScreen parent;
         final double padding = 5;
         final ClientFontRenderer title = FontRenderers.getCustomNormal(40);
         RoundTextFieldWidget access, name, uuid;
         RoundButton save;
 
-        public SessionEditor(AntiAliasedScreen parent, Session s) {
+        public SessionEditor(ClientScreen parent, Session s) {
             super(MSAAFramebuffer.MAX_SAMPLES);
             this.session = s;
             this.parent = parent;
@@ -575,12 +575,12 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
         }
     }
 
-    class AddScreenOverlay extends AntiAliasedScreen implements FastTickable {
+    class AddScreenOverlay extends ClientScreen implements FastTickable {
         static final double widgetWid = 200;
         static int accountTypeI = 0;
         static double widgetHei = 0;
         final List<ThemedButton> buttons = new ArrayList<>();
-        final AntiAliasedScreen parent;
+        final ClientScreen parent;
         final double padding = 5;
         final ClientFontRenderer title = FontRenderers.getCustomNormal(40);
         RoundTextFieldWidget email;
@@ -588,7 +588,7 @@ public class AltManagerScreen extends AntiAliasedScreen implements FastTickable 
         ThemedButton type;
         ThemedButton add;
 
-        public AddScreenOverlay(AntiAliasedScreen parent) {
+        public AddScreenOverlay(ClientScreen parent) {
             super(MSAAFramebuffer.MAX_SAMPLES);
             this.parent = parent;
         }

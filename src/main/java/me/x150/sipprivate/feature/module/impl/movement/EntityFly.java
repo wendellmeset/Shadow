@@ -43,7 +43,6 @@ public class EntityFly extends Module {
         if (vehicle instanceof MobEntity) {
             ((MobEntity) vehicle).setAiDisabled(true);
         }
-        Vec3d entityPos = vehicle.getPos();
         GameOptions go = CoffeeClientMain.client.options;
         float y = Objects.requireNonNull(client.player).getYaw();
         int mx = 0, my = 0, mz = 0;
@@ -73,14 +72,8 @@ public class EntityFly extends Module {
         double ny = ts * my;
         nx += ts * mx * -c;
         nz += ts * mx * -s;
-        Vec3d nv3 = new Vec3d(nx, ny, nz);
-        entityPos = entityPos.add(nv3.multiply(0.4));
-        boolean isOnGround = Objects.requireNonNull(CoffeeClientMain.client.world).getBlockState(vehicle.getBlockPos().down()).getMaterial().blocksMovement();
-        double off = Math.random() / 5;
-        if (isOnGround) off /= 2;
-        else off -= 0.1;
-        vehicle.updatePosition(entityPos.x, entityPos.y + off, entityPos.z); // vanilla bypass
-        vehicle.setVelocity(0, 0, 0);
+        Vec3d nv3 = new Vec3d(nx, ny-0.1, nz);
+        vehicle.setVelocity(nv3);
         vehicle.setYaw(client.player.getYaw());
         VehicleMoveC2SPacket p = new VehicleMoveC2SPacket(vehicle);
         Objects.requireNonNull(client.getNetworkHandler()).sendPacket(p);

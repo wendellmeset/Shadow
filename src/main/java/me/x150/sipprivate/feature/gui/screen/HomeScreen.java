@@ -8,7 +8,6 @@ import me.x150.sipprivate.helper.font.FontRenderers;
 import me.x150.sipprivate.helper.font.adapter.impl.ClientFontRenderer;
 import me.x150.sipprivate.helper.render.MSAAFramebuffer;
 import me.x150.sipprivate.helper.render.Renderer;
-import me.x150.sipprivate.helper.util.Utils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.screen.option.OptionsScreen;
@@ -39,7 +38,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.UUID;
 
-public class HomeScreen extends AntiAliasedScreen implements FastTickable {
+public class HomeScreen extends ClientScreen implements FastTickable {
     static final double padding = 5;
     static final Identifier background = new Identifier("coffeeclient", "background.jpg");
     static final HttpClient downloader = HttpClient.newHttpClient();
@@ -242,13 +241,14 @@ public class HomeScreen extends AntiAliasedScreen implements FastTickable {
         spinnerProg = MathHelper.clamp(spinnerProg, 0, 1); // fucking floating point precision istg
         float fadeProg = fadeOut ? (float) prog : 1f;
         fadeProg = MathHelper.clamp(fadeProg, 0, 1);
-        Renderer.R2D.renderQuad(stack, new Color(1f, 1f, 1f, fadeProg), 0, 0, width, height);
-        Renderer.R2D.renderLoadingSpinner(stack, Renderer.Util.modify(Utils.getCurrentRGB(), -1, -1, -1, (int) (spinnerProg * 255)), width - 15, height - 15, 10, 10);
+        Renderer.R2D.renderQuad(stack, new Color(0, 0, 0, fadeProg * 0.8f), 0, 0, width, height);
+        Renderer.R2D.renderLoadingSpinner(stack, (float) spinnerProg, width - 25, height - 25, 20, 1d, 20);
     }
 
     @Override
     public void onFastTick() {
-        if (System.currentTimeMillis() - initTime > 1000 && !loaded) load();
+        if (CoffeeClientMain.client.getOverlay() == null && System.currentTimeMillis() - initTime > 1000 && !loaded)
+            load();
         double delta = 10 / 600d;
         if (fadeOut) delta *= -1;
         prog += delta;

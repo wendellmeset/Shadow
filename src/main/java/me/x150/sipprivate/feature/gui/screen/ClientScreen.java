@@ -5,10 +5,10 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 
-public class AntiAliasedScreen extends Screen {
+public class ClientScreen extends Screen {
     final int samples;
 
-    public AntiAliasedScreen(int samples) {
+    public ClientScreen(int samples) {
         super(Text.of(""));
         this.samples = samples;
     }
@@ -20,8 +20,9 @@ public class AntiAliasedScreen extends Screen {
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         if (samples != -1) {
-//        if (false) {
-            MSAAFramebuffer.use(samples, () -> renderInternal(matrices, mouseX, mouseY, delta));
+            if (!MSAAFramebuffer.framebufferInUse())
+                MSAAFramebuffer.use(samples, () -> renderInternal(matrices, mouseX, mouseY, delta));
+            else renderInternal(matrices, mouseX, mouseY, delta);
         } else {
             renderInternal(matrices, mouseX, mouseY, delta);
         }

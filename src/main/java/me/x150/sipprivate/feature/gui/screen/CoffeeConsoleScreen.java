@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class CoffeeConsoleScreen extends AntiAliasedScreen implements FastTickable {
+public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
     static final Color BACKGROUND = new Color(60, 60, 60);
     static Color NORMAL = Color.BLACK;
     static Color ERROR = new Color(214, 93, 62);
@@ -30,7 +30,7 @@ public class CoffeeConsoleScreen extends AntiAliasedScreen implements FastTickab
     private static CoffeeConsoleScreen instance;
     final Color background = new Color(0, 0, 0, 120);
     final List<LogEntry> logs = new ArrayList<>();
-    AntiAliasedScreen parent = null;
+    ClientScreen parent = null;
     RoundTextFieldWidget command;
     double scroll = 0;
     double smoothScroll = 0;
@@ -40,7 +40,7 @@ public class CoffeeConsoleScreen extends AntiAliasedScreen implements FastTickab
         super(MSAAFramebuffer.MAX_SAMPLES);
     }
 
-    public static CoffeeConsoleScreen instance(AntiAliasedScreen parent) {
+    public static CoffeeConsoleScreen instance(ClientScreen parent) {
         if (instance == null) instance = new CoffeeConsoleScreen();
         instance.parent = parent;
         return instance;
