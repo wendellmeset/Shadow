@@ -12,6 +12,7 @@ import me.x150.sipprivate.feature.module.ModuleType;
 import me.x150.sipprivate.helper.event.EventType;
 import me.x150.sipprivate.helper.event.Events;
 import me.x150.sipprivate.helper.font.FontRenderers;
+import me.x150.sipprivate.helper.font.adapter.impl.ClientFontRenderer;
 import me.x150.sipprivate.helper.render.MSAAFramebuffer;
 import me.x150.sipprivate.helper.render.Renderer;
 import me.x150.sipprivate.helper.util.Transitions;
@@ -19,6 +20,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
+import org.lwjgl.glfw.GLFW;
 
 import java.awt.*;
 import java.util.List;
@@ -123,6 +125,13 @@ public class ClickGUI extends Screen implements FastTickable {
     }
 
     void renderIntern(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+        double wid = width/2d;
+        double hei = height/2d;
+        ClientFontRenderer bigAssFr = FontRenderers.getCustomNormal(70);
+        double tx = wid-bigAssFr.getStringWidth(searchTerm)/2d;
+        double ty = hei-bigAssFr.getMarginHeight()/2d;
+        bigAssFr.drawString(matrices,searchTerm,(float) tx,(float)ty,0x50FFFFFF, false);
+
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
         matrices.push();
@@ -195,6 +204,13 @@ public class ClickGUI extends Screen implements FastTickable {
                 return true;
             }
         }
+        if (keyCode == GLFW.GLFW_KEY_BACKSPACE && searchTerm.length() > 0) {
+            searchTerm = searchTerm.substring(0, searchTerm.length()-1);
+            return true;
+        } else if (keyCode == GLFW.GLFW_KEY_ESCAPE && !searchTerm.isEmpty()) {
+            searchTerm = "";
+            return true;
+        }
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
@@ -216,12 +232,13 @@ public class ClickGUI extends Screen implements FastTickable {
             element.tickAnim();
         }
     }
-
+    public String searchTerm = "";
     @Override
     public boolean charTyped(char chr, int modifiers) {
         for (Element element : elements) {
-            if (element.charTyped(chr, modifiers)) break;
+            if (element.charTyped(chr, modifiers)) return true;
         }
+        searchTerm += chr;
         return false;
     }
 }

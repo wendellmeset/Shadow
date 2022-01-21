@@ -21,6 +21,45 @@ public class Renderer {
 
         static final MatrixStack empty = new MatrixStack();
 
+        public static void renderCircleOutline(MatrixStack stack, Color c, Vec3d start, double rad, double width, double segments) {
+            RenderSystem.disableCull();
+            Camera camera = CoffeeClientMain.client.gameRenderer.getCamera();
+            Vec3d camPos = camera.getPos();
+            start = start.subtract(camPos);
+            stack.push();
+            stack.translate(start.x, start.y, start.z);
+//            stack.multiply(new Quaternion(0, (System.currentTimeMillis() % 2000) / 2000f * 360f, 0, true));
+            segments = MathHelper.clamp(segments, 2, 90);
+            RenderSystem.setShaderColor(1, 1, 1, 1);
+            int color = c.getRGB();
+
+            Matrix4f matrix = stack.peek().getPositionMatrix();
+            float f = (float) (color >> 24 & 255) / 255.0F;
+            float g = (float) (color >> 16 & 255) / 255.0F;
+            float h = (float) (color >> 8 & 255) / 255.0F;
+            float k = (float) (color & 255) / 255.0F;
+            BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
+            RenderSystem.enableBlend();
+            RenderSystem.disableTexture();
+            RenderSystem.setShader(GameRenderer::getPositionColorShader);
+            bufferBuilder.begin(VertexFormat.DrawMode.TRIANGLE_STRIP, VertexFormats.POSITION_COLOR);
+            for (double r = 0; r < 360; r += (360 / segments)) {
+                double rad1 = Math.toRadians(r);
+                double sin = Math.sin(rad1);
+                double cos = Math.cos(rad1);
+                double offX = sin * rad;
+                double offY = cos * rad;
+                bufferBuilder.vertex(matrix, (float) offX, 0, (float) offY).color(g, h, k, f).next();
+                bufferBuilder.vertex(matrix, (float) (offX + sin * width), 0, (float) (offY + cos * width)).color(g, h, k, f).next();
+
+            }
+            bufferBuilder.end();
+            BufferRenderer.draw(bufferBuilder);
+            RenderSystem.enableTexture();
+            RenderSystem.disableBlend();
+            stack.pop();
+        }
+
         public static void renderOutlineIntern(Vec3d start, Vec3d dimensions, MatrixStack stack, BufferBuilder buffer) {
             Camera c = CoffeeClientMain.client.gameRenderer.getCamera();
             Vec3d camPos = c.getPos();

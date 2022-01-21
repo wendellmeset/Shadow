@@ -13,6 +13,8 @@ import net.minecraft.client.util.math.MatrixStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class CategoryDisplay extends Element {
     static final ClientFontRenderer cfr = FontRenderers.getCustomNormal(20);
@@ -39,7 +41,7 @@ public class CategoryDisplay extends Element {
                 return true;
             }
         } else {
-            for (ModuleDisplay moduleDisplay : md) {
+            for (ModuleDisplay moduleDisplay : getModules()) {
                 if (moduleDisplay.clicked(x, y, button)) {
                     return true;
                 }
@@ -55,7 +57,7 @@ public class CategoryDisplay extends Element {
             this.y += deltaY;
             return true;
         } else {
-            for (ModuleDisplay moduleDisplay : md) {
+            for (ModuleDisplay moduleDisplay : getModules()) {
                 if (moduleDisplay.dragged(x, y, deltaX, deltaY, button)) {
                     return true;
                 }
@@ -67,7 +69,7 @@ public class CategoryDisplay extends Element {
     @Override
     public boolean released() {
         selected = false;
-        for (ModuleDisplay moduleDisplay : md) {
+        for (ModuleDisplay moduleDisplay : getModules()) {
             moduleDisplay.released();
         }
         return false;
@@ -75,12 +77,16 @@ public class CategoryDisplay extends Element {
 
     @Override
     public boolean keyPressed(int keycode, int modifiers) {
-        for (ModuleDisplay moduleDisplay : md) {
+        for (ModuleDisplay moduleDisplay : getModules()) {
             if (moduleDisplay.keyPressed(keycode, modifiers)) {
                 return true;
             }
         }
         return false;
+    }
+
+    List<ModuleDisplay> getModules() {
+        return md.stream().filter(moduleDisplay -> moduleDisplay.module.getName().toLowerCase().startsWith(ClickGUI.instance().searchTerm.toLowerCase())).collect(Collectors.toList());
     }
 
     float headerHeight() {
@@ -94,29 +100,29 @@ public class CategoryDisplay extends Element {
         //        Renderer.R2D.fill(matrices, theme.getHeader(), x, y, x + width, y + headerHeight());
         double r = ModuleRegistry.getByClass(me.x150.sipprivate.feature.module.impl.render.ClickGUI.class).radius.getValue();
         double modHeight = FontRenderers.getNormal().getFontHeight() + 2;
-        this.height = headerHeight() + md.stream().map(ModuleDisplay::getHeight).reduce(Double::sum).orElse(0d) + Math.max(modHeight, r); // pre calc height
+        this.height = headerHeight() + getModules().stream().map(ModuleDisplay::getHeight).reduce(Double::sum).orElse(0d) + Math.max(modHeight, r); // pre calc height
         Renderer.R2D.renderRoundedQuad(matrices, theme.getHeader(), x, y, x + width, y + this.height, r, 15);
         cfr.drawCenteredString(matrices, mt.getName(), x + width / 2d, y + headerHeight() / 2d - cfr.getFontHeight() / 2d, 0xFFFFFF);
         double y = headerHeight();
-        for (ModuleDisplay moduleDisplay : md) {
+        for (ModuleDisplay moduleDisplay : getModules()) {
             moduleDisplay.setX(this.x);
             moduleDisplay.setY(this.y + y);
             moduleDisplay.render(matrices, mouseX, mouseY, scrollBeingUsed);
             y += moduleDisplay.getHeight();
         }
-        FontRenderers.getNormal().drawCenteredString(matrices, md.size() + " modules", this.x + this.width / 2d, this.y + this.height - 1 - FontRenderers.getNormal().getMarginHeight(), 0xFFFFFF);
+        FontRenderers.getNormal().drawCenteredString(matrices, getModules().size() + " modules", this.x + this.width / 2d, this.y + this.height - 1 - FontRenderers.getNormal().getMarginHeight(), 0xFFFFFF);
     }
 
     @Override
     public void tickAnim() {
-        for (ModuleDisplay moduleDisplay : md) {
+        for (ModuleDisplay moduleDisplay : getModules()) {
             moduleDisplay.tickAnim();
         }
     }
 
     @Override
     public boolean charTyped(char c, int mods) {
-        for (ModuleDisplay moduleDisplay : md) {
+        for (ModuleDisplay moduleDisplay : getModules()) {
             if (moduleDisplay.charTyped(c, mods)) {
                 return true;
             }
