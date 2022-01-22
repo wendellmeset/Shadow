@@ -22,6 +22,8 @@ public class NotificationRenderer {
 
     public static final List<Notification> notifications = new ArrayList<>();
     public static final List<Notification> topBarNotifications = new ArrayList<>();
+    static Color topBg = new Color(28, 28, 28, 200);
+    static Color rightBg = new Color(28, 28, 28);
 
     public static void render() {
         renderSide();
@@ -42,7 +44,7 @@ public class NotificationRenderer {
             }
         }
     }
-    static Color topBg = new Color(28, 28, 28, 200);
+
     public static void renderTop() {
         MatrixStack ms = Renderer.R3D.getEmptyMatrixStack();
         int baseX = CoffeeClientMain.client.getWindow().getScaledWidth() / 2;
@@ -105,7 +107,7 @@ public class NotificationRenderer {
             currentYOffset += height + 3;
         }
     }
-    static Color rightBg = new Color(28, 28, 28);
+
     public static void renderSide() {
         MatrixStack ms = Renderer.R3D.getEmptyMatrixStack();
         int currentYOffset = 0;

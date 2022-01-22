@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EnumSettingEditor extends ConfigBase<EnumSetting<?>> {
+    static Color idk2 = new Color(0, 0, 20, 60);
     final List<EnumSelectorClickable<?>> values = new ArrayList<>();
 
     public EnumSettingEditor(double x, double y, double width, EnumSetting<?> configValue) {
@@ -57,7 +58,7 @@ public class EnumSettingEditor extends ConfigBase<EnumSetting<?>> {
     public boolean keyPressed(int keycode, int modifiers) {
         return false;
     }
-    static Color idk2 = new Color(0, 0, 20, 60);
+
     @Override
     public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
         double pad = 0;

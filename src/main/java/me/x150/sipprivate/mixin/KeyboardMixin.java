@@ -35,7 +35,7 @@ public class KeyboardMixin {
         }
     }
 
-    @Inject(method="setRepeatEvents",at=@At("HEAD"),cancellable = true)
+    @Inject(method = "setRepeatEvents", at = @At("HEAD"), cancellable = true)
     void repeatEvents(boolean repeatEvents, CallbackInfo ci) {
         this.repeatEvents = true;
         ci.cancel();

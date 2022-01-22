@@ -62,7 +62,7 @@ public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
         double buttonWidth = 60;
         double inputWidth = widgetWidthA - buttonWidth - padding();
         command = this.addDrawableChild(new RoundTextFieldWidget(padding(), height - padding() - 20, inputWidth, 20, "Command", 10));
-        RoundButton submit = new RoundButton(new Color(230, 230, 230), padding() * 2 + inputWidth, height - padding() - 20, buttonWidth, 20, "Execute", this::execute);
+        RoundButton submit = new RoundButton(new Color(40, 40, 40), padding() * 2 + inputWidth, height - padding() - 20, buttonWidth, 20, "Execute", this::execute);
         addDrawableChild(submit);
         setInitialFocus(command);
     }
@@ -152,9 +152,9 @@ public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
             probableWidth = Math.max(probableWidth, FontRenderers.getNormal().getStringWidth(suggestion) + 1);
         }
         float xC = (float) (width - padding() - probableWidth - padding() - padding() * 2 + 5);
-        Renderer.R2D.renderRoundedQuad(stack, new Color(0, 0, 0, 50), xC - padding(), yC - padding(), xC + probableWidth + padding(), yC + probableHeight, 10, 15);
+        Renderer.R2D.renderRoundedQuad(stack, new Color(30, 30, 30, 50), xC - padding(), yC - padding(), xC + probableWidth + padding(), yC + probableHeight, 10, 15);
         for (String suggestion : suggestions) {
-            FontRenderers.getNormal().drawString(stack, suggestion, xC, yC, 0, false);
+            FontRenderers.getNormal().drawString(stack, suggestion, xC, yC, 0xFFFFFF, false);
             yC += FontRenderers.getNormal().getMarginHeight();
         }
     }
@@ -180,7 +180,7 @@ public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
         Renderer.R2D.renderQuad(stack, background, 0, 0, width, height);
 
         // log field
-        Renderer.R2D.renderRoundedQuad(stack, new Color(200, 200, 200), padding(), padding(), width - padding(), height - padding() - 20 - padding(), 10, 15);
+        Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20), padding(), padding(), width - padding(), height - padding() - 20 - padding(), 10, 15);
         Renderer.R2D.beginScissor(stack, padding(), padding(), width - padding(), height - padding() - 20 - padding());
 
         // logs
@@ -234,8 +234,8 @@ public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
             perScrolledIndex = 1 - perScrolledIndex;
             double cursorY = MathHelper.lerp(perScrolledIndex, padding() * 2 + 3, height - padding() - 20 - padding() * 2 - 3);
             double cursorX = width - padding() * 2 - 3;
-            Renderer.R2D.renderRoundedQuad(stack, new Color(0, 0, 0, 20), cursorX - 3, padding() * 2, cursorX + 3, height - padding() - 20 - padding() * 2, 3, 10);
-            Renderer.R2D.renderCircle(stack, new Color(0, 0, 0, 60), cursorX, cursorY, 3, 10);
+            Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 20), cursorX - 3, padding() * 2, cursorX + 3, height - padding() - 20 - padding() * 2, 3, 10);
+            Renderer.R2D.renderCircle(stack, new Color(40, 40, 40, 60), cursorX, cursorY, 3, 10);
         }
 
         renderSuggestions(stack);

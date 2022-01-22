@@ -23,7 +23,7 @@ import java.util.Objects;
 
 public class Swing extends Module {
     static BlockPos swinging;
-
+    static Color line = new Color(50, 50, 50, 255);
 
     public Swing() {
         super("Swing", "Swing around like spiderman", ModuleType.MOVEMENT);
@@ -95,7 +95,7 @@ public class Swing extends Module {
     public String getContext() {
         return null;
     }
-    static Color line = new Color(50, 50, 50, 255);
+
     @Override
     public void onWorldRender(MatrixStack matrices) {
         if (swinging == null || CoffeeClientMain.client.player == null) {

@@ -35,6 +35,9 @@ public class TargetHud extends Module {
 
     public static final int modalWidth = 160;
     public static final int modalHeight = 70;
+    static Color GREEN = new Color(100, 255, 20);
+    static Color RED = new Color(255, 50, 20);
+    static Color bg = new Color(37, 50, 56, 200);
     final BooleanSetting renderPing = this.config.create(new BooleanSetting.Builder(true).name("Render ping").description("Shows the ping of the enemy").get());
     final BooleanSetting renderHP = this.config.create(new BooleanSetting.Builder(true).name("Render health").description("Shows the HP of the enemy").get());
     final BooleanSetting renderMaxHP = this.config.create(new BooleanSetting.Builder(true).name("Render max health").description("Shows the max HP of the enemy").get());
@@ -125,9 +128,7 @@ public class TargetHud extends Module {
     public void onHudRender() {
 
     }
-    static Color GREEN = new Color(100, 255, 20);
-    static Color RED = new Color(255, 50, 20);
-    static Color bg = new Color(37, 50, 56, 200);
+
     public void draw(MatrixStack stack) {
         if (!this.isEnabled()) {
             return;

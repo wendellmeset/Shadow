@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Flattener extends Module {
+    static Color breakCol = new Color(31, 232, 148, 70);
     final List<RenderEntry> renders = new ArrayList<>();
     final double range = 8;
     //    final BooleanValue makeSame        = (BooleanValue) this.config.create("Make same", false).description("Make the floor the block you're holding, no matter what.");
@@ -58,7 +59,7 @@ public class Flattener extends Module {
     public Flattener() {
         super("Flattener", "Makes everything around you flat, good for making a floor or base", ModuleType.WORLD);
     }
-    static Color breakCol = new Color(31, 232, 148, 70);
+
     @Override
     public void tick() {
         Vec3d eyep = Objects.requireNonNull(client.player).getEyePos();

@@ -14,17 +14,13 @@ import net.minecraft.util.math.MathHelper;
 import java.awt.*;
 
 public class RoundButton implements Element, Drawable, Selectable, FastTickable, DoesMSAA {
-    String text;
     final Runnable onPress;
     final Color color;
+    String text;
     double x, y, width, height;
     double animProgress = 0;
     boolean isHovered = false;
     boolean enabled = true;
-
-    public void setText(String text) {
-        this.text = text;
-    }
 
     public RoundButton(Color color, double x, double y, double w, double h, String t, Runnable a) {
         this.onPress = a;
@@ -34,6 +30,10 @@ public class RoundButton implements Element, Drawable, Selectable, FastTickable,
         this.height = h;
         this.text = t;
         this.color = color;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
     public void setX(double x) {
@@ -88,7 +88,7 @@ public class RoundButton implements Element, Drawable, Selectable, FastTickable,
         double originX = -width / 2d;
         double originY = -height / 2d;
         Renderer.R2D.renderRoundedQuad(matrices, color, originX, originY, width / 2d, height / 2d, 10, 10);
-        FontRenderers.getNormal().drawString(matrices, text, -(FontRenderers.getNormal().getStringWidth(text) + 2) / 2f, -FontRenderers.getNormal().getMarginHeight() / 2f, isEnabled() ? 0 : 0x333333, false);
+        FontRenderers.getNormal().drawString(matrices, text, -(FontRenderers.getNormal().getStringWidth(text) + 2) / 2f, -FontRenderers.getNormal().getMarginHeight() / 2f, isEnabled() ? 0xFFFFFF : 0xAAAAAA, false);
         matrices.pop();
     }
 

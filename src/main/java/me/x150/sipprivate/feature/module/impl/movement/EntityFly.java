@@ -72,7 +72,7 @@ public class EntityFly extends Module {
         double ny = ts * my;
         nx += ts * mx * -c;
         nz += ts * mx * -s;
-        Vec3d nv3 = new Vec3d(nx, ny-0.1, nz);
+        Vec3d nv3 = new Vec3d(nx, ny - 0.1, nz);
         vehicle.setVelocity(nv3);
         vehicle.setYaw(client.player.getYaw());
         VehicleMoveC2SPacket p = new VehicleMoveC2SPacket(vehicle);

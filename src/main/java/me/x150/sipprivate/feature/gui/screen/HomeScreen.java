@@ -92,7 +92,7 @@ public class HomeScreen extends ClientScreen implements FastTickable {
     void initWidgets() {
         double centerWidgetsY = height - padding - 25;
         double rightPad = width - padding;
-        Color bg = new Color(240, 240, 240);
+        Color bg = new Color(30, 30, 30);
         RoundButton single = new RoundButton(bg, rightPad - (padding + 60), centerWidgetsY, 60, 20, "Singleplayer", () -> CoffeeClientMain.client.setScreen(new SelectWorldScreen(this)));
         RoundButton multi = new RoundButton(bg, rightPad - (padding + 60) * 2, centerWidgetsY, 60, 20, "Multiplayer", () -> CoffeeClientMain.client.setScreen(new MultiplayerScreen(this)));
         RoundButton realms = new RoundButton(bg, rightPad - (padding + 60) * 3, centerWidgetsY, 60, 20, "Realms", () -> CoffeeClientMain.client.setScreen(new RealmsMainScreen(this)));
@@ -157,7 +157,7 @@ public class HomeScreen extends ClientScreen implements FastTickable {
     public void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
         double initProg = this.initProg * 2;
 
-        Renderer.R2D.renderQuad(stack, new Color(210, 210, 210), 0, 0, width, height);
+        Renderer.R2D.renderQuad(stack, new Color(20, 20, 20), 0, 0, width, height);
 
         RenderSystem.setShaderTexture(0, background);
         Renderer.R2D.renderTexture(stack, 0, 0, width, height, 0, 0, width, height, width, height);

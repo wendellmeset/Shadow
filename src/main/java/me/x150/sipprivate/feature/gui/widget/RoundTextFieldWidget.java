@@ -57,7 +57,7 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
     @Override
     public boolean keyPressed(int key, int scanCode, int mods) {
         if (!focused) return false;
-        System.out.println(mods);
+
         boolean control = MinecraftClient.IS_SYSTEM_MAC ? mods == GLFW.GLFW_MOD_SUPER : mods == GLFW.GLFW_MOD_CONTROL;
 
         if (control && key == GLFW.GLFW_KEY_C) {
@@ -337,13 +337,13 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
         double centerY = y + height / 2d - innerHeight / 2d;
 
 //        Renderer.R2D.renderQuad(stack,Color.RED,x,y+height,x+width,y+height+.5);
-        Renderer.R2D.renderRoundedQuad(stack, new Color(230, 230, 230), x, y, x + width, y + height, rad, 15);
+        Renderer.R2D.renderRoundedQuad(stack, new Color(40, 40, 40), x, y, x + width, y + height, rad, 15);
         Renderer.R2D.beginScissor(stack, x + pad, y, x + width - pad, y + height);
         // Text content
         if (!text.isEmpty()) {
-            FontRenderers.getNormal().drawString(stack, text, (float) (x + pad - overflowWidth), (float) (centerY), 0, false);
+            FontRenderers.getNormal().drawString(stack, text, (float) (x + pad - overflowWidth), (float) (centerY), 0xFFFFFF, false);
         } else {
-            FontRenderers.getNormal().drawString(stack, suggestion, (float) (x + pad - overflowWidth), (float) (centerY), 0x666666, false);
+            FontRenderers.getNormal().drawString(stack, suggestion, (float) (x + pad - overflowWidth), (float) (centerY), 0xAAAAAA, false);
         }
 
         // Text highlighting
@@ -355,7 +355,7 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
 
         boolean renderCursor = (System.currentTimeMillis() % 1000) / 500d > 1;
         if (focused && renderCursor) {
-            Renderer.R2D.renderQuad(stack, Color.BLACK, x + pad + getTextWidth(cursor) - overflowWidth, centerY, x + pad + getTextWidth(cursor) - overflowWidth + 1, centerY + FontRenderers.getNormal().getMarginHeight());
+            Renderer.R2D.renderQuad(stack, Color.WHITE, x + pad + getTextWidth(cursor) - overflowWidth, centerY, x + pad + getTextWidth(cursor) - overflowWidth + 1, centerY + FontRenderers.getNormal().getMarginHeight());
         }
 
         Renderer.R2D.endScissor();

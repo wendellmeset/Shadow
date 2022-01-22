@@ -29,9 +29,11 @@ import java.util.stream.Collectors;
 
 public class ClickGUI extends Screen implements FastTickable {
     public static final Theme theme = new SipoverV1();
+    static Color idk = new Color(20, 20, 30, 200);
     private static ClickGUI instance;
     final List<Element> elements = new ArrayList<>();
     final ParticleRenderer real = new ParticleRenderer(100);
+    public String searchTerm = "";
     String desc = null;
     double descX, descY;
     double scroll = 0;
@@ -125,12 +127,12 @@ public class ClickGUI extends Screen implements FastTickable {
     }
 
     void renderIntern(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        double wid = width/2d;
-        double hei = height/2d;
+        double wid = width / 2d;
+        double hei = height / 2d;
         ClientFontRenderer bigAssFr = FontRenderers.getCustomNormal(70);
-        double tx = wid-bigAssFr.getStringWidth(searchTerm)/2d;
-        double ty = hei-bigAssFr.getMarginHeight()/2d;
-        bigAssFr.drawString(matrices,searchTerm,(float) tx,(float)ty,0x50FFFFFF, false);
+        double tx = wid - bigAssFr.getStringWidth(searchTerm) / 2d;
+        double ty = hei - bigAssFr.getMarginHeight() / 2d;
+        bigAssFr.drawString(matrices, searchTerm, (float) tx, (float) ty, 0x50FFFFFF, false);
 
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
@@ -163,7 +165,7 @@ public class ClickGUI extends Screen implements FastTickable {
             desc = null;
         }
     }
-    static Color idk = new Color(20, 20, 30, 200);
+
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         mouseY += trackedScroll;
@@ -205,7 +207,7 @@ public class ClickGUI extends Screen implements FastTickable {
             }
         }
         if (keyCode == GLFW.GLFW_KEY_BACKSPACE && searchTerm.length() > 0) {
-            searchTerm = searchTerm.substring(0, searchTerm.length()-1);
+            searchTerm = searchTerm.substring(0, searchTerm.length() - 1);
             return true;
         } else if (keyCode == GLFW.GLFW_KEY_ESCAPE && !searchTerm.isEmpty()) {
             searchTerm = "";
@@ -232,7 +234,7 @@ public class ClickGUI extends Screen implements FastTickable {
             element.tickAnim();
         }
     }
-    public String searchTerm = "";
+
     @Override
     public boolean charTyped(char chr, int modifiers) {
         for (Element element : elements) {

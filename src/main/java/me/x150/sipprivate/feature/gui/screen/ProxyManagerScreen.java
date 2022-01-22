@@ -21,6 +21,7 @@ public class ProxyManagerScreen extends ClientScreen {
     Screen parent;
     RoundTextFieldWidget ip, port;
     RoundButton reset, apply, type;
+
     public ProxyManagerScreen(Screen parent) {
         super(MSAAFramebuffer.MAX_SAMPLES);
         this.parent = parent;
@@ -33,7 +34,7 @@ public class ProxyManagerScreen extends ClientScreen {
     @Override
     protected void init() {
 
-        RoundButton exit = new RoundButton(new Color(230, 230, 230), width - 20 - 5, 5, 20, 20, "X", this::onClose);
+        RoundButton exit = new RoundButton(new Color(40, 40, 40), width - 20 - 5, 5, 20, 20, "X", this::onClose);
         addDrawableChild(exit);
 
         double wWidth = widgetWidth - padding() * 2d;
@@ -48,18 +49,18 @@ public class ProxyManagerScreen extends ClientScreen {
             port.setText(currentProxy.port + "");
         }
         yOffset += port.getHeight() + padding();
-        type = new RoundButton(new Color(230, 230, 230), sourceX, sourceY + yOffset, wWidth, 20, "Type: " + (isSocks4 ? "Socks4" : "Socks5"), () -> {
+        type = new RoundButton(new Color(40, 40, 40), sourceX, sourceY + yOffset, wWidth, 20, "Type: " + (isSocks4 ? "Socks4" : "Socks5"), () -> {
             isSocks4 = !isSocks4;
             type.setText("Type: " + (isSocks4 ? "Socks4" : "Socks5"));
         });
         yOffset += 20 + padding();
         double doubleWidth = wWidth / 2d - padding() / 2d;
-        reset = new RoundButton(new Color(230, 230, 230), sourceX, yOffset, doubleWidth, 20, "Reset", () -> {
+        reset = new RoundButton(new Color(40, 40, 40), sourceX, yOffset, doubleWidth, 20, "Reset", () -> {
             currentProxy = null;
             ip.set("");
             port.set("");
         });
-        apply = new RoundButton(new Color(230, 230, 230), sourceX + doubleWidth + padding(), yOffset, doubleWidth, 20, "Apply", () -> {
+        apply = new RoundButton(new Color(40, 40, 40), sourceX + doubleWidth + padding(), yOffset, doubleWidth, 20, "Apply", () -> {
             currentProxy = new Proxy(ip.get(), Integer.parseInt(port.get()), isSocks4);
         });
 
@@ -82,15 +83,15 @@ public class ProxyManagerScreen extends ClientScreen {
         double sourceY = height / 2d - widgetHeight / 2d;
         double actualSourceX = width / 2d - widgetWidth / 2d;
         double yOffset = padding();
-        Renderer.R2D.renderRoundedQuad(stack, new Color(200, 200, 200), width / 2d - widgetWidth / 2d, height / 2d - widgetHeight / 2d, width / 2d + widgetWidth / 2d, height / 2d + widgetHeight / 2d, 10, 20);
-        title.drawString(stack, "Proxies", (float) (actualSourceX + padding()), (float) (sourceY + yOffset), 0, false);
+        Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20), width / 2d - widgetWidth / 2d, height / 2d - widgetHeight / 2d, width / 2d + widgetWidth / 2d, height / 2d + widgetHeight / 2d, 10, 20);
+        title.drawString(stack, "Proxies", (float) (actualSourceX + padding()), (float) (sourceY + yOffset), 0xFFFFFF, false);
         yOffset += title.getMarginHeight();
         String t = "Manage your proxy connection";
-        FontRenderers.getNormal().drawString(stack, t, (float) (actualSourceX + padding()), (float) (sourceY + yOffset), 0, false);
+        FontRenderers.getNormal().drawString(stack, t, (float) (actualSourceX + padding()), (float) (sourceY + yOffset), 0xFFFFFF, false);
         if (currentProxy != null) {
             String text = "Connected: " + currentProxy.address + ":" + currentProxy.port;
             double textWidth = FontRenderers.getNormal().getStringWidth(text);
-            FontRenderers.getNormal().drawString(stack, text, (float) (actualSourceX + widgetWidth - padding() - textWidth), (float) (sourceY + yOffset), 0, false);
+            FontRenderers.getNormal().drawString(stack, text, (float) (actualSourceX + widgetWidth - padding() - textWidth), (float) (sourceY + yOffset), 0xFFFFFF, false);
         }
         yOffset += FontRenderers.getNormal().getMarginHeight() + padding();
 
