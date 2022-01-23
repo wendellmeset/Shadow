@@ -9,6 +9,7 @@ import me.x150.sipprivate.feature.gui.notifications.NotificationRenderer;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleRegistry;
 import me.x150.sipprivate.feature.module.ModuleType;
+import me.x150.sipprivate.helper.Timer;
 import me.x150.sipprivate.helper.event.EventType;
 import me.x150.sipprivate.helper.event.Events;
 import me.x150.sipprivate.helper.event.events.PacketEvent;
@@ -46,6 +47,7 @@ public class Hud extends Module {
     long lastTimePacketReceived;
     double rNoConnectionPosY = -10d;
     Notification serverNotResponding = null;
+    Timer tpsUpdateTimer = new Timer();
 
     public Hud() {
         super("Hud", "Shows information about the player on screen", ModuleType.RENDER);
@@ -54,7 +56,7 @@ public class Hud extends Module {
         Events.registerEventHandler(EventType.PACKET_RECEIVE, event1 -> {
             PacketEvent event = (PacketEvent) event1;
             if (event.getPacket() instanceof WorldTimeUpdateS2CPacket) {
-                currentTps = Utils.Math.roundToDecimal(calcTps(System.currentTimeMillis() - lastTimePacketReceived), 2);
+//                currentTps = Utils.Math.roundToDecimal(calcTps(System.currentTimeMillis() - lastTimePacketReceived), 2);
                 lastTimePacketReceived = System.currentTimeMillis();
             }
         });
@@ -70,10 +72,20 @@ public class Hud extends Module {
     double calcTps(double n) {
         return (20.0 / Math.max((n - 1000.0) / (500.0), 1.0));
     }
-
+    List<Double> last5SecondTpsAverage = new ArrayList<>();
     @Override
     public void tick() {
+        long averageTime = 5000;
+        long waitTime = 100;
+        long maxLength = averageTime/waitTime;
+        if (tpsUpdateTimer.hasExpired(waitTime)) {
+            tpsUpdateTimer.reset();
+            double newTps = calcTps(System.currentTimeMillis() - lastTimePacketReceived);
+            last5SecondTpsAverage.add(newTps);
+            while(last5SecondTpsAverage.size() > maxLength) last5SecondTpsAverage.remove(0);
+            currentTps = Utils.Math.roundToDecimal(last5SecondTpsAverage.stream().reduce(Double::sum).orElse(0d)/last5SecondTpsAverage.size(),2);
 
+        }
     }
 
     @Override
@@ -195,8 +207,15 @@ public class Hud extends Module {
         if (this.fps.getValue()) {
             values.add(((IMinecraftClientAccessor) CoffeeClientMain.client).getCurrentFps() + " fps");
         }
+
         if (this.tps.getValue()) {
-            values.add(currentTps + " tps");
+            String tStr = currentTps+"";
+            String[] dotS = tStr.split("\\.");
+            String tpsString = dotS[0];
+            if (!dotS[1].equalsIgnoreCase("0")) {
+                tpsString += "."+dotS[1];
+            }
+            values.add(tpsString + " tps");
         }
         if (this.ping.getValue()) {
             PlayerListEntry ple = Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).getPlayerListEntry(Objects.requireNonNull(CoffeeClientMain.client.player).getUuid());
