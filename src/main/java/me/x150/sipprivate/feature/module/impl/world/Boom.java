@@ -121,7 +121,7 @@ public class Boom extends Module {
     @Override
     public void tick() {
         if (!Objects.requireNonNull(CoffeeClientMain.client.interactionManager).hasCreativeInventory()) {
-            Notification.create(6000, "", true, "You need to be in creative");
+            Notification.create(6000, "", true, Notification.Type.INFO, "You need to be in creative");
             setEnabled(false);
         }
     }

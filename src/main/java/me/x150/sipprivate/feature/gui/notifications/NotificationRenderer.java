@@ -5,11 +5,14 @@
 
 package me.x150.sipprivate.feature.gui.notifications;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.gui.clickgui.ClickGUI;
 import me.x150.sipprivate.helper.font.FontRenderers;
 import me.x150.sipprivate.helper.render.Renderer;
 import me.x150.sipprivate.helper.util.Transitions;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.util.DefaultSkinHelper;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 
@@ -115,15 +118,18 @@ public class NotificationRenderer {
         int baseY = CoffeeClientMain.client.getWindow().getScaledHeight() - 10;
         long c = System.currentTimeMillis();
         for (Notification notification : new ArrayList<>(notifications)) {
-            double timeRemaining = Math.abs(c - notification.creationDate - notification.duration) / (double) notification.duration;
-            timeRemaining = MathHelper.clamp(timeRemaining, 0, 1);
+//            double timeRemaining = Math.abs(c - notification.creationDate - notification.duration) / (double) notification.duration;
+//            timeRemaining = MathHelper.clamp(timeRemaining, 0, 1);
             boolean notificationExpired = notification.creationDate + notification.duration < c;
             int notifHeight = (int) (2 + ((notification.contents.length + (notification.title.isEmpty() ? 0 : 1)) * FontRenderers.getNormal().getFontHeight()));
+            notifHeight = Math.max(notifHeight, 32);
             double descWidth = 0;
             for (String content : notification.contents) {
-                descWidth = Math.max(FontRenderers.getNormal().getStringWidth(content), descWidth);
+                descWidth = Math.max(FontRenderers.getNormal().getStringWidth(content)+2, descWidth);
             }
-            double notifWidth = Math.max(4 + Math.max(descWidth, FontRenderers.getNormal().getStringWidth(notification.title)), 100);
+            double iconDim = 18;
+            double iconPad = (32-iconDim)/2d;
+            double notifWidth = Math.max(iconDim+iconPad*2+Math.max(descWidth, FontRenderers.getNormal().getStringWidth(notification.title))+2, 150);
             notification.posY = baseY - currentYOffset - notifHeight;
             currentYOffset += notifHeight + 2;
             if (!notificationExpired) {
@@ -141,13 +147,21 @@ public class NotificationRenderer {
             if (notification.renderPosX == 0) {
                 notification.renderPosX = baseX + 4;
             }
-            Renderer.R2D.renderQuad(rightBg, notification.renderPosX, notification.renderPosY, notification.renderPosX + notifWidth, notification.renderPosY + notifHeight);
-            Renderer.R2D.renderQuad(ClickGUI.theme.getActive(), notification.renderPosX - 1, notification.renderPosY, notification.renderPosX, notification.renderPosY + notifHeight);
-            Renderer.R2D.renderQuad(ClickGUI.theme.getAccent(), notification.renderPosX - 1, notification.renderPosY, notification.renderPosX, notification.renderPosY + (notifHeight * (1 - timeRemaining)));
-            int currentYOffsetText = (int) (1 + FontRenderers.getNormal().getFontHeight());
-            FontRenderers.getNormal().drawString(ms, notification.title, notification.renderPosX + 2, notification.renderPosY + 1, 0xFFFFFF);
+            Renderer.R2D.renderRoundedQuad(ms, rightBg, notification.renderPosX, notification.renderPosY, notification.renderPosX + notifWidth, notification.renderPosY + notifHeight,6,20);
+
+            RenderSystem.setShaderTexture(0, notification.type.getI());
+            Color nf = notification.type.getC();
+            RenderSystem.setShaderColor(nf.getRed()/255f,nf.getGreen()/255f,nf.getBlue()/255f,nf.getAlpha()/255f);
+            Renderer.R2D.renderTexture(ms, notification.renderPosX+iconPad, notification.renderPosY+notifHeight/2d-iconDim/2d, iconDim, iconDim, 0, 0, iconDim, iconDim, iconDim, iconDim);
+            RenderSystem.setShaderColor(1,1,1,1);
+
+            double currentYOffsetText;
+            double textHeight = 1+FontRenderers.getNormal().getMarginHeight()+FontRenderers.getNormal().getMarginHeight()*notification.contents.length;
+            currentYOffsetText = notifHeight/2d-textHeight/2d;
+            FontRenderers.getNormal().drawString(ms, notification.title, notification.renderPosX + iconDim+iconPad*2, notification.renderPosY + currentYOffsetText, 0xFFFFFF);
+            currentYOffsetText += FontRenderers.getNormal().getFontHeight();
             for (String content : notification.contents) {
-                FontRenderers.getNormal().drawString(ms, content, notification.renderPosX + 2, notification.renderPosY + currentYOffsetText, 0xFFFFFF);
+                FontRenderers.getNormal().drawString(ms, content, notification.renderPosX + iconDim+iconPad*2, notification.renderPosY + currentYOffsetText, 0xFFFFFF);
                 currentYOffsetText += FontRenderers.getNormal().getFontHeight();
             }
         }

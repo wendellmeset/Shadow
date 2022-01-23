@@ -91,7 +91,7 @@ public abstract class Module {
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
         if (toasts.getValue()) {
-            Notification.create(1000, "Module toggle", (this.enabled ? "§aEn" : "§cDis") + "abled §r" + this.getName());
+            Notification.create(1000, "Module toggle", Notification.Type.INFO, (this.enabled ? "§aEn" : "§cDis") + "abled §r" + this.getName());
         }
         if (this.enabled) {
             this.enable();

@@ -32,7 +32,7 @@ public class NoTitles extends Module {
                 blocked++;
                 // create new notif if old one expired
                 if (lastShown.creationDate + lastShown.duration < System.currentTimeMillis()) {
-                    lastShown = Notification.create(8000, "", true, "Blocked " + blocked + " titles");
+                    lastShown = Notification.create(6000, "NoTitles", false, Notification.Type.SUCCESS, "Blocked " + blocked + " titles");
                 }
                 // else just set the current notif to our shit
                 else {

@@ -6,12 +6,33 @@
 package me.x150.sipprivate.feature.gui.notifications;
 
 import me.x150.sipprivate.helper.font.FontRenderers;
+import net.minecraft.util.Identifier;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Notification {
+    public enum Type {
+        SUCCESS(new Identifier("coffeeclient", "notification/success.png"), new Color(58, 223, 118)),
+        INFO(new Identifier("coffeeclient", "notification/info.png"), new Color(39, 186, 253)),
+        WARNING(new Identifier("coffeeclient", "notification/warning.png"), new Color(255, 189, 17)),
+        ERROR(new Identifier("coffeeclient", "notification/error.png"), new Color(254, 92, 92));
+        Color c;
+        Identifier i;
+        Type(Identifier icon, Color color) {
+            this.i = icon;
+            this.c = color;
+        }
 
+        public Identifier getI() {
+            return i;
+        }
+
+        public Color getC() {
+            return c;
+        }
+    }
     public final String title;
     public final long creationDate;
     public String[] contents;
@@ -23,13 +44,14 @@ public class Notification {
     public double animationProgress = 0;
     public double animationGoal = 0;
     public boolean shouldDoAnimation = false;
+    public Type type;
 
-
-    public Notification(long duration, String title, String... contents) {
+    public Notification(long duration, String title, Type type, String... contents) {
         this.duration = duration;
         this.creationDate = System.currentTimeMillis();
         this.contents = contents;
         this.title = title;
+        this.type = type;
     }
 
     /**
@@ -43,11 +65,12 @@ public class Notification {
      * @param duration How long the notification will stay (special cases are described above
      * @param title    What the title of the notification is (irrelevant when topBar is set)
      * @param topBar   Whether to show this notification at the top of the screen instead of the right
+     * @param type
      * @param contents What the contents of the notification is
      * @return The newly created notification
      */
-    public static Notification create(long duration, String title, boolean topBar, String... contents) {
-        Notification n = new Notification(duration, title, contents);
+    public static Notification create(long duration, String title, boolean topBar, Type type, String... contents) {
+        Notification n = new Notification(duration, title, type, contents);
         if (topBar) {
             n.posY = n.renderPosY = -69;
             NotificationRenderer.topBarNotifications.add(0, n);
@@ -57,12 +80,12 @@ public class Notification {
         return n;
     }
 
-    public static Notification create(long duration, String title, String... contents) {
-        return create(duration, title, false, contents);
+    public static Notification create(long duration, String title, Type type, String... contents) {
+        return create(duration, title, false, type, contents);
     }
 
     @SuppressWarnings("UnusedReturnValue")
-    public static Notification create(long duration, String title, String split) {
+    public static Notification create(long duration, String title, Type type, String split) {
         List<String> splitContent = new ArrayList<>();
         StringBuilder line = new StringBuilder();
         for (String c : split.split(" +")) {
@@ -73,6 +96,6 @@ public class Notification {
             line.append(c).append(" ");
         }
         splitContent.add(line.toString());
-        return create(duration, title, splitContent.toArray(new String[0]));
+        return create(duration, title, type, splitContent.toArray(new String[0]));
     }
 }

@@ -50,7 +50,7 @@ public class TpRange extends Module {
             MouseEvent me = (MouseEvent) event;
             if (me.getAction() == 1 && me.getButton() == 0) {
                 if (running.get()) {
-                    Notification.create(5000, "TpRange", "Already exploiting, please wait a bit");
+                    Notification.create(5000, "TpRange", Notification.Type.WARNING, "Already exploiting, please wait a bit");
                 } else {
                     esv.execute(this::theFunny);
                 }

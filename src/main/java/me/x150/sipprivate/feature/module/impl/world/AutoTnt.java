@@ -40,7 +40,7 @@ public class AutoTnt extends Module {
         }
         if (tntSlot == -1) {
             if (!missingTntAck) {
-                Notification.create(6000, "", true, "Ran out of tnt! Get more in your hotbar");
+                Notification.create(6000, "AutoTNT", false, Notification.Type.WARNING, "Ran out of tnt! Get more in your hotbar");
             }
             missingTntAck = true;
             return;

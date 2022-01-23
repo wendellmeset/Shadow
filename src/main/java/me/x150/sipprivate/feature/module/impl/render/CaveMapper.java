@@ -90,7 +90,7 @@ public class CaveMapper extends Module {
                 toScan.clear();
                 //hits.clear();
                 if (!scanned) {
-                    Notification.create(6000, "", true, "done scanning");
+                    Notification.create(6000, "CaveMapper", false, Notification.Type.SUCCESS, "done scanning");
                 }
                 scanned = true;
                 return;

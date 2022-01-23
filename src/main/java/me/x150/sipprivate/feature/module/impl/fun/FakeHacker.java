@@ -67,7 +67,7 @@ public class FakeHacker extends Module {
     @Override
     public void enable() {
         target = null;
-        Notification.create(6000, "", true, "Middle click a player to select them");
+        Notification.create(6000, "", true, Notification.Type.INFO, "Middle click a player to select them");
     }
 
     @Override

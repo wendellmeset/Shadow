@@ -256,6 +256,7 @@ public class Renderer {
             GL11.glDepthFunc(GL11.GL_ALWAYS);
             RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
             RenderSystem.enableBlend();
+            RenderSystem.defaultBlendFunc();
             buffer.begin(VertexFormat.DrawMode.DEBUG_LINES, VertexFormats.POSITION_COLOR);
 
             buffer.vertex(matrix, x1, y1, z1).color(red, green, blue, alpha).next();
@@ -343,7 +344,7 @@ public class Renderer {
                 double offX = sin * rad;
                 double offY = cos * rad;
                 float prog = (float) r / 360f;
-                prog += rot;
+                prog -= rot;
                 prog %= 1;
                 Color hsb = Color.getHSBColor(prog, .6f, 1f);
                 float g = hsb.getRed() / 255f;

@@ -59,7 +59,7 @@ public class Voider extends Module {
 
     @Override
     public void disable() {
-        Notification.create(6000, "Voider", "Waiting for cleanup...");
+        Notification.create(6000, "Voider", Notification.Type.INFO, "Waiting for cleanup...");
         cancel.set(true);
     }
 

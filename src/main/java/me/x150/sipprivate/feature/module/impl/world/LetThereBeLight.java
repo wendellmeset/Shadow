@@ -40,7 +40,7 @@ public class LetThereBeLight extends Module {
         }
         if (torchSlot == -1) {
             if (!noBlocksAck) {
-                Notification.create(6000, "", true, "Out of torches!");
+                Notification.create(6000, "AutoTorch", false, Notification.Type.WARNING, "Out of torches!");
                 noBlocksAck = true;
             }
         } else {

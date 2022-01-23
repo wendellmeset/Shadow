@@ -1,9 +1,7 @@
 package me.x150.sipprivate.feature.command.impl;
 
-import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.command.Command;
-import me.x150.sipprivate.feature.gui.screen.TestScreen;
-import me.x150.sipprivate.helper.util.Utils;
+import me.x150.sipprivate.feature.gui.notifications.Notification;
 
 public class Test extends Command {
     public Test() {
@@ -12,6 +10,9 @@ public class Test extends Command {
 
     @Override
     public void onExecute(String[] args) {
-        Utils.TickManager.runInNTicks(5, () -> CoffeeClientMain.client.setScreen(new TestScreen()));
+        Notification.create(10000,"bruh", Notification.Type.INFO, "REALFDHJKFHDSJKFHSJKDFH KJDSHFJKDSHFKJDSHFJKDSaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaH FKJSDHJKFK HSDKJFHDSJKFHJKSD HJKFHDSJKF HDSJKFHSDJK HJKSDHF KSDHF KJDSHFKJSDH FJKSDHFJKS");
+        Notification.create(10000,"bruh", Notification.Type.WARNING, "REAL");
+        Notification.create(10000,"bruh", Notification.Type.SUCCESS, "REAL");
+        Notification.create(10000,"bruh", Notification.Type.ERROR, "REAL");
     }
 }

@@ -758,7 +758,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
                     NativeImageBackedTexture texture = new NativeImageBackedTexture(img);
 
                     CoffeeClientMain.client.execute(() -> {
-                        this.tex = new Identifier("coffee", "tex_" + this.storage.cachedUuid.hashCode() + "_" + (Math.random() + "").split("\\.")[1]);
+                        this.tex = new Identifier("coffee", ("tex_" + this.storage.cachedUuid.hashCode() + "_" + (Math.random() + "").split("\\.")[1]).toLowerCase());
                         CoffeeClientMain.client.getTextureManager().registerTexture(this.tex, texture);
                         texCache.put(this.storage.cachedUuid, this.tex);
                         texLoaded = true;

@@ -45,7 +45,7 @@ public class BoatPhase extends Module {
             return;
         }
         if (!(CoffeeClientMain.client.player.getVehicle() instanceof BoatEntity)) {
-            Notification.create(5000, "Boat phase", true, "sir you need a boat");
+            Notification.create(5000, "Boat phase", true, Notification.Type.INFO, "sir you need a boat");
             setEnabled(false);
             return;
         }

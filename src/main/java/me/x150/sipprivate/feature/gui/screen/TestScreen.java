@@ -38,6 +38,9 @@ public class TestScreen extends Screen {
             RenderSystem.blendFunc(GL40C.GL_DST_ALPHA, GL40C.GL_ONE_MINUS_DST_ALPHA);
             RenderSystem.setShaderTexture(0, DefaultSkinHelper.getTexture());
             Screen.drawTexture(matrices, 45, 45, 40, 40, 8, 8, 8, 8, 64, 64);
+            RenderSystem.defaultBlendFunc();
+
+            Renderer.R2D.renderLoadingSpinner(matrices,1f,200,45,20,1,30);
         });
 
         super.render(matrices, mouseX, mouseY, delta);
