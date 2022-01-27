@@ -46,6 +46,7 @@ public class CommandRegistry {
         commands.add(new Bind());
         commands.add(new SkinExploit());
         commands.add(new Test());
+        commands.add(new Locate());
     }
 
     public static List<Command> getCommands() {
