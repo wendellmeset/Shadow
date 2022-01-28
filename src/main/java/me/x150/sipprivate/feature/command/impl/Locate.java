@@ -39,8 +39,8 @@ public class Locate extends Command {
     private long worldSeed;
     private ChunkGenerator chunkGenerator;
     private StructureManager structureManager;
-    private DynamicRegistryManager registryManager;
     private Registry<Biome> biomeRegistry;
+    private final DynamicRegistryManager jigsawRegistry = DynamicRegistryManager.create();
 
     public Locate() {
         super("Locate", "locates structures", "locate");
@@ -73,9 +73,10 @@ public class Locate extends Command {
             this.worldSeed = args[1].hashCode();
         }
 
+        DynamicRegistryManager registryManager;
         try {
             assert CoffeeClientMain.client.world != null;
-            this.registryManager = CoffeeClientMain.client.world.getRegistryManager();
+            registryManager = CoffeeClientMain.client.world.getRegistryManager();
             this.biomeRegistry = registryManager.get(Registry.BIOME_KEY);
             this.biomeSource = switch (CoffeeClientMain.client.world.getDimension().getEffects().getPath()) {
                 case "the_end" -> new TheEndBiomeSource(biomeRegistry, worldSeed);
@@ -120,7 +121,6 @@ public class Locate extends Command {
         this.structuresConfig = null;
         this.chunkGenerator = null;
         this.structureManager = null;
-        this.registryManager = null;
         this.biomeRegistry = null;
     }
 
@@ -190,7 +190,7 @@ public class Locate extends Command {
 
     private <FC extends FeatureConfig, F extends StructureFeature<FC>> boolean isGenerationPossible(ChunkPos pos, ConfiguredStructureFeature<FC, F> feature, Collection<RegistryKey<Biome>> allowedBiomes) {
         Predicate<Biome> predicate = biome -> this.biomeRegistry.getKey(biome).filter(allowedBiomes::contains).isPresent();
-        return feature.feature.canGenerate(registryManager, chunkGenerator, biomeSource, structureManager, worldSeed, pos, feature.config, CoffeeClientMain.client.world, predicate);
+        return feature.feature.canGenerate(jigsawRegistry, chunkGenerator, biomeSource, structureManager, worldSeed, pos, feature.config, CoffeeClientMain.client.world, predicate);
     }
 
 
