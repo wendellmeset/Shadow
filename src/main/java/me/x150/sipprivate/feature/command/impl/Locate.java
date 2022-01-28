@@ -6,15 +6,18 @@ import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.command.Command;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.structure.StructureManager;
+import net.minecraft.structure.pool.StructurePools;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.ChunkSectionPos;
+import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.biome.source.MultiNoiseBiomeSource;
+import net.minecraft.world.biome.source.TheEndBiomeSource;
 import net.minecraft.world.gen.chunk.*;
 import net.minecraft.world.gen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.gen.feature.FeatureConfig;
@@ -70,28 +73,42 @@ public class Locate extends Command {
             this.worldSeed = args[1].hashCode();
         }
 
-        assert CoffeeClientMain.client.world != null;
-        this.registryManager = CoffeeClientMain.client.world.getRegistryManager();
+        try {
+            assert CoffeeClientMain.client.world != null;
+            this.registryManager = CoffeeClientMain.client.world.getRegistryManager();
+            this.biomeRegistry = registryManager.get(Registry.BIOME_KEY);
+            this.biomeSource = switch (CoffeeClientMain.client.world.getDimension().getEffects().getPath()) {
+                case "the_end" -> new TheEndBiomeSource(biomeRegistry, worldSeed);
+                case "the_nether" -> MultiNoiseBiomeSource.Preset.NETHER.getBiomeSource(biomeRegistry);
+                default -> MultiNoiseBiomeSource.Preset.OVERWORLD.getBiomeSource(biomeRegistry);
+            };
 
-        Registry<ChunkGeneratorSettings> registry2 = registryManager.get(Registry.CHUNK_GENERATOR_SETTINGS_KEY);
-        Supplier<ChunkGeneratorSettings> supplier = () -> registry2.getOrThrow(ChunkGeneratorSettings.OVERWORLD);
-        BiomeSource biomeSource = MultiNoiseBiomeSource.Preset.OVERWORLD.getBiomeSource(registryManager.get(Registry.BIOME_KEY));
-        ChunkGenerator chunkGenerator = new NoiseChunkGenerator(registryManager.get(Registry.NOISE_WORLDGEN), biomeSource, worldSeed, supplier);
-        this.chunkGenerator = chunkGenerator;
-        this.structuresConfig = chunkGenerator.getStructuresConfig();
-        this.biomeSource = biomeSource;
-        this.biomeRegistry = registryManager.get(Registry.BIOME_KEY);
+            Supplier<ChunkGeneratorSettings> supplier = ChunkGeneratorSettings::getInstance;
+
+            this.chunkGenerator = new NoiseChunkGenerator(BuiltinRegistries.NOISE_PARAMETERS, biomeSource, worldSeed, supplier);
+            this.structuresConfig = chunkGenerator.getStructuresConfig();
+            System.out.println(registryManager.get(Registry.STRUCTURE_POOL_KEY).toString());
+
+
+        } catch (Exception e) {
+            System.out.println(e.getLocalizedMessage());
+        }
 
         try {
             LevelStorage.Session session = LevelStorage.create(FabricLoader.getInstance().getConfigDir()).createSession("awdwa");
             structureManager = new StructureManager(CoffeeClientMain.client.getResourceManager(), session,null);
             session.close();
         } catch (IOException e) {
-            error(e.getLocalizedMessage());
+            System.out.println(e.getLocalizedMessage());
         }
 
-        assert CoffeeClientMain.client.player != null;
-        BlockPos res = locateStructure(structureFeature, CoffeeClientMain.client.player.getBlockPos(), 100);
+        BlockPos res = null;
+        try {
+            assert CoffeeClientMain.client.player != null;
+            res = locateStructure(structureFeature, CoffeeClientMain.client.player.getBlockPos(), 100);
+        } catch (Exception e) {
+            System.out.println(e.getLocalizedMessage());
+        }
 
         if (res == null) {
             message("couldnt find structure");
@@ -163,7 +180,7 @@ public class Locate extends Command {
 
 
     private <F extends StructureFeature<?>> boolean getStructurePresence(ChunkPos pos2, F feature2) {
-        ImmutableMultimap<ConfiguredStructureFeature<?, ?>, RegistryKey<Biome>> multimap = chunkGenerator.getStructuresConfig().getConfiguredStructureFeature(feature2);
+        ImmutableMultimap<ConfiguredStructureFeature<?, ?>, RegistryKey<Biome>> multimap = structuresConfig.getConfiguredStructureFeature(feature2);
         for (Map.Entry<ConfiguredStructureFeature<?, ?>, Collection<RegistryKey<Biome>>> entry : multimap.asMap().entrySet()) {
             if (!this.isGenerationPossible(pos2, entry.getKey(), entry.getValue())) continue;
             return true;
