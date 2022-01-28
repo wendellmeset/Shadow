@@ -1,6 +1,7 @@
 package me.x150.sipprivate.feature.gui.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import me.x150.sipprivate.helper.font.FontRenderers;
 import me.x150.sipprivate.helper.render.MSAAFramebuffer;
 import me.x150.sipprivate.helper.render.Renderer;
 import net.minecraft.client.gui.screen.Screen;
@@ -9,7 +10,10 @@ import net.minecraft.client.util.DefaultSkinHelper;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Quaternion;
+import net.minecraft.util.math.Vec2f;
 import org.lwjgl.opengl.GL40C;
+
+import java.awt.*;
 
 public class TestScreen extends Screen {
     public TestScreen() {
@@ -18,6 +22,7 @@ public class TestScreen extends Screen {
 
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+        renderBackground(matrices);
         MSAAFramebuffer.use(MSAAFramebuffer.MAX_SAMPLES, () -> {
             RenderSystem.enableBlend();
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -41,6 +46,9 @@ public class TestScreen extends Screen {
             RenderSystem.defaultBlendFunc();
 
             Renderer.R2D.renderLoadingSpinner(matrices,1f,200,45,20,1,30);
+
+            Vec2f contentPos = Renderer.R2D.renderTooltip(matrices,mouseX,mouseY-10,100,30,new Color(200,20,20,255));
+            FontRenderers.getNormal().drawString(matrices,"Shit",contentPos.x,contentPos.y,0xFFFFFF, false);
         });
 
         super.render(matrices, mouseX, mouseY, delta);

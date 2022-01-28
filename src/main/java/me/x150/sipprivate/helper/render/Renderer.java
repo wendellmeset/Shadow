@@ -287,6 +287,82 @@ public class Renderer {
     }
 
     public static class R2D {
+        /**
+         * Renders an arrow tooltip
+         * @param stack The transformation stack
+         * @param arrowX the x position of the arrow
+         * @param arrowY the y position of the arrow
+         * @param width the width of the tooltip
+         * @param height the height of the tooltip
+         * @param color the color of the tooltip
+         * @return the start position (0,0) of the tooltip content, after considering where to place it
+         */
+        public static Vec2f renderTooltip(MatrixStack stack, double arrowX, double arrowY, double width, double height, Color color) {
+            double centerX = CoffeeClientMain.client.getWindow().getScaledWidth()/2d;
+            double centerY = CoffeeClientMain.client.getWindow().getScaledHeight()/2d;
+            /*
+            left:
+            *           /\
+            * --------------
+            * |            |
+            * |            |
+            * --------------
+            right:
+            *   /\
+            * --------------
+            * |            |
+            * |            |
+            * --------------
+            * */
+            boolean placeLeft = centerX < arrowX;
+            /*
+            top:
+            *   /\
+            * --------------
+            * |            |
+            * |            |
+            * --------------
+            bottom:
+            * --------------
+            * |            |
+            * |            |
+            * --------------
+            *   V
+            * */
+            boolean placeBottom = centerY > arrowY;
+            double arrowDimX = 10;
+            double arrowDimY = 5;
+            double roundStartX = placeLeft?arrowX+arrowDimX/2d+10-width:arrowX-arrowDimX/2d-10;
+            double roundStartY = placeBottom?arrowY+arrowDimY:arrowY-arrowDimY-height;
+            Matrix4f mat = stack.peek().getPositionMatrix();
+
+            RenderSystem.enableBlend();
+            RenderSystem.disableTexture();
+            RenderSystem.setShader(GameRenderer::getPositionColorShader);
+            RenderSystem.disableCull();
+
+            renderRoundedQuadInternal(mat,color.getRed()/255f,color.getGreen()/255f,color.getBlue()/255f,color.getAlpha()/255f,roundStartX,roundStartY,roundStartX+width,roundStartY+height,5,20);
+//            RenderSystem.setShader(GameRenderer::getPositionColorShader);
+            Tessellator t = Tessellator.getInstance();
+            BufferBuilder bb = t.getBuffer();
+            bb.begin(VertexFormat.DrawMode.TRIANGLES,VertexFormats.POSITION_COLOR);
+            if (placeBottom) {
+                bb.vertex(mat,(float) arrowX, (float) arrowY+1, 0).color(color.getRed()/255f,color.getGreen()/255f,color.getBlue()/255f,color.getAlpha()/255f).next();
+                bb.vertex(mat, (float) (arrowX-arrowDimX/2f),(float) (arrowY+arrowDimY+1), 0).color(color.getRed()/255f,color.getGreen()/255f,color.getBlue()/255f,color.getAlpha()/255f).next();
+                bb.vertex(mat, (float) (arrowX+arrowDimX/2f),(float) (arrowY+arrowDimY+1), 0).color(color.getRed()/255f,color.getGreen()/255f,color.getBlue()/255f,color.getAlpha()/255f).next();
+            } else {
+                bb.vertex(mat,(float) arrowX, (float) arrowY-1, 0).color(color.getRed()/255f,color.getGreen()/255f,color.getBlue()/255f,color.getAlpha()/255f).next();
+                bb.vertex(mat, (float) (arrowX-arrowDimX/2f),(float) (arrowY-arrowDimY-1), 0).color(color.getRed()/255f,color.getGreen()/255f,color.getBlue()/255f,color.getAlpha()/255f).next();
+                bb.vertex(mat, (float) (arrowX+arrowDimX/2f),(float) (arrowY-arrowDimY-1), 0).color(color.getRed()/255f,color.getGreen()/255f,color.getBlue()/255f,color.getAlpha()/255f).next();
+            }
+            t.draw();
+
+            RenderSystem.enableTexture();
+            RenderSystem.disableBlend();
+            RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+
+            return new Vec2f((float) roundStartX+1, (float) roundStartY+1);
+        }
 
         public static void beginScissor(MatrixStack stack, double x, double y, double endX, double endY) {
             Matrix4f matrix = stack.peek().getPositionMatrix();
