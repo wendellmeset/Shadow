@@ -100,7 +100,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
     void saveAlts() {
         CoffeeClientMain.log(Level.INFO, "Saving alts");
         JsonArray root = new JsonArray();
-        for (AltContainer alt1 : getAlts()) {
+        for (AltContainer alt1 : alts) {
             AltStorage alt = alt1.storage;
             JsonObject current = new JsonObject();
             current.addProperty("email", alt.email);

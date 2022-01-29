@@ -20,6 +20,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec2f;
 import org.lwjgl.glfw.GLFW;
 
 import java.awt.*;
@@ -29,7 +30,7 @@ import java.util.stream.Collectors;
 
 public class ClickGUI extends Screen implements FastTickable {
     public static final Theme theme = new SipoverV1();
-    static Color idk = new Color(20, 20, 30, 200);
+    static Color idk = new Color(20, 20, 30, 255);
     private static ClickGUI instance;
     final List<Element> elements = new ArrayList<>();
     final ParticleRenderer real = new ParticleRenderer(100);
@@ -160,8 +161,10 @@ public class ClickGUI extends Screen implements FastTickable {
             if (descX + width > CoffeeClientMain.client.getWindow().getScaledWidth()) {
                 descX -= (descX + width - CoffeeClientMain.client.getWindow().getScaledWidth()) + 4;
             }
-            Renderer.R2D.renderQuad(idk, descX - 1, descY, descX + width + 3, descY + FontRenderers.getNormal().getMarginHeight() + 1);
-            FontRenderers.getNormal().drawString(Renderer.R3D.getEmptyMatrixStack(), desc, descX, descY, 0xFFFFFF);
+            Vec2f root = Renderer.R2D.renderTooltip(matrices, descX, descY, width + 4, FontRenderers.getNormal().getMarginHeight() + 4, idk);
+            FontRenderers.getNormal().drawString(matrices, desc, root.x + 1, root.y + 2, 0xFFFFFF, false);
+//            Renderer.R2D.renderQuad(idk, descX - 1, descY, descX + width + 3, descY + FontRenderers.getNormal().getMarginHeight() + 1);
+//            FontRenderers.getNormal().drawString(Renderer.R3D.getEmptyMatrixStack(), desc, descX, descY, 0xFFFFFF);
             desc = null;
         }
     }

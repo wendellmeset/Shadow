@@ -13,26 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Notification {
-    public enum Type {
-        SUCCESS(new Identifier("coffeeclient", "notification/success.png"), new Color(58, 223, 118)),
-        INFO(new Identifier("coffeeclient", "notification/info.png"), new Color(39, 186, 253)),
-        WARNING(new Identifier("coffeeclient", "notification/warning.png"), new Color(255, 189, 17)),
-        ERROR(new Identifier("coffeeclient", "notification/error.png"), new Color(254, 92, 92));
-        Color c;
-        Identifier i;
-        Type(Identifier icon, Color color) {
-            this.i = icon;
-            this.c = color;
-        }
-
-        public Identifier getI() {
-            return i;
-        }
-
-        public Color getC() {
-            return c;
-        }
-    }
     public final String title;
     public final long creationDate;
     public String[] contents;
@@ -97,5 +77,27 @@ public class Notification {
         }
         splitContent.add(line.toString());
         return create(duration, title, type, splitContent.toArray(new String[0]));
+    }
+
+    public enum Type {
+        SUCCESS(new Identifier("coffeeclient", "notification/success.png"), new Color(58, 223, 118)),
+        INFO(new Identifier("coffeeclient", "notification/info.png"), new Color(39, 186, 253)),
+        WARNING(new Identifier("coffeeclient", "notification/warning.png"), new Color(255, 189, 17)),
+        ERROR(new Identifier("coffeeclient", "notification/error.png"), new Color(254, 92, 92));
+        Color c;
+        Identifier i;
+
+        Type(Identifier icon, Color color) {
+            this.i = icon;
+            this.c = color;
+        }
+
+        public Identifier getI() {
+            return i;
+        }
+
+        public Color getC() {
+            return c;
+        }
     }
 }

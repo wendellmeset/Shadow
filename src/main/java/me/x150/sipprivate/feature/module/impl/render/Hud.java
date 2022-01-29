@@ -48,6 +48,7 @@ public class Hud extends Module {
     double rNoConnectionPosY = -10d;
     Notification serverNotResponding = null;
     Timer tpsUpdateTimer = new Timer();
+    List<Double> last5SecondTpsAverage = new ArrayList<>();
 
     public Hud() {
         super("Hud", "Shows information about the player on screen", ModuleType.RENDER);
@@ -72,18 +73,18 @@ public class Hud extends Module {
     double calcTps(double n) {
         return (20.0 / Math.max((n - 1000.0) / (500.0), 1.0));
     }
-    List<Double> last5SecondTpsAverage = new ArrayList<>();
+
     @Override
     public void tick() {
         long averageTime = 5000;
         long waitTime = 100;
-        long maxLength = averageTime/waitTime;
+        long maxLength = averageTime / waitTime;
         if (tpsUpdateTimer.hasExpired(waitTime)) {
             tpsUpdateTimer.reset();
             double newTps = calcTps(System.currentTimeMillis() - lastTimePacketReceived);
             last5SecondTpsAverage.add(newTps);
-            while(last5SecondTpsAverage.size() > maxLength) last5SecondTpsAverage.remove(0);
-            currentTps = Utils.Math.roundToDecimal(last5SecondTpsAverage.stream().reduce(Double::sum).orElse(0d)/last5SecondTpsAverage.size(),2);
+            while (last5SecondTpsAverage.size() > maxLength) last5SecondTpsAverage.remove(0);
+            currentTps = Utils.Math.roundToDecimal(last5SecondTpsAverage.stream().reduce(Double::sum).orElse(0d) / last5SecondTpsAverage.size(), 2);
 
         }
     }
@@ -167,11 +168,11 @@ public class Hud extends Module {
         }
 
         if (this.tps.getValue()) {
-            String tStr = currentTps+"";
+            String tStr = currentTps + "";
             String[] dotS = tStr.split("\\.");
             String tpsString = dotS[0];
             if (!dotS[1].equalsIgnoreCase("0")) {
-                tpsString += "."+dotS[1];
+                tpsString += "." + dotS[1];
             }
             values.add(tpsString + " tps");
         }

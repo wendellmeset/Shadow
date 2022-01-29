@@ -45,10 +45,10 @@ public class TestScreen extends Screen {
             Screen.drawTexture(matrices, 45, 45, 40, 40, 8, 8, 8, 8, 64, 64);
             RenderSystem.defaultBlendFunc();
 
-            Renderer.R2D.renderLoadingSpinner(matrices,1f,200,45,20,1,30);
+            Renderer.R2D.renderLoadingSpinner(matrices, 1f, 200, 45, 20, 1, 30);
 
-            Vec2f contentPos = Renderer.R2D.renderTooltip(matrices,mouseX,mouseY-10,100,30,new Color(200,20,20,255));
-            FontRenderers.getNormal().drawString(matrices,"Shit",contentPos.x,contentPos.y,0xFFFFFF, false);
+            Vec2f contentPos = Renderer.R2D.renderTooltip(matrices, mouseX, mouseY - 10, 100, 30, new Color(200, 20, 20, 255));
+            FontRenderers.getNormal().drawString(matrices, "Shit", contentPos.x, contentPos.y, 0xFFFFFF, false);
         });
 
         super.render(matrices, mouseX, mouseY, delta);

@@ -143,7 +143,7 @@ public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
     void renderSuggestions(MatrixStack stack) {
         String cmd = command.get();
         float cmdTWidth = FontRenderers.getNormal().getStringWidth(cmd);
-        double cmdXS = command.getX()+5+cmdTWidth;
+        double cmdXS = command.getX() + 5 + cmdTWidth;
         if (cmd.isEmpty()) return;
         List<String> suggestions = getSuggestions(cmd);
         if (suggestions.isEmpty()) return;
@@ -232,20 +232,20 @@ public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
         Renderer.R2D.endScissor();
 
         if (logsHeight > availHeight) {
-            double viewportHeight = (height - padding() - 20 - padding())-padding();
-            double contentHeight = processedLogs.stream().map(logEntryIntern -> logEntryIntern.text.length*FontRenderers.getNormal().getMarginHeight()).reduce(Float::sum).orElse(0f);
-            double per = viewportHeight/contentHeight;
-            double barHeight = (height - padding() - 20 - padding() * 2)-padding()*2;
-            double innerbarHeight = barHeight*per;
+            double viewportHeight = (height - padding() - 20 - padding()) - padding();
+            double contentHeight = processedLogs.stream().map(logEntryIntern -> logEntryIntern.text.length * FontRenderers.getNormal().getMarginHeight()).reduce(Float::sum).orElse(0f);
+            double per = viewportHeight / contentHeight;
+            double barHeight = (height - padding() - 20 - padding() * 2) - padding() * 2;
+            double innerbarHeight = barHeight * per;
             double perScrolledIndex = smoothScroll / Math.max(1, lastLogsHeight - (height - padding() - 20 - padding() - 13.5));
             perScrolledIndex = 1 - perScrolledIndex;
             double cursorY = MathHelper.lerp(perScrolledIndex, padding() * 2, height - padding() - 20 - padding() * 2 - innerbarHeight);
             double cursorX = width - padding() * 2 - 3;
 
-            Renderer.R2D.renderRoundedQuad(stack, new Color(10, 10, 10, 150), cursorX - 3, padding() * 2, cursorX + 3, padding() * 2+barHeight, 3, 10);
+            Renderer.R2D.renderRoundedQuad(stack, new Color(10, 10, 10, 150), cursorX - 3, padding() * 2, cursorX + 3, padding() * 2 + barHeight, 3, 10);
 
 //            Renderer.R2D.renderCircle(stack, new Color(50, 50, 50, 150), cursorX, cursorY, 3, 10);
-            Renderer.R2D.renderRoundedQuad(stack,new Color(50,50,50,150),cursorX-3,cursorY,cursorX+3,cursorY+per*barHeight,3,10);
+            Renderer.R2D.renderRoundedQuad(stack, new Color(50, 50, 50, 150), cursorX - 3, cursorY, cursorX + 3, cursorY + per * barHeight, 3, 10);
         }
 
         renderSuggestions(stack);

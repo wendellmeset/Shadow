@@ -24,12 +24,16 @@ import net.minecraft.util.math.Vec3d;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ESP extends Module {
-    final EnumSetting<Mode> outlineMode = this.config.create(new EnumSetting.Builder<>(Mode.Filled).name("Outline mode").description("How to render the outline").get());
-    final BooleanSetting entities = this.config.create(new BooleanSetting.Builder(false).name("Show entities").description("Render entities").get());
-    final BooleanSetting players = this.config.create(new BooleanSetting.Builder(true).name("Show players").description("Render players").get());
+    public final EnumSetting<Mode> outlineMode = this.config.create(new EnumSetting.Builder<>(Mode.Filled).name("Outline mode").description("How to render the outline").get());
+    public final BooleanSetting entities = this.config.create(new BooleanSetting.Builder(false).name("Show entities").description("Render entities").get());
+    public final BooleanSetting players = this.config.create(new BooleanSetting.Builder(true).name("Show players").description("Render players").get());
     final DoubleSetting range = this.config.create(new DoubleSetting.Builder(64).name("Range").description("How far to render the entities").min(32).max(128).precision(1).get());
+    public List<double[]> vertexDumps = new ArrayList<>();
+    public boolean recording = false;
 
     public ESP() {
         super("ESP", "Shows where entities are", ModuleType.RENDER);
@@ -78,6 +82,45 @@ public class ESP extends Module {
                     case Filled -> Renderer.R3D.renderFilled(eSource.subtract(new Vec3d(entity.getWidth(), 0, entity.getWidth()).multiply(0.5)), new Vec3d(entity.getWidth(), entity.getHeight(), entity.getWidth()), Renderer.Util.modify(c, -1, -1, -1, 130), matrices);
                     case Rect -> renderOutline(entity, c, matrices);
                     case Outline -> Renderer.R3D.renderOutline(eSource.subtract(new Vec3d(entity.getWidth(), 0, entity.getWidth()).multiply(0.5)), new Vec3d(entity.getWidth(), entity.getHeight(), entity.getWidth()), Renderer.Util.modify(c, -1, -1, -1, 130), matrices);
+                    case Model -> {
+                        Color color = Utils.getCurrentRGB();
+                        float alpha = 1f;
+                        List<double[]> vertBuffer = new ArrayList<>();
+                        List<double[][]> verts = new ArrayList<>();
+                        for (double[] vertexDump : vertexDumps) {
+                            if (vertexDump.length == 0) {
+                                verts.add(vertBuffer.toArray(double[][]::new));
+                                vertBuffer.clear();
+                            } else vertBuffer.add(vertexDump);
+                        }
+                        verts.add(vertBuffer.toArray(double[][]::new));
+                        vertBuffer.clear();
+                        vertexDumps.clear();
+
+                        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+                        RenderSystem.enableBlend();
+                        RenderSystem.defaultBlendFunc();
+                        GL11.glDepthFunc(GL11.GL_LEQUAL);
+                        for (int i = 0; i < verts.size(); i++) {
+                            double[][] vert = verts.get(i);
+                            double p = i/(double) verts.size();
+                            int col = Color.HSBtoRGB((float) p,0.6f,1f);
+                            float red = col >> 16 & 0xFF;
+                            float green = col >> 8 & 0xFF;
+                            float blue = col & 0xFF;
+                            BufferBuilder buffer = Tessellator.getInstance().getBuffer();
+                            RenderSystem.setShader(GameRenderer::getPositionColorShader);
+                            buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+                            for (double[] vertexDump : vert) {
+                                buffer.vertex(vertexDump[0], vertexDump[1], vertexDump[2]).color(red, green, blue, alpha).next();
+                            }
+                            buffer.end();
+                            BufferRenderer.draw(buffer);
+                        }
+
+                        GL11.glDepthFunc(GL11.GL_LEQUAL);
+                        RenderSystem.disableBlend();
+                    }
                 }
             }
         }
@@ -133,7 +176,7 @@ public class ESP extends Module {
     }
 
     public enum Mode {
-        Filled, Rect, Outline
+        Filled, Rect, Outline, Model
     }
 }
 

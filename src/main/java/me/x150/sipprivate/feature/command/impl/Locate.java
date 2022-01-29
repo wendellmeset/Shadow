@@ -6,7 +6,6 @@ import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.command.Command;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.structure.StructureManager;
-import net.minecraft.structure.pool.StructurePools;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.ChunkSectionPos;
@@ -33,6 +32,7 @@ import java.util.stream.Collectors;
 
 public class Locate extends Command {
 
+    private final DynamicRegistryManager jigsawRegistry = DynamicRegistryManager.create();
     private List<ChunkPos> strongholds = Lists.newArrayList();
     private BiomeSource biomeSource;
     private StructuresConfig structuresConfig;
@@ -40,10 +40,14 @@ public class Locate extends Command {
     private ChunkGenerator chunkGenerator;
     private StructureManager structureManager;
     private Registry<Biome> biomeRegistry;
-    private final DynamicRegistryManager jigsawRegistry = DynamicRegistryManager.create();
 
     public Locate() {
         super("Locate", "locates structures", "locate");
+    }
+
+    private static boolean canPlaceStrongholdInBiome(Biome biome) {
+        Biome.Category category = biome.getCategory();
+        return category != Biome.Category.OCEAN && category != Biome.Category.RIVER && category != Biome.Category.BEACH && category != Biome.Category.SWAMP && category != Biome.Category.NETHER && category != Biome.Category.THEEND;
     }
 
     @Override
@@ -97,7 +101,7 @@ public class Locate extends Command {
 
         try {
             LevelStorage.Session session = LevelStorage.create(FabricLoader.getInstance().getConfigDir()).createSession("awdwa");
-            structureManager = new StructureManager(CoffeeClientMain.client.getResourceManager(), session,null);
+            structureManager = new StructureManager(CoffeeClientMain.client.getResourceManager(), session, null);
             session.close();
         } catch (IOException e) {
             System.out.println(e.getLocalizedMessage());
@@ -115,7 +119,7 @@ public class Locate extends Command {
             message("couldnt find structure");
             return;
         }
-        message("found structure at: "+res.getX()+" "+res.getZ());
+        message("found structure at: " + res.getX() + " " + res.getZ());
         this.strongholds = Lists.newArrayList();
         this.biomeSource = null;
         this.structuresConfig = null;
@@ -162,7 +166,8 @@ public class Locate extends Command {
         int i = config.getSpacing();
         int j = ChunkSectionPos.getSectionCoord(searchStartPos.getX());
         int k = ChunkSectionPos.getSectionCoord(searchStartPos.getZ());
-        block0: for (int l = 0; l <= searchRadius; ++l) {
+        block0:
+        for (int l = 0; l <= searchRadius; ++l) {
             for (int m = -l; m <= l; ++m) {
                 boolean bl = m == -l || m == l;
                 for (int n = -l; n <= l; ++n) {
@@ -178,7 +183,6 @@ public class Locate extends Command {
         return null;
     }
 
-
     private <F extends StructureFeature<?>> boolean getStructurePresence(ChunkPos pos2, F feature2) {
         ImmutableMultimap<ConfiguredStructureFeature<?, ?>, RegistryKey<Biome>> multimap = structuresConfig.getConfiguredStructureFeature(feature2);
         for (Map.Entry<ConfiguredStructureFeature<?, ?>, Collection<RegistryKey<Biome>>> entry : multimap.asMap().entrySet()) {
@@ -192,7 +196,6 @@ public class Locate extends Command {
         Predicate<Biome> predicate = biome -> this.biomeRegistry.getKey(biome).filter(allowedBiomes::contains).isPresent();
         return feature.feature.canGenerate(jigsawRegistry, chunkGenerator, biomeSource, structureManager, worldSeed, pos, feature.config, CoffeeClientMain.client.world, predicate);
     }
-
 
     private void generateStrongholdPositions() {
         if (!this.strongholds.isEmpty()) {
@@ -216,26 +219,21 @@ public class Locate extends Command {
         int k = 0;
         int l = 0;
         for (int m = 0; m < biome; ++m) {
-            double e = (double)(4 * i + i * l * 6) + (random.nextDouble() - 0.5) * ((double)i * 2.5);
-            int n = (int)Math.round(Math.cos(d) * e);
-            int o = (int)Math.round(Math.sin(d) * e);
+            double e = (double) (4 * i + i * l * 6) + (random.nextDouble() - 0.5) * ((double) i * 2.5);
+            int n = (int) Math.round(Math.cos(d) * e);
+            int o = (int) Math.round(Math.sin(d) * e);
             BlockPos blockPos = biomeSource.locateBiome(ChunkSectionPos.getOffsetPos(n, 8), 0, ChunkSectionPos.getOffsetPos(o, 8), 112, list::contains, random, chunkGenerator.getMultiNoiseSampler());
             if (blockPos != null) {
                 n = ChunkSectionPos.getSectionCoord(blockPos.getX());
                 o = ChunkSectionPos.getSectionCoord(blockPos.getZ());
             }
             this.strongholds.add(new ChunkPos(n, o));
-            d += Math.PI * 2 / (double)j;
+            d += Math.PI * 2 / (double) j;
             if (++k != j) continue;
             k = 0;
             j += 2 * j / (++l + 1);
             j = Math.min(j, biome - m);
             d += random.nextDouble() * Math.PI * 2.0;
         }
-    }
-
-    private static boolean canPlaceStrongholdInBiome(Biome biome) {
-        Biome.Category category = biome.getCategory();
-        return category != Biome.Category.OCEAN && category != Biome.Category.RIVER && category != Biome.Category.BEACH && category != Biome.Category.SWAMP && category != Biome.Category.NETHER && category != Biome.Category.THEEND;
     }
 }

@@ -5,37 +5,17 @@ import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleType;
 import me.x150.sipprivate.helper.render.Renderer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.network.packet.c2s.play.RequestCommandCompletionsC2SPacket;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class Test extends Module {
     Vec3d epos;
-    static class AnimatedCircle {
-        double animProg = 0;
-        Vec3d spawnPos;
-        Color a = new Color(197, 37, 37);
-        Color b = new Color(200, 200, 200, 0);
+    List<AnimatedCircle> ac = new ArrayList<>();
 
-        public void render(MatrixStack stack) {
-            double progI = animProg * 2;
-            double expandProg = progI / 2d; // 0-2 of 0-2 as 0-1
-            double colorProg = MathHelper.clamp(progI - 1, 0, 1); // 1-2 of 0-2 as 0-1
-            Color color = Renderer.Util.lerp(b, a, colorProg);
-            double width = expandProg * 5;
-            Renderer.R3D.renderCircleOutline(stack, color, spawnPos, width, 0.03, 50);
-        }
-
-        void tick() {
-            animProg += 0.005;
-            animProg %= 1;
-        }
-    }
     public Test() {
         super("Test", "Shit fuck", ModuleType.FUN);
     }
@@ -44,13 +24,13 @@ public class Test extends Module {
     public void tick() {
 
     }
-    List<AnimatedCircle> ac = new ArrayList<>();
+
     @Override
     public void enable() {
         epos = CoffeeClientMain.client.player.getPos();
         ac.clear();
-        for(int i = 0;i<3;i++) {
-            double initialProg = i/3d;
+        for (int i = 0; i < 3; i++) {
+            double initialProg = i / 3d;
             AnimatedCircle a = new AnimatedCircle();
             a.spawnPos = epos;
             a.animProg = initialProg;
@@ -86,5 +66,26 @@ public class Test extends Module {
     @Override
     public void onHudRender() {
 
+    }
+
+    static class AnimatedCircle {
+        double animProg = 0;
+        Vec3d spawnPos;
+        Color a = new Color(197, 37, 37);
+        Color b = new Color(200, 200, 200, 0);
+
+        public void render(MatrixStack stack) {
+            double progI = animProg * 2;
+            double expandProg = progI / 2d; // 0-2 of 0-2 as 0-1
+            double colorProg = MathHelper.clamp(progI - 1, 0, 1); // 1-2 of 0-2 as 0-1
+            Color color = Renderer.Util.lerp(b, a, colorProg);
+            double width = expandProg * 5;
+            Renderer.R3D.renderCircleOutline(stack, color, spawnPos, width, 0.03, 50);
+        }
+
+        void tick() {
+            animProg += 0.005;
+            animProg %= 1;
+        }
     }
 }
