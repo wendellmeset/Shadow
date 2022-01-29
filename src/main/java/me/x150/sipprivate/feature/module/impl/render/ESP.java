@@ -101,22 +101,27 @@ public class ESP extends Module {
                         RenderSystem.enableBlend();
                         RenderSystem.defaultBlendFunc();
                         GL11.glDepthFunc(GL11.GL_LEQUAL);
-                        for (int i = 0; i < verts.size(); i++) {
-                            double[][] vert = verts.get(i);
-                            double p = i/(double) verts.size();
-                            int col = Color.HSBtoRGB((float) p,0.6f,1f);
-                            float red = col >> 16 & 0xFF;
-                            float green = col >> 8 & 0xFF;
-                            float blue = col & 0xFF;
-                            BufferBuilder buffer = Tessellator.getInstance().getBuffer();
-                            RenderSystem.setShader(GameRenderer::getPositionColorShader);
-                            buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+                        double p;
+                        BufferBuilder buffer = Tessellator.getInstance().getBuffer();
+                        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+                        buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+                        for (double[][] vert : verts) {
+//                            p += 0.005;
+//                            p %= 1;
+
+
                             for (double[] vertexDump : vert) {
+                                p = (((/*vertexDump[0]+vertexDump[1]+*/vertexDump[2])%10)/10+(System.currentTimeMillis()%2000)/2000d)%1;
+                                int col = Color.HSBtoRGB((float) p, .6f, 1f);
+                                float red = (col >> 16 & 0xFF)/255f;
+                                float green = (col >> 8 & 0xFF)/255f;
+                                float blue = (col & 0xFF)/255f;
                                 buffer.vertex(vertexDump[0], vertexDump[1], vertexDump[2]).color(red, green, blue, alpha).next();
                             }
-                            buffer.end();
-                            BufferRenderer.draw(buffer);
+
                         }
+                        buffer.end();
+                        BufferRenderer.draw(buffer);
 
                         GL11.glDepthFunc(GL11.GL_LEQUAL);
                         RenderSystem.disableBlend();

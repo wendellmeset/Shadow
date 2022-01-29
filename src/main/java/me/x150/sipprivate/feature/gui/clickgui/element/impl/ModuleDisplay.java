@@ -80,7 +80,9 @@ public class ModuleDisplay extends Element {
         Renderer.R2D.renderQuad(matrices, hovered ? theme.getModule().darker() : theme.getModule(), x, y, x + width, y + height);
         FontRenderers.getNormal().drawCenteredString(matrices, module.getName(), x + width / 2d, y + height / 2d - FontRenderers.getNormal().getMarginHeight() / 2d, 0xFFFFFF);
         if (module.isEnabled()) {
-            Renderer.R2D.renderQuad(matrices, theme.getAccent(), x, y, x + 1, y + height);
+//            Renderer.R2D.renderQuad(matrices, theme.getAccent(), x, y, x + 1, y + height);
+            double wid = 1.5;
+            Renderer.R2D.renderRoundedQuad(matrices, theme.getAccent(), x + 1, y + 1, x + 1 + wid, y + height - 1, wid / 2d, 6);
         }
         cd.setX(this.x);
         cd.setY(this.y + height);

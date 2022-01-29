@@ -14,6 +14,9 @@ import net.minecraft.util.math.MathHelper;
 import java.awt.*;
 
 public class RoundButton implements Element, Drawable, Selectable, FastTickable, DoesMSAA {
+
+    public static Color STANDARD = new Color(40, 40, 40);
+
     final Runnable onPress;
     final Color color;
     String text;
@@ -34,6 +37,22 @@ public class RoundButton implements Element, Drawable, Selectable, FastTickable,
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public double getWidth() {
+        return width;
     }
 
     public void setX(double x) {

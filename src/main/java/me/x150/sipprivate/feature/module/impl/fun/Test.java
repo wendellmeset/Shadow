@@ -17,7 +17,7 @@ public class Test extends Module {
     List<AnimatedCircle> ac = new ArrayList<>();
 
     public Test() {
-        super("Test", "Shit fuck", ModuleType.FUN);
+        super("Test", "Testing stuff with the client, can be ignored", ModuleType.FUN);
     }
 
     @Override

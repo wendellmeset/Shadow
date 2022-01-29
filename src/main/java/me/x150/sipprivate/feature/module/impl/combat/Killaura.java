@@ -68,7 +68,7 @@ public class Killaura extends Module {
             .get());
 
     final BooleanSetting attackOnlyCombatPartner = this.config.create(new BooleanSetting.Builder(true)
-            .name("Aim at combat")
+            .name("Attack only combat")
             .description("Whether or not to only aim at the combat partner")
             .get());
     final BooleanSetting attackPlayers = this.config.create(new BooleanSetting.Builder(true)

@@ -2,7 +2,6 @@ package me.x150.sipprivate.mixin;
 
 import me.x150.sipprivate.feature.module.ModuleRegistry;
 import me.x150.sipprivate.feature.module.impl.render.ESP;
-import me.x150.sipprivate.helper.util.Utils;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.model.AnimalModel;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;

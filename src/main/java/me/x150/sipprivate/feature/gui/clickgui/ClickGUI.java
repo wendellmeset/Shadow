@@ -157,14 +157,23 @@ public class ClickGUI extends Screen implements FastTickable {
         matrices.pop();
         super.render(matrices, mouseX, mouseY, delta);
         if (desc != null) {
-            double width = FontRenderers.getNormal().getStringWidth(desc);
+
+//            double width = FontRenderers.getNormal().getStringWidth(desc);
+            double width = 0;
+            List<String> text = Arrays.stream(desc.split("\n")).map(s -> s = s.trim()).collect(Collectors.toList());
+            for (String s : text) {
+                width = Math.max(width, FontRenderers.getNormal().getStringWidth(s));
+            }
             if (descX + width > CoffeeClientMain.client.getWindow().getScaledWidth()) {
                 descX -= (descX + width - CoffeeClientMain.client.getWindow().getScaledWidth()) + 4;
             }
             Vec2f root = Renderer.R2D.renderTooltip(matrices, descX, descY, width + 4, FontRenderers.getNormal().getMarginHeight() + 4, idk);
-            FontRenderers.getNormal().drawString(matrices, desc, root.x + 1, root.y + 2, 0xFFFFFF, false);
-//            Renderer.R2D.renderQuad(idk, descX - 1, descY, descX + width + 3, descY + FontRenderers.getNormal().getMarginHeight() + 1);
-//            FontRenderers.getNormal().drawString(Renderer.R3D.getEmptyMatrixStack(), desc, descX, descY, 0xFFFFFF);
+            float yOffset = 2;
+            for (String s : text) {
+                FontRenderers.getNormal().drawString(matrices, s, root.x + 1, root.y + yOffset, 0xFFFFFF, false);
+                yOffset += FontRenderers.getNormal().getMarginHeight();
+            }
+
             desc = null;
         }
     }
