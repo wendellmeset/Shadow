@@ -108,6 +108,7 @@ public class ModuleRegistry {
         modules.add(new Scaffold());
         modules.add(new Test());
         modules.add(new BlocksmcFlight());
+        modules.add(new NameTags());
     }
 
     public static List<Module> getModules() {

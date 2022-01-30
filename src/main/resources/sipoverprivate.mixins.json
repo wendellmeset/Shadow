@@ -42,6 +42,7 @@
     "MouseMixin",
     "MultiplayerScreenMixin",
     "PlayerEntityMixin",
+    "PlayerEntityRendererMixin",
     "PlayerInteractEntityC2SPacketAccessor",
     "SessionAccessor",
     "SharedConstantsMixin",
