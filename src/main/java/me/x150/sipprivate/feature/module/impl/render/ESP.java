@@ -65,9 +65,55 @@ public class ESP extends Module {
 
     @Override
     public void onWorldRender(MatrixStack matrices) {
+        if (outlineMode.getValue() == Mode.Model) {
+            float alpha = 1f;
+            List<double[]> vertBuffer = new ArrayList<>();
+            List<double[][]> verts = new ArrayList<>();
+            for (double[] vertexDump : vertexDumps) {
+                if (vertexDump.length == 0) {
+                    verts.add(vertBuffer.toArray(double[][]::new));
+                    vertBuffer.clear();
+                } else vertBuffer.add(vertexDump);
+            }
+            verts.add(vertBuffer.toArray(double[][]::new));
+            vertBuffer.clear();
+            vertexDumps.clear();
+
+            RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+            RenderSystem.enableBlend();
+            RenderSystem.defaultBlendFunc();
+            GL11.glDepthFunc(GL11.GL_LEQUAL);
+            double p;
+            BufferBuilder buffer = Tessellator.getInstance().getBuffer();
+            RenderSystem.setShader(GameRenderer::getPositionColorShader);
+            buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+            for (double[][] vert : verts) {
+//                            p += 0.005;
+//                            p %= 1;
+
+
+                for (double[] vertexDump : vert) {
+                    p = (((/*vertexDump[0]+vertexDump[1]+*/vertexDump[2]) % 10) / 10 + (System.currentTimeMillis() % 2000) / 2000d) % 1;
+                    int col = Color.HSBtoRGB((float) p, .6f, 1f);
+                    float red = (col >> 16 & 0xFF) / 255f;
+                    float green = (col >> 8 & 0xFF) / 255f;
+                    float blue = (col & 0xFF) / 255f;
+                    buffer.vertex(vertexDump[0], vertexDump[1], vertexDump[2]).color(red, green, blue, alpha).next();
+                }
+
+            }
+            buffer.end();
+            BufferRenderer.draw(buffer);
+
+            GL11.glDepthFunc(GL11.GL_LEQUAL);
+            RenderSystem.disableBlend();
+        }
         if (CoffeeClientMain.client.world == null || CoffeeClientMain.client.player == null) {
             return;
         }
+
+
+
         for (Entity entity : CoffeeClientMain.client.world.getEntities()) {
             if (entity.squaredDistanceTo(CoffeeClientMain.client.player) > Math.pow(range.getValue(), 2)) {
                 continue;
@@ -82,50 +128,6 @@ public class ESP extends Module {
                     case Filled -> Renderer.R3D.renderFilled(eSource.subtract(new Vec3d(entity.getWidth(), 0, entity.getWidth()).multiply(0.5)), new Vec3d(entity.getWidth(), entity.getHeight(), entity.getWidth()), Renderer.Util.modify(c, -1, -1, -1, 130), matrices);
                     case Rect -> renderOutline(entity, c, matrices);
                     case Outline -> Renderer.R3D.renderOutline(eSource.subtract(new Vec3d(entity.getWidth(), 0, entity.getWidth()).multiply(0.5)), new Vec3d(entity.getWidth(), entity.getHeight(), entity.getWidth()), Renderer.Util.modify(c, -1, -1, -1, 130), matrices);
-                    case Model -> {
-                        Color color = Utils.getCurrentRGB();
-                        float alpha = 1f;
-                        List<double[]> vertBuffer = new ArrayList<>();
-                        List<double[][]> verts = new ArrayList<>();
-                        for (double[] vertexDump : vertexDumps) {
-                            if (vertexDump.length == 0) {
-                                verts.add(vertBuffer.toArray(double[][]::new));
-                                vertBuffer.clear();
-                            } else vertBuffer.add(vertexDump);
-                        }
-                        verts.add(vertBuffer.toArray(double[][]::new));
-                        vertBuffer.clear();
-                        vertexDumps.clear();
-
-                        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-                        RenderSystem.enableBlend();
-                        RenderSystem.defaultBlendFunc();
-                        GL11.glDepthFunc(GL11.GL_LEQUAL);
-                        double p;
-                        BufferBuilder buffer = Tessellator.getInstance().getBuffer();
-                        RenderSystem.setShader(GameRenderer::getPositionColorShader);
-                        buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-                        for (double[][] vert : verts) {
-//                            p += 0.005;
-//                            p %= 1;
-
-
-                            for (double[] vertexDump : vert) {
-                                p = (((/*vertexDump[0]+vertexDump[1]+*/vertexDump[2]) % 10) / 10 + (System.currentTimeMillis() % 2000) / 2000d) % 1;
-                                int col = Color.HSBtoRGB((float) p, .6f, 1f);
-                                float red = (col >> 16 & 0xFF) / 255f;
-                                float green = (col >> 8 & 0xFF) / 255f;
-                                float blue = (col & 0xFF) / 255f;
-                                buffer.vertex(vertexDump[0], vertexDump[1], vertexDump[2]).color(red, green, blue, alpha).next();
-                            }
-
-                        }
-                        buffer.end();
-                        BufferRenderer.draw(buffer);
-
-                        GL11.glDepthFunc(GL11.GL_LEQUAL);
-                        RenderSystem.disableBlend();
-                    }
                 }
             }
         }

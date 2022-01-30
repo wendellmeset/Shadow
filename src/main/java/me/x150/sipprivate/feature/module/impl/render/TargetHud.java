@@ -149,7 +149,6 @@ public class TargetHud extends Module {
             double y = rwxI * (modalHeight / 2d);
             stack.translate(x, y, 0);
             stack.scale((float) renderWX, (float) renderWX, 1);
-//            Renderer.R2D.renderQuad(stack, bg, 0, 0, modalWidth, modalHeight);
             double textLeftAlign = 32 + 10;
             Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 200), 0, 0, modalWidth, modalHeight, 5, 10);
 
@@ -179,55 +178,19 @@ public class TargetHud extends Module {
             }
             float mhealth = (float) trackedMaxHp;
             float health = (float) trackedHp;
-            float remainder = health - mhealth;
-            if (remainder < 0) {
-                remainder = 0;
-            }
             float hPer = health / mhealth;
-            //hPer = MathHelper.clamp(hPer,0,1);
-            double renderToX = modalWidth * hPer;
-            renderToX = MathHelper.clamp(renderToX, textLeftAlign, modalWidth - 5);
+            hPer = MathHelper.clamp(hPer,0,1);
+            double renderToX = MathHelper.lerp(hPer,textLeftAlign,modalWidth-5);
 
             Color MID_END = Renderer.Util.lerp(GREEN, RED, hPer);
             double pillHeight = 2;
             Renderer.R2D.renderRoundedQuad(stack, new Color(0, 0, 0, 200), textLeftAlign, modalHeight - 5 - pillHeight, modalWidth - 5, modalHeight - 5, pillHeight / 2d, 10);
             Renderer.R2D.renderRoundedQuad(stack, MID_END, textLeftAlign, modalHeight - 5 - pillHeight, renderToX, modalHeight - 5, pillHeight / 2d, 10);
-//            Renderer.R2D.renderQuadGradient(stack, RED, MID_END, textLeftAlign, modalHeight - 5-2, renderToX, modalHeight-5);
             if (renderHP.getValue()) {
                 FontRenderers.getNormal().drawString(stack, Utils.Math.roundToDecimal(trackedHp, 2) + " HP", textLeftAlign, yOffset, MID_END.getRGB());
-                yOffset += FontRenderers.getNormal().getFontHeight();
             }
 
-//            if (renderDistance.getValue()) {
-//                FontRenderers.getNormal()
-//                        .drawString(stack, Utils.Math.roundToDecimal(entity.getPos().distanceTo(Objects.requireNonNull(CoffeeClientMain.client.player).getPos()), 1) + " D", 40, yOffset, 0xFFFFFF);
-//                yOffset += FontRenderers.getNormal().getFontHeight();
-//            }
-//            if (renderMaxHP.getValue()) {
-//                String t = Utils.Math.roundToDecimal(mhealth, 2) + "";
-//                if (remainder > 0) {
-//                    t += "§6 + " + Utils.Math.roundToDecimal(remainder, 1);
-//                }
-//                float mhP = FontRenderers.getNormal().getStringWidth(t);
-//                FontRenderers.getNormal().drawString(stack, t, (modalWidth - mhP - 3), (modalHeight - 3 - FontRenderers.getNormal().getFontHeight()), 0xFFFFFF);
-//            }
-//
-//            HitResult bhr = entity.raycast(entity.getPos().distanceTo(Objects.requireNonNull(CoffeeClientMain.client.player).getPos()), 0f, false);
-//            if (bhr.getPos().distanceTo(CoffeeClientMain.client.player.getPos().add(0, 1, 0)) < 1.5 && renderLook.getValue()) {
-//                FontRenderers.getNormal().drawString(stack, "Looks at you", 40, yOffset, 0xFFFFFF);
-//                yOffset += FontRenderers.getNormal().getFontHeight();
-//            }
-//
-//            if (AttackManager.getLastAttackInTimeRange() != null && renderLoseWin.getValue()) {
-//                String st = entity.getHealth() > CoffeeClientMain.client.player.getHealth() ? "Losing" : entity.getHealth() == CoffeeClientMain.client.player.getHealth() ? "Stalemate" : "Winning";
-//                FontRenderers.getNormal().drawString(stack, st, 40, yOffset, 0xFFFFFF);
-//            }
-
-//            Text cname = re.getCustomName();
-//            re.setCustomName(Text.of("DoNotRenderThisUsernamePlease"));
             stack.pop();
-//            Renderer.R2D.renderEntity((20 * renderWX) + x, (modalHeight - 11) * renderWX + y, renderWX * 27, -10, -10, entity, stack);
-//            re.setCustomName(cname);
         }
     }
 
