@@ -287,6 +287,7 @@ public class Renderer {
     }
 
     public static class R2D {
+
         public static Vec2f renderTooltip(MatrixStack stack, double arrowX, double arrowY, double width, double height, Color color) {
             return renderTooltip(stack, arrowX, arrowY, width, height, color, false);
         }
@@ -337,7 +338,7 @@ public class Renderer {
             double arrowDimX = 10;
             double arrowDimY = 5;
             double roundStartX = placeLeft ? arrowX + arrowDimX / 2d + 10 - width : arrowX - arrowDimX / 2d - 10;
-            double roundStartY = renderUpsideDown ?arrowY-arrowDimY-height:arrowY + arrowDimY;
+            double roundStartY = renderUpsideDown ? arrowY - arrowDimY - height : arrowY + arrowDimY;
             Matrix4f mat = stack.peek().getPositionMatrix();
 
             RenderSystem.enableBlend();
@@ -366,6 +367,39 @@ public class Renderer {
             RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 
             return new Vec2f((float) roundStartX, (float) roundStartY);
+        }
+
+        public static void doInitAnimationTransform(MatrixStack stack, double progress, double width, double height) {
+            double originX = width / 2d;
+            double originY = height / 2d;
+            double translateX = originX * (1 - progress);
+            double translateY = originY * (1 - progress);
+            stack.translate(translateX, translateY, 0);
+            stack.scale((float) progress, (float) progress, 1);
+//            Matrix4f matrix = stack.peek().getPositionMatrix();
+//            RenderSystem.enableBlend();
+//            double x0 = maskX;
+//            double y0 = maskY;
+//            double x1 = maskX+width;
+//            double y1 = maskY+height;
+//            double z = 0;
+////            RenderSystem.blendFunc(GL40C.GL_SRC_ALPHA, GL40C.GL_SRC_ALPHA);
+//            RenderSystem.blendFuncSeparate(GL40.GL_ONE,GL40.GL_ONE,GL40C.GL_SRC_ALPHA,GL40C.GL_SRC_ALPHA);
+//            RenderSystem.blendEquation(GL14.GL_FUNC_ADD);
+////            GL11.glAlphaFunc(GL11.GL_GREATER, 0.6f);
+////            GL11.glEnable(GL11.GL_ALPHA_TEST);
+//            RenderSystem.setShader(GameRenderer::getPositionColorShader);
+//            BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
+//            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+//            bufferBuilder.vertex(matrix, (float) x0, (float) y1, (float) z).color(1f,0f,0f,(float) (1f-progress)).next();
+//            bufferBuilder.vertex(matrix, (float) x1, (float) y1, (float) z).color(0f,1f,0f,(float) (1f-progress)).next();
+//            bufferBuilder.vertex(matrix, (float) x1, (float) y0, (float) z).color(0f,0f,1f,(float) (1f-progress)).next();
+//            bufferBuilder.vertex(matrix, (float) x0, (float) y0, (float) z).color(1f,1f,0f,(float) (1f-progress)).next();
+//            bufferBuilder.end();
+//            BufferRenderer.draw(bufferBuilder);
+////            RenderSystem.blendFunc(GlStateManager.SrcFactor.DST_ALPHA, GlStateManager.DstFactor.SRC_ALPHA);
+////            RenderSystem.defaultBlendFunc();
+//            RenderSystem.blendFuncSeparate(GL40.GL_DST_COLOR,GL40.GL_SRC_COLOR,GL40C.GL_DST_ALPHA,GL40C.GL_SRC_ALPHA);
         }
 
         public static void beginScissor(MatrixStack stack, double x, double y, double endX, double endY) {
@@ -781,6 +815,8 @@ public class Renderer {
         public static Color modify(Color original, int redOverwrite, int greenOverwrite, int blueOverwrite, int alphaOverwrite) {
             return new Color(redOverwrite == -1 ? original.getRed() : redOverwrite, greenOverwrite == -1 ? original.getGreen() : greenOverwrite, blueOverwrite == -1 ? original.getBlue() : blueOverwrite, alphaOverwrite == -1 ? original.getAlpha() : alphaOverwrite);
         }
+
+
     }
 
 }

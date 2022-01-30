@@ -1,6 +1,6 @@
 package me.x150.sipprivate.mixin;
 
-import me.x150.sipprivate.feature.gui.screen.HomeScreen;
+import me.x150.sipprivate.feature.gui.screen.LoadingScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.text.Text;
@@ -19,6 +19,6 @@ public class TitleScreenMixin extends Screen {
 
     @Inject(method = "init", at = @At("RETURN"))
     void real(CallbackInfo ci) {
-        Objects.requireNonNull(client).setScreen(HomeScreen.instance());
+        Objects.requireNonNull(client).setScreen(LoadingScreen.instance());
     }
 }

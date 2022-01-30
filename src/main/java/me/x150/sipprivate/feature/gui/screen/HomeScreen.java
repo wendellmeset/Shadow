@@ -247,7 +247,7 @@ public class HomeScreen extends ClientScreen implements FastTickable {
 
     @Override
     public void onFastTick() {
-        if (CoffeeClientMain.client.getOverlay() == null && System.currentTimeMillis() - initTime > 1000 && !loaded)
+        if (CoffeeClientMain.client.getOverlay() == null && CoffeeClientMain.client.currentScreen == this && System.currentTimeMillis() - initTime > 1000 && !loaded)
             load();
         double delta = 10 / 600d;
         if (fadeOut) delta *= -1;

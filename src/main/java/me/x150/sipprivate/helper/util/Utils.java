@@ -12,7 +12,6 @@ import me.x150.sipprivate.feature.gui.screen.CoffeeConsoleScreen;
 import me.x150.sipprivate.helper.font.adapter.FontAdapter;
 import me.x150.sipprivate.mixin.IMinecraftClientAccessor;
 import me.x150.sipprivate.mixin.IRenderTickCounterAccessor;
-import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.minecraft.entity.Entity;
@@ -36,6 +35,7 @@ import org.lwjgl.BufferUtils;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -45,10 +45,9 @@ import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.List;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Utils {
-
-    public static ServerInfo latestServerInfo;
 
     public static void sleep(long ms) {
         try {
@@ -125,6 +124,54 @@ public class Utils {
             return stack;
         } catch (Exception ignored) {
             return new ItemStack(item);
+        }
+    }
+
+    public static class Textures {
+        static final NativeImageBackedTexture EMPTY = new NativeImageBackedTexture(1, 1, false);
+        static final HttpClient downloader = HttpClient.newHttpClient();
+        static Map<UUID, Identifier> uCache = new ConcurrentHashMap<>();
+
+        public static Identifier getSkinPreviewTexture(UUID uuid) {
+            if (uCache.containsKey(uuid)) return uCache.get(uuid);
+            // completely random id
+            // (hash code of uuid)(random numbers)
+            Identifier texIdent = new Identifier("coffee", uuid.hashCode() + (java.lang.Math.random() + "").split("\\.")[1]);
+            uCache.put(uuid, texIdent);
+            HttpRequest hr = HttpRequest.newBuilder().uri(URI.create("https://crafatar.com/avatars/" + uuid + "?overlay")).header("User-Agent", "why").build();
+            CoffeeClientMain.client.execute(() -> {
+                CoffeeClientMain.client.getTextureManager().registerTexture(texIdent, EMPTY);
+            });
+            downloader.sendAsync(hr, HttpResponse.BodyHandlers.ofByteArray()).thenAccept(httpResponse -> {
+                try {
+                    BufferedImage bi = ImageIO.read(new ByteArrayInputStream(httpResponse.body()));
+                    registerBufferedImageTexture(bi, texIdent);
+                    uCache.put(uuid, texIdent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+
+            return texIdent;
+        }
+
+        public static void registerBufferedImageTexture(BufferedImage image, Identifier tex) {
+            try {
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                ImageIO.write(image, "png", stream);
+                byte[] bytes = stream.toByteArray();
+
+                ByteBuffer data = BufferUtils.createByteBuffer(bytes.length).put(bytes);
+                data.flip();
+                NativeImage img = NativeImage.read(data);
+                NativeImageBackedTexture texture = new NativeImageBackedTexture(img);
+
+                CoffeeClientMain.client.execute(() -> {
+                    CoffeeClientMain.client.getTextureManager().registerTexture(tex, texture);
+                });
+            } catch (Exception ignored) {
+
+            }
         }
     }
 

@@ -18,12 +18,21 @@ import me.x150.sipprivate.helper.util.Utils;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Element;
+import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class CoffeeClientMain implements ModInitializer {
@@ -33,6 +42,13 @@ public class CoffeeClientMain implements ModInitializer {
     public static final Logger LOGGER = LogManager.getLogger();
     public static final MinecraftClient client = MinecraftClient.getInstance();
     public static final File BASE = new File(MinecraftClient.getInstance().runDirectory, "sip");
+    public static final List<ResourceEntry> resources = List.of(
+            new ResourceEntry(new Identifier("coffeeclient", "background.jpg"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/background.jpg"),
+            new ResourceEntry(new Identifier("coffeeclient", "notification/error.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/error.png"),
+            new ResourceEntry(new Identifier("coffeeclient", "notification/info.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/info.png"),
+            new ResourceEntry(new Identifier("coffeeclient", "notification/success.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/success.png"),
+            new ResourceEntry(new Identifier("coffeeclient", "notification/warning.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/warning.png")
+    );
     public static long lastScreenChange = System.currentTimeMillis();
     public static CoffeeClientMain INSTANCE;
     public static Thread MODULE_FTTICKER;
@@ -41,6 +57,25 @@ public class CoffeeClientMain implements ModInitializer {
 
     public static void log(Level level, String message) {
         LOGGER.log(level, "[" + MOD_NAME + "] " + message);
+    }
+
+    public void downloadAndRegisterTextures() {
+        HttpClient downloader = HttpClient.newHttpClient();
+        for (ResourceEntry resource : resources) {
+            log(Level.INFO, "Downloading " + resource.url);
+            try {
+                HttpRequest hrq = HttpRequest.newBuilder()
+                        .uri(URI.create(resource.url))
+                        .build();
+                HttpResponse<byte[]> b = downloader.send(hrq, HttpResponse.BodyHandlers.ofByteArray());
+                BufferedImage bi = ImageIO.read(new ByteArrayInputStream(b.body()));
+                Utils.registerBufferedImageTexture(resource.tex, bi);
+                log(Level.INFO, "Downloaded " + resource.url);
+            } catch (Exception ignored) {
+                log(Level.ERROR, "Failed to download " + resource.url);
+            }
+
+        }
     }
 
     @Override
@@ -138,6 +173,9 @@ public class CoffeeClientMain implements ModInitializer {
         CommandRegistry.init();
         System.out.println("sending post init");
         Events.fireEvent(EventType.POST_INIT, new PostInitEvent());
+    }
+
+    public record ResourceEntry(Identifier tex, String url) {
     }
 
 }

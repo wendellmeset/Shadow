@@ -111,11 +111,11 @@ public class ESP extends Module {
 
 
                             for (double[] vertexDump : vert) {
-                                p = (((/*vertexDump[0]+vertexDump[1]+*/vertexDump[2])%10)/10+(System.currentTimeMillis()%2000)/2000d)%1;
+                                p = (((/*vertexDump[0]+vertexDump[1]+*/vertexDump[2]) % 10) / 10 + (System.currentTimeMillis() % 2000) / 2000d) % 1;
                                 int col = Color.HSBtoRGB((float) p, .6f, 1f);
-                                float red = (col >> 16 & 0xFF)/255f;
-                                float green = (col >> 8 & 0xFF)/255f;
-                                float blue = (col & 0xFF)/255f;
+                                float red = (col >> 16 & 0xFF) / 255f;
+                                float green = (col >> 8 & 0xFF) / 255f;
+                                float blue = (col & 0xFF) / 255f;
                                 buffer.vertex(vertexDump[0], vertexDump[1], vertexDump[2]).color(red, green, blue, alpha).next();
                             }
 

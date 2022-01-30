@@ -229,15 +229,15 @@ public class GlyphPageFontRenderer {
     }
 
     public int drawString(MatrixStack matrices, String text, float x, float y, int color) {
-        return drawString(matrices, text, x, y, color, true);
+        return drawString(matrices, text, x, y, color, false);
     }
 
     public int drawString(MatrixStack matrices, String text, double x, double y, int color) {
-        return drawString(matrices, text, (float) x, (float) y, color, true);
+        return drawString(matrices, text, (float) x, (float) y, color, false);
     }
 
     public int drawCenteredString(MatrixStack matrices, String text, double x, double y, int color) {
-        return drawString(matrices, text, (float) x - getStringWidth(text) / 2f, (float) y, color, true);
+        return drawString(matrices, text, (float) x - getStringWidth(text) / 2f, (float) y, color, false);
     }
 
     /**
