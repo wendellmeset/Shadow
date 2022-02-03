@@ -10,6 +10,7 @@ import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.config.BooleanSetting;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleType;
+import me.x150.sipprivate.helper.Texture;
 import me.x150.sipprivate.helper.font.FontRenderers;
 import me.x150.sipprivate.helper.manager.AttackManager;
 import me.x150.sipprivate.helper.render.Renderer;
@@ -22,7 +23,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL40C;
 
@@ -152,7 +152,7 @@ public class TargetHud extends Module {
             double textLeftAlign = 32 + 10;
             Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 200), 0, 0, modalWidth, modalHeight, 5, 10);
 
-            Identifier tex = Utils.Textures.getSkinPreviewTexture(entity.getUuid());
+            Texture tex = new Texture(Utils.Textures.getSkinPreviewTexture(entity.getUuid()));
             RenderSystem.setShaderTexture(0, tex);
 
             RenderSystem.enableBlend();
@@ -179,8 +179,8 @@ public class TargetHud extends Module {
             float mhealth = (float) trackedMaxHp;
             float health = (float) trackedHp;
             float hPer = health / mhealth;
-            hPer = MathHelper.clamp(hPer,0,1);
-            double renderToX = MathHelper.lerp(hPer,textLeftAlign,modalWidth-5);
+            hPer = MathHelper.clamp(hPer, 0, 1);
+            double renderToX = MathHelper.lerp(hPer, textLeftAlign, modalWidth - 5);
 
             Color MID_END = Renderer.Util.lerp(GREEN, RED, hPer);
             double pillHeight = 2;

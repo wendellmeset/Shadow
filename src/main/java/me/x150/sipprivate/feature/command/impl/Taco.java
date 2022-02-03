@@ -3,12 +3,12 @@ package me.x150.sipprivate.feature.command.impl;
 import com.google.gson.Gson;
 import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.command.Command;
+import me.x150.sipprivate.helper.Texture;
 import me.x150.sipprivate.helper.event.EventType;
 import me.x150.sipprivate.helper.event.Events;
 import me.x150.sipprivate.helper.util.Utils;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.NativeImageBackedTexture;
-import net.minecraft.util.Identifier;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.Level;
 import org.lwjgl.BufferUtils;
@@ -236,7 +236,7 @@ public class Taco extends Command {
     public static class Frame {
         static long frameCounter = 0;
         NativeImageBackedTexture tex;
-        Identifier i;
+        Texture i;
 
         public Frame(BufferedImage image) {
             try {
@@ -248,7 +248,8 @@ public class Taco extends Command {
                 data.flip();
                 tex = new NativeImageBackedTexture(NativeImage.read(data));
 
-                i = new Identifier("atomic", "tacoframe_" + frameCounter);
+//                i = new Identifier("atomic", "tacoframe_" + frameCounter);
+                i = new Texture("taco/frame_" + frameCounter);
                 frameCounter++;
                 CoffeeClientMain.client.execute(() -> CoffeeClientMain.client.getTextureManager().registerTexture(i, tex));
             } catch (Exception e) {
@@ -257,7 +258,7 @@ public class Taco extends Command {
             }
         }
 
-        public Identifier getI() {
+        public Texture getI() {
             return i;
         }
 

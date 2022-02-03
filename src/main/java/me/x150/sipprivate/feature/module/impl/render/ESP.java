@@ -113,7 +113,6 @@ public class ESP extends Module {
         }
 
 
-
         for (Entity entity : CoffeeClientMain.client.world.getEntities()) {
             if (entity.squaredDistanceTo(CoffeeClientMain.client.player) > Math.pow(range.getValue(), 2)) {
                 continue;

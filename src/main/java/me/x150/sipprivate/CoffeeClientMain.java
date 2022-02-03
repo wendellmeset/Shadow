@@ -6,6 +6,7 @@ import me.x150.sipprivate.feature.gui.notifications.NotificationRenderer;
 import me.x150.sipprivate.feature.module.Module;
 import me.x150.sipprivate.feature.module.ModuleRegistry;
 import me.x150.sipprivate.helper.Rotations;
+import me.x150.sipprivate.helper.Texture;
 import me.x150.sipprivate.helper.event.EventType;
 import me.x150.sipprivate.helper.event.Events;
 import me.x150.sipprivate.helper.event.events.PostInitEvent;
@@ -18,19 +19,11 @@ import me.x150.sipprivate.helper.util.Utils;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Element;
-import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,13 +35,14 @@ public class CoffeeClientMain implements ModInitializer {
     public static final Logger LOGGER = LogManager.getLogger();
     public static final MinecraftClient client = MinecraftClient.getInstance();
     public static final File BASE = new File(MinecraftClient.getInstance().runDirectory, "sip");
-    public static final List<ResourceEntry> resources = List.of(
-            new ResourceEntry(new Identifier("coffeeclient", "background.jpg"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/background.jpg"),
-            new ResourceEntry(new Identifier("coffeeclient", "notification/error.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/error.png"),
-            new ResourceEntry(new Identifier("coffeeclient", "notification/info.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/info.png"),
-            new ResourceEntry(new Identifier("coffeeclient", "notification/success.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/success.png"),
-            new ResourceEntry(new Identifier("coffeeclient", "notification/warning.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/warning.png")
-    );
+    //    public static final List<ResourceEntry> resources = List.of(
+//            new ResourceEntry(new Texture("background.jpg"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/background.jpg"),
+//            new ResourceEntry(new Texture("notif/error.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/error.png"),
+//            new ResourceEntry(new Texture("notif/info.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/info.png"),
+//            new ResourceEntry(new Texture("notif/success.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/success.png"),
+//            new ResourceEntry(new Texture("notif/warning.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/warning.png")
+//    );
+    public static final List<ResourceEntry> resources = new ArrayList<>();
     public static long lastScreenChange = System.currentTimeMillis();
     public static CoffeeClientMain INSTANCE;
     public static Thread MODULE_FTTICKER;
@@ -59,29 +53,21 @@ public class CoffeeClientMain implements ModInitializer {
         LOGGER.log(level, "[" + MOD_NAME + "] " + message);
     }
 
-    public void downloadAndRegisterTextures() {
-        HttpClient downloader = HttpClient.newHttpClient();
-        for (ResourceEntry resource : resources) {
-            log(Level.INFO, "Downloading " + resource.url);
-            try {
-                HttpRequest hrq = HttpRequest.newBuilder()
-                        .uri(URI.create(resource.url))
-                        .build();
-                HttpResponse<byte[]> b = downloader.send(hrq, HttpResponse.BodyHandlers.ofByteArray());
-                BufferedImage bi = ImageIO.read(new ByteArrayInputStream(b.body()));
-                Utils.registerBufferedImageTexture(resource.tex, bi);
-                log(Level.INFO, "Downloaded " + resource.url);
-            } catch (Exception ignored) {
-                log(Level.ERROR, "Failed to download " + resource.url);
-            }
-
-        }
+    public static void registerTexture(ResourceEntry entry) {
+        resources.add(entry);
     }
 
     @Override
     public void onInitialize() {
         INSTANCE = this;
         log(Level.INFO, "Initializing");
+
+        registerTexture(new ResourceEntry(new Texture("background.jpg"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/background.jpg"));
+        registerTexture(new ResourceEntry(new Texture("notif/error.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/error.png"));
+        registerTexture(new ResourceEntry(new Texture("notif/info.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/info.png"));
+        registerTexture(new ResourceEntry(new Texture("notif/success.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/success.png"));
+        registerTexture(new ResourceEntry(new Texture("notif/warning.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/warning.png"));
+
         Runtime.getRuntime().addShutdownHook(new Thread(ConfigManager::saveState));
         if (BASE.exists() && !BASE.isDirectory()) {
             BASE.delete();
@@ -175,7 +161,7 @@ public class CoffeeClientMain implements ModInitializer {
         Events.fireEvent(EventType.POST_INIT, new PostInitEvent());
     }
 
-    public record ResourceEntry(Identifier tex, String url) {
+    public record ResourceEntry(Texture tex, String url) {
     }
 
 }

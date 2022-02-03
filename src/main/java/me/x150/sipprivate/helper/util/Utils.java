@@ -9,6 +9,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.gui.screen.CoffeeConsoleScreen;
+import me.x150.sipprivate.helper.Texture;
 import me.x150.sipprivate.helper.font.adapter.FontAdapter;
 import me.x150.sipprivate.mixin.IMinecraftClientAccessor;
 import me.x150.sipprivate.mixin.IRenderTickCounterAccessor;
@@ -24,7 +25,6 @@ import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.TextColor;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -72,7 +72,7 @@ public class Utils {
         return new Vec3d(MathHelper.lerp(p, b.x, a.x), MathHelper.lerp(p, b.y, a.y), MathHelper.lerp(p, b.z, a.z));
     }
 
-    public static void registerBufferedImageTexture(Identifier i, BufferedImage bi) {
+    public static void registerBufferedImageTexture(Texture i, BufferedImage bi) {
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(bi, "png", baos);
@@ -130,13 +130,13 @@ public class Utils {
     public static class Textures {
         static final NativeImageBackedTexture EMPTY = new NativeImageBackedTexture(1, 1, false);
         static final HttpClient downloader = HttpClient.newHttpClient();
-        static Map<UUID, Identifier> uCache = new ConcurrentHashMap<>();
+        static Map<UUID, Texture> uCache = new ConcurrentHashMap<>();
 
-        public static Identifier getSkinPreviewTexture(UUID uuid) {
+        public static Texture getSkinPreviewTexture(UUID uuid) {
             if (uCache.containsKey(uuid)) return uCache.get(uuid);
             // completely random id
             // (hash code of uuid)(random numbers)
-            Identifier texIdent = new Identifier("coffee", uuid.hashCode() + (java.lang.Math.random() + "").split("\\.")[1]);
+            Texture texIdent = new Texture("preview/" + uuid.hashCode() + "");
             uCache.put(uuid, texIdent);
             HttpRequest hr = HttpRequest.newBuilder().uri(URI.create("https://crafatar.com/avatars/" + uuid + "?overlay")).header("User-Agent", "why").build();
             CoffeeClientMain.client.execute(() -> {
@@ -155,7 +155,7 @@ public class Utils {
             return texIdent;
         }
 
-        public static void registerBufferedImageTexture(BufferedImage image, Identifier tex) {
+        public static void registerBufferedImageTexture(BufferedImage image, Texture tex) {
             try {
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 ImageIO.write(image, "png", stream);

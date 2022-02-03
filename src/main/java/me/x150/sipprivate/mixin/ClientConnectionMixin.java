@@ -1,5 +1,8 @@
 package me.x150.sipprivate.mixin;
 
+import io.netty.channel.ChannelHandlerContext;
+import me.x150.sipprivate.feature.module.ModuleRegistry;
+import me.x150.sipprivate.feature.module.impl.misc.AntiPacketKick;
 import me.x150.sipprivate.helper.event.EventType;
 import me.x150.sipprivate.helper.event.Events;
 import me.x150.sipprivate.helper.event.events.PacketEvent;
@@ -17,6 +20,13 @@ public class ClientConnectionMixin {
     @Inject(method = "handlePacket", at = @At("HEAD"), cancellable = true)
     private static <T extends PacketListener> void atomic_dispatchPacketGet(Packet<T> packet, PacketListener listener, CallbackInfo ci) {
         if (Events.fireEvent(EventType.PACKET_RECEIVE, new PacketEvent(packet))) {
+            ci.cancel();
+        }
+    }
+
+    @Inject(method = "exceptionCaught", at = @At("HEAD"), cancellable = true)
+    public void atomic_catchException(ChannelHandlerContext context, Throwable ex, CallbackInfo ci) {
+        if (ModuleRegistry.getByClass(AntiPacketKick.class).isEnabled()) {
             ci.cancel();
         }
     }

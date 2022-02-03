@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.gui.FastTickable;
 import me.x150.sipprivate.feature.gui.widget.RoundButton;
+import me.x150.sipprivate.helper.Texture;
 import me.x150.sipprivate.helper.font.FontRenderers;
 import me.x150.sipprivate.helper.font.adapter.impl.ClientFontRenderer;
 import me.x150.sipprivate.helper.render.MSAAFramebuffer;
@@ -18,7 +19,6 @@ import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.minecraft.client.util.DefaultSkinHelper;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import org.apache.commons.io.IOUtils;
 import org.lwjgl.BufferUtils;
@@ -40,7 +40,7 @@ import java.util.UUID;
 
 public class HomeScreen extends ClientScreen implements FastTickable {
     static final double padding = 5;
-    static final Identifier background = new Identifier("coffeeclient", "background.jpg");
+    static final Texture background = new Texture("background.jpg");
     static final HttpClient downloader = HttpClient.newHttpClient();
     static boolean isDev = false;
     static String version = "unknown";
@@ -49,7 +49,7 @@ public class HomeScreen extends ClientScreen implements FastTickable {
     final ClientFontRenderer title = FontRenderers.getCustomNormal(40);
     final ClientFontRenderer smaller = FontRenderers.getCustomNormal(30);
     final ClientFontRenderer propFr = FontRenderers.getCustomNormal(22);
-    final Identifier currentAccountTexture = new Identifier("coffee", "tex_currentaccount_home");
+    final Texture currentAccountTexture = new Texture("dynamic/tex_currentaccount_home");
     boolean loaded = false;
     long initTime = System.currentTimeMillis();
     double prog = 0;

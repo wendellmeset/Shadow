@@ -2,11 +2,11 @@ package me.x150.sipprivate.feature.gui.hud.element;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.x150.sipprivate.CoffeeClientMain;
+import me.x150.sipprivate.helper.Texture;
 import me.x150.sipprivate.helper.font.FontRenderers;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.Identifier;
 
 public class Taco extends HudElement {
     public Taco() {
@@ -23,7 +23,7 @@ public class Taco extends HudElement {
             FontRenderers.getMono().drawString(stack, "Nothing to taco", 0, 0, 0xFFFFFF);
             return;
         }
-        Identifier current = frame.getI();
+        Texture current = frame.getI();
 
         RenderSystem.disableBlend();
         RenderSystem.setShaderTexture(0, current);

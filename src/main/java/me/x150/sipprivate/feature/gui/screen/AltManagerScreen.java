@@ -12,6 +12,7 @@ import me.x150.sipprivate.CoffeeClientMain;
 import me.x150.sipprivate.feature.gui.FastTickable;
 import me.x150.sipprivate.feature.gui.widget.RoundButton;
 import me.x150.sipprivate.feature.gui.widget.RoundTextFieldWidget;
+import me.x150.sipprivate.helper.Texture;
 import me.x150.sipprivate.helper.font.FontRenderers;
 import me.x150.sipprivate.helper.font.adapter.FontAdapter;
 import me.x150.sipprivate.helper.font.adapter.impl.ClientFontRenderer;
@@ -28,7 +29,6 @@ import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.minecraft.client.util.DefaultSkinHelper;
 import net.minecraft.client.util.Session;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.Level;
@@ -52,7 +52,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 public class AltManagerScreen extends ClientScreen implements FastTickable {
-    public static final Map<UUID, Identifier> texCache = new HashMap<>();
+    public static final Map<UUID, Texture> texCache = new HashMap<>();
     static final File ALTS_FILE = new File(CoffeeClientMain.BASE, "alts.sip");
     static final String TOP_NOTE = """
             // DO NOT SHARE THIS FILE
@@ -77,7 +77,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
     boolean censorEmail = true;
     double scroll = 0;
     double scrollSmooth = 0;
-    Identifier currentAccountTexture = new Identifier("coffee", "tex_currentaccount");
+    Texture currentAccountTexture = new Texture("dynamic/currentaccount");
     boolean currentAccountTextureLoaded = false;
 
     private AltManagerScreen() {
@@ -723,7 +723,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
 
     public class AltContainer {
         final AltStorage storage;
-        Identifier tex;
+        Texture tex;
         boolean texLoaded = false;
         float animProgress = 0;
         boolean isHovered = false;
@@ -732,7 +732,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
 
         public AltContainer(double x, double y, double width, AltStorage inner) {
             this.storage = inner;
-            this.tex = DefaultSkinHelper.getTexture(inner.cachedUuid);
+            this.tex = new Texture(DefaultSkinHelper.getTexture(inner.cachedUuid));
             this.x = x;
             this.y = y;
             this.width = width;
@@ -758,7 +758,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
                     NativeImageBackedTexture texture = new NativeImageBackedTexture(img);
 
                     CoffeeClientMain.client.execute(() -> {
-                        this.tex = new Identifier("coffee", ("tex_" + this.storage.cachedUuid.hashCode() + "_" + (Math.random() + "").split("\\.")[1]).toLowerCase());
+                        this.tex = new Texture(("dynamic/tex_" + this.storage.cachedUuid.hashCode() + "_" + (Math.random() + "").split("\\.")[1]).toLowerCase());
                         CoffeeClientMain.client.getTextureManager().registerTexture(this.tex, texture);
                         texCache.put(this.storage.cachedUuid, this.tex);
                         texLoaded = true;

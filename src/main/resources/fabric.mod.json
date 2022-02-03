@@ -24,7 +24,6 @@
     "sipoverprivate.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.12.12",
-    "fabric": "*"
+    "fabricloader": ">=0.12.12"
   }
 }
