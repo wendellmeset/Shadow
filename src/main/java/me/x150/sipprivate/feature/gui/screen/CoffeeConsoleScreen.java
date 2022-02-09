@@ -61,7 +61,7 @@ public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
         double widgetWidthA = width - padding() * 2;
         double buttonWidth = 60;
         double inputWidth = widgetWidthA - buttonWidth - padding();
-        command = this.addDrawableChild(new RoundTextFieldWidget(padding(), height - padding() - 20, inputWidth, 20, "Command", 10));
+        command = this.addDrawableChild(new RoundTextFieldWidget(padding(), height - padding() - 20, inputWidth, 20, "Command"));
         RoundButton submit = new RoundButton(new Color(40, 40, 40), padding() * 2 + inputWidth, height - padding() - 20, buttonWidth, 20, "Execute", this::execute);
         addDrawableChild(submit);
         setInitialFocus(command);

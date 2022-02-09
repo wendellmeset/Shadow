@@ -19,10 +19,10 @@ import me.x150.sipprivate.helper.font.adapter.impl.ClientFontRenderer;
 import me.x150.sipprivate.helper.render.MSAAFramebuffer;
 import me.x150.sipprivate.helper.render.Renderer;
 import me.x150.sipprivate.helper.util.Transitions;
-import me.x150.sipprivate.helper.util.Utils;
 import me.x150.sipprivate.mixin.IMinecraftClientAccessor;
 import me.x150.sipprivate.mixin.SessionAccessor;
 import net.minecraft.client.gui.Element;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.NativeImageBackedTexture;
@@ -72,7 +72,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
     final ClientFontRenderer title = FontRenderers.getCustomNormal(40);
     final AtomicBoolean isLoggingIn = new AtomicBoolean(false);
     AltContainer selectedAlt;
-    ThemedButton add, exit, remove, login, session, censorMail;
+    ThemedButton add, exit, remove, tags, login, session, censorMail;
     RoundTextFieldWidget search;
     boolean censorEmail = true;
     double scroll = 0;
@@ -94,7 +94,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
     }
 
     public List<AltContainer> getAlts() {
-        return alts.stream().filter(altContainer -> altContainer.storage.cachedName.toLowerCase().startsWith(search.get().toLowerCase()) || altContainer.storage.email.toLowerCase().startsWith(search.get().toLowerCase())).collect(Collectors.toList());
+        return alts.stream().filter(altContainer -> altContainer.storage.cachedName.toLowerCase().startsWith(search.get().toLowerCase()) || Arrays.stream(altContainer.storage.tags.split(",")).map(String::trim).filter(s -> !s.isEmpty()).anyMatch(s -> s.toLowerCase().startsWith(search.get().toLowerCase()))).collect(Collectors.toList());
     }
 
     void saveAlts() {
@@ -109,6 +109,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
             current.addProperty("cachedUsername", alt.cachedName);
             current.addProperty("cachedUUID", alt.cachedUuid != null ? alt.cachedUuid.toString() : null);
             current.addProperty("valid", alt.valid);
+            current.addProperty("tags", alt.tags);
             root.add(current);
         }
         try {
@@ -141,7 +142,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
             for (JsonElement jsonElement : ja) {
                 JsonObject jo = jsonElement.getAsJsonObject();
                 try {
-                    AltStorage container = new AltStorage(jo.get("cachedUsername").getAsString(), jo.get("email").getAsString(), jo.get("password").getAsString(), UUID.fromString(jo.get("cachedUUID").getAsString()), AddScreenOverlay.AccountType.valueOf(jo.get("type").getAsString()));
+                    AltStorage container = new AltStorage(jo.get("cachedUsername").getAsString(), jo.get("email").getAsString(), jo.get("password").getAsString(), UUID.fromString(jo.get("cachedUUID").getAsString()), AddScreenOverlay.AccountType.valueOf(jo.get("type").getAsString()), jo.get("tags") == null ? "" : jo.get("tags").getAsString());
                     container.valid = !jo.has("valid") || jo.get("valid").getAsBoolean();
                     AltContainer ac = new AltContainer(0, 0, 0, container);
                     ac.renderY = ac.renderX = -1;
@@ -176,7 +177,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
 
     @Override
     protected void init() {
-        search = new RoundTextFieldWidget(width - 200 - 5 - 100 - 5 - 60 - 5 - 20 - getPadding(), 10 + title.getMarginHeight() / 2d - 20 / 2d, 200, 20, "Search", 10);
+        search = new RoundTextFieldWidget(width - 200 - 5 - 100 - 5 - 60 - 5 - 20 - getPadding(), 10 + title.getMarginHeight() / 2d - 20 / 2d, 200, 20, "Search");
         addDrawableChild(search);
         censorMail = new ThemedButton(width - 100 - 5 - 60 - 5 - 20 - getPadding(), 10 + title.getMarginHeight() / 2d - 20 / 2d, 100, 20, "Show email", this::toggleCensor);
         add = new ThemedButton(width - 60 - 5 - 20 - getPadding(), 10 + title.getMarginHeight() / 2d - 20 / 2d, 60, 20, "Add", () -> client.setScreen(new AddScreenOverlay(this)));
@@ -189,15 +190,20 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
         double toY = fromY + widRHeight;
         double fromX = width - (leftWidth + getPadding());
         double texDim = widRHeight - padding * 2;
-        double buttonWidth = (toX - (fromX + texDim + padding * 2)) / 2d - padding / 4d;
+        double buttonWidth = (toX - (fromX + texDim + padding * 2)) / 3d - padding / 4d;
         login = new ThemedButton(fromX + texDim + padding * 2, toY - 20 - padding, buttonWidth - padding, 20, "Login", this::login);
         remove = new ThemedButton(fromX + texDim + padding * 2 + buttonWidth + padding / 2d, toY - 20 - padding, buttonWidth - padding, 20, "Remove", this::remove);
+        tags = new ThemedButton(fromX + texDim + padding * 2 + buttonWidth + padding / 2d + buttonWidth + padding / 2d, toY - 20 - padding, buttonWidth - padding, 20, "Tags", this::editTags);
 
         toY = height - getPadding();
         buttonWidth = toX - fromX - padding * 3 - texDim;
         session = new ThemedButton(fromX + texDim + padding * 2, toY - 20 - padding, buttonWidth, 20, "Session", () -> {
             Objects.requireNonNull(client).setScreen(new SessionEditor(this, CoffeeClientMain.client.getSession())); // this is not a session stealer
         });
+    }
+
+    void editTags() {
+        client.setScreen(new TagEditor(this));
     }
 
     void updateCurrentAccount() {
@@ -262,6 +268,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
         exit.tickAnim();
         remove.tickAnim();
         login.tickAnim();
+        tags.tickAnim();
         session.tickAnim();
         scrollSmooth = Transitions.transition(scrollSmooth, scroll, 7, 0);
     }
@@ -316,7 +323,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
         double fromY = getHeaderHeight();
         double toY = fromY + widRHeight;
 
-        Renderer.R2D.renderRoundedQuad(stack, pillColor, fromX, fromY, toX, toY, 10, 10);
+        Renderer.R2D.renderRoundedQuad(stack, pillColor, fromX, fromY, toX, toY, 5, 20);
         if (selectedAlt != null) {
             double texDim = widRHeight - padding * 2;
 
@@ -326,7 +333,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
             RenderSystem.clear(GL40C.GL_COLOR_BUFFER_BIT, false);
             RenderSystem.colorMask(true, true, true, true);
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
-            Renderer.R2D.renderRoundedQuadInternal(stack.peek().getPositionMatrix(), 0, 0, 0, 1, fromX + padding, fromY + padding, fromX + padding + texDim, fromY + padding + texDim, 6, 10);
+            Renderer.R2D.renderRoundedQuadInternal(stack.peek().getPositionMatrix(), 0, 0, 0, 1, fromX + padding, fromY + padding, fromX + padding + texDim, fromY + padding + texDim, 5, 20);
 
             RenderSystem.blendFunc(GL40C.GL_DST_ALPHA, GL40C.GL_ONE_MINUS_DST_ALPHA);
             RenderSystem.setShaderTexture(0, selectedAlt.tex);
@@ -350,11 +357,12 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
             }
             remove.render(stack, mouseX, mouseY);
             login.render(stack, mouseX, mouseY);
+            tags.render(stack, mouseX, mouseY);
         }
 
         toY = height - getPadding();
         fromY = toY - widRHeight;
-        Renderer.R2D.renderRoundedQuad(stack, pillColor, fromX, fromY, toX, toY, 10, 10);
+        Renderer.R2D.renderRoundedQuad(stack, pillColor, fromX, fromY, toX, toY, 5, 20);
         double texDim = widRHeight - padding * 2;
 
         RenderSystem.enableBlend();
@@ -363,7 +371,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
         RenderSystem.clear(GL40C.GL_COLOR_BUFFER_BIT, false);
         RenderSystem.colorMask(true, true, true, true);
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
-        Renderer.R2D.renderRoundedQuadInternal(stack.peek().getPositionMatrix(), 0, 0, 0, 1, fromX + padding, fromY + padding, fromX + padding + texDim, fromY + padding + texDim, 6, 10);
+        Renderer.R2D.renderRoundedQuadInternal(stack.peek().getPositionMatrix(), 0, 0, 0, 1, fromX + padding, fromY + padding, fromX + padding + texDim, fromY + padding + texDim, 5, 20);
 
         RenderSystem.blendFunc(GL40C.GL_DST_ALPHA, GL40C.GL_ONE_MINUS_DST_ALPHA);
         RenderSystem.setShaderTexture(0, currentAccountTextureLoaded ? currentAccountTexture : DefaultSkinHelper.getTexture());
@@ -399,6 +407,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
         exit.clicked(mouseX, mouseY);
         if (this.selectedAlt != null) {
             login.clicked(mouseX, mouseY);
+            tags.clicked(mouseX, mouseY);
             remove.clicked(mouseX, mouseY);
         }
         session.clicked(mouseX, mouseY);
@@ -464,7 +473,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
             matrices.scale(MathHelper.lerp(animProgress, 1f, 0.95f), MathHelper.lerp(animProgress, 1f, 0.95f), 1f);
             double originX = -width / 2d;
             double originY = -height / 2d;
-            Renderer.R2D.renderRoundedQuad(matrices, widgetColor, originX, originY, width / 2d, height / 2d, 10, 10);
+            Renderer.R2D.renderRoundedQuad(matrices, widgetColor, originX, originY, width / 2d, height / 2d, 5, 20);
             FontRenderers.getNormal().drawString(matrices, text, -(FontRenderers.getNormal().getStringWidth(text) + 2) / 2f, -FontRenderers.getNormal().getMarginHeight() / 2f, isEnabled() ? 0xFFFFFF : 0xAAAAAA, false);
             matrices.pop();
         }
@@ -480,18 +489,20 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
         final String email;
         final String password;
         final AddScreenOverlay.AccountType type;
+        String tags;
         String cachedName;
         String accessToken;
         UUID cachedUuid;
         boolean valid = true;
         boolean didLogin = false;
 
-        public AltStorage(String n, String e, String p, UUID u, AddScreenOverlay.AccountType type) {
+        public AltStorage(String n, String e, String p, UUID u, AddScreenOverlay.AccountType type, String tags) {
             this.cachedName = n;
             this.email = e;
             this.password = p;
             this.cachedUuid = u;
             this.type = type;
+            this.tags = tags;
         }
     }
 
@@ -516,13 +527,13 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
             RoundButton exit = new RoundButton(widgetColor, width - 20 - 5, 5, 20, 20, "X", () -> Objects.requireNonNull(client).setScreen(parent));
             addDrawableChild(exit);
             double y = height / 2d - widgetHei / 2d + padding + title.getMarginHeight() + FontRenderers.getNormal().getMarginHeight() + padding;
-            RoundTextFieldWidget accessToken = new RoundTextFieldWidget(width / 2d - (widgetWid - padding * 2) / 2d, y, widgetWid - padding * 2, 20, "Access token", 10);
+            RoundTextFieldWidget accessToken = new RoundTextFieldWidget(width / 2d - (widgetWid - padding * 2) / 2d, y, widgetWid - padding * 2, 20, "Access token");
             accessToken.setText(session.getAccessToken());
             y += accessToken.getHeight() + padding;
-            RoundTextFieldWidget username = new RoundTextFieldWidget(width / 2d - (widgetWid - padding * 2) / 2d, y, widgetWid - padding * 2, 20, "Username", 10);
+            RoundTextFieldWidget username = new RoundTextFieldWidget(width / 2d - (widgetWid - padding * 2) / 2d, y, widgetWid - padding * 2, 20, "Username");
             username.setText(session.getUsername());
             y += username.getHeight() + padding;
-            RoundTextFieldWidget uuid = new RoundTextFieldWidget(width / 2d - (widgetWid - padding * 2) / 2d, y, widgetWid - padding * 2, 20, "UUID", 10);
+            RoundTextFieldWidget uuid = new RoundTextFieldWidget(width / 2d - (widgetWid - padding * 2) / 2d, y, widgetWid - padding * 2, 20, "UUID");
             uuid.setText(session.getUuid());
             y += uuid.getHeight() + padding;
             RoundButton save = new RoundButton(widgetColor, width / 2d - (widgetWid - padding * 2) / 2d, y, widgetWid - padding * 2, 20, "Save", () -> {
@@ -569,7 +580,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
 
             double centerX = width / 2d;
             double centerY = height / 2d;
-            Renderer.R2D.renderRoundedQuad(stack, overlayBackground, centerX - widgetWid / 2d, centerY - widgetHei / 2d, centerX + widgetWid / 2d, centerY + widgetHei / 2d, 10, 10);
+            Renderer.R2D.renderRoundedQuad(stack, overlayBackground, centerX - widgetWid / 2d, centerY - widgetHei / 2d, centerX + widgetWid / 2d, centerY + widgetHei / 2d, 5, 20);
             stack.push();
 
             double originX = width / 2d - widgetWid / 2d;
@@ -586,6 +597,119 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
                 child.mouseClicked(-1, -1, button);
             }
             return super.mouseClicked(mouseX, mouseY, button);
+        }
+    }
+
+    class TagEditor extends ClientScreen implements FastTickable {
+        List<ThemedButton> tags = new ArrayList<>();
+        RoundTextFieldWidget tagName;
+        RoundButton add;
+        double widgetWidth = 300;
+        double widgetHeight = 0;
+        double widgetStartX, widgetStartY;
+        Screen parent;
+        public TagEditor(Screen parent) {
+            super(MSAAFramebuffer.MAX_SAMPLES);
+            this.parent = parent;
+        }
+
+        @Override
+        public void onFastTick() {
+            for (ThemedButton tag : tags) {
+                tag.tickAnim();
+            }
+            add.onFastTick();
+        }
+
+        @Override
+        public boolean mouseClicked(double mouseX, double mouseY, int button) {
+            for (ThemedButton tag : new ArrayList<>(tags)) {
+                tag.clicked(mouseX, mouseY);
+            }
+            tagName.mouseClicked(mouseX, mouseY, button);
+            add.mouseClicked(mouseX, mouseY, button);
+            return super.mouseClicked(mouseX, mouseY, button);
+        }
+
+        @Override
+        public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+            tagName.keyPressed(keyCode, scanCode, modifiers);
+            return super.keyPressed(keyCode, scanCode, modifiers);
+        }
+
+        @Override
+        public boolean charTyped(char chr, int modifiers) {
+            tagName.charTyped(chr, modifiers);
+            return super.charTyped(chr, modifiers);
+        }
+
+        @Override
+        protected void init() {
+            RoundButton exit = new RoundButton(RoundButton.STANDARD, width - 20 - 5, 5, 20, 20, "X", this::onClose);
+            addDrawableChild(exit);
+            this.tags.clear();
+            String tags = selectedAlt.storage.tags;
+            double xOffset = 5;
+            double yOffset = 0;
+            double widgetsHeight = 20;
+            double padding = 5;
+            List<String> parsedTags = new ArrayList<>(Arrays.stream(tags.split(",")).map(String::trim).filter(s -> !s.isEmpty()).toList());
+            for (String s : parsedTags) {
+                if (s.isEmpty()) continue;
+                float width = FontRenderers.getNormal().getStringWidth(s) + 2 + 4;
+                if (xOffset + width > (widgetWidth - 5)) {
+                    xOffset = 5;
+                    yOffset += FontRenderers.getNormal().getMarginHeight() + 4 + 2;
+                }
+                ThemedButton inst = new ThemedButton(xOffset, yOffset, width, FontRenderers.getNormal().getMarginHeight() + 4, s, () -> {
+                    parsedTags.remove(s);
+                    selectedAlt.storage.tags = String.join(",", parsedTags);
+                    init();
+                });
+                this.tags.add(inst);
+                xOffset += width + 2;
+            }
+            double yBase = parsedTags.isEmpty() ? 0 : yOffset + FontRenderers.getNormal().getMarginHeight() + 4 + padding;
+            tagName = new RoundTextFieldWidget(5, yBase, widgetWidth - 60 - padding * 3, widgetsHeight, "Tag name");
+            add = new RoundButton(RoundButton.STANDARD, tagName.getX() + tagName.getWidth() + padding, yBase, 60, widgetsHeight, "Add", () -> {
+                if (tagName.get().isEmpty()) return;
+                parsedTags.add(tagName.get());
+                tagName.set("");
+                selectedAlt.storage.tags = String.join(",", parsedTags);
+                init();
+            });
+            widgetHeight = add.getY() + add.getHeight() + padding * 2;
+
+            widgetStartX = width / 2d - widgetWidth / 2d;
+            widgetStartY = height / 2d - widgetHeight / 2d;
+            double widgetStartY = this.widgetStartY + padding;
+
+            for (ThemedButton tag : this.tags) {
+                tag.x += widgetStartX;
+                tag.y += widgetStartY;
+            }
+            tagName.setX(tagName.getX() + widgetStartX);
+            tagName.setY(tagName.getY() + widgetStartY);
+            add.setX(add.getX() + widgetStartX);
+            add.setY(add.getY() + widgetStartY);
+        }
+
+        @Override
+        public void onClose() {
+            client.setScreen(parent);
+        }
+
+        @Override
+        public void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
+            if (parent != null) parent.render(stack, mouseX, mouseY, delta);
+            Renderer.R2D.renderQuad(stack, backgroundOverlay, 0, 0, width, height);
+            Renderer.R2D.renderRoundedQuad(stack, overlayBackground, widgetStartX, widgetStartY, widgetStartX + widgetWidth, widgetStartY + widgetHeight, 5, 20);
+            for (ThemedButton tag : tags) {
+                tag.render(stack, mouseX, mouseY);
+            }
+            tagName.render(stack, mouseX, mouseY, delta);
+            add.render(stack, mouseX, mouseY, delta);
+            super.renderInternal(stack, mouseX, mouseY, delta);
         }
     }
 
@@ -611,14 +735,14 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
         protected void init() {
             ThemedButton exit = new ThemedButton(width - 20 - 5, 5, 20, 20, "X", () -> Objects.requireNonNull(client).setScreen(parent));
             buttons.add(exit);
-            email = new RoundTextFieldWidget(width / 2d - (widgetWid - padding * 2) / 2d, height / 2d - widgetHei / 2d + padding, widgetWid - padding * 2, 20, "E-Mail or username", 10);
-            passwd = new RoundTextFieldWidget(width / 2d - (widgetWid - padding * 2) / 2d, height / 2d - widgetHei / 2d + padding * 2 + 20, widgetWid - padding * 2, 20, "Password", 10);
+            email = new RoundTextFieldWidget(width / 2d - (widgetWid - padding * 2) / 2d, height / 2d - widgetHei / 2d + padding, widgetWid - padding * 2, 20, "E-Mail or username");
+            passwd = new RoundTextFieldWidget(width / 2d - (widgetWid - padding * 2) / 2d, height / 2d - widgetHei / 2d + padding * 2 + 20, widgetWid - padding * 2, 20, "Password");
             type = new ThemedButton(0, 0, widgetWid / 2d - padding * 1.5, 20, "Type: " + AccountType.values()[accountTypeI].s, this::cycle);
             add = new ThemedButton(0, 0, widgetWid / 2d - padding * 1.5, 20, "Add", this::add);
         }
 
         void add() {
-            AltStorage as = new AltStorage("Unknown", email.getText(), passwd.getText(), UUID.randomUUID(), AccountType.values()[accountTypeI]);
+            AltStorage as = new AltStorage("Unknown", email.getText(), passwd.getText(), UUID.randomUUID(), AccountType.values()[accountTypeI], "");
             AltContainer ac = new AltContainer(-1, -1, 0, as);
             ac.renderX = -1;
             ac.renderY = -1;
@@ -670,7 +794,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
             }
             double centerX = width / 2d;
             double centerY = height / 2d;
-            Renderer.R2D.renderRoundedQuad(stack, overlayBackground, centerX - widgetWid / 2d, centerY - widgetHei / 2d, centerX + widgetWid / 2d, centerY + widgetHei / 2d, 10, 10);
+            Renderer.R2D.renderRoundedQuad(stack, overlayBackground, centerX - widgetWid / 2d, centerY - widgetHei / 2d, centerX + widgetWid / 2d, centerY + widgetHei / 2d, 5, 20);
             stack.push();
 
             double originX = width / 2d - widgetWid / 2d;
@@ -770,7 +894,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
         }
 
         public double getHeight() {
-            return 50d;
+            return 60d;
         }
 
         public void login() {
@@ -833,7 +957,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
             stack.translate(renderX + width / 2d, renderY + getHeight() / 2d, 0);
             float animProgress = (float) easeInOutQuint(this.animProgress);
             stack.scale(MathHelper.lerp(animProgress, 1f, 0.99f), MathHelper.lerp(animProgress, 1f, 0.99f), 1f);
-            Renderer.R2D.renderRoundedQuad(stack, pillColor, originX, originY, originX + width, originY + getHeight(), 10, 10);
+            Renderer.R2D.renderRoundedQuad(stack, pillColor, originX, originY, originX + width, originY + getHeight(), 5, 20);
             double padding = 5;
             double texWidth = getHeight() - padding * 2;
             double texHeight = getHeight() - padding * 2;
@@ -846,7 +970,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
             RenderSystem.colorMask(true, true, true, true);
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
             Renderer.R2D.renderRoundedQuadInternal(stack.peek()
-                    .getPositionMatrix(), 0, 0, 0, 1, originX + padding, originY + padding, originX + padding + texWidth, originY + padding + texHeight, 6, 10);
+                    .getPositionMatrix(), 0, 0, 0, 1, originX + padding, originY + padding, originX + padding + texWidth, originY + padding + texHeight, 5, 20);
 
             RenderSystem.blendFunc(GL40C.GL_DST_ALPHA, GL40C.GL_ONE_MINUS_DST_ALPHA);
             RenderSystem.setShaderTexture(0, tex);
@@ -868,16 +992,28 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
                     new PropEntry("Email: " + mail, FontRenderers.getNormal(), 0xAAAAAA)
                     , new PropEntry("Type: " + this.storage.type.s, FontRenderers.getNormal(), 0xAAAAAA),
                     new PropEntry(storage.valid ? "" : "Invalid alt!", FontRenderers.getNormal(), 0xFF3333)};
-            float propsHeight = Arrays.stream(props).map(propEntry -> propEntry.cfr.getFontHeight()).reduce(Float::sum).orElse(0f);
-            float propsOffset = (float) (getHeight() / 2f - propsHeight / 2f);
+            float propsOffset = (float) (getHeight() - (texHeight)) / 2f;
             for (PropEntry prop : props) {
                 prop.cfr.drawString(stack, prop.name, (float) (originX + padding + texWidth + padding), (float) (originY + propsOffset), prop.color, false);
                 propsOffset += prop.cfr.getFontHeight();
             }
             if (isLoggingIn.get() && selectedAlt == this) {
                 double fromTop = getHeight() / 2d;
-                Renderer.R2D.renderLoadingSpinner(stack, Utils.getCurrentRGB(), originX + width - fromTop, originY + fromTop, 10, 10);
+                Renderer.R2D.renderLoadingSpinner(stack, 1f, originX + width - fromTop, originY + fromTop, 10, 1, 10);
             }
+            double xOff = 0;
+            if (!storage.tags.isEmpty()) for (String s : storage.tags.split(",")) {
+                String v = s.trim();
+                if (v.isEmpty()) continue;
+                float w = FontRenderers.getNormal().getStringWidth(v) + 2;
+                float h = FontRenderers.getNormal().getMarginHeight();
+                float pad = 2;
+                w += pad * 2;
+                Renderer.R2D.renderRoundedQuad(stack, RoundButton.STANDARD, originX + padding + texWidth + padding + xOff, originY + getHeight() - h - pad * 2 - padding, originX + padding + texWidth + padding + xOff + w, originY + getHeight() - padding, 5, 10);
+                FontRenderers.getNormal().drawString(stack, v, originX + padding + texWidth + padding + xOff + pad, originY + getHeight() - pad - FontRenderers.getNormal().getMarginHeight() - padding, 0xFFFFFF);
+                xOff += w + 2;
+            }
+
             stack.pop();
         }
 
@@ -887,7 +1023,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
             }
         }
 
-        public static record PropEntry(String name, FontAdapter cfr, int color) {
+        public record PropEntry(String name, FontAdapter cfr, int color) {
 
         }
     }

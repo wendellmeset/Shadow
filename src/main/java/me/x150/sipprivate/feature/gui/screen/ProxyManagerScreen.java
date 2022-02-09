@@ -41,9 +41,9 @@ public class ProxyManagerScreen extends ClientScreen {
         double sourceX = width / 2d - widgetWidth / 2d + wWidth / 2d;
         double sourceY = height / 2d - widgetHeight / 2d;
         double yOffset = padding() + title.getMarginHeight() + FontRenderers.getNormal().getMarginHeight() + padding();
-        ip = new RoundTextFieldWidget(sourceX, sourceY + yOffset, wWidth, 20, "IP", 10);
+        ip = new RoundTextFieldWidget(sourceX, sourceY + yOffset, wWidth, 20, "IP");
         yOffset += ip.getHeight() + padding();
-        port = new RoundTextFieldWidget(sourceX, sourceY + yOffset, wWidth, 20, "Port", 10);
+        port = new RoundTextFieldWidget(sourceX, sourceY + yOffset, wWidth, 20, "Port");
         if (currentProxy != null) {
             ip.setText(currentProxy.address);
             port.setText(currentProxy.port + "");

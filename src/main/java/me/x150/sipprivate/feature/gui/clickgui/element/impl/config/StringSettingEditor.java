@@ -11,7 +11,7 @@ public class StringSettingEditor extends ConfigBase<StringSetting> {
     public StringSettingEditor(double x, double y, double width, StringSetting configValue) {
         super(x, y, width, 0, configValue);
         double h = FontRenderers.getNormal().getFontHeight() + 2;
-        input = new RoundTextFieldWidget(x, y, width, h, configValue.getName(), 5);
+        input = new RoundTextFieldWidget(x, y, width, h, configValue.getName());
         input.changeListener = () -> configValue.setValue(input.get());
         input.setText(configValue.getValue());
         this.height = h + FontRenderers.getNormal().getMarginHeight() + 1;

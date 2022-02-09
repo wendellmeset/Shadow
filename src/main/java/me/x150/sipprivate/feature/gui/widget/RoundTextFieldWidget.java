@@ -18,7 +18,6 @@ import java.awt.*;
 
 public class RoundTextFieldWidget implements Element, Drawable, Selectable, DoesMSAA {
     protected final String suggestion;
-    final double rad;
     public Runnable changeListener = () -> {
     };
     protected String text = "";
@@ -29,13 +28,12 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
     boolean mouseOver = false;
     double x, y, width, height;
 
-    public RoundTextFieldWidget(double x, double y, double width, double height, String text, double rad) {
+    public RoundTextFieldWidget(double x, double y, double width, double height, String text) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.suggestion = text;
-        this.rad = rad;
     }
 
     protected double maxTextWidth() {
@@ -337,7 +335,7 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
         double centerY = y + height / 2d - innerHeight / 2d;
 
 //        Renderer.R2D.renderQuad(stack,Color.RED,x,y+height,x+width,y+height+.5);
-        Renderer.R2D.renderRoundedQuad(stack, new Color(40, 40, 40), x, y, x + width, y + height, rad, 15);
+        Renderer.R2D.renderRoundedQuad(stack, new Color(40, 40, 40), x, y, x + width, y + height, 5, 20);
         Renderer.R2D.beginScissor(stack, x + pad, y, x + width - pad, y + height);
         // Text content
         if (!text.isEmpty()) {
