@@ -14,7 +14,7 @@ public class DoubleSettingEditor extends ConfigBase<DoubleSetting> {
     boolean clicked = false;
 
     public DoubleSettingEditor(double x, double y, double width, DoubleSetting configValue) {
-        super(x, y, width, FontRenderers.getNormal().getMarginHeight() + 10, configValue);
+        super(x, y, width, FontRenderers.getRenderer().getMarginHeight() + 10, configValue);
     }
 
     void handleClick(double x) {
@@ -61,10 +61,10 @@ public class DoubleSettingEditor extends ConfigBase<DoubleSetting> {
     @Override
     public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
         Theme theme = ClickGUI.theme;
-        FontRenderers.getNormal().drawString(matrices, configValue.name, x, y, 0xFFFFFF);
+        FontRenderers.getRenderer().drawString(matrices, configValue.name, x, y, 0xFFFFFF);
         String t = configValue.getValue().toString();
-        FontRenderers.getNormal().drawString(matrices, t, x + width - FontRenderers.getNormal().getStringWidth(t) - 1, y, 0xFFFFFF);
-        double h = y + FontRenderers.getNormal().getMarginHeight() + .5; // 9 px left
+        FontRenderers.getRenderer().drawString(matrices, t, x + width - FontRenderers.getRenderer().getStringWidth(t) - 1, y, 0xFFFFFF);
+        double h = y + FontRenderers.getRenderer().getMarginHeight() + .5; // 9 px left
         Renderer.R2D.renderQuad(matrices, theme.getInactive(), x, h + 9 / 2d - .5, x + width, h + 9 / 2d);
         Renderer.R2D.renderQuad(matrices, theme.getActive(), x, h + 9 / 2d - .5, x + width * getPer(), h + 9 / 2d);
         //        Renderer.R2D.fill(matrices, theme.getAccent(), x + width * getPer() - .5, h + .5, x + width * getPer() + .5, h + 8.5);

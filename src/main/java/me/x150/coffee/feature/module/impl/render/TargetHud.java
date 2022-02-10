@@ -167,14 +167,14 @@ public class TargetHud extends Module {
             Renderer.R2D.renderTexture(stack, 5, 5, 32, 32, 0, 0, 32, 32, 32, 32);
             RenderSystem.defaultBlendFunc();
 
-            FontRenderers.getNormal().drawString(stack, entity.getEntityName(), textLeftAlign, yOffset, 0xFFFFFF);
-            yOffset += FontRenderers.getNormal().getFontHeight();
+            FontRenderers.getRenderer().drawString(stack, entity.getEntityName(), textLeftAlign, yOffset, 0xFFFFFF);
+            yOffset += FontRenderers.getRenderer().getFontHeight();
             PlayerListEntry ple = Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).getPlayerListEntry(entity.getUuid());
             if (ple != null && renderPing.getValue()) {
                 int ping = ple.getLatency();
                 String v = ping + " ms";
-                float ww = FontRenderers.getNormal().getStringWidth(v) + 1;
-                FontRenderers.getNormal().drawString(stack, v, modalWidth - ww - 5, 5, 0xFFFFFF);
+                float ww = FontRenderers.getRenderer().getStringWidth(v) + 1;
+                FontRenderers.getRenderer().drawString(stack, v, modalWidth - ww - 5, 5, 0xFFFFFF);
             }
             float mhealth = (float) trackedMaxHp;
             float health = (float) trackedHp;
@@ -187,7 +187,7 @@ public class TargetHud extends Module {
             Renderer.R2D.renderRoundedQuad(stack, new Color(0, 0, 0, 200), textLeftAlign, modalHeight - 5 - pillHeight, modalWidth - 5, modalHeight - 5, pillHeight / 2d, 10);
             Renderer.R2D.renderRoundedQuad(stack, MID_END, textLeftAlign, modalHeight - 5 - pillHeight, renderToX, modalHeight - 5, pillHeight / 2d, 10);
             if (renderHP.getValue()) {
-                FontRenderers.getNormal().drawString(stack, Utils.Math.roundToDecimal(trackedHp, 2) + " HP", textLeftAlign, yOffset, MID_END.getRGB());
+                FontRenderers.getRenderer().drawString(stack, Utils.Math.roundToDecimal(trackedHp, 2) + " HP", textLeftAlign, yOffset, MID_END.getRGB());
             }
 
             stack.pop();

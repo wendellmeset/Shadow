@@ -78,7 +78,7 @@ public class ModuleDisplay extends Element {
         }
         hoveredBefore = hovered;
         Renderer.R2D.renderQuad(matrices, hovered ? theme.getModule().darker() : theme.getModule(), x, y, x + width, y + height);
-        FontRenderers.getNormal().drawCenteredString(matrices, module.getName(), x + width / 2d, y + height / 2d - FontRenderers.getNormal().getMarginHeight() / 2d, 0xFFFFFF);
+        FontRenderers.getRenderer().drawCenteredString(matrices, module.getName(), x + width / 2d, y + height / 2d - FontRenderers.getRenderer().getMarginHeight() / 2d, 0xFFFFFF);
         if (module.isEnabled()) {
 //            Renderer.R2D.renderQuad(matrices, theme.getAccent(), x, y, x + 1, y + height);
             double wid = 1.5;

@@ -12,7 +12,6 @@ import me.x150.coffee.helper.event.Events;
 import me.x150.coffee.helper.event.events.PostInitEvent;
 import me.x150.coffee.helper.font.FontRenderers;
 import me.x150.coffee.helper.font.adapter.impl.ClientFontRenderer;
-import me.x150.coffee.helper.font.adapter.impl.VanillaFontRenderer;
 import me.x150.coffee.helper.font.render.GlyphPageFontRenderer;
 import me.x150.coffee.helper.manager.ConfigManager;
 import me.x150.coffee.helper.util.Utils;
@@ -82,10 +81,7 @@ public class CoffeeClientMain implements ModInitializer {
     }
 
     void initFonts() {
-        FontRenderers.setNormal(new ClientFontRenderer(GlyphPageFontRenderer.createFromID("Font.ttf", 17, false, false, false)));
-        FontRenderers.setTitle(new ClientFontRenderer(GlyphPageFontRenderer.createFromID("Font.ttf", 25, false, false, false)));
-        FontRenderers.setMono(new ClientFontRenderer(GlyphPageFontRenderer.createFromID("Font.ttf", 17, false, false, false)));
-        FontRenderers.setVanilla(new VanillaFontRenderer());
+        FontRenderers.setRenderer(new ClientFontRenderer(GlyphPageFontRenderer.createFromID("Font.ttf", 17, false, false, false)));
     }
 
     void tickModulesNWC() {

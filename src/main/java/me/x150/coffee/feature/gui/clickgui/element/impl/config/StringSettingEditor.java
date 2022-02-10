@@ -10,11 +10,11 @@ public class StringSettingEditor extends ConfigBase<StringSetting> {
 
     public StringSettingEditor(double x, double y, double width, StringSetting configValue) {
         super(x, y, width, 0, configValue);
-        double h = FontRenderers.getNormal().getFontHeight() + 2;
+        double h = FontRenderers.getRenderer().getFontHeight() + 2;
         input = new RoundTextFieldWidget(x, y, width, h, configValue.getName());
         input.changeListener = () -> configValue.setValue(input.get());
         input.setText(configValue.getValue());
-        this.height = h + FontRenderers.getNormal().getMarginHeight() + 1;
+        this.height = h + FontRenderers.getRenderer().getMarginHeight() + 1;
     }
 
     @Override
@@ -39,9 +39,9 @@ public class StringSettingEditor extends ConfigBase<StringSetting> {
 
     @Override
     public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
-        FontRenderers.getNormal().drawString(matrices, configValue.getName(), x, y, 0xFFFFFF);
+        FontRenderers.getRenderer().drawString(matrices, configValue.getName(), x, y, 0xFFFFFF);
         input.setX(x);
-        input.setY(y + FontRenderers.getNormal().getFontHeight());
+        input.setY(y + FontRenderers.getRenderer().getFontHeight());
         input.render(matrices, (int) mouseX, (int) mouseY, 0);
     }
 

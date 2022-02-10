@@ -45,4 +45,6 @@ public class ClientPlayerEntityMixin {
             ci.cancel();
         }
     }
+
+
 }

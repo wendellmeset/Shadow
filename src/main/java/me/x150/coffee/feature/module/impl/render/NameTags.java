@@ -35,19 +35,19 @@ public class NameTags extends Module {
     public void render(MatrixStack stack, AbstractClientPlayerEntity entity, Text text) {
         String t = text.getString();
         double healthHeight = 2;
-        double labelHeight = 2 + FontRenderers.getNormal().getFontHeight() + 2 + healthHeight + 2;
+        double labelHeight = 2 + FontRenderers.getRenderer().getFontHeight() + 2 + healthHeight + 2;
         Vec3d headPos = Utils.getInterpolatedEntityPosition(entity).add(0, entity.getHeight() * 2 + 0.3, 0);
         Vec3d a = Renderer.R2D.getScreenSpaceCoordinate(headPos, stack);
         if (Renderer.R2D.isOnScreen(a)) {
             Utils.TickManager.runOnNextRender(() -> {
                 MatrixStack stack1 = Renderer.R3D.getEmptyMatrixStack();
                 Vec3d actual = new Vec3d(a.x, a.y - labelHeight, a.z);
-                float fontWidth = FontRenderers.getNormal().getStringWidth(t) + 1 + 4;
+                float fontWidth = FontRenderers.getRenderer().getStringWidth(t) + 1 + 4;
                 float width = fontWidth;
                 width = Math.max(width, 60);
                 Renderer.R2D.renderRoundedQuad(stack1, new Color(0, 0, 0, 200), actual.x - width / 2d, actual.y, actual.x + width / 2d, actual.y + labelHeight, 3, 20);
 //                FontRenderers.getNormal().drawCenteredString(stack,t,actual.x,actual.y+2,0xFFFFFF);
-                FontRenderers.getNormal().drawString(stack1, t, actual.x - fontWidth / 2d + 2, actual.y + 2, 0xFFFFFF);
+                FontRenderers.getRenderer().drawString(stack1, t, actual.x - fontWidth / 2d + 2, actual.y + 2, 0xFFFFFF);
                 Renderer.R2D.renderRoundedQuad(stack1, new Color(60, 60, 60, 255), actual.x - width / 2d + 2, actual.y + labelHeight - 2 - healthHeight, actual.x + width / 2d - 2, actual.y + labelHeight - 2, healthHeight / 2d, 10);
                 float health = entity.getHealth();
                 float maxHealth = entity.getMaxHealth();

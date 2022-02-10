@@ -16,7 +16,7 @@ public class BooleanSettingEditor extends ConfigBase<BooleanSetting> {
     double animProgress = 0;
 
     public BooleanSettingEditor(double x, double y, double width, BooleanSetting configValue) {
-        super(x, y, width, FontRenderers.getNormal().getFontHeight() + 2, configValue);
+        super(x, y, width, FontRenderers.getRenderer().getFontHeight() + 2, configValue);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class BooleanSettingEditor extends ConfigBase<BooleanSetting> {
         //        Renderer.R2D.fill(matrices, theme.getAccent(), rix, y + height / 2d - rh / 2d + margin, rix + rid, y + height / 2d - rh / 2d + margin + rid);
         Renderer.R2D.renderCircle(matrices, theme.getAccent(), rix + rid / 2, y + height / 2d, rid / 2d, 15);
         //        Renderer.R2D.renderCircle(matrices, Theme.ACCENT,);
-        FontRenderers.getNormal().drawString(matrices, configValue.getName(), x + rw + 2, y + height / 2d - FontRenderers.getNormal().getMarginHeight() / 2d, 0xFFFFFF);
+        FontRenderers.getRenderer().drawString(matrices, configValue.getName(), x + rw + 2, y + height / 2d - FontRenderers.getRenderer().getMarginHeight() / 2d, 0xFFFFFF);
     }
 
     double easeInOutCubic(double x) {

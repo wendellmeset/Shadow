@@ -15,7 +15,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "me.x150.sipprivate.CoffeeClientMain"
+      "me.x150.coffee.CoffeeClientMain"
     ],
     "client": [],
     "server": []

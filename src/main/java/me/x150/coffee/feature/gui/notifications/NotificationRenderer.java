@@ -55,7 +55,7 @@ public class NotificationRenderer {
         float minWidth = 50;
         long c = System.currentTimeMillis();
         ArrayList<Notification> nf = new ArrayList<>(topBarNotifications);
-        nf.sort(Comparator.comparingDouble(value -> -FontRenderers.getNormal().getStringWidth(String.join(" ", value.contents))));
+        nf.sort(Comparator.comparingDouble(value -> -FontRenderers.getRenderer().getStringWidth(String.join(" ", value.contents))));
         for (Notification notification : nf) {
             double timeRemaining = Math.abs(c - notification.creationDate - notification.duration) / (double) notification.duration;
             timeRemaining = MathHelper.clamp(timeRemaining, 0, 1);
@@ -84,12 +84,12 @@ public class NotificationRenderer {
             }
             notification.shouldDoAnimation = notification.animationGoal != notification.animationProgress;
             String contents = String.join(" ", notification.contents);
-            float width = FontRenderers.getNormal().getStringWidth(contents) + 5;
+            float width = FontRenderers.getRenderer().getStringWidth(contents) + 5;
             width = width / 2f;
             width = Math.max(minWidth, width);
             Renderer.R2D.beginScissor(Renderer.R3D.getEmptyMatrixStack(), notification.renderPosX - width * notification.animationProgress, notification.renderPosY, notification.renderPosX + width * notification.animationProgress + 1, notification.renderPosY + height + 1);
             Renderer.R2D.renderQuad(ms, topBg, notification.renderPosX - width, notification.renderPosY, notification.renderPosX + width + 1, notification.renderPosY + height);
-            FontRenderers.getNormal().drawCenteredString(ms, contents, notification.renderPosX, notification.renderPosY + height / 2f - FontRenderers.getNormal().getFontHeight() / 2f, 0xFFFFFF);
+            FontRenderers.getRenderer().drawCenteredString(ms, contents, notification.renderPosX, notification.renderPosY + height / 2f - FontRenderers.getRenderer().getFontHeight() / 2f, 0xFFFFFF);
             double timeRemainingInv = 1 - timeRemaining;
             if (!notification.shouldDoAnimation && notification.animationProgress == 0 && notificationExpired) {
                 timeRemainingInv = 1;
@@ -119,15 +119,15 @@ public class NotificationRenderer {
 //            double timeRemaining = Math.abs(c - notification.creationDate - notification.duration) / (double) notification.duration;
 //            timeRemaining = MathHelper.clamp(timeRemaining, 0, 1);
             boolean notificationExpired = notification.creationDate + notification.duration < c;
-            int notifHeight = (int) (2 + ((notification.contents.length + (notification.title.isEmpty() ? 0 : 1)) * FontRenderers.getNormal().getFontHeight()));
+            int notifHeight = (int) (2 + ((notification.contents.length + (notification.title.isEmpty() ? 0 : 1)) * FontRenderers.getRenderer().getFontHeight()));
             notifHeight = Math.max(notifHeight, 32);
             double descWidth = 0;
             for (String content : notification.contents) {
-                descWidth = Math.max(FontRenderers.getNormal().getStringWidth(content) + 2, descWidth);
+                descWidth = Math.max(FontRenderers.getRenderer().getStringWidth(content) + 2, descWidth);
             }
             double iconDim = 18;
             double iconPad = (32 - iconDim) / 2d;
-            double notifWidth = Math.max(iconDim + iconPad * 2 + Math.max(descWidth, FontRenderers.getNormal().getStringWidth(notification.title)) + 2, 150);
+            double notifWidth = Math.max(iconDim + iconPad * 2 + Math.max(descWidth, FontRenderers.getRenderer().getStringWidth(notification.title)) + 2, 150);
             notification.posY = baseY - currentYOffset - notifHeight;
             currentYOffset += notifHeight + 2;
             if (!notificationExpired) {
@@ -154,13 +154,13 @@ public class NotificationRenderer {
             RenderSystem.setShaderColor(1, 1, 1, 1);
 
             double currentYOffsetText;
-            double textHeight = 1 + FontRenderers.getNormal().getMarginHeight() + FontRenderers.getNormal().getMarginHeight() * notification.contents.length;
+            double textHeight = 1 + FontRenderers.getRenderer().getMarginHeight() + FontRenderers.getRenderer().getMarginHeight() * notification.contents.length;
             currentYOffsetText = notifHeight / 2d - textHeight / 2d;
-            FontRenderers.getNormal().drawString(ms, notification.title, notification.renderPosX + iconDim + iconPad * 2, notification.renderPosY + currentYOffsetText, 0xFFFFFF);
-            currentYOffsetText += FontRenderers.getNormal().getFontHeight();
+            FontRenderers.getRenderer().drawString(ms, notification.title, notification.renderPosX + iconDim + iconPad * 2, notification.renderPosY + currentYOffsetText, 0xFFFFFF);
+            currentYOffsetText += FontRenderers.getRenderer().getFontHeight();
             for (String content : notification.contents) {
-                FontRenderers.getNormal().drawString(ms, content, notification.renderPosX + iconDim + iconPad * 2, notification.renderPosY + currentYOffsetText, 0xFFFFFF);
-                currentYOffsetText += FontRenderers.getNormal().getFontHeight();
+                FontRenderers.getRenderer().drawString(ms, content, notification.renderPosX + iconDim + iconPad * 2, notification.renderPosY + currentYOffsetText, 0xFFFFFF);
+                currentYOffsetText += FontRenderers.getRenderer().getFontHeight();
             }
         }
     }

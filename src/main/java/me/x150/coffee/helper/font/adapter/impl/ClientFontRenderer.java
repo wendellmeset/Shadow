@@ -11,6 +11,10 @@ public class ClientFontRenderer implements FontAdapter {
         this.renderer = fontRenderer;
     }
 
+    public GlyphPageFontRenderer getRenderer() {
+        return renderer;
+    }
+
     @Override
     public int drawString(MatrixStack matrices, String text, float x, float y, int color) {
         return renderer.drawString(matrices, text, x, y, color);
@@ -34,6 +38,11 @@ public class ClientFontRenderer implements FontAdapter {
     @Override
     public float getFontHeight() {
         return renderer.getFontHeight();
+    }
+
+    @Override
+    public float getFontHeight(String text) {
+        return renderer.getHeight(text);
     }
 
     @Override

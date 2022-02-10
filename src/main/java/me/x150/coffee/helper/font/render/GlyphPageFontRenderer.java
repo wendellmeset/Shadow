@@ -73,6 +73,15 @@ public class GlyphPageFontRenderer {
         }
     }
 
+    public char[] getRegisteredCharacters() {
+        Character[] shit1 = this.regularGlyphPage.glyphCharacterMap.keySet().toArray(new Character[0]);
+        char[] shit = new char[shit1.length];
+        for (int i = 0; i < shit1.length; i++) {
+            shit[i] = shit1[i];
+        }
+        return shit;
+    }
+
     public static GlyphPageFontRenderer create(String fontName, int size, boolean bold, boolean italic, boolean boldItalic) {
         char[] chars = new char[256];
         for (int i = 0; i < chars.length; i++) {
@@ -404,8 +413,12 @@ public class GlyphPageFontRenderer {
         this.strikethroughStyle = false;
     }
 
-    public int getFontHeight() {
-        return regularGlyphPage.getMaxFontHeight() / 2;
+    public float getHeight(String text) {
+        return regularGlyphPage.getFontHeight(text)/2f;
+    }
+
+    public float getFontHeight() {
+        return regularGlyphPage.getMaxFontHeight() / 2f;
     }
 
     public int getStringWidth(String text) {

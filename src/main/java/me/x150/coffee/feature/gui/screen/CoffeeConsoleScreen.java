@@ -142,30 +142,30 @@ public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
 
     void renderSuggestions(MatrixStack stack) {
         String cmd = command.get();
-        float cmdTWidth = FontRenderers.getNormal().getStringWidth(cmd);
+        float cmdTWidth = FontRenderers.getRenderer().getStringWidth(cmd);
         double cmdXS = command.getX() + 5 + cmdTWidth;
         if (cmd.isEmpty()) return;
         List<String> suggestions = getSuggestions(cmd);
         if (suggestions.isEmpty()) return;
-        double probableHeight = suggestions.size() * FontRenderers.getNormal().getMarginHeight() + padding();
+        double probableHeight = suggestions.size() * FontRenderers.getRenderer().getMarginHeight() + padding();
         float yC = (float) (height - padding() - 20 - padding() - probableHeight) - 5;
         double probableWidth = 0;
         for (String suggestion : suggestions) {
-            probableWidth = Math.max(probableWidth, FontRenderers.getNormal().getStringWidth(suggestion) + 1);
+            probableWidth = Math.max(probableWidth, FontRenderers.getRenderer().getStringWidth(suggestion) + 1);
         }
         float xC = (float) (cmdXS);
-        Renderer.R2D.renderRoundedQuad(stack, new Color(30, 30, 30, 255), xC - padding(), yC - padding(), xC + probableWidth + padding(), yC + probableHeight, 10, 15);
+        Renderer.R2D.renderRoundedQuad(stack, new Color(30, 30, 30, 255), xC - padding(), yC - padding(), xC + probableWidth + padding(), yC + probableHeight, 5, 20);
         for (String suggestion : suggestions) {
-            FontRenderers.getNormal().drawString(stack, suggestion, xC, yC, 0xFFFFFF, false);
-            yC += FontRenderers.getNormal().getMarginHeight();
+            FontRenderers.getRenderer().drawString(stack, suggestion, xC, yC, 0xFFFFFF, false);
+            yC += FontRenderers.getRenderer().getMarginHeight();
         }
     }
 
     public void addLog(LogEntry le) {
         logs.add(le);
         if (scroll != 0) {
-            scroll += FontRenderers.getNormal().getMarginHeight(); // keep up when not at 0
-            smoothScroll += FontRenderers.getNormal().getMarginHeight();
+            scroll += FontRenderers.getRenderer().getMarginHeight(); // keep up when not at 0
+            smoothScroll += FontRenderers.getRenderer().getMarginHeight();
         }
     }
 
@@ -182,7 +182,7 @@ public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
         Renderer.R2D.renderQuad(stack, background, 0, 0, width, height);
 
         // log field
-        Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20), padding(), padding(), width - padding(), height - padding() - 20 - padding(), 10, 15);
+        Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20), padding(), padding(), width - padding(), height - padding() - 20 - padding(), 5, 20);
         Renderer.R2D.beginScissor(stack, padding(), padding(), width - padding(), height - padding() - 20 - padding());
 
         // logs
@@ -192,7 +192,7 @@ public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
         double availHeight = height - padding() - 20 - padding() - 13.5;
 
         List<LogEntryIntern> processedLogs = new ArrayList<>();
-        while (logs.size() > 300) logs.remove(0); // max log size of 300 before we clear
+        while (logs.size() > 1000) logs.remove(0); // max log size of 1000 before we clear
         for (LogEntry log : logs) {
             List<String> logSplitToWidth = new ArrayList<>();
             StringBuilder currentLog = new StringBuilder();
@@ -200,7 +200,7 @@ public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
             for (int i = 0; i < logChr.length; i++) {
                 char current = logChr[i];
                 currentLog.append(current);
-                if (FontRenderers.getNormal().getStringWidth(currentLog.toString()) > availWidth) {
+                if (FontRenderers.getRenderer().getStringWidth(currentLog.toString()) > availWidth) {
                     currentLog.delete(currentLog.length() - 2, currentLog.length());
                     while (currentLog.charAt(currentLog.length() - 1) == ' ')
                         currentLog.deleteCharAt(currentLog.length() - 1); // clear trailing whitespaces
@@ -213,7 +213,7 @@ public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
             logSplitToWidth.add(currentLog.toString());
             processedLogs.add(new LogEntryIntern(logSplitToWidth.toArray(String[]::new), log.color));
         }
-        double logsHeight = processedLogs.stream().map(logEntryIntern -> logEntryIntern.text.length * FontRenderers.getNormal().getMarginHeight()).reduce(Float::sum).orElse(0f);
+        double logsHeight = processedLogs.stream().map(logEntryIntern -> logEntryIntern.text.length * FontRenderers.getRenderer().getMarginHeight()).reduce(Float::sum).orElse(0f);
         lastLogsHeight = logsHeight;
         if (logsHeight > availHeight) {
             startingY -= (logsHeight - availHeight); // scroll up to fit
@@ -222,10 +222,10 @@ public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
         for (LogEntryIntern processedLog : processedLogs) {
             for (String s : processedLog.text) {
                 // we're in bounds, render
-                if (startingY + FontRenderers.getNormal().getMarginHeight() >= padding())
-                    FontRenderers.getNormal().drawString(stack, s, startingX, startingY, processedLog.color.getRGB(), false);
+                if (startingY + FontRenderers.getRenderer().getMarginHeight() >= padding() && startingY <= height - padding() - 20 - padding())
+                    FontRenderers.getRenderer().drawString(stack, s, startingX, startingY, processedLog.color.getRGB(), false);
                 // else, just add
-                startingY += FontRenderers.getNormal().getMarginHeight();
+                startingY += FontRenderers.getRenderer().getMarginHeight();
             }
         }
 
@@ -233,19 +233,20 @@ public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
 
         if (logsHeight > availHeight) {
             double viewportHeight = (height - padding() - 20 - padding()) - padding();
-            double contentHeight = processedLogs.stream().map(logEntryIntern -> logEntryIntern.text.length * FontRenderers.getNormal().getMarginHeight()).reduce(Float::sum).orElse(0f);
+            double contentHeight = processedLogs.stream().map(logEntryIntern -> logEntryIntern.text.length * FontRenderers.getRenderer().getMarginHeight()).reduce(Float::sum).orElse(0f);
             double per = viewportHeight / contentHeight;
             double barHeight = (height - padding() - 20 - padding() * 2) - padding() * 2;
             double innerbarHeight = barHeight * per;
             double perScrolledIndex = smoothScroll / Math.max(1, lastLogsHeight - (height - padding() - 20 - padding() - 13.5));
             perScrolledIndex = 1 - perScrolledIndex;
+            double wid = 3;
             double cursorY = MathHelper.lerp(perScrolledIndex, padding() * 2, height - padding() - 20 - padding() * 2 - innerbarHeight);
             double cursorX = width - padding() * 2 - 3;
 
-            Renderer.R2D.renderRoundedQuad(stack, new Color(10, 10, 10, 150), cursorX - 3, padding() * 2, cursorX + 3, padding() * 2 + barHeight, 3, 10);
+            Renderer.R2D.renderRoundedQuad(stack, new Color(10, 10, 10, 150), cursorX - wid/2d, padding() * 2, cursorX + wid/2d, padding() * 2 + barHeight, wid/2d, 10);
 
 //            Renderer.R2D.renderCircle(stack, new Color(50, 50, 50, 150), cursorX, cursorY, 3, 10);
-            Renderer.R2D.renderRoundedQuad(stack, new Color(50, 50, 50, 150), cursorX - 3, cursorY, cursorX + 3, cursorY + per * barHeight, 3, 10);
+            Renderer.R2D.renderRoundedQuad(stack, new Color(50, 50, 50, 150), cursorX - wid/2d, cursorY, cursorX + wid/2d, cursorY + per * barHeight, wid/2d, 10);
         }
 
         renderSuggestions(stack);

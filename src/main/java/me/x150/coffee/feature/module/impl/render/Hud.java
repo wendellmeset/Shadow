@@ -65,7 +65,7 @@ public class Hud extends Module {
 
     static ClientFontRenderer getTitleFr() {
         if (titleFr == null) {
-            titleFr = FontRenderers.getCustomNormal(20);
+            titleFr = FontRenderers.getCustomSize(20);
         }
         return titleFr;
     }
@@ -186,16 +186,16 @@ public class Hud extends Module {
         }
         String drawStr = String.join(" | ", values);
         double titleWidth = getTitleFr().getStringWidth("Coffee");
-        double width = titleWidth + 5 + FontRenderers.getNormal().getStringWidth(drawStr) + 5;
+        double width = titleWidth + 5 + FontRenderers.getRenderer().getStringWidth(drawStr) + 5;
         if (values.isEmpty()) {
             width = titleWidth + 5;
         }
-        double height = Math.max(getTitleFr().getMarginHeight(), FontRenderers.getNormal().getMarginHeight()) + 2;
+        double height = Math.max(getTitleFr().getMarginHeight(), FontRenderers.getRenderer().getMarginHeight()) + 2;
 
         Renderer.R2D.renderQuad(ms, ClickGUI.theme.getActive(), rootX, rootY, rootX + 1, rootY + height);
         Renderer.R2D.renderQuad(ms, ClickGUI.theme.getModule(), rootX + 1, rootY, rootX + width, rootY + height);
         getTitleFr().drawString(ms, "Coffee", rootX + 2, rootY + height / 2d - getTitleFr().getMarginHeight() / 2d, 0xFFFFFF);
-        FontRenderers.getNormal().drawString(ms, drawStr, rootX + 2 + titleWidth + 5, rootY + height / 2d - FontRenderers.getNormal().getMarginHeight() / 2d, 0xAAAAAA);
+        FontRenderers.getRenderer().drawString(ms, drawStr, rootX + 2 + titleWidth + 5, rootY + height / 2d - FontRenderers.getRenderer().getMarginHeight() / 2d, 0xAAAAAA);
     }
 
     void drawModuleList(MatrixStack ms) {
@@ -206,16 +206,16 @@ public class Hud extends Module {
             if (prog == 0) continue;
             double expandProg = MathHelper.clamp(prog, 0, 1); // 0-1 as 0-1 from 0-2
             double slideProg = MathHelper.clamp(prog - 1, 0, 1); // 1-2 as 0-1 from 0-2
-            double hei = (FontRenderers.getNormal().getMarginHeight() + 2);
+            double hei = (FontRenderers.getRenderer().getMarginHeight() + 2);
             double wid = moduleEntry.getRenderWidth() + 3;
             Renderer.R2D.renderQuad(ms, ClickGUI.theme.getActive(), width - (wid + 1), y, width, y + hei * expandProg);
             ms.push();
             ms.translate((1 - slideProg) * wid, 0, 0);
             Renderer.R2D.renderQuad(ms, ClickGUI.theme.getModule(), width - wid, y, width, y + hei * expandProg);
-            double nameW = FontRenderers.getNormal().getStringWidth(moduleEntry.module.getName());
-            FontRenderers.getNormal().drawString(ms, moduleEntry.module.getName(), width - wid + 1, y + 1, 0xFFFFFF);
+            double nameW = FontRenderers.getRenderer().getStringWidth(moduleEntry.module.getName());
+            FontRenderers.getRenderer().drawString(ms, moduleEntry.module.getName(), width - wid + 1, y + 1, 0xFFFFFF);
             if (moduleEntry.module.getContext() != null && !moduleEntry.module.getContext().isEmpty()) {
-                FontRenderers.getNormal().drawString(ms, " " + moduleEntry.module.getContext(), width - wid + 1 + nameW, y + 1, 0xAAAAAA);
+                FontRenderers.getRenderer().drawString(ms, " " + moduleEntry.module.getContext(), width - wid + 1 + nameW, y + 1, 0xAAAAAA);
             }
             ms.pop();
             y += hei * expandProg;
@@ -230,7 +230,7 @@ public class Hud extends Module {
                 me.module = module;
                 moduleList.add(me);
             }
-            moduleList.sort(Comparator.comparingDouble(value -> -FontRenderers.getNormal().getStringWidth(value.module.getName())));
+            moduleList.sort(Comparator.comparingDouble(value -> -FontRenderers.getRenderer().getStringWidth(value.module.getName())));
         }
     }
 
@@ -280,7 +280,7 @@ public class Hud extends Module {
         }
 
         double getWidth() {
-            return FontRenderers.getNormal().getStringWidth(getDrawString());
+            return FontRenderers.getRenderer().getStringWidth(getDrawString());
         }
 
         double getRenderWidth() {

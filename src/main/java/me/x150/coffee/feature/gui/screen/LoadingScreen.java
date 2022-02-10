@@ -33,7 +33,7 @@ public class LoadingScreen extends ClientScreen implements FastTickable {
     volatile AtomicDouble progress = new AtomicDouble();
     double smoothProgress = 0;
     double opacity = 1;
-    ClientFontRenderer title = FontRenderers.getCustomNormal(40);
+    ClientFontRenderer title = FontRenderers.getCustomSize(40);
 
     private LoadingScreen() {
         super(MSAAFramebuffer.MAX_SAMPLES);

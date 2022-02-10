@@ -17,9 +17,9 @@ public class EnumSettingEditor extends ConfigBase<EnumSetting<?>> {
 
     public EnumSettingEditor(double x, double y, double width, EnumSetting<?> configValue) {
         super(x, y, width, 0, configValue);
-        double h = FontRenderers.getNormal().getFontHeight() + 3;
+        double h = FontRenderers.getRenderer().getFontHeight() + 3;
         for (Enum<?> value : configValue.getValues()) {
-            EnumSelectorClickable<?> a = new EnumSelectorClickable<>(this, 0, 0, width - 2, FontRenderers.getNormal().getMarginHeight() + 2, value);
+            EnumSelectorClickable<?> a = new EnumSelectorClickable<>(this, 0, 0, width - 2, FontRenderers.getRenderer().getMarginHeight() + 2, value);
             values.add(a);
             h += a.height;
         }
@@ -62,8 +62,8 @@ public class EnumSettingEditor extends ConfigBase<EnumSetting<?>> {
     @Override
     public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
         double pad = 0;
-        FontRenderers.getNormal().drawString(matrices, configValue.name, x, y + 1, 0xFFFFFF);
-        double yOffset = FontRenderers.getNormal().getMarginHeight() + 2;
+        FontRenderers.getRenderer().drawString(matrices, configValue.name, x, y + 1, 0xFFFFFF);
+        double yOffset = FontRenderers.getRenderer().getMarginHeight() + 2;
         //        Renderer.R2D.fill(matrices, new Color(0, 0, 0, 30), x, y + yOffset, x + width, y + height);
         Renderer.R2D.renderRoundedQuad(matrices, idk2, x, y + yOffset, x + width, y + height - pad, 5, 5);
         yOffset += 1;
@@ -105,7 +105,7 @@ public class EnumSettingEditor extends ConfigBase<EnumSetting<?>> {
         }
 
         void render(MatrixStack stack) {
-            FontRenderers.getNormal().drawCenteredString(stack, value.name(), x + width / 2d, y + height / 2d - FontRenderers.getNormal().getMarginHeight() / 2d, instance.getColor(value));
+            FontRenderers.getRenderer().drawCenteredString(stack, value.name(), x + width / 2d, y + height / 2d - FontRenderers.getRenderer().getMarginHeight() / 2d, instance.getColor(value));
         }
 
         boolean inBounds(double cx, double cy) {

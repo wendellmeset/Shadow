@@ -1,6 +1,7 @@
 package me.x150.coffee.helper.font.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import me.x150.coffee.helper.font.FontRenderers;
 import net.minecraft.client.render.*;
 import net.minecraft.client.texture.AbstractTexture;
 import net.minecraft.client.texture.NativeImage;
@@ -24,7 +25,7 @@ public class GlyphPage {
     private final Font font;
     private final boolean antiAliasing;
     private final boolean fractionalMetrics;
-    private final HashMap<Character, Glyph> glyphCharacterMap = new HashMap<>();
+    public final HashMap<Character, Glyph> glyphCharacterMap = new HashMap<>();
     private int imgSize;
     private int maxFontHeight = -1;
     private BufferedImage bufferedImage;
@@ -35,7 +36,7 @@ public class GlyphPage {
         this.antiAliasing = antiAliasing;
         this.fractionalMetrics = fractionalMetrics;
     }
-
+    FontRenderContext frc;
     public void generateGlyphPage(char[] chars) {
         // Calculate glyphPageSize
         double maxWidth = -1;
@@ -43,6 +44,7 @@ public class GlyphPage {
 
         AffineTransform affineTransform = new AffineTransform();
         FontRenderContext fontRenderContext = new FontRenderContext(affineTransform, antiAliasing, fractionalMetrics);
+        this.frc = fontRenderContext;
 
         for (char ch : chars) {
             Rectangle2D bounds = font.getStringBounds(Character.toString(ch), fontRenderContext);
@@ -178,6 +180,10 @@ public class GlyphPage {
     public float getWidth(char ch) {
         Glyph g = glyphCharacterMap.get(ch);
         return g == null ? 0 : g.width;
+    }
+
+    public float getFontHeight(String t) {
+        return (float) font.getStringBounds(t,frc).getHeight();
     }
 
     public int getMaxFontHeight() {

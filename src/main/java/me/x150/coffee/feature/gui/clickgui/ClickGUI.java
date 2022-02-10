@@ -130,7 +130,7 @@ public class ClickGUI extends Screen implements FastTickable {
     void renderIntern(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         double wid = width / 2d;
         double hei = height / 2d;
-        ClientFontRenderer bigAssFr = FontRenderers.getCustomNormal(70);
+        ClientFontRenderer bigAssFr = FontRenderers.getCustomSize(70);
         double tx = wid - bigAssFr.getStringWidth(searchTerm) / 2d;
         double ty = hei - bigAssFr.getMarginHeight() / 2d;
         bigAssFr.drawString(matrices, searchTerm, (float) tx, (float) ty, 0x50FFFFFF, false);
@@ -162,16 +162,16 @@ public class ClickGUI extends Screen implements FastTickable {
             double width = 0;
             List<String> text = Arrays.stream(desc.split("\n")).map(s -> s = s.trim()).collect(Collectors.toList());
             for (String s : text) {
-                width = Math.max(width, FontRenderers.getNormal().getStringWidth(s));
+                width = Math.max(width, FontRenderers.getRenderer().getStringWidth(s));
             }
             if (descX + width > CoffeeClientMain.client.getWindow().getScaledWidth()) {
                 descX -= (descX + width - CoffeeClientMain.client.getWindow().getScaledWidth()) + 4;
             }
-            Vec2f root = Renderer.R2D.renderTooltip(matrices, descX, descY, width + 4, FontRenderers.getNormal().getMarginHeight() + 4, idk);
+            Vec2f root = Renderer.R2D.renderTooltip(matrices, descX, descY, width + 4, FontRenderers.getRenderer().getMarginHeight() + 4, idk);
             float yOffset = 2;
             for (String s : text) {
-                FontRenderers.getNormal().drawString(matrices, s, root.x + 1, root.y + yOffset, 0xFFFFFF, false);
-                yOffset += FontRenderers.getNormal().getMarginHeight();
+                FontRenderers.getRenderer().drawString(matrices, s, root.x + 1, root.y + yOffset, 0xFFFFFF, false);
+                yOffset += FontRenderers.getRenderer().getMarginHeight();
             }
 
             desc = null;

@@ -12,8 +12,8 @@ import java.lang.reflect.Field;
 
 public class BindScreen extends Screen {
     final Module a;
-    final ClientFontRenderer cfr = FontRenderers.getCustomNormal(30);
-    final ClientFontRenderer smaller = FontRenderers.getCustomNormal(20);
+    final ClientFontRenderer cfr = FontRenderers.getCustomSize(30);
+    final ClientFontRenderer smaller = FontRenderers.getCustomSize(20);
     long closeAt = -1;
 
     public BindScreen(Module toBind) {

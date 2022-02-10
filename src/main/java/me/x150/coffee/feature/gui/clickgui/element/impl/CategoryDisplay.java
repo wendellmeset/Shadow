@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CategoryDisplay extends Element {
-    static final ClientFontRenderer cfr = FontRenderers.getCustomNormal(20);
+    static final ClientFontRenderer cfr = FontRenderers.getCustomSize(20);
     final List<ModuleDisplay> md = new ArrayList<>();
     final ModuleType mt;
     boolean selected = false;
@@ -98,7 +98,7 @@ public class CategoryDisplay extends Element {
         Theme theme = ClickGUI.theme;
         //        Renderer.R2D.fill(matrices, theme.getHeader(), x, y, x + width, y + headerHeight());
         double r = ModuleRegistry.getByClass(me.x150.coffee.feature.module.impl.render.ClickGUI.class).radius.getValue();
-        double modHeight = FontRenderers.getNormal().getFontHeight() + 2;
+        double modHeight = FontRenderers.getRenderer().getFontHeight() + 2;
         this.height = headerHeight() + getModules().stream().map(ModuleDisplay::getHeight).reduce(Double::sum).orElse(0d) + Math.max(modHeight, r); // pre calc height
         Renderer.R2D.renderRoundedQuad(matrices, theme.getHeader(), x, y, x + width, y + this.height, r, 15);
         cfr.drawCenteredString(matrices, mt.getName(), x + width / 2d, y + headerHeight() / 2d - cfr.getFontHeight() / 2d, 0xFFFFFF);
@@ -109,7 +109,7 @@ public class CategoryDisplay extends Element {
             moduleDisplay.render(matrices, mouseX, mouseY, scrollBeingUsed);
             y += moduleDisplay.getHeight();
         }
-        FontRenderers.getNormal().drawCenteredString(matrices, getModules().size() + " modules", this.x + this.width / 2d, this.y + this.height - 1 - FontRenderers.getNormal().getMarginHeight(), 0xFFFFFF);
+        FontRenderers.getRenderer().drawCenteredString(matrices, getModules().size() + " modules", this.x + this.width / 2d, this.y + this.height - 1 - FontRenderers.getRenderer().getMarginHeight(), 0xFFFFFF);
     }
 
     @Override

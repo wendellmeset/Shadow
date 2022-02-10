@@ -9,6 +9,7 @@ import me.x150.coffee.helper.event.Events;
 import me.x150.coffee.helper.event.events.MouseEvent;
 import me.x150.coffee.helper.event.events.PacketEvent;
 import me.x150.coffee.helper.render.Renderer;
+import me.x150.coffee.helper.util.Utils;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -72,10 +73,9 @@ public class Swing extends Module {
         if (swinging == null) {
             return;
         }
-        double[] looks = vecCalc(swinging.getX() + 0.5, swinging.getY() + 0.5, swinging.getZ() + 0.5, Objects.requireNonNull(CoffeeClientMain.client.player));
-        Vec3d forces = Vec3d.fromPolar((float) looks[1], (float) looks[0]).normalize().multiply(0.4);
-        CoffeeClientMain.client.player.addVelocity(forces.x, forces.y, forces.z);
-        CoffeeClientMain.client.player.addVelocity(0, 0.0668500030517578, 0);
+        Vec3d diff = Vec3d.of(swinging).add(0.5,0.5,0.5).subtract(Utils.getInterpolatedEntityPosition(CoffeeClientMain.client.player)).normalize().multiply(0.4).add(0,0.03999999910593033*2,0);
+
+        CoffeeClientMain.client.player.addVelocity(diff.x,diff.y,diff.z);
         if (CoffeeClientMain.client.options.keySneak.isPressed()) {
             swinging = null;
         }

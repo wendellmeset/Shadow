@@ -331,7 +331,7 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
         mouseOver = inBounds(mouseX, mouseY);
         double pad = pad();
         double overflowWidth = getOverflowWidthForRender();
-        double innerHeight = FontRenderers.getNormal().getFontHeight();
+        double innerHeight = FontRenderers.getRenderer().getFontHeight();
         double centerY = y + height / 2d - innerHeight / 2d;
 
 //        Renderer.R2D.renderQuad(stack,Color.RED,x,y+height,x+width,y+height+.5);
@@ -339,21 +339,21 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
         Renderer.R2D.beginScissor(stack, x + pad, y, x + width - pad, y + height);
         // Text content
         if (!text.isEmpty()) {
-            FontRenderers.getNormal().drawString(stack, text, (float) (x + pad - overflowWidth), (float) (centerY), 0xFFFFFF, false);
+            FontRenderers.getRenderer().drawString(stack, text, (float) (x + pad - overflowWidth), (float) (centerY), 0xFFFFFF, false);
         } else {
-            FontRenderers.getNormal().drawString(stack, suggestion, (float) (x + pad - overflowWidth), (float) (centerY), 0xAAAAAA, false);
+            FontRenderers.getRenderer().drawString(stack, suggestion, (float) (x + pad - overflowWidth), (float) (centerY), 0xAAAAAA, false);
         }
 
         // Text highlighting
         if (focused && (cursor != selectionStart || cursor != selectionEnd)) {
             double selStart = x + pad + getTextWidth(selectionStart) - overflowWidth;
             double selEnd = x + pad + getTextWidth(selectionEnd) - overflowWidth;
-            Renderer.R2D.renderQuad(stack, new Color(50, 50, 255, 100), selStart, centerY, selEnd, centerY + FontRenderers.getNormal().getMarginHeight());
+            Renderer.R2D.renderQuad(stack, new Color(50, 50, 255, 100), selStart, centerY, selEnd, centerY + FontRenderers.getRenderer().getMarginHeight());
         }
         Renderer.R2D.endScissor();
         boolean renderCursor = (System.currentTimeMillis() % 1000) / 500d > 1;
         if (focused && renderCursor) {
-            Renderer.R2D.renderQuad(stack, Color.WHITE, x + pad + getTextWidth(cursor) - overflowWidth, centerY, x + pad + getTextWidth(cursor) - overflowWidth + 1, centerY + FontRenderers.getNormal().getMarginHeight());
+            Renderer.R2D.renderQuad(stack, Color.WHITE, x + pad + getTextWidth(cursor) - overflowWidth, centerY, x + pad + getTextWidth(cursor) - overflowWidth + 1, centerY + FontRenderers.getRenderer().getMarginHeight());
         }
 
 
@@ -403,7 +403,7 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
     }
 
     private double textWidth() {
-        return FontRenderers.getNormal().getStringWidth(text);
+        return FontRenderers.getRenderer().getStringWidth(text);
     }
 
     private void cursorChanged() {
@@ -428,7 +428,7 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
     protected double getTextWidth(int pos) {
         if (pos < 0) return 0;
         pos = Math.min(text.length(), pos);
-        return FontRenderers.getNormal().getStringWidth(text.substring(0, pos)) + 1;
+        return FontRenderers.getRenderer().getStringWidth(text.substring(0, pos)) + 1;
     }
 
     protected double getCursorTextWidth(int offset) {

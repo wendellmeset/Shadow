@@ -45,8 +45,8 @@ public class AChatScreenMixin extends Screen {
         String t = chatField.getText();
         if (t.startsWith(".")) {
             String note = "If you need a bigger console, do \".console\"";
-            double len = FontRenderers.getNormal().getStringWidth(note) + 1;
-            FontRenderers.getNormal().drawString(matrices, note, width - len - 2, height - 15 - FontRenderers.getNormal().getMarginHeight(), 0xFFFFFF);
+            double len = FontRenderers.getRenderer().getStringWidth(note) + 1;
+            FontRenderers.getRenderer().drawString(matrices, note, width - len - 2, height - 15 - FontRenderers.getRenderer().getMarginHeight(), 0xFFFFFF);
         }
     }
 

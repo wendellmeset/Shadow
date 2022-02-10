@@ -46,9 +46,9 @@ public class HomeScreen extends ClientScreen implements FastTickable {
     static String version = "unknown";
     static String changelog = "";
     private static HomeScreen instance;
-    final ClientFontRenderer title = FontRenderers.getCustomNormal(40);
-    final ClientFontRenderer smaller = FontRenderers.getCustomNormal(30);
-    final ClientFontRenderer propFr = FontRenderers.getCustomNormal(22);
+    final ClientFontRenderer title = FontRenderers.getCustomSize(40);
+    final ClientFontRenderer smaller = FontRenderers.getCustomSize(30);
+    final ClientFontRenderer propFr = FontRenderers.getCustomSize(22);
     final Texture currentAccountTexture = new Texture("dynamic/tex_currentaccount_home");
     boolean loaded = false;
     long initTime = System.currentTimeMillis();
@@ -165,18 +165,18 @@ public class HomeScreen extends ClientScreen implements FastTickable {
 
         stack.push();
         double ap = 1 - easeOutBack(MathHelper.clamp(initProg, .5, 1.5) - .5);
-        double h = padding + propFr.getMarginHeight() + 2 + changelog.split("\n").length * FontRenderers.getNormal().getMarginHeight() + padding;
+        double h = padding + propFr.getMarginHeight() + 2 + changelog.split("\n").length * FontRenderers.getRenderer().getMarginHeight() + padding;
         double w = 100;
         for (String s : changelog.split("\n")) {
-            w = Math.max(w, 10 + FontRenderers.getNormal().getStringWidth(s));
+            w = Math.max(w, 10 + FontRenderers.getRenderer().getStringWidth(s));
         }
         stack.translate(0, ap * -(padding + h + 1), 0);
         Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 170), padding, padding, padding + w + padding * 2, padding + h, 10, 14);
         propFr.drawString(stack, "Changelog", (float) (padding * 2f), (float) (padding * 2f), 0xFFFFFF, false);
         double yoff = padding * 2 + propFr.getMarginHeight() + 2;
         for (String s : changelog.split("\n")) {
-            FontRenderers.getNormal().drawString(stack, s, (float) (padding * 2 + padding), (float) yoff, 0xAAAAAA, false);
-            yoff += FontRenderers.getNormal().getMarginHeight();
+            FontRenderers.getRenderer().drawString(stack, s, (float) (padding * 2 + padding), (float) yoff, 0xAAAAAA, false);
+            yoff += FontRenderers.getRenderer().getMarginHeight();
         }
         stack.pop();
 
@@ -209,15 +209,15 @@ public class HomeScreen extends ClientScreen implements FastTickable {
         else Renderer.R2D.renderTexture(stack, fromX + padding, fromY + padding, texDim, texDim, 8, 8, 8, 8, 64, 64);
         RenderSystem.defaultBlendFunc();
         String uuid = CoffeeClientMain.client.getSession().getUuid();
-        double uuidWid = FontRenderers.getNormal().getStringWidth(uuid);
+        double uuidWid = FontRenderers.getRenderer().getStringWidth(uuid);
         double maxWid = 200 - texDim - padding * 3;
         if (uuidWid > maxWid) {
-            double threeDotWidth = FontRenderers.getNormal().getStringWidth("...");
-            uuid = FontRenderers.getNormal().trimStringToWidth(uuid, maxWid - 1 - threeDotWidth);
+            double threeDotWidth = FontRenderers.getRenderer().getStringWidth("...");
+            uuid = FontRenderers.getRenderer().trimStringToWidth(uuid, maxWid - 1 - threeDotWidth);
             uuid += "...";
         }
-        AltManagerScreen.AltContainer.PropEntry[] props = new AltManagerScreen.AltContainer.PropEntry[]{new AltManagerScreen.AltContainer.PropEntry(CoffeeClientMain.client.getSession().getUsername(), FontRenderers.getCustomNormal(22), 0xFFFFFF),
-                new AltManagerScreen.AltContainer.PropEntry(uuid, FontRenderers.getNormal(), 0xAAAAAA)};
+        AltManagerScreen.AltContainer.PropEntry[] props = new AltManagerScreen.AltContainer.PropEntry[]{new AltManagerScreen.AltContainer.PropEntry(CoffeeClientMain.client.getSession().getUsername(), FontRenderers.getCustomSize(22), 0xFFFFFF),
+                new AltManagerScreen.AltContainer.PropEntry(uuid, FontRenderers.getRenderer(), 0xAAAAAA)};
         float propsOffset = (float) (fromY + padding);
         for (AltManagerScreen.AltContainer.PropEntry prop : props) {
             prop.cfr().drawString(stack, prop.name(), (float) (fromX + padding + texDim + padding), propsOffset, prop.color(), false);

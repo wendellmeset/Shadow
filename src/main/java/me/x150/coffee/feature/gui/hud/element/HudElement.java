@@ -62,11 +62,11 @@ public abstract class HudElement {
         Renderer.R2D.renderGradientLine(v3, v4, posX + width, posY + height, posX, posY + height);
         Renderer.R2D.renderGradientLine(v4, v1, posX, posY + height, posX, posY);
 
-        double rpoY = posY - FontRenderers.getNormal().getFontHeight();
-        if (posY < FontRenderers.getNormal().getFontHeight()) { // too small to render text properly
+        double rpoY = posY - FontRenderers.getRenderer().getFontHeight();
+        if (posY < FontRenderers.getRenderer().getFontHeight()) { // too small to render text properly
             rpoY = posY + height;
         }
-        FontRenderers.getNormal().drawString(Renderer.R3D.getEmptyMatrixStack(), id, posX, rpoY, 0xFFFFFF);
+        FontRenderers.getRenderer().drawString(Renderer.R3D.getEmptyMatrixStack(), id, posX, rpoY, 0xFFFFFF);
     }
 
     public abstract void renderIntern(MatrixStack stack);

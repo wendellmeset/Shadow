@@ -16,7 +16,7 @@ public class ProxyManagerScreen extends ClientScreen {
     public static Proxy currentProxy = null;
     static double widgetWidth = 300;
     static double widgetHeight = 400;
-    static ClientFontRenderer title = FontRenderers.getCustomNormal(40);
+    static ClientFontRenderer title = FontRenderers.getCustomSize(40);
     static boolean isSocks4 = false;
     Screen parent;
     RoundTextFieldWidget ip, port;
@@ -40,7 +40,7 @@ public class ProxyManagerScreen extends ClientScreen {
         double wWidth = widgetWidth - padding() * 2d;
         double sourceX = width / 2d - widgetWidth / 2d + wWidth / 2d;
         double sourceY = height / 2d - widgetHeight / 2d;
-        double yOffset = padding() + title.getMarginHeight() + FontRenderers.getNormal().getMarginHeight() + padding();
+        double yOffset = padding() + title.getMarginHeight() + FontRenderers.getRenderer().getMarginHeight() + padding();
         ip = new RoundTextFieldWidget(sourceX, sourceY + yOffset, wWidth, 20, "IP");
         yOffset += ip.getHeight() + padding();
         port = new RoundTextFieldWidget(sourceX, sourceY + yOffset, wWidth, 20, "Port");
@@ -82,18 +82,18 @@ public class ProxyManagerScreen extends ClientScreen {
         double sourceX = width / 2d - widgetWidth / 2d + padding();
         double sourceY = height / 2d - widgetHeight / 2d;
         double actualSourceX = width / 2d - widgetWidth / 2d;
-        double yOffset = padding();
-        Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20), width / 2d - widgetWidth / 2d, height / 2d - widgetHeight / 2d, width / 2d + widgetWidth / 2d, height / 2d + widgetHeight / 2d, 10, 20);
+        double yOffset = 1;
+        Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20), width / 2d - widgetWidth / 2d, height / 2d - widgetHeight / 2d, width / 2d + widgetWidth / 2d, height / 2d + widgetHeight / 2d, 5, 20);
         title.drawString(stack, "Proxies", (float) (actualSourceX + padding()), (float) (sourceY + yOffset), 0xFFFFFF, false);
         yOffset += title.getMarginHeight();
         String t = "Manage your proxy connection";
-        FontRenderers.getNormal().drawString(stack, t, (float) (actualSourceX + padding()), (float) (sourceY + yOffset), 0xFFFFFF, false);
+        FontRenderers.getRenderer().drawString(stack, t, (float) (actualSourceX + padding()), (float) (sourceY + yOffset), 0xFFFFFF, false);
         if (currentProxy != null) {
             String text = "Connected: " + currentProxy.address + ":" + currentProxy.port;
-            double textWidth = FontRenderers.getNormal().getStringWidth(text);
-            FontRenderers.getNormal().drawString(stack, text, (float) (actualSourceX + widgetWidth - padding() - textWidth), (float) (sourceY + yOffset), 0xFFFFFF, false);
+            double textWidth = FontRenderers.getRenderer().getStringWidth(text);
+            FontRenderers.getRenderer().drawString(stack, text, (float) (actualSourceX + widgetWidth - padding() - textWidth), (float) (sourceY + yOffset), 0xFFFFFF, false);
         }
-        yOffset += FontRenderers.getNormal().getMarginHeight() + padding();
+        yOffset += FontRenderers.getRenderer().getMarginHeight() + padding();
 
         ip.setX(sourceX);
         ip.setY(sourceY + yOffset);

@@ -109,6 +109,8 @@ public class ModuleRegistry {
         modules.add(new Test());
         modules.add(new BlocksmcFlight());
         modules.add(new NameTags());
+        modules.add(new Trail());
+        modules.add(new MinehutAdBlocker());
     }
 
     public static List<Module> getModules() {

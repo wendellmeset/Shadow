@@ -107,7 +107,7 @@ public class RoundButton implements Element, Drawable, Selectable, FastTickable,
         double originX = -width / 2d;
         double originY = -height / 2d;
         Renderer.R2D.renderRoundedQuad(matrices, color, originX, originY, width / 2d, height / 2d, Math.min(height / 2d, 5), 20);
-        FontRenderers.getNormal().drawString(matrices, text, -(FontRenderers.getNormal().getStringWidth(text) + 2) / 2f, -FontRenderers.getNormal().getMarginHeight() / 2f, isEnabled() ? 0xFFFFFF : 0xAAAAAA, false);
+        FontRenderers.getRenderer().drawString(matrices, text, -(FontRenderers.getRenderer().getStringWidth(text) + 2) / 2f, -FontRenderers.getRenderer().getMarginHeight() / 2f, isEnabled() ? 0xFFFFFF : 0xAAAAAA, false);
         matrices.pop();
     }
 

@@ -69,7 +69,7 @@ public class Notification {
         List<String> splitContent = new ArrayList<>();
         StringBuilder line = new StringBuilder();
         for (String c : split.split(" +")) {
-            if (FontRenderers.getNormal().getStringWidth(line + " " + c) >= 145) {
+            if (FontRenderers.getRenderer().getStringWidth(line + " " + c) >= 145) {
                 splitContent.add(line.toString());
                 line = new StringBuilder();
             }
