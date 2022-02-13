@@ -1,7 +1,6 @@
 package me.x150.coffee.helper.font.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import me.x150.coffee.helper.font.FontRenderers;
 import net.minecraft.client.render.*;
 import net.minecraft.client.texture.AbstractTexture;
 import net.minecraft.client.texture.NativeImage;
@@ -22,10 +21,12 @@ import java.util.HashMap;
 
 public class GlyphPage {
 
+    public final HashMap<Character, Glyph> glyphCharacterMap = new HashMap<>();
     private final Font font;
     private final boolean antiAliasing;
     private final boolean fractionalMetrics;
-    public final HashMap<Character, Glyph> glyphCharacterMap = new HashMap<>();
+    FontRenderContext frc;
+    Tessellator tessellator = Tessellator.getInstance();
     private int imgSize;
     private int maxFontHeight = -1;
     private BufferedImage bufferedImage;
@@ -36,7 +37,7 @@ public class GlyphPage {
         this.antiAliasing = antiAliasing;
         this.fractionalMetrics = fractionalMetrics;
     }
-    FontRenderContext frc;
+
     public void generateGlyphPage(char[] chars) {
         // Calculate glyphPageSize
         double maxWidth = -1;
@@ -63,7 +64,7 @@ public class GlyphPage {
         maxHeight += 2;
 
         imgSize = (int) Math.ceil(Math.max(Math.ceil(Math.sqrt(maxWidth * maxWidth * chars.length) / maxWidth), Math.ceil(Math.sqrt(maxHeight * maxHeight * chars.length) / maxHeight)) * Math.max(maxWidth, maxHeight)) + 1;
-        //        imgSize /= 2;
+//                imgSize /= 2;
 
         bufferedImage = new BufferedImage(imgSize, imgSize, BufferedImage.TYPE_INT_ARGB);
 
@@ -161,7 +162,6 @@ public class GlyphPage {
         float height = glyph.height;
         Matrix4f posMat = stack.peek().getPositionMatrix();
 
-        Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferBuilder = tessellator.getBuffer();
 
         RenderSystem.setShader(GameRenderer::getPositionColorTexShader);
@@ -183,7 +183,7 @@ public class GlyphPage {
     }
 
     public float getFontHeight(String t) {
-        return (float) font.getStringBounds(t,frc).getHeight();
+        return (float) font.getStringBounds(t, frc).getHeight();
     }
 
     public int getMaxFontHeight() {

@@ -243,10 +243,10 @@ public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
             double cursorY = MathHelper.lerp(perScrolledIndex, padding() * 2, height - padding() - 20 - padding() * 2 - innerbarHeight);
             double cursorX = width - padding() * 2 - 3;
 
-            Renderer.R2D.renderRoundedQuad(stack, new Color(10, 10, 10, 150), cursorX - wid/2d, padding() * 2, cursorX + wid/2d, padding() * 2 + barHeight, wid/2d, 10);
+            Renderer.R2D.renderRoundedQuad(stack, new Color(10, 10, 10, 150), cursorX - wid / 2d, padding() * 2, cursorX + wid / 2d, padding() * 2 + barHeight, wid / 2d, 10);
 
 //            Renderer.R2D.renderCircle(stack, new Color(50, 50, 50, 150), cursorX, cursorY, 3, 10);
-            Renderer.R2D.renderRoundedQuad(stack, new Color(50, 50, 50, 150), cursorX - wid/2d, cursorY, cursorX + wid/2d, cursorY + per * barHeight, wid/2d, 10);
+            Renderer.R2D.renderRoundedQuad(stack, new Color(50, 50, 50, 150), cursorX - wid / 2d, cursorY, cursorX + wid / 2d, cursorY + per * barHeight, wid / 2d, 10);
         }
 
         renderSuggestions(stack);

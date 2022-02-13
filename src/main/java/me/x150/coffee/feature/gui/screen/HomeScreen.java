@@ -96,7 +96,10 @@ public class HomeScreen extends ClientScreen implements FastTickable {
         RoundButton single = new RoundButton(bg, rightPad - (padding + 60), centerWidgetsY, 60, 20, "Singleplayer", () -> CoffeeClientMain.client.setScreen(new SelectWorldScreen(this)));
         RoundButton multi = new RoundButton(bg, rightPad - (padding + 60) * 2, centerWidgetsY, 60, 20, "Multiplayer", () -> CoffeeClientMain.client.setScreen(new MultiplayerScreen(this)));
         RoundButton realms = new RoundButton(bg, rightPad - (padding + 60) * 3, centerWidgetsY, 60, 20, "Realms", () -> CoffeeClientMain.client.setScreen(new RealmsMainScreen(this)));
-        RoundButton alts = new RoundButton(bg, rightPad - (padding + 60) * 4, centerWidgetsY, 60, 20, "Alts", () -> CoffeeClientMain.client.setScreen(AltManagerScreen.instance()));
+        RoundButton alts = new RoundButton(bg, rightPad - (padding + 60) * 4, centerWidgetsY, 60, 20, "Alts", () -> CoffeeClientMain.client.setScreen(
+                AltManagerScreen.instance()
+//                new TestScreen()
+        ));
         RoundButton settings = new RoundButton(bg, rightPad - (padding + 60) * 5, centerWidgetsY, 60, 20, "Options", () -> CoffeeClientMain.client.setScreen(new OptionsScreen(this, CoffeeClientMain.client.options)));
         RoundButton quit = new RoundButton(bg, rightPad - (padding + 60) * 5 - padding - 20, centerWidgetsY, 20, 20, "X", CoffeeClientMain.client::scheduleStop);
         addDrawableChild(single);

@@ -111,6 +111,7 @@ public class ModuleRegistry {
         modules.add(new NameTags());
         modules.add(new Trail());
         modules.add(new MinehutAdBlocker());
+        modules.add(new AutoLavacast());
     }
 
     public static List<Module> getModules() {

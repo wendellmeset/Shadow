@@ -6,6 +6,8 @@
 package me.x150.coffee.helper;
 
 import me.x150.coffee.CoffeeClientMain;
+import me.x150.coffee.feature.module.ModuleRegistry;
+import me.x150.coffee.feature.module.impl.render.FreeLook;
 import me.x150.coffee.helper.event.EventType;
 import me.x150.coffee.helper.event.Events;
 import me.x150.coffee.helper.event.events.PacketEvent;
@@ -79,26 +81,52 @@ public class Rotations {
         double delZ = target.z - CoffeeClientMain.client.player.getZ();
         double delY = target.y - (CoffeeClientMain.client.player.getY() + CoffeeClientMain.client.player.getEyeHeight(CoffeeClientMain.client.player.getPose()));
 
-        // setting yaw
+        FreeLook fl = ModuleRegistry.getByClass(FreeLook.class);
         double required = Math.toDegrees(Math.atan2(delZ, delX)) - 90, delta, add, speed;
-        delta = MathHelper.wrapDegrees(required - CoffeeClientMain.client.player.getYaw());
-        speed = Math.abs(delta / laziness);
-        add = speed * (delta >= 0 ? 1 : -1);
-        if ((add >= 0 && add > delta) || (add < 0 && add < delta)) {
-            add = delta;
-        }
-        CoffeeClientMain.client.player.setYaw(CoffeeClientMain.client.player.getYaw() + (float) add);
+        if (fl.isEnabled()) {
+            // setting yaw
 
-        // setting pitch
-        double sqrt = Math.sqrt(delX * delX + delZ * delZ);
-        required = -Math.toDegrees(Math.atan2(delY, sqrt));
-        delta = MathHelper.wrapDegrees(required - CoffeeClientMain.client.player.getPitch());
-        speed = Math.abs(delta / laziness);
-        add = speed * (delta >= 0 ? 1 : -1);
-        if ((add >= 0 && add > delta) || (add < 0 && add < delta)) {
-            add = delta;
+            delta = MathHelper.wrapDegrees(required - fl.newyaw);
+            speed = Math.abs(delta / laziness);
+            add = speed * (delta >= 0 ? 1 : -1);
+            if ((add >= 0 && add > delta) || (add < 0 && add < delta)) {
+                add = delta;
+            }
+            fl.newyaw = (fl.newyaw + (float) add);
+
+            // setting pitch
+            double sqrt = Math.sqrt(delX * delX + delZ * delZ);
+            required = -Math.toDegrees(Math.atan2(delY, sqrt));
+            delta = MathHelper.wrapDegrees(required - fl.newpitch);
+            speed = Math.abs(delta / laziness);
+            add = speed * (delta >= 0 ? 1 : -1);
+            if ((add >= 0 && add > delta) || (add < 0 && add < delta)) {
+                add = delta;
+            }
+            fl.newpitch = (fl.newpitch + (float) add);
+        } else {
+            // setting yaw
+            delta = MathHelper.wrapDegrees(required - CoffeeClientMain.client.player.getYaw());
+            speed = Math.abs(delta / laziness);
+            add = speed * (delta >= 0 ? 1 : -1);
+            if ((add >= 0 && add > delta) || (add < 0 && add < delta)) {
+                add = delta;
+            }
+            CoffeeClientMain.client.player.setYaw(CoffeeClientMain.client.player.getYaw() + (float) add);
+
+            // setting pitch
+            double sqrt = Math.sqrt(delX * delX + delZ * delZ);
+            required = -Math.toDegrees(Math.atan2(delY, sqrt));
+            delta = MathHelper.wrapDegrees(required - CoffeeClientMain.client.player.getPitch());
+            speed = Math.abs(delta / laziness);
+            add = speed * (delta >= 0 ? 1 : -1);
+            if ((add >= 0 && add > delta) || (add < 0 && add < delta)) {
+                add = delta;
+            }
+            CoffeeClientMain.client.player.setPitch(CoffeeClientMain.client.player.getPitch() + (float) add);
         }
-        CoffeeClientMain.client.player.setPitch(CoffeeClientMain.client.player.getPitch() + (float) add);
+
+
     }
 
     public static Vec2f getPitchYaw(Vec3d targetV3) {

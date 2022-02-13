@@ -14,6 +14,7 @@ import java.util.List;
 
 public class Trail extends Module {
     List<Vec3d> positions = new ArrayList<>();
+
     public Trail() {
         super("Trail", "Leaves behind a short trail when you travel", ModuleType.RENDER);
     }
@@ -26,7 +27,7 @@ public class Trail extends Module {
     @Override
     public void onFastTick() {
         positions.add(Utils.getInterpolatedEntityPosition(CoffeeClientMain.client.player));
-        while(positions.size() > 1000) positions.remove(0);
+        while (positions.size() > 1000) positions.remove(0);
     }
 
     @Override
@@ -48,16 +49,16 @@ public class Trail extends Module {
     public void onWorldRender(MatrixStack matrices) {
         Vec3d before = null;
         List<Vec3d> bk = new ArrayList<>(positions);
-        float progressOffset = (System.currentTimeMillis()%1000)/1000f;
+        float progressOffset = (System.currentTimeMillis() % 1000) / 1000f;
         for (int i = 0; i < bk.size(); i++) {
-            float progress = i/(float)bk.size();
+            float progress = i / (float) bk.size();
 //            progress = 0;
             progress += progressOffset;
             progress %= 1;
             Vec3d vec3d = bk.get(i);
             if (vec3d == null) continue;
             if (before == null) before = vec3d;
-            Renderer.R3D.renderLine(before,vec3d, Color.getHSBColor(progress,0.6f,1f),matrices);
+            Renderer.R3D.renderLine(before, vec3d, Color.getHSBColor(progress, 0.6f, 1f), matrices);
             before = vec3d;
         }
 

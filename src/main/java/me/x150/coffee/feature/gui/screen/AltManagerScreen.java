@@ -619,6 +619,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
         double widgetHeight = 0;
         double widgetStartX, widgetStartY;
         Screen parent;
+
         public TagEditor(Screen parent) {
             super(MSAAFramebuffer.MAX_SAMPLES);
             this.parent = parent;
