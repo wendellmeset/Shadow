@@ -1,25 +1,30 @@
 package me.x150.coffee.feature.module.impl.fun;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import io.netty.buffer.Unpooled;
+import me.x150.coffee.CoffeeClientMain;
 import me.x150.coffee.feature.module.Module;
 import me.x150.coffee.feature.module.ModuleType;
 import me.x150.coffee.helper.event.EventType;
 import me.x150.coffee.helper.event.Events;
 import me.x150.coffee.helper.event.events.PacketEvent;
+import me.x150.coffee.helper.util.Utils;
+import net.minecraft.client.render.*;
+import net.minecraft.client.render.entity.PlayerEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.boss.BossBar;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Matrix4f;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3f;
+
+import java.awt.*;
 
 public class Test extends Module {
 
     public Test() {
         super("Test", "Testing stuff with the client, can be ignored", ModuleType.FUN);
-        Events.registerEventHandler(EventType.PACKET_RECEIVE, event -> {
-            if (!this.isEnabled()) return;
-            PacketEvent pe = (PacketEvent) event;
-            PacketByteBuf buffer = new PacketByteBuf(Unpooled.buffer());
-            pe.getPacket().write(buffer);
-            System.out.println(pe.getPacket().getClass().getSimpleName() + " - " + new String(buffer.getWrittenBytes()).replaceAll("\\p{C}", "."));
-        });
     }
 
     @Override
@@ -43,7 +48,56 @@ public class Test extends Module {
     }
 
     @Override
-    public void onWorldRender(MatrixStack matrices) {
+    public void onWorldRender(MatrixStack s) {
+        Vec3d start = Utils.getInterpolatedEntityPosition(CoffeeClientMain.client.player).add(0,4,0);
+        Camera camera = CoffeeClientMain.client.gameRenderer.getCamera();
+        Vec3d camPos = camera.getPos();
+        start = start.subtract(camPos);
+        MatrixStack stack = new MatrixStack();
+        stack.push();
+//        stack.translate(start.x, start.y, start.z);
+        stack.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(camera.getPitch()));
+        stack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(camera.getYaw() + 180.0F));
+        stack.translate(-camPos.x,-camPos.y,-camPos.z);
+
+//        PlayerEntityRenderer ple = ((PlayerEntityRenderer) CoffeeClientMain.client.getEntityRenderDispatcher().getRenderer(CoffeeClientMain.client.player));
+//        ple.getModel().body.rotate(stack);
+//        ple.getModel().head.rotate(stack);
+        RenderSystem.disableCull();
+        RenderSystem.disableDepthTest();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.setShaderColor(1, 1, 1, 1);
+
+        int color = new Color(255,255,255,100).getRGB();
+
+
+        Matrix4f matrix = stack.peek().getPositionMatrix();
+        float f = (float) (color >> 24 & 255) / 255.0F;
+        float g = (float) (color >> 16 & 255) / 255.0F;
+        float h = (float) (color >> 8 & 255) / 255.0F;
+        float k = (float) (color & 255) / 255.0F;
+        BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
+        RenderSystem.enableBlend();
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        bufferBuilder.begin(VertexFormat.DrawMode.TRIANGLE_STRIP, VertexFormats.POSITION_COLOR);
+
+        double segments = 20;
+        double rad = 1;
+        for (double r = 0; r <= 360; r += (360 / segments)) {
+            double rad1 = Math.toRadians(r);
+            double sin = Math.sin(rad1);
+            double cos = Math.cos(rad1);
+            double offX = sin * rad;
+            double offY = cos * rad;
+            bufferBuilder.vertex(matrix, 0,0.3f,0).color(1f,1f,1f,1f).next();
+            bufferBuilder.vertex(matrix, (float) offX, 0, (float) offY).color(g, h, k, f).next();
+        }
+        bufferBuilder.end();
+        BufferRenderer.draw(bufferBuilder);
+        RenderSystem.enableTexture();
+        RenderSystem.disableBlend();
+        stack.pop();
+
     }
 
     @Override

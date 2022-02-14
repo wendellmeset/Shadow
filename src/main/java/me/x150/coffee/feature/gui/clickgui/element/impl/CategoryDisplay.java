@@ -1,5 +1,6 @@
 package me.x150.coffee.feature.gui.clickgui.element.impl;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import me.x150.coffee.feature.gui.clickgui.ClickGUI;
 import me.x150.coffee.feature.gui.clickgui.element.Element;
 import me.x150.coffee.feature.gui.clickgui.theme.Theme;
@@ -97,10 +98,18 @@ public class CategoryDisplay extends Element {
     public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
         Theme theme = ClickGUI.theme;
         //        Renderer.R2D.fill(matrices, theme.getHeader(), x, y, x + width, y + headerHeight());
-        double r = ModuleRegistry.getByClass(me.x150.coffee.feature.module.impl.render.ClickGUI.class).radius.getValue();
-        double modHeight = FontRenderers.getRenderer().getFontHeight() + 2;
-        this.height = headerHeight() + getModules().stream().map(ModuleDisplay::getHeight).reduce(Double::sum).orElse(0d) + Math.max(modHeight, r); // pre calc height
-        Renderer.R2D.renderRoundedQuad(matrices, theme.getHeader(), x, y, x + width, y + this.height, r, 15);
+        double r = 5;
+        double hheight = headerHeight();
+        double texPad = 4;
+        double texDim = hheight-texPad*2;
+
+        double modHeight = getModules().stream().map(ModuleDisplay::getHeight).reduce(Double::sum).orElse(0d);
+        this.height = headerHeight() + modHeight; // pre calc height
+        if (modHeight != 0) height += r;
+        Renderer.R2D.renderRoundedQuad(matrices, theme.getHeader(), x, y, x + width, y + this.height, r, 20);
+        RenderSystem.setShaderTexture(0, mt.getTex());
+        Renderer.R2D.renderTexture(matrices,x+texPad,y+texPad,texDim,texDim,0,0,texDim,texDim,texDim,texDim);
+//        cfr.drawCenteredString(matrices,mt.getName(),x+texPad+texDim+texPad,y+headerHeight()/2d-cfr.getFontHeight()/2d,0xFFFFFF);
         cfr.drawCenteredString(matrices, mt.getName(), x + width / 2d, y + headerHeight() / 2d - cfr.getFontHeight() / 2d, 0xFFFFFF);
         double y = headerHeight();
         for (ModuleDisplay moduleDisplay : getModules()) {
@@ -109,7 +118,7 @@ public class CategoryDisplay extends Element {
             moduleDisplay.render(matrices, mouseX, mouseY, scrollBeingUsed);
             y += moduleDisplay.getHeight();
         }
-        FontRenderers.getRenderer().drawCenteredString(matrices, getModules().size() + " modules", this.x + this.width / 2d, this.y + this.height - 1 - FontRenderers.getRenderer().getMarginHeight(), 0xFFFFFF);
+//        FontRenderers.getRenderer().drawCenteredString(matrices, getModules().size() + " modules", this.x + this.width / 2d, this.y + this.height - 1 - FontRenderers.getRenderer().getMarginHeight(), 0xFFFFFF);
     }
 
     @Override

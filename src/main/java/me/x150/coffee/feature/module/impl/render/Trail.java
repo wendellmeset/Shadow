@@ -47,19 +47,19 @@ public class Trail extends Module {
 
     @Override
     public void onWorldRender(MatrixStack matrices) {
-        Vec3d before = null;
         List<Vec3d> bk = new ArrayList<>(positions);
         float progressOffset = (System.currentTimeMillis() % 1000) / 1000f;
         for (int i = 0; i < bk.size(); i++) {
             float progress = i / (float) bk.size();
-//            progress = 0;
             progress += progressOffset;
             progress %= 1;
             Vec3d vec3d = bk.get(i);
             if (vec3d == null) continue;
+            Vec3d before;
+            if (i == 0) before = vec3d;
+            else before = bk.get(i-1);
             if (before == null) before = vec3d;
             Renderer.R3D.renderLine(before, vec3d, Color.getHSBColor(progress, 0.6f, 1f), matrices);
-            before = vec3d;
         }
 
     }

@@ -67,6 +67,14 @@ public class CoffeeClientMain implements ModInitializer {
         registerTexture(new ResourceEntry(new Texture("notif/success.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/success.png"));
         registerTexture(new ResourceEntry(new Texture("notif/warning.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/warning.png"));
 
+        registerTexture(new ResourceEntry(new Texture("icons/render"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/render.png"));
+        registerTexture(new ResourceEntry(new Texture("icons/move"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/movement.png"));
+        registerTexture(new ResourceEntry(new Texture("icons/misc"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/misc.png"));
+        registerTexture(new ResourceEntry(new Texture("icons/world"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/world.png"));
+        registerTexture(new ResourceEntry(new Texture("icons/exploit"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/exploit.png"));
+        registerTexture(new ResourceEntry(new Texture("icons/fun"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/fun.png"));
+        registerTexture(new ResourceEntry(new Texture("icons/combat"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/combat.png"));
+
         Runtime.getRuntime().addShutdownHook(new Thread(ConfigManager::saveState));
         if (BASE.exists() && !BASE.isDirectory()) {
             BASE.delete();
