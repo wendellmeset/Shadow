@@ -101,14 +101,14 @@ public class CategoryDisplay extends Element {
         double r = 5;
         double hheight = headerHeight();
         double texPad = 4;
-        double texDim = hheight-texPad*2;
+        double texDim = hheight - texPad * 2;
 
         double modHeight = getModules().stream().map(ModuleDisplay::getHeight).reduce(Double::sum).orElse(0d);
         this.height = headerHeight() + modHeight; // pre calc height
         if (modHeight != 0) height += r;
         Renderer.R2D.renderRoundedQuad(matrices, theme.getHeader(), x, y, x + width, y + this.height, r, 20);
         RenderSystem.setShaderTexture(0, mt.getTex());
-        Renderer.R2D.renderTexture(matrices,x+texPad,y+texPad,texDim,texDim,0,0,texDim,texDim,texDim,texDim);
+        Renderer.R2D.renderTexture(matrices, x + texPad, y + texPad, texDim, texDim, 0, 0, texDim, texDim, texDim, texDim);
 //        cfr.drawCenteredString(matrices,mt.getName(),x+texPad+texDim+texPad,y+headerHeight()/2d-cfr.getFontHeight()/2d,0xFFFFFF);
         cfr.drawCenteredString(matrices, mt.getName(), x + width / 2d, y + headerHeight() / 2d - cfr.getFontHeight() / 2d, 0xFFFFFF);
         double y = headerHeight();

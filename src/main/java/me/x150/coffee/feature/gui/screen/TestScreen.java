@@ -15,6 +15,7 @@ import java.util.*;
 public class TestScreen extends Screen implements FastTickable {
     ParticleSimulator ps = new ParticleSimulator();
     List<Long> recorded = new ArrayList<>();
+
     public TestScreen() {
         super(Text.of(""));
     }

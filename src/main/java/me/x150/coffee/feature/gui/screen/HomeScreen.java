@@ -35,13 +35,14 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.Objects;
 import java.util.UUID;
 
 public class HomeScreen extends ClientScreen implements FastTickable {
     static final double padding = 5;
     static final Texture background = new Texture("background.jpg");
-    static final HttpClient downloader = HttpClient.newHttpClient();
+    static final HttpClient downloader = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(3)).build();
     static boolean isDev = false;
     static String version = "unknown";
     static String changelog = "";
@@ -74,7 +75,11 @@ public class HomeScreen extends ClientScreen implements FastTickable {
             isDev = execF.isDirectory();
             HomeScreen.version = IOUtils.toString(Objects.requireNonNull(HomeScreen.class.getClassLoader().getResourceAsStream("version.txt")), StandardCharsets.UTF_8);
             HomeScreen.changelog = IOUtils.toString(Objects.requireNonNull(HomeScreen.class.getClassLoader().getResourceAsStream("changelogLatest.txt")), StandardCharsets.UTF_8);
-            updateCurrentAccount(this::complete);
+            System.out.println("updating acc");
+            updateCurrentAccount(() -> {
+
+            });
+            complete();
         } catch (Exception e) {
             e.printStackTrace();
             complete();
@@ -131,7 +136,7 @@ public class HomeScreen extends ClientScreen implements FastTickable {
         }
         previousChecked = uid;
 
-        HttpRequest hr = HttpRequest.newBuilder().uri(URI.create("https://crafatar.com/avatars/" + uid + "?overlay")).header("User-Agent", "why").build();
+        HttpRequest hr = HttpRequest.newBuilder().uri(URI.create("https://crafatar.com/avatars/" + uid + "?overlay")).header("User-Agent", "why").timeout(Duration.ofSeconds(5)).build();
         downloader.sendAsync(hr, HttpResponse.BodyHandlers.ofByteArray()).thenAccept(httpResponse -> {
             try {
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();

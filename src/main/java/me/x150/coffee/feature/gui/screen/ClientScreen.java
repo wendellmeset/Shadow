@@ -14,6 +14,10 @@ public class ClientScreen extends Screen {
         this.samples = samples;
     }
 
+    public ClientScreen() {
+        this(MSAAFramebuffer.MAX_SAMPLES);
+    }
+
     public void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
         super.render(stack, mouseX, mouseY, delta);
     }

@@ -1,20 +1,12 @@
 package me.x150.coffee.feature.module.impl.fun;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import io.netty.buffer.Unpooled;
 import me.x150.coffee.CoffeeClientMain;
 import me.x150.coffee.feature.module.Module;
 import me.x150.coffee.feature.module.ModuleType;
-import me.x150.coffee.helper.event.EventType;
-import me.x150.coffee.helper.event.Events;
-import me.x150.coffee.helper.event.events.PacketEvent;
 import me.x150.coffee.helper.util.Utils;
 import net.minecraft.client.render.*;
-import net.minecraft.client.render.entity.PlayerEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.boss.BossBar;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3f;
@@ -49,7 +41,7 @@ public class Test extends Module {
 
     @Override
     public void onWorldRender(MatrixStack s) {
-        Vec3d start = Utils.getInterpolatedEntityPosition(CoffeeClientMain.client.player).add(0,4,0);
+        Vec3d start = Utils.getInterpolatedEntityPosition(CoffeeClientMain.client.player).add(0, 4, 0);
         Camera camera = CoffeeClientMain.client.gameRenderer.getCamera();
         Vec3d camPos = camera.getPos();
         start = start.subtract(camPos);
@@ -58,7 +50,7 @@ public class Test extends Module {
 //        stack.translate(start.x, start.y, start.z);
         stack.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(camera.getPitch()));
         stack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(camera.getYaw() + 180.0F));
-        stack.translate(-camPos.x,-camPos.y,-camPos.z);
+        stack.translate(-camPos.x, -camPos.y, -camPos.z);
 
 //        PlayerEntityRenderer ple = ((PlayerEntityRenderer) CoffeeClientMain.client.getEntityRenderDispatcher().getRenderer(CoffeeClientMain.client.player));
 //        ple.getModel().body.rotate(stack);
@@ -68,7 +60,7 @@ public class Test extends Module {
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShaderColor(1, 1, 1, 1);
 
-        int color = new Color(255,255,255,100).getRGB();
+        int color = new Color(255, 255, 255, 100).getRGB();
 
 
         Matrix4f matrix = stack.peek().getPositionMatrix();
@@ -89,7 +81,7 @@ public class Test extends Module {
             double cos = Math.cos(rad1);
             double offX = sin * rad;
             double offY = cos * rad;
-            bufferBuilder.vertex(matrix, 0,0.3f,0).color(1f,1f,1f,1f).next();
+            bufferBuilder.vertex(matrix, 0, 0.3f, 0).color(1f, 1f, 1f, 1f).next();
             bufferBuilder.vertex(matrix, (float) offX, 0, (float) offY).color(g, h, k, f).next();
         }
         bufferBuilder.end();

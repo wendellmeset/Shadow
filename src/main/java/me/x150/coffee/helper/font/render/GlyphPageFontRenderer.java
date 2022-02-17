@@ -229,6 +229,10 @@ public class GlyphPageFontRenderer {
         return gp;
     }
 
+    public GlyphPage getRegularGlyphPage() {
+        return regularGlyphPage;
+    }
+
     public char[] getRegisteredCharacters() {
         Character[] shit1 = this.regularGlyphPage.glyphCharacterMap.keySet().toArray(new Character[0]);
         char[] shit = new char[shit1.length];
@@ -422,49 +426,23 @@ public class GlyphPageFontRenderer {
         return regularGlyphPage.getMaxFontHeight() / 2f;
     }
 
-    public int getStringWidth(String text) {
+    public float getStringWidth(String text) {
         if (text == null) {
             return 0;
         }
-        int width = 0;
-
-        GlyphPage currentPage;
-
-        int size = text.length();
-
-        boolean on = false;
-
-        for (int i = 0; i < size; i++) {
-            char character = text.charAt(i);
-
-            if (character == '§') {
-                on = true;
-            } else if (on && character >= '0' && character <= 'r') {
-                int colorIndex = "0123456789abcdefklmnor".indexOf(character);
-                if (colorIndex < 16) {
-                    boldStyle = false;
-                    italicStyle = false;
-                } else if (colorIndex == 17) {
-                    boldStyle = true;
-                } else if (colorIndex == 20) {
-                    italicStyle = true;
-                } else if (colorIndex == 21) {
-                    boldStyle = false;
-                    italicStyle = false;
-                }
-                on = false;
+        float width = 0;
+        GlyphPage glyphPage = getCurrentGlyphPage();
+        for (int i = 0; i < text.length(); ++i) {
+            char c0 = text.charAt(i);
+            if (c0 == '§' && i + 1 < text.length()) {
+                ++i;
             } else {
-                on = false;
-                character = text.charAt(i);
-
-                currentPage = getCurrentGlyphPage();
-
-                width += currentPage.getWidth(character) - 8;
-                //i++;
+                float f = glyphPage.getWidth(c0) - 8;
+                width += f;
             }
         }
 
-        return width / 2;
+        return width / 2f;
     }
 
     /**

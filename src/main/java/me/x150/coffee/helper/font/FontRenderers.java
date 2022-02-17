@@ -10,6 +10,7 @@ import java.util.List;
 public class FontRenderers {
     private static final List<ClientFontRenderer> fontRenderers = new ArrayList<>();
     private static FontAdapter normal;
+    private static FontAdapter mono;
 
     public static FontAdapter getRenderer() {
         return normal;
@@ -17,6 +18,13 @@ public class FontRenderers {
 
     public static void setRenderer(FontAdapter normal) {
         FontRenderers.normal = normal;
+    }
+
+    public static FontAdapter getMono() {
+        if (mono == null) {
+            mono = new ClientFontRenderer(GlyphPageFontRenderer.createFromID("Mono.ttf", 17, false, false, false));
+        }
+        return mono;
     }
 
     public static ClientFontRenderer getCustomSize(int size) {
