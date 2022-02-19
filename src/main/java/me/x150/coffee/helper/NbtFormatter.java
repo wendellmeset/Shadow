@@ -30,6 +30,7 @@ public class NbtFormatter implements NbtElementVisitor {
     private final int indentationLevel;
     private final List<String> pathParts;
     private RGBColorText result;
+
     public NbtFormatter() {
         this("    ", 0, Lists.newArrayList());
     }

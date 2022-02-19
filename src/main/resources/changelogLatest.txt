@@ -1,1 +1,3 @@
-forgot to make a new release for 2 weeks lmfao
+Added NBT editor
+Improved overall design
+Improved font renderer width accuracy
