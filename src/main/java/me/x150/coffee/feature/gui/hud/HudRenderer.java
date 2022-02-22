@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import me.x150.coffee.CoffeeClientMain;
 import me.x150.coffee.feature.gui.hud.element.HudElement;
+import me.x150.coffee.feature.gui.hud.element.SpeedHud;
 import me.x150.coffee.feature.gui.hud.element.Taco;
 import me.x150.coffee.feature.gui.hud.element.TargetHUD;
 import me.x150.coffee.helper.event.EventType;
@@ -70,6 +71,7 @@ public class HudRenderer {
         List<HudElement> he = new ArrayList<>();
         he.add(new TargetHUD());
         he.add(new Taco());
+        he.add(new SpeedHud());
         return he;
     }
 

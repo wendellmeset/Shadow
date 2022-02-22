@@ -54,7 +54,7 @@ public class NotificationScreen extends ClientScreen implements FastTickable {
         if (parent != null) parent.render(stack, mouseX, mouseY, delta);
         Renderer.R2D.renderQuad(stack, Renderer.Util.modify(bg, -1, -1, -1, (int) (160 * anim)), 0, 0, width, height);
         stack.push();
-        stack.translate(width / 2d * (1 - anim), height / 2d * (1 - anim), 0);
+        stack.translate(width / 2d * (1 - anim), height / 2d * (1 - anim), 10);
         stack.scale((float) anim, (float) anim, 1);
 
         double height = 5 + 32 + 5 + FontRenderers.getRenderer().getMarginHeight() + 5 + 20 + 5;

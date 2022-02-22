@@ -44,6 +44,10 @@ public class Hud extends Module {
     final BooleanSetting ping = this.config.create(new BooleanSetting.Builder(true).name("Ping").description("Whether to show current ping").get());
     final BooleanSetting modules = this.config.create(new BooleanSetting.Builder(true).name("Array list").description("Whether to show currently enabled modules").get());
     final List<ModuleEntry> moduleList = new ArrayList<>();
+    public BooleanSetting speed = this.config.create(new BooleanSetting.Builder(true)
+            .name("Speed")
+            .description("Show your current velocity")
+            .get());
     long lastTimePacketReceived;
     double rNoConnectionPosY = -10d;
     Notification serverNotResponding = null;
@@ -161,7 +165,7 @@ public class Hud extends Module {
 
     void drawTopLeft(MatrixStack ms) {
         double rootX = 0;
-        double rootY = 5;
+        double rootY = 6;
         List<String> values = new ArrayList<>();
         if (this.fps.getValue()) {
             values.add(((IMinecraftClientAccessor) CoffeeClientMain.client).getCurrentFps() + " fps");

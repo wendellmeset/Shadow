@@ -19,7 +19,6 @@ import net.minecraft.util.math.Vec3d;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class AutoTrap extends Module {
     static final double[][] buildOffsetsSmall = new double[][]{new double[]{0, 2, 0}, new double[]{1, 1, 0}, new double[]{0, 1, 1}, new double[]{-1, 1, 0}, new double[]{0, 1, -1}, new double[]{0, -1, 0}};
@@ -104,7 +103,7 @@ public class AutoTrap extends Module {
             double[][] filteredPlan = Arrays.stream(planToUse).filter(ints -> {
                 Vec3d v = player.getPos().add(new Vec3d(ints[0], ints[1], ints[2]));
                 return inHitRange(CoffeeClientMain.client.player, v.add(.5, .5, .5));
-            }).collect(Collectors.toList()).toArray(double[][]::new);
+            }).toList().toArray(double[][]::new);
 
             int slot = -1;
             for (int i = 0; i < 9; i++) {

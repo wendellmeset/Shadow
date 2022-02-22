@@ -26,8 +26,6 @@ import java.util.List;
 public class NbtEditorScreen extends ClientScreen implements FastTickable {
     ItemStack stack;
     List<String> initial = new ArrayList<>();
-    boolean inString = false;
-    boolean inSingleString = false;
     char[] suffixes = {
             'b', 's', 'L', 'f', 'd'
     };
@@ -59,6 +57,11 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
             } else current.append(entry.value());
         }
         initial.add(current.toString());
+    }
+
+    @Override
+    public boolean isPauseScreen() {
+        return false;
     }
 
     boolean isNumber(String t) {
@@ -140,16 +143,24 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
     }
 
     int getColor(String total, int index, char c) {
+        int amountOfSingles = 0;
+        int amountOfDoubles = 0;
+        for (int i = 0; i < index; i++) {
+            if (total.charAt(i) == '"' && (i == 0 || total.charAt(i - 1) != '\\')) {
+                amountOfDoubles++;
+            }
+            if (total.charAt(i) == '\'' && (i == 0 || total.charAt(i - 1) != '\\')) amountOfSingles++;
+        }
+        boolean inString = amountOfDoubles % 2 == 1;
+        boolean inSingleString = amountOfSingles % 2 == 1;
         if (c == '"') {
             if (!(index > 0 && total.charAt(index - 1) == '\\')) {
                 if (total.indexOf('"', index + 1) == -1 && !inString) return 0xFF5555;
-                inString = !inString;
             }
         }
         if (c == '\'') {
             if (!(index > 0 && total.charAt(index - 1) == '\\')) {
                 if (total.indexOf('\'', index + 1) == -1 && !inSingleString) return 0xFF5555;
-                inSingleString = !inSingleString;
             }
         }
         if (inString || inSingleString || c == '"' || c == '\'') return 0x55FF55;
@@ -338,10 +349,11 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
 
     @Override
     public void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
+//        stack.translate(50,50,0);
+//        stack.scale(0.7f,0.7f,1f);
         Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 200), 5, 5, width - 5, height - 30, 5, 20);
         Renderer.R2D.beginScissor(stack, 5, 5, width - 5, height - 30);
         double initY = 7 - smoothScroll;
-        double maxYForeshadowed = initial.size() * FontRenderers.getMono().getMarginHeight();
 
         double initX = 7 - smoothScrollX;
         double x = initX;
@@ -365,9 +377,11 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
                 for (int i = 0; i < s.toCharArray().length; i++) {
 //                    boolean isInSearch = indexOfSearch != -1 && i >= indexOfSearch && i < indexOfSearch+searchLen;
                     char c = s.charAt(i);
-                    int color = getColor(s, i, c);
                     double cw = FontRenderers.getMono().getStringWidth(c + "");
+//                    double cw = 8;
                     if (x > 5 - cw && x < width - 5) {
+                        int color = getColor(s, i, c);
+//                        int color = 0xFFFFFF;
                         FontRenderers.getMono().drawString(stack, c + "", x, y, color);
                     }
                     x += cw;
@@ -375,8 +389,6 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
             }
             x = initX;
             y += FontRenderers.getMono().getMarginHeight();
-            inString = false;
-            inSingleString = false;
         }
         editorY = MathHelper.clamp(editorY, 0, initial.size() - 1);
         String index = initial.get(editorY);
