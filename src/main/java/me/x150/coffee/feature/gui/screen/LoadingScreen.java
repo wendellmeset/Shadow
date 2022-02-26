@@ -35,6 +35,8 @@ public class LoadingScreen extends ClientScreen implements FastTickable {
     double opacity = 1;
     ClientFontRenderer title = FontRenderers.getCustomSize(40);
 
+    StartScreen inst;
+
     private LoadingScreen() {
         super(MSAAFramebuffer.MAX_SAMPLES);
     }
@@ -46,9 +48,8 @@ public class LoadingScreen extends ClientScreen implements FastTickable {
 
     @Override
     protected void init() {
-        HomeScreen.instance().init(client, width, height);
         if (loaded.get() && opacity == 0.001) {
-            client.setScreen(HomeScreen.instance());
+            client.setScreen(inst);
         }
         super.init();
     }
@@ -66,7 +67,7 @@ public class LoadingScreen extends ClientScreen implements FastTickable {
             opacity -= 0.01;
             opacity = MathHelper.clamp(opacity, 0.001, 1);
         }
-        HomeScreen.instance().onFastTick();
+        if (inst != null) inst.onFastTick();
     }
 
     void load() {
@@ -115,9 +116,11 @@ public class LoadingScreen extends ClientScreen implements FastTickable {
     public void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
 
         if (loaded.get()) {
-            HomeScreen.instance().renderInternal(stack, mouseX, mouseY, delta);
+            if (inst == null) inst = new StartScreen();
+//            inst.init(client, width, height);
+            inst.renderInternal(stack, mouseX, mouseY, delta);
             if (opacity == 0.001) {
-                this.client.setScreen(HomeScreen.instance());
+                this.client.setScreen(inst);
                 return;
             }
         }
@@ -128,7 +131,7 @@ public class LoadingScreen extends ClientScreen implements FastTickable {
         double textHeight = title.getMarginHeight();
         double centerY1 = height / 2d;
         double centerX = width / 2d;
-        title.drawString(stack, coffee, centerX - textWidth / 2f, centerY1 - textHeight / 2d, new Color(1f, 1f, 1f, (float) opacity).getRGB());
+        title.drawString(stack, coffee, (float) (centerX - textWidth / 2f), (float) (centerY1 - textHeight / 2d), 1f, 1f, 1f, (float) opacity);
         double maxWidth = 200;
         double rWidth = smoothProgress * maxWidth;
         double barHeight = 3;

@@ -2,8 +2,15 @@ package me.x150.coffee.feature.command.impl;
 
 import me.x150.coffee.CoffeeClientMain;
 import me.x150.coffee.feature.command.Command;
-import net.minecraft.network.packet.s2c.play.ResourcePackSendS2CPacket;
+import net.minecraft.network.ClientConnection;
+import net.minecraft.network.NetworkState;
+import net.minecraft.network.listener.ClientLoginPacketListener;
+import net.minecraft.network.packet.c2s.handshake.HandshakeC2SPacket;
+import net.minecraft.network.packet.c2s.login.LoginHelloC2SPacket;
+import net.minecraft.network.packet.s2c.login.*;
 import net.minecraft.text.Text;
+
+import java.net.InetSocketAddress;
 
 public class Test extends Command {
     public Test() {
@@ -12,16 +19,46 @@ public class Test extends Command {
 
     @Override
     public void onExecute(String[] args) {
-        String u = String.join(" ", args);
-        ResourcePackSendS2CPacket rcsp = new ResourcePackSendS2CPacket(u, "0".repeat(40), false, Text.of("your momma"));
-        CoffeeClientMain.client.getNetworkHandler().onResourcePackSend(rcsp);
-//        Utils.TickManager.runInNTicks(5, () -> {
-//            CoffeeClientMain.client.setScreen(new NbtEditorScreen(CoffeeClientMain.client.player.getInventory().getMainHandStack()));
-//        });
-//        Notification.create(10000,"bruh", Notification.Type.INFO, "REALFDHJKFHDSJKFHSJKDFH KJDSHFJKDSHFKJDSHFJKDSaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaH FKJSDHJKFK HSDKJFHDSJKFHJKSD HJKFHDSJKF HDSJKFHSDJK HJKSDHF KSDHF KJDSHFKJSDH FJKSDHFJKS");
-//        Notification.create(10000,"bruh", Notification.Type.WARNING, "REAL");
-//        Notification.create(10000,"bruh", Notification.Type.SUCCESS, "REAL");
-//        Notification.create(10000,"bruh", Notification.Type.ERROR, "REAL");
+        InetSocketAddress addr = new InetSocketAddress(args[0], Integer.parseInt(args[1]));
+        ClientConnection conn = ClientConnection.connect(addr, CoffeeClientMain.client.options.shouldUseNativeTransport());
+        conn.setPacketListener(new ClientLoginPacketListener() {
+            @Override
+            public void onHello(LoginHelloS2CPacket packet) {
+                conn.disconnect(Text.of("your mother"));
+            }
 
+            @Override
+            public void onSuccess(LoginSuccessS2CPacket packet) {
+
+            }
+
+            @Override
+            public void onDisconnect(LoginDisconnectS2CPacket packet) {
+
+            }
+
+            @Override
+            public void onCompression(LoginCompressionS2CPacket packet) {
+
+            }
+
+            @Override
+            public void onQueryRequest(LoginQueryRequestS2CPacket packet) {
+
+            }
+
+            @Override
+            public void onDisconnected(Text reason) {
+
+            }
+
+            @Override
+            public ClientConnection getConnection() {
+                return null;
+            }
+        });
+        conn.send(new HandshakeC2SPacket(addr.getHostName(), addr.getPort(), NetworkState.LOGIN));
+        conn.send(new LoginHelloC2SPacket(CoffeeClientMain.client.getSession().getProfile()));
+//        conn.disconnect(Text.of("cumfart"));
     }
 }

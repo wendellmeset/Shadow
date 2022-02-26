@@ -242,30 +242,30 @@ public class GlyphPageFontRenderer {
         return shit;
     }
 
-    public int drawString(MatrixStack matrices, String text, float x, float y, int color) {
-        return drawString(matrices, text, x, y, color, false);
+    public int drawString(MatrixStack matrices, String text, float x, float y, float r, float g, float b, float a) {
+        return drawString(matrices, text, x, y, r, g, b, a, false);
     }
 
-    public int drawString(MatrixStack matrices, String text, double x, double y, int color) {
-        return drawString(matrices, text, (float) x, (float) y, color, false);
+    public int drawString(MatrixStack matrices, String text, double x, double y, float r, float g, float b, float a) {
+        return drawString(matrices, text, (float) x, (float) y, r, g, b, a, false);
     }
 
-    public int drawCenteredString(MatrixStack matrices, String text, double x, double y, int color) {
-        return drawString(matrices, text, (float) x - getStringWidth(text) / 2f, (float) y, color, false);
+    public int drawCenteredString(MatrixStack matrices, String text, double x, double y, float r, float g, float b, float a) {
+        return drawString(matrices, text, (float) x - getStringWidth(text) / 2f, (float) y, r, g, b, a, false);
     }
 
     /**
      * Draws the specified string.
      */
-    public int drawString(MatrixStack matrices, String text, float x, float y, int color, boolean dropShadow) {
+    public int drawString(MatrixStack matrices, String text, float x, float y, float r, float g, float b, float a, boolean dropShadow) {
         this.resetStyles();
         int i;
 
         if (dropShadow) {
-            i = this.renderString(matrices, text, x + .5F, y + .5F, color, true);
-            i = Math.max(i, this.renderString(matrices, text, x, y, color, false));
+            i = this.renderString(matrices, text, x + .5F, y + .5F, r, g, b, a, true);
+            i = Math.max(i, this.renderString(matrices, text, x, y, r, g, b, a, false));
         } else {
-            i = this.renderString(matrices, text, x, y, color, false);
+            i = this.renderString(matrices, text, x, y, r, g, b, a, false);
         }
 
         return i;
@@ -274,34 +274,45 @@ public class GlyphPageFontRenderer {
     /**
      * Render single line string by setting GL color, current (posX,posY), and calling renderStringAtPos()
      */
-    private int renderString(MatrixStack matrices, String text, float x, float y, int color, boolean dropShadow) {
+    private int renderString(MatrixStack matrices, String text, float x, float y, float r, float g, float b, float a, boolean dropShadow) {
         if (text == null) {
             return 0;
         } else {
 
-            if ((color & 0xfc000000) == 0) {
-                color |= 0xff000000;
-            }
+//            if ((color & 0xfc000000) == 0) {
+//                color |= 0xff000000;
+//            }
 
             if (dropShadow) {
-                color = 0xFF323232;
+                a = 1;
+                r = 0.19607843f;
+                g = 0.19607843f;
+                b = 0.19607843f;
             }
             this.posX = x * 2.0f;
             this.posY = y * 2.0f;
-            this.renderStringAtPos(matrices, text, dropShadow, color);
+            this.renderStringAtPos(matrices, text, dropShadow, r, g, b, a);
             return (int) (this.posX / 4.0f);
         }
+    }
+
+    private void renderStringAtPos(MatrixStack matrixStack, String text, boolean shadow, int color) {
+        float alpha = (float) (color >> 24 & 255) / 255.0F;
+        float r = (float) (color >> 16 & 255) / 255.0F;
+        float g = (float) (color >> 8 & 255) / 255.0F;
+        float b = (float) (color & 255) / 255.0F;
+        renderStringAtPos(matrixStack, text, shadow, r, g, b, alpha);
     }
 
     /**
      * Render a single line string at the current (posX,posY) and update posX
      */
-    private void renderStringAtPos(MatrixStack matrices, String text, boolean shadow, int color) {
+    private void renderStringAtPos(MatrixStack matrices, String text, boolean shadow, float r1, float g1, float b1, float a1) {
         GlyphPage glyphPage = getCurrentGlyphPage();
-        float alpha = (float) (color >> 24 & 255) / 255.0F;
-        float r = (float) (color >> 16 & 255) / 255.0F;
-        float g = (float) (color >> 8 & 255) / 255.0F;
-        float b = (float) (color & 255) / 255.0F;
+        float r = r1;
+        float g = g1;
+        float b = b1;
+        float alpha = a1;
 
         matrices.push();
 
@@ -347,10 +358,10 @@ public class GlyphPageFontRenderer {
                     this.italicStyle = true;
                 } else if (i1 == 21) {
                     resetStyles();
-                    alpha = (float) (color >> 24 & 255) / 255.0F;
-                    r = (float) (color >> 16 & 255) / 255.0F;
-                    g = (float) (color >> 8 & 255) / 255.0F;
-                    b = (float) (color & 255) / 255.0F;
+                    alpha = a1;
+                    r = r1;
+                    g = g1;
+                    b = b1;
                 }
 
                 ++i;

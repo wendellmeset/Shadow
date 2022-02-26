@@ -1,10 +1,12 @@
 package me.x150.coffee.mixin;
 
+import com.google.gson.JsonObject;
 import me.x150.coffee.CoffeeClientMain;
 import me.x150.coffee.feature.command.CommandRegistry;
 import me.x150.coffee.feature.gui.screen.CoffeeConsoleScreen;
 import me.x150.coffee.feature.module.ModuleRegistry;
 import me.x150.coffee.feature.module.impl.misc.InfChatLength;
+import me.x150.coffee.helper.ManagerSocket;
 import me.x150.coffee.helper.font.FontRenderers;
 import me.x150.coffee.helper.util.Utils;
 import net.minecraft.client.gui.screen.ChatScreen;
@@ -32,9 +34,21 @@ public class AChatScreenMixin extends Screen {
     @Redirect(method = "keyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ChatScreen;sendMessage(Ljava/lang/String;)V"))
     void atomic_interceptChatMessage(ChatScreen instance, String s) {
         if (s.startsWith(".")) { // filter all messages starting with .
+            CoffeeClientMain.client.inGameHud.getChatHud().addToMessageHistory(s);
             if (s.equalsIgnoreCase(".console")) {
                 Utils.TickManager.runInNTicks(2, () -> CoffeeClientMain.client.setScreen(CoffeeConsoleScreen.instance()));
             } else CommandRegistry.execute(s.substring(1)); // cut off prefix
+        } else if (s.startsWith("#")) {
+            CoffeeClientMain.client.inGameHud.getChatHud().addToMessageHistory(s);
+            if (!CoffeeClientMain.sman.getSocket().allowOnlineFeatures()) {
+                Utils.Logging.error("IRC is not available");
+            } else {
+                String cmsg = s.substring(1).trim();
+                JsonObject pd = new JsonObject();
+                pd.addProperty("message", cmsg);
+                CoffeeClientMain.sman.getSocket().send(new ManagerSocket.Packet("chatIrc", pd));
+            }
+
         } else {
             instance.sendMessage(s); // else, go
         }

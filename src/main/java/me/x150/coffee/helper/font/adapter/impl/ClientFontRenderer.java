@@ -17,17 +17,48 @@ public class ClientFontRenderer implements FontAdapter {
 
     @Override
     public int drawString(MatrixStack matrices, String text, float x, float y, int color) {
-        return renderer.drawString(matrices, text, x, y, color);
+        if ((color & 0xfc000000) == 0) {
+            color |= 0xff000000;
+        }
+        float alpha = (float) (color >> 24 & 255) / 255.0F;
+        float r = (float) (color >> 16 & 255) / 255.0F;
+        float g = (float) (color >> 8 & 255) / 255.0F;
+        float b = (float) (color & 255) / 255.0F;
+        return renderer.drawString(matrices, text, x, y, r, g, b, alpha);
     }
 
     @Override
     public int drawString(MatrixStack matrices, String text, double x, double y, int color) {
-        return renderer.drawString(matrices, text, x, y, color);
+        if ((color & 0xfc000000) == 0) {
+            color |= 0xff000000;
+        }
+        float alpha = (float) (color >> 24 & 255) / 255.0F;
+        float r = (float) (color >> 16 & 255) / 255.0F;
+        float g = (float) (color >> 8 & 255) / 255.0F;
+        float b = (float) (color & 255) / 255.0F;
+        return renderer.drawString(matrices, text, x, y, r, g, b, alpha);
+    }
+
+    @Override
+    public int drawString(MatrixStack matrices, String text, float x, float y, float r, float g, float b, float a) {
+        return renderer.drawString(matrices, text, x, y, r, g, b, a);
     }
 
     @Override
     public int drawCenteredString(MatrixStack matrices, String text, double x, double y, int color) {
-        return renderer.drawCenteredString(matrices, text, x, y, color);
+        if ((color & 0xfc000000) == 0) {
+            color |= 0xff000000;
+        }
+        float alpha = (float) (color >> 24 & 255) / 255.0F;
+        float r = (float) (color >> 16 & 255) / 255.0F;
+        float g = (float) (color >> 8 & 255) / 255.0F;
+        float b = (float) (color & 255) / 255.0F;
+        return renderer.drawCenteredString(matrices, text, x, y, r, g, b, alpha);
+    }
+
+    @Override
+    public int drawCenteredString(MatrixStack matrices, String text, double x, double y, float r, float g, float b, float a) {
+        return renderer.drawCenteredString(matrices, text, x, y, r, g, b, a);
     }
 
     @Override
@@ -52,7 +83,19 @@ public class ClientFontRenderer implements FontAdapter {
 
     @Override
     public void drawString(MatrixStack matrices, String s, float x, float y, int color, boolean dropShadow) {
-        renderer.drawString(matrices, s, x, y, color, dropShadow);
+        if ((color & 0xfc000000) == 0) {
+            color |= 0xff000000;
+        }
+        float alpha = (float) (color >> 24 & 255) / 255.0F;
+        float r = (float) (color >> 16 & 255) / 255.0F;
+        float g = (float) (color >> 8 & 255) / 255.0F;
+        float b = (float) (color & 255) / 255.0F;
+        drawString(matrices, s, x, y, r, g, b, alpha, dropShadow);
+    }
+
+    @Override
+    public void drawString(MatrixStack matrices, String s, float x, float y, float r, float g, float b, float a, boolean dropShadow) {
+        renderer.drawString(matrices, s, x, y, r, g, b, a, dropShadow);
     }
 
     @Override

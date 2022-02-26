@@ -5,6 +5,7 @@ import me.x150.coffee.feature.gui.clickgui.ClickGUI;
 import me.x150.coffee.feature.module.ModuleRegistry;
 import me.x150.coffee.feature.module.impl.render.Hud;
 import me.x150.coffee.helper.Timer;
+import me.x150.coffee.helper.render.MSAAFramebuffer;
 import me.x150.coffee.helper.render.Renderer;
 import net.minecraft.client.util.math.MatrixStack;
 
@@ -24,35 +25,37 @@ public class SpeedHud extends HudElement {
     @Override
     public void renderIntern(MatrixStack stack) {
         if (ModuleRegistry.getByClass(Hud.class).speed.getValue()) {
-            double size = speedSaved.size();
-            double incrX = width / (size - 1);
-            double x = incrX;
+            MSAAFramebuffer.use(MSAAFramebuffer.MAX_SAMPLES, () -> {
+                double size = speedSaved.size();
+                double incrX = width / (size - 1);
+                double x = incrX;
 
-            Comparator<Double> dc = Comparator.comparingDouble(value -> value);
-            List<Double> speeds = new ArrayList<>(speedSaved);
-            speeds = speeds.stream().filter(Objects::nonNull).toList();
+                Comparator<Double> dc = Comparator.comparingDouble(value -> value);
+                List<Double> speeds = new ArrayList<>(speedSaved);
+                speeds = speeds.stream().filter(Objects::nonNull).toList();
 
-            double max = Math.max(0.7, speeds.stream().max(dc).orElse(1d));
-            double min = 0;
+                double max = Math.max(0.7, speeds.stream().max(dc).orElse(1d));
+                double min = 0;
 
 
-            double previous = height - ((speeds.get(0) - min) / max) * height;
-            for (int i = 1; i < speeds.size(); i++) {
-                double ppr = Math.sin(
-                        Math.toRadians(
-                                ((double) i / speeds.size() + (System.currentTimeMillis() % 3000) / -3000d) * 360 * 3
-                        )
-                ) + 1;
-                ppr /= 2d;
-                double aDouble = speeds.get(i);
-                double prog = ((aDouble - min) / max);
-                double y = height - prog * height;
+                double previous = height - ((speeds.get(0) - min) / max) * height;
+                for (int i = 1; i < speeds.size(); i++) {
+                    double ppr = Math.sin(
+                            Math.toRadians(
+                                    ((double) i / speeds.size() + (System.currentTimeMillis() % 3000) / -3000d) * 360 * 3
+                            )
+                    ) + 1;
+                    ppr /= 2d;
+                    double aDouble = speeds.get(i);
+                    double prog = ((aDouble - min) / max);
+                    double y = height - prog * height;
 
-                Renderer.R2D.renderLine(stack, Renderer.Util.lerp(ClickGUI.theme.getActive(), ClickGUI.theme.getAccent(), ppr), x - incrX, previous, x, y);
+                    Renderer.R2D.renderLine(stack, Renderer.Util.lerp(ClickGUI.theme.getActive(), ClickGUI.theme.getAccent(), ppr), x - incrX, previous, x, y);
 
-                x += incrX;
-                previous = y;
-            }
+                    x += incrX;
+                    previous = y;
+                }
+            });
 
         }
     }

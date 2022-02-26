@@ -1,3 +1,3 @@
-Added NBT editor
-Improved overall design
-Improved font renderer width accuracy
+added full blown online dogshit things
+added IRC LETS GOOOO
+added chinese malware

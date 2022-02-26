@@ -156,8 +156,8 @@ public class TabGui extends Module {
                 if (lastEnabledStackHeight != 0) {
                     double finalLastEnabledStackY = lastEnabledStackY;
                     double finalLastEnabledStackHeight = lastEnabledStackHeight;
-                    renderCalls.add(()->{
-                        Renderer.R2D.renderRoundedQuad(stack,new Color(40,40,40),scrollerWidth*3, finalLastEnabledStackY,width-scrollerWidth*3, finalLastEnabledStackY+finalLastEnabledStackHeight,3,20);
+                    renderCalls.add(() -> {
+                        Renderer.R2D.renderRoundedQuad(stack, new Color(40, 40, 40), scrollerWidth * 3, finalLastEnabledStackY, width - scrollerWidth * 3, finalLastEnabledStackY + finalLastEnabledStackHeight, 3, 20);
                     });
 
                 }
@@ -168,8 +168,8 @@ public class TabGui extends Module {
         }
         double finalLastEnabledStackY = lastEnabledStackY;
         double finalLastEnabledStackHeight = lastEnabledStackHeight;
-        if (lastEnabledStackY != 0) renderCalls.add(()->{
-            Renderer.R2D.renderRoundedQuad(stack,new Color(40,40,40),scrollerWidth*3, finalLastEnabledStackY,width-scrollerWidth*3, finalLastEnabledStackY+finalLastEnabledStackHeight,3,20);
+        if (lastEnabledStackY != 0) renderCalls.add(() -> {
+            Renderer.R2D.renderRoundedQuad(stack, new Color(40, 40, 40), scrollerWidth * 3, finalLastEnabledStackY, width - scrollerWidth * 3, finalLastEnabledStackY + finalLastEnabledStackHeight, 3, 20);
         });
         for (Runnable renderCall : renderCalls) {
             renderCall.run();
@@ -186,7 +186,6 @@ public class TabGui extends Module {
         }
 
         stack.pop();
-
 
 
         Renderer.R2D.endScissor();
@@ -223,9 +222,11 @@ public class TabGui extends Module {
             this.h = height;
             this.w = width;
         }
+
         boolean isEnabled() {
             return bs.getAsBoolean();
         }
+
         void fastTick() {
             this.animation = Transitions.transition(animation, animationGoal, 7, 0.00001);
         }

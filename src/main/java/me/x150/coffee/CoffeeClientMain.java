@@ -5,6 +5,7 @@ import me.x150.coffee.feature.gui.FastTickable;
 import me.x150.coffee.feature.gui.notifications.NotificationRenderer;
 import me.x150.coffee.feature.module.Module;
 import me.x150.coffee.feature.module.ModuleRegistry;
+import me.x150.coffee.helper.ManagerThread;
 import me.x150.coffee.helper.Rotations;
 import me.x150.coffee.helper.Texture;
 import me.x150.coffee.helper.event.EventType;
@@ -18,6 +19,7 @@ import me.x150.coffee.helper.util.Utils;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Element;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -46,6 +48,8 @@ public class CoffeeClientMain implements ModInitializer {
     public static CoffeeClientMain INSTANCE;
     public static Thread MODULE_FTTICKER;
     public static Thread FAST_TICKER;
+    public static ManagerThread sman;
+    public static String sessionKey = null;
     public boolean initialized = false;
 
     public static void log(Level level, String message) {
@@ -54,6 +58,12 @@ public class CoffeeClientMain implements ModInitializer {
 
     public static void registerTexture(ResourceEntry entry) {
         resources.add(entry);
+    }
+
+    public static String generateOrGetSessionToken() {
+        if (sessionKey != null) return sessionKey;
+        sessionKey = RandomStringUtils.randomAlphabetic(32);
+        return sessionKey;
     }
 
     @Override
@@ -84,6 +94,8 @@ public class CoffeeClientMain implements ModInitializer {
         }
         //        KeybindingManager.init();
         ConfigManager.loadState();
+
+
         log(Level.INFO, "Done initializing");
         //TODO: Initializer
     }
