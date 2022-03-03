@@ -16,9 +16,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 
-import java.awt.*;
+import java.awt.Color;
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.*;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class AutoTnt extends Module {
@@ -28,8 +32,7 @@ public class AutoTnt extends Module {
         super("AutoTNT", "Automatically places tnt in a grid", ModuleType.WORLD);
     }
 
-    @Override
-    public void tick() {
+    @Override public void tick() {
         int tntSlot = -1;
         for (int i = 0; i < 9; i++) {
             ItemStack is = Objects.requireNonNull(CoffeeClientMain.client.player).getInventory().getStack(i);
@@ -90,17 +93,14 @@ public class AutoTnt extends Module {
         }
     }
 
-    @Override
-    public void enable() {
+    @Override public void enable() {
     }
 
-    @Override
-    public void disable() {
+    @Override public void disable() {
 
     }
 
-    @Override
-    public String getContext() {
+    @Override public String getContext() {
         return missingTntAck ? "Missing tnt!" : null;
     }
 
@@ -108,8 +108,7 @@ public class AutoTnt extends Module {
         return b.getX() % 4 == 0 && b.getZ() % 4 == 0;
     }
 
-    @Override
-    public void onWorldRender(MatrixStack matrices) {
+    @Override public void onWorldRender(MatrixStack matrices) {
         Vec3d ppos = Objects.requireNonNull(CoffeeClientMain.client.player).getPos();
 
         for (double x = -10; x < 11; x++) {
@@ -143,8 +142,7 @@ public class AutoTnt extends Module {
         }
     }
 
-    @Override
-    public void onHudRender() {
+    @Override public void onHudRender() {
 
     }
 }

@@ -10,15 +10,15 @@ import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class ProxyManagerScreen extends ClientScreen {
-    public static Proxy currentProxy = null;
-    static double widgetWidth = 300;
-    static double widgetHeight = 400;
-    static ClientFontRenderer title = FontRenderers.getCustomSize(40);
-    static boolean isSocks4 = false;
-    Screen parent;
+    public static Proxy              currentProxy = null;
+    static        double             widgetWidth  = 300;
+    static        double             widgetHeight = 400;
+    static        ClientFontRenderer title        = FontRenderers.getCustomSize(40);
+    static        boolean            isSocks4     = false;
+    Screen               parent;
     RoundTextFieldWidget ip, port;
     RoundButton reset, apply, type;
 
@@ -31,8 +31,7 @@ public class ProxyManagerScreen extends ClientScreen {
         return 5;
     }
 
-    @Override
-    protected void init() {
+    @Override protected void init() {
 
         RoundButton exit = new RoundButton(new Color(40, 40, 40), width - 20 - 5, 5, 20, 20, "X", this::onClose);
         addDrawableChild(exit);
@@ -74,9 +73,10 @@ public class ProxyManagerScreen extends ClientScreen {
         super.init();
     }
 
-    @Override
-    public void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
-        if (parent != null) parent.render(stack, mouseX, mouseY, delta);
+    @Override public void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
+        if (parent != null) {
+            parent.render(stack, mouseX, mouseY, delta);
+        }
         Renderer.R2D.renderQuad(stack, new Color(0, 0, 0, 130), 0, 0, width, height);
         double wWidth = widgetWidth - padding() * 2d;
         double sourceX = width / 2d - widgetWidth / 2d + padding();
@@ -118,11 +118,15 @@ public class ProxyManagerScreen extends ClientScreen {
 
     boolean canApply() {
         String currentIp = this.ip.get();
-        if (currentIp.isEmpty()) return false;
+        if (currentIp.isEmpty()) {
+            return false;
+        }
         String currentPort = this.port.get();
         try {
             int port = Integer.parseInt(currentPort);
-            if (port < 0 || port > 0xFFFF) return false;
+            if (port < 0 || port > 0xFFFF) {
+                return false;
+            }
         } catch (Exception ignored) {
             return false;
         }
@@ -130,16 +134,14 @@ public class ProxyManagerScreen extends ClientScreen {
     }
 
 
-    @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    @Override public boolean mouseClicked(double mouseX, double mouseY, int button) {
         for (Element child : children()) {
             child.mouseClicked(0, 0, button);
         }
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
-    @Override
-    public void onClose() {
+    @Override public void onClose() {
         client.setScreen(parent);
     }
 

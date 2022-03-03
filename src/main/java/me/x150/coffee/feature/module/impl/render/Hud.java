@@ -35,23 +35,20 @@ import java.util.List;
 import java.util.Objects;
 
 public class Hud extends Module {
-    public static double currentTps = 0;
-    static ClientFontRenderer titleFr;
-    final DateFormat minSec = new SimpleDateFormat("mm:ss");
-    final BooleanSetting fps = this.config.create(new BooleanSetting.Builder(true).name("FPS").description("Whether to show FPS").get());
-    final BooleanSetting tps = this.config.create(new BooleanSetting.Builder(true).name("TPS").description("Whether to show TPS").get());
-    final BooleanSetting coords = this.config.create(new BooleanSetting.Builder(true).name("Coordinates").description("Whether to show current coordinates").get());
-    final BooleanSetting ping = this.config.create(new BooleanSetting.Builder(true).name("Ping").description("Whether to show current ping").get());
-    final BooleanSetting modules = this.config.create(new BooleanSetting.Builder(true).name("Array list").description("Whether to show currently enabled modules").get());
-    final List<ModuleEntry> moduleList = new ArrayList<>();
-    public BooleanSetting speed = this.config.create(new BooleanSetting.Builder(true)
-            .name("Speed")
-            .description("Show your current velocity")
-            .get());
-    long lastTimePacketReceived;
-    double rNoConnectionPosY = -10d;
-    Notification serverNotResponding = null;
-    Timer tpsUpdateTimer = new Timer();
+    public static double             currentTps = 0;
+    static        ClientFontRenderer titleFr;
+    final         DateFormat         minSec     = new SimpleDateFormat("mm:ss");
+    final         BooleanSetting     fps        = this.config.create(new BooleanSetting.Builder(true).name("FPS").description("Whether to show FPS").get());
+    final         BooleanSetting     tps        = this.config.create(new BooleanSetting.Builder(true).name("TPS").description("Whether to show TPS").get());
+    final         BooleanSetting     coords     = this.config.create(new BooleanSetting.Builder(true).name("Coordinates").description("Whether to show current coordinates").get());
+    final         BooleanSetting     ping       = this.config.create(new BooleanSetting.Builder(true).name("Ping").description("Whether to show current ping").get());
+    final         BooleanSetting     modules    = this.config.create(new BooleanSetting.Builder(true).name("Array list").description("Whether to show currently enabled modules").get());
+    final         List<ModuleEntry>  moduleList = new ArrayList<>();
+    public        BooleanSetting     speed      = this.config.create(new BooleanSetting.Builder(true).name("Speed").description("Show your current velocity").get());
+    long         lastTimePacketReceived;
+    double       rNoConnectionPosY     = -10d;
+    Notification serverNotResponding   = null;
+    Timer        tpsUpdateTimer        = new Timer();
     List<Double> last5SecondTpsAverage = new ArrayList<>();
 
     public Hud() {
@@ -61,7 +58,7 @@ public class Hud extends Module {
         Events.registerEventHandler(EventType.PACKET_RECEIVE, event1 -> {
             PacketEvent event = (PacketEvent) event1;
             if (event.getPacket() instanceof WorldTimeUpdateS2CPacket) {
-//                currentTps = Utils.Math.roundToDecimal(calcTps(System.currentTimeMillis() - lastTimePacketReceived), 2);
+                //                currentTps = Utils.Math.roundToDecimal(calcTps(System.currentTimeMillis() - lastTimePacketReceived), 2);
                 lastTimePacketReceived = System.currentTimeMillis();
             }
         });
@@ -78,8 +75,7 @@ public class Hud extends Module {
         return (20.0 / Math.max((n - 1000.0) / (500.0), 1.0));
     }
 
-    @Override
-    public void tick() {
+    @Override public void tick() {
         long averageTime = 5000;
         long waitTime = 100;
         long maxLength = averageTime / waitTime;
@@ -87,34 +83,31 @@ public class Hud extends Module {
             tpsUpdateTimer.reset();
             double newTps = calcTps(System.currentTimeMillis() - lastTimePacketReceived);
             last5SecondTpsAverage.add(newTps);
-            while (last5SecondTpsAverage.size() > maxLength) last5SecondTpsAverage.remove(0);
+            while (last5SecondTpsAverage.size() > maxLength) {
+                last5SecondTpsAverage.remove(0);
+            }
             currentTps = Utils.Math.roundToDecimal(last5SecondTpsAverage.stream().reduce(Double::sum).orElse(0d) / last5SecondTpsAverage.size(), 2);
 
         }
     }
 
-    @Override
-    public void enable() {
+    @Override public void enable() {
 
     }
 
-    @Override
-    public void disable() {
+    @Override public void disable() {
 
     }
 
-    @Override
-    public String getContext() {
+    @Override public String getContext() {
         return null;
     }
 
-    @Override
-    public void onWorldRender(MatrixStack matrices) {
+    @Override public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override
-    public void onHudRenderNoMSAA() {
+    @Override public void onHudRenderNoMSAA() {
         if (CoffeeClientMain.client.getNetworkHandler() == null) {
             return;
         }
@@ -159,8 +152,7 @@ public class Hud extends Module {
         HudRenderer.getInstance().render();
     }
 
-    @Override
-    public void onHudRender() {
+    @Override public void onHudRender() {
     }
 
     void drawTopLeft(MatrixStack ms) {
@@ -207,7 +199,9 @@ public class Hud extends Module {
         double y = 0;
         for (ModuleEntry moduleEntry : moduleList.stream().sorted(Comparator.comparingDouble(value -> -value.getRenderWidth())).toList()) {
             double prog = moduleEntry.getAnimProg() * 2;
-            if (prog == 0) continue;
+            if (prog == 0) {
+                continue;
+            }
             double expandProg = MathHelper.clamp(prog, 0, 1); // 0-1 as 0-1 from 0-2
             double slideProg = MathHelper.clamp(prog - 1, 0, 1); // 1-2 as 0-1 from 0-2
             double hei = (FontRenderers.getRenderer().getMarginHeight() + 2);
@@ -238,8 +232,7 @@ public class Hud extends Module {
         }
     }
 
-    @Override
-    public void onFastTick() {
+    @Override public void onFastTick() {
         rNoConnectionPosY = Transitions.transition(rNoConnectionPosY, shouldNoConnectionDropDown() ? 10 : -10, 10);
         HudRenderer.getInstance().fastTick();
         makeSureIsInitialized();
@@ -255,7 +248,7 @@ public class Hud extends Module {
     static class ModuleEntry {
         Module module;
         double animationProgress = 0;
-        double renderWidth = getWidth();
+        double renderWidth       = getWidth();
 
         void animate() {
             double a = 0.02;

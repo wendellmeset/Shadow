@@ -36,7 +36,7 @@ import oshi.hardware.GraphicsCard;
 import oshi.hardware.HardwareAbstractionLayer;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -47,8 +47,12 @@ import java.net.http.HttpResponse;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.*;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Utils {
@@ -111,8 +115,7 @@ public class Utils {
         return splits.toArray(new String[0]);
     }
 
-    @SuppressWarnings("UnusedReturnValue")
-    public static NbtCompound putPos(Vec3d pos, NbtCompound comp) {
+    @SuppressWarnings("UnusedReturnValue") public static NbtCompound putPos(Vec3d pos, NbtCompound comp) {
         NbtList list = new NbtList();
         list.add(NbtDouble.of(pos.x));
         list.add(NbtDouble.of(pos.y));
@@ -131,13 +134,47 @@ public class Utils {
         }
     }
 
+    public static String getHWID() {
+
+        try {
+            SystemInfo si = new SystemInfo();
+            HardwareAbstractionLayer hal = si.getHardware();
+            StringBuilder toEncrypt = new StringBuilder();
+            for (GraphicsCard graphicsCard : hal.getGraphicsCards()) {
+                toEncrypt.append(graphicsCard.getVendor()).append(graphicsCard.getName());
+            }
+            toEncrypt.append(hal.getComputerSystem().getBaseboard().getModel());
+            toEncrypt.append(hal.getComputerSystem().getHardwareUUID());
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(toEncrypt.toString().getBytes());
+            StringBuilder hexString = new StringBuilder();
+
+            byte[] byteData = md.digest();
+
+            for (byte aByteData : byteData) {
+                String hex = Integer.toHexString(0xff & aByteData);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+
+            return hexString.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error";
+        }
+    }
+
     public static class Textures {
-        static final NativeImageBackedTexture EMPTY = new NativeImageBackedTexture(1, 1, false);
-        static final HttpClient downloader = HttpClient.newHttpClient();
-        static Map<UUID, Texture> uCache = new ConcurrentHashMap<>();
+        static final NativeImageBackedTexture EMPTY      = new NativeImageBackedTexture(1, 1, false);
+        static final HttpClient               downloader = HttpClient.newHttpClient();
+        static       Map<UUID, Texture>       uCache     = new ConcurrentHashMap<>();
 
         public static Texture getSkinPreviewTexture(UUID uuid) {
-            if (uCache.containsKey(uuid)) return uCache.get(uuid);
+            if (uCache.containsKey(uuid)) {
+                return uCache.get(uuid);
+            }
             // completely random id
             // (hash code of uuid)(random numbers)
             Texture texIdent = new Texture("preview/" + uuid.hashCode() + "");
@@ -263,7 +300,7 @@ public class Utils {
 
         static final Map<String, UUID> UUID_CACHE = new HashMap<>();
         static final Map<UUID, String> NAME_CACHE = new HashMap<>();
-        static final HttpClient client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build();
+        static final HttpClient        client     = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build();
 
         public static String getNameFromUUID(UUID uuid) {
             if (NAME_CACHE.containsKey(uuid)) {
@@ -346,12 +383,12 @@ public class Utils {
         }
 
         public static void message0(String n, Color c) {
-//            CoffeeConsoleScreen.instance().log(n, c);
-//            messageChat("§#"+f0+f1+f2+n);
+            //            CoffeeConsoleScreen.instance().log(n, c);
+            //            messageChat("§#"+f0+f1+f2+n);
             LiteralText t = new LiteralText(n);
             t.setStyle(t.getStyle().withColor(TextColor.fromRgb(c.getRGB())));
             Objects.requireNonNull(CoffeeClientMain.client.player).sendMessage(t, false);
-//            if (c.equals(Color.WHITE)) c = Color.BLACK;
+            //            if (c.equals(Color.WHITE)) c = Color.BLACK;
             CoffeeConsoleScreen.instance().addLog(new CoffeeConsoleScreen.LogEntry(n, c));
         }
 
@@ -359,8 +396,8 @@ public class Utils {
 
     public static class TickManager {
 
-        static final List<TickEntry> entries = new ArrayList<>();
-        static final List<Runnable> nextTickRunners = new ArrayList<>();
+        static final List<TickEntry> entries         = new ArrayList<>();
+        static final List<Runnable>  nextTickRunners = new ArrayList<>();
 
         public static void runInNTicks(int n, Runnable toRun) {
             entries.add(new TickEntry(n, toRun));
@@ -396,36 +433,6 @@ public class Utils {
                 this.v = v;
                 this.r = r;
             }
-        }
-    }
-
-    public static String getHWID() {
-
-        try {
-            SystemInfo si = new SystemInfo();
-            HardwareAbstractionLayer hal = si.getHardware();
-            StringBuilder toEncrypt = new StringBuilder();
-            for (GraphicsCard graphicsCard : hal.getGraphicsCards()) {
-                toEncrypt.append(graphicsCard.getVendor()).append(graphicsCard.getName());
-            }
-            toEncrypt.append(hal.getComputerSystem().getBaseboard().getModel());
-            toEncrypt.append(hal.getComputerSystem().getHardwareUUID());
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            md.update(toEncrypt.toString().getBytes());
-            StringBuilder hexString = new StringBuilder();
-
-            byte[] byteData = md.digest();
-
-            for (byte aByteData : byteData) {
-                String hex = Integer.toHexString(0xff & aByteData);
-                if (hex.length() == 1) hexString.append('0');
-                hexString.append(hex);
-            }
-
-            return hexString.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Error";
         }
     }
 }

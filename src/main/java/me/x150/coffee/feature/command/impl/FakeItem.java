@@ -22,11 +22,10 @@ public class FakeItem extends Command {
         super("FakeItem", "Fakes a person holding a specific item", "spoofitem", "fakeitem");
     }
 
-    @Override
-    public String[] getSuggestions(String fullCommand, String[] args) {
+    @Override public String[] getSuggestions(String fullCommand, String[] args) {
         if (args.length == 1) {
-            return Objects.requireNonNull(CoffeeClientMain.client.world).getPlayers().stream().map(abstractClientPlayerEntity -> abstractClientPlayerEntity.getGameProfile().getName()).collect(Collectors.toList())
-                    .toArray(String[]::new);
+            return Objects.requireNonNull(CoffeeClientMain.client.world).getPlayers().stream().map(abstractClientPlayerEntity -> abstractClientPlayerEntity.getGameProfile().getName())
+                    .collect(Collectors.toList()).toArray(String[]::new);
         } else if (args.length == 2) {
             return new String[]{"hand", "custom:(item id) [item nbt]"};
         } else if (args.length == 3 && args[1].toLowerCase().startsWith("custom:")) {
@@ -35,8 +34,7 @@ public class FakeItem extends Command {
         return super.getSuggestions(fullCommand, args);
     }
 
-    @Override
-    public void onExecute(String[] args) {
+    @Override public void onExecute(String[] args) {
         if (args.length == 0) { // no uuid or item
             error("Specify player UUID or player username and item");
             return;
@@ -92,11 +90,11 @@ public class FakeItem extends Command {
                     stack.setNbt(StringNbtReader.parse(String.join(" ", Arrays.copyOfRange(args, 2, args.length))));
                 } catch (CommandSyntaxException e) {
                     error("Invalid NBT: " + e.getContext());
-//                    StringWriter sw = new StringWriter();
-//                    e.printStackTrace(new PrintWriter(sw));
-//                    for (String s : sw.toString().split("\n")) {
-//                        CoffeeConsoleScreen.instance().log(s, CoffeeConsoleScreen.BACKGROUND);
-//                    }
+                    //                    StringWriter sw = new StringWriter();
+                    //                    e.printStackTrace(new PrintWriter(sw));
+                    //                    for (String s : sw.toString().split("\n")) {
+                    //                        CoffeeConsoleScreen.instance().log(s, CoffeeConsoleScreen.BACKGROUND);
+                    //                    }
                     return;
                 }
             }

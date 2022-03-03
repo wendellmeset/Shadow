@@ -16,13 +16,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Arrays;
 import java.util.Objects;
 
 public class AutoTrap extends Module {
-    static final double[][] buildOffsetsSmall = new double[][]{new double[]{0, 2, 0}, new double[]{1, 1, 0}, new double[]{0, 1, 1}, new double[]{-1, 1, 0}, new double[]{0, 1, -1}, new double[]{0, -1, 0}};
-    static final double[][] buildOffsetsBig = new double[][]{
+    static final double[][] buildOffsetsSmall = new double[][]{new double[]{0, 2, 0}, new double[]{1, 1, 0}, new double[]{0, 1, 1}, new double[]{-1, 1, 0}, new double[]{0, 1, -1},
+            new double[]{0, -1, 0}};
+    static final double[][] buildOffsetsBig   = new double[][]{
             // begin bottom
             new double[]{-.5, -1, -.5}, new double[]{-.5, -1, .5}, new double[]{.5, -1, .5}, new double[]{.5, -1, -.5},
 
@@ -79,8 +80,7 @@ public class AutoTrap extends Module {
         return attacker.getCameraPosVec(1f).distanceTo(pos) <= Objects.requireNonNull(CoffeeClientMain.client.interactionManager).getReachDistance() + .5;
     }
 
-    @Override
-    public void onFastTick() {
+    @Override public void onFastTick() {
         for (Entity player : Objects.requireNonNull(CoffeeClientMain.client.world).getPlayers()) {
             if (player.equals(CoffeeClientMain.client.player)) {
                 continue;
@@ -136,28 +136,23 @@ public class AutoTrap extends Module {
         }
     }
 
-    @Override
-    public void tick() {
+    @Override public void tick() {
 
     }
 
-    @Override
-    public void enable() {
+    @Override public void enable() {
 
     }
 
-    @Override
-    public void disable() {
+    @Override public void disable() {
 
     }
 
-    @Override
-    public String getContext() {
+    @Override public String getContext() {
         return null;
     }
 
-    @Override
-    public void onWorldRender(MatrixStack matrices) {
+    @Override public void onWorldRender(MatrixStack matrices) {
         if (isDebuggerEnabled()) {
             for (Entity player : Objects.requireNonNull(CoffeeClientMain.client.world).getPlayers()) {
                 if (player.equals(CoffeeClientMain.client.player)) {
@@ -195,8 +190,7 @@ public class AutoTrap extends Module {
         }
     }
 
-    @Override
-    public void onHudRender() {
+    @Override public void onHudRender() {
 
     }
 }

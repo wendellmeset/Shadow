@@ -14,16 +14,14 @@ public class Bind extends Command {
         super("Bind", "Sets the keybind of a module", "bind");
     }
 
-    @Override
-    public String[] getSuggestions(String fullCommand, String[] args) {
+    @Override public String[] getSuggestions(String fullCommand, String[] args) {
         if (args.length == 1) {
             return ModuleRegistry.getModules().stream().map(Module::getName).collect(Collectors.toList()).toArray(String[]::new);
         }
         return super.getSuggestions(fullCommand, args);
     }
 
-    @Override
-    public void onExecute(String[] args) {
+    @Override public void onExecute(String[] args) {
         if (args.length == 0) {
             error("Give me a module name");
             return;

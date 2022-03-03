@@ -13,8 +13,7 @@ public class TargetHUD extends HudElement {
                 .getScaledHeight() / 2f + 10, TargetHud.modalWidth, TargetHud.modalHeight);
     }
 
-    @Override
-    public void renderIntern(MatrixStack stack) {
+    @Override public void renderIntern(MatrixStack stack) {
         MSAAFramebuffer.use(MSAAFramebuffer.MAX_SAMPLES, () -> {
             ModuleRegistry.getByClass(TargetHud.class).draw(stack);
         });

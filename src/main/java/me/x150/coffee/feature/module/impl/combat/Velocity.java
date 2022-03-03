@@ -19,24 +19,11 @@ import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 
 public class Velocity extends Module {
 
-    final DoubleSetting multiplierX = this.config.create(new DoubleSetting.Builder(0.2)
-            .name("Horizontal velocity")
-            .description("How much to multiply X and Z velocity by")
-            .min(-2.5)
-            .max(2.5)
-            .precision(1)
+    final DoubleSetting     multiplierX = this.config.create(new DoubleSetting.Builder(0.2).name("Horizontal velocity").description("How much to multiply X and Z velocity by").min(-2.5).max(2.5)
+            .precision(1).get());
+    final DoubleSetting     multiplierY = this.config.create(new DoubleSetting.Builder(0.2).name("Vertical velocity").description("How much to multiply Y velocity by").min(-2.5).max(2.5).precision(1)
             .get());
-    final DoubleSetting multiplierY = this.config.create(new DoubleSetting.Builder(0.2)
-            .name("Vertical velocity")
-            .description("How much to multiply Y velocity by")
-            .min(-2.5)
-            .max(2.5)
-            .precision(1)
-            .get());
-    final EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.Modify)
-            .name("Mode")
-            .description("How to modify velocity")
-            .get());
+    final EnumSetting<Mode> mode        = this.config.create(new EnumSetting.Builder<>(Mode.Modify).name("Mode").description("How to modify velocity").get());
 
     public Velocity() {
         super("Velocity", "Modifies all incoming velocity updates", ModuleType.COMBAT);
@@ -66,33 +53,27 @@ public class Velocity extends Module {
         });
     }
 
-    @Override
-    public void tick() {
+    @Override public void tick() {
 
     }
 
-    @Override
-    public void enable() {
+    @Override public void enable() {
 
     }
 
-    @Override
-    public void disable() {
+    @Override public void disable() {
 
     }
 
-    @Override
-    public String getContext() {
+    @Override public String getContext() {
         return null;
     }
 
-    @Override
-    public void onWorldRender(MatrixStack matrices) {
+    @Override public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override
-    public void onHudRender() {
+    @Override public void onHudRender() {
 
     }
 

@@ -9,6 +9,8 @@ import me.x150.coffee.helper.event.EventType;
 import me.x150.coffee.helper.event.Events;
 import me.x150.coffee.helper.event.events.KeyboardEvent;
 import me.x150.coffee.helper.font.FontRenderers;
+import me.x150.coffee.helper.render.ClipStack;
+import me.x150.coffee.helper.render.Rectangle;
 import me.x150.coffee.helper.render.Renderer;
 import me.x150.coffee.helper.util.Transitions;
 import me.x150.coffee.mixin.IDebugHudAccessor;
@@ -17,7 +19,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.glfw.GLFW;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -26,21 +28,25 @@ import java.util.function.BooleanSupplier;
 import static me.x150.coffee.feature.module.impl.render.Hud.getTitleFr;
 
 public class TabGui extends Module {
-    int scrollerIndex = 0;
-    double scrollerRenderY = 0;
-    double scrollerY = 0;
-    List<GuiEntry> entries = new ArrayList<>();
-    List<GuiEntry> root = new ArrayList<>();
-    double scroll = 0;
-    double smoothScroll = 0;
-    Timer updater = new Timer();
+    int            scrollerIndex   = 0;
+    double         scrollerRenderY = 0;
+    double         scrollerY       = 0;
+    List<GuiEntry> entries         = new ArrayList<>();
+    List<GuiEntry> root            = new ArrayList<>();
+    double         scroll          = 0;
+    double         smoothScroll    = 0;
+    Timer          updater         = new Timer();
 
     public TabGui() {
         super("TabGui", "Renders a small module manager top left", ModuleType.RENDER);
         Events.registerEventHandler(EventType.KEYBOARD, event -> {
-            if (!this.isEnabled()) return;
+            if (!this.isEnabled()) {
+                return;
+            }
             KeyboardEvent ke = (KeyboardEvent) event;
-            if (ke.getType() == 0) return;
+            if (ke.getType() == 0) {
+                return;
+            }
             switch (ke.getKeycode()) {
                 case GLFW.GLFW_KEY_DOWN -> scrollerIndex++;
                 case GLFW.GLFW_KEY_UP -> scrollerIndex--;
@@ -64,33 +70,27 @@ public class TabGui extends Module {
         return index;
     }
 
-    @Override
-    public void tick() {
+    @Override public void tick() {
 
     }
 
-    @Override
-    public void enable() {
+    @Override public void enable() {
         entries.clear();
     }
 
-    @Override
-    public void disable() {
+    @Override public void disable() {
 
     }
 
-    @Override
-    public String getContext() {
+    @Override public String getContext() {
         return null;
     }
 
-    @Override
-    public void onWorldRender(MatrixStack matrices) {
+    @Override public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override
-    public void onHudRender() {
+    @Override public void onHudRender() {
         double innerPad = 5;
         double heightOffsetLeft = 6 + Math.max(getTitleFr().getMarginHeight(), FontRenderers.getRenderer().getMarginHeight()) + 2 + innerPad;
         if (CoffeeClientMain.client.options.debugEnabled) {
@@ -109,7 +109,8 @@ public class TabGui extends Module {
 
         double innerPadding = 2;
         double scrollerWidth = 1.5;
-        double width = ModuleRegistry.getModules().stream().map(value -> FontRenderers.getRenderer().getStringWidth(value.getName())).max(Comparator.comparingDouble(value -> value)).orElse(60f) + scrollerWidth * 6 + innerPadding * 2;
+        double width = ModuleRegistry.getModules().stream().map(value -> FontRenderers.getRenderer().getStringWidth(value.getName())).max(Comparator.comparingDouble(value -> value))
+                .orElse(60f) + scrollerWidth * 6 + innerPadding * 2;
         double cellHeight = FontRenderers.getRenderer().getMarginHeight() + 1;
         double maxHeight = cellHeight * 16;
 
@@ -138,7 +139,8 @@ public class TabGui extends Module {
         double sc = (double) scrollerIndex / (entries.size() - 1);
         scroll = sc * (contentHeight + innerPadding * 2d - viewerHeight);
         stack.push();
-        Renderer.R2D.beginScissor(stack, scrollerWidth * 3, 0, width - innerPadding, viewerHeight - innerPadding);
+        ClipStack.globalInstance.addWindow(stack, new Rectangle(scrollerWidth * 3, 0, width - innerPadding, viewerHeight - innerPadding));
+        //Renderer.R2D.beginScissor(stack, scrollerWidth * 3, 0, width - innerPadding, viewerHeight - innerPadding);
         stack.translate(0, -smoothScroll, 0);
 
 
@@ -168,9 +170,11 @@ public class TabGui extends Module {
         }
         double finalLastEnabledStackY = lastEnabledStackY;
         double finalLastEnabledStackHeight = lastEnabledStackHeight;
-        if (lastEnabledStackY != 0) renderCalls.add(() -> {
-            Renderer.R2D.renderRoundedQuad(stack, new Color(40, 40, 40), scrollerWidth * 3, finalLastEnabledStackY, width - scrollerWidth * 3, finalLastEnabledStackY + finalLastEnabledStackHeight, 3, 20);
-        });
+        if (lastEnabledStackY != 0) {
+            renderCalls.add(() -> {
+                Renderer.R2D.renderRoundedQuad(stack, new Color(40, 40, 40), scrollerWidth * 3, finalLastEnabledStackY, width - scrollerWidth * 3, finalLastEnabledStackY + finalLastEnabledStackHeight, 3, 20);
+            });
+        }
         for (Runnable renderCall : renderCalls) {
             renderCall.run();
         }
@@ -187,15 +191,14 @@ public class TabGui extends Module {
 
         stack.pop();
 
-
-        Renderer.R2D.endScissor();
+        ClipStack.globalInstance.popWindow(stack);
+        //Renderer.R2D.endScissor();
 
         Renderer.R2D.renderRoundedQuad(stack, Color.WHITE, 2, innerPadding + scrollerRenderY + .5, 2 + scrollerWidth, innerPadding + scrollerRenderY + cellHeight - .5, scrollerWidth / 2d, 20);
         stack.pop();
     }
 
-    @Override
-    public void onFastTick() {
+    @Override public void onFastTick() {
         scrollerRenderY = Transitions.transition(scrollerRenderY, scrollerY, 7, 0.00001);
         smoothScroll = Transitions.transition(smoothScroll, scroll, 7, 0.00001);
         if (updater.hasExpired(3000)) {
@@ -207,12 +210,12 @@ public class TabGui extends Module {
     }
 
     static class GuiEntry {
-        double animation = 0;
-        double animationGoal = 0;
+        double   animation     = 0;
+        double   animationGoal = 0;
         Runnable r, back;
         BooleanSupplier bs;
-        String name;
-        double h, w;
+        String          name;
+        double          h, w;
 
         public GuiEntry(Runnable r, Runnable back, BooleanSupplier isEnabled, String name, double height, double width) {
             this.r = r;
@@ -236,8 +239,9 @@ public class TabGui extends Module {
         }
 
         void render(MatrixStack stack) {
-//            Renderer.R2D.renderQuad(stack,Color.BLUE,0,0,w,h);
-            FontRenderers.getRenderer().drawString(stack, name, MathHelper.lerp(animation, 2, w / 2d - FontRenderers.getRenderer().getStringWidth(name) / 2d), (h - FontRenderers.getRenderer().getMarginHeight()) / 2d, 0xFFFFFF);
+            //            Renderer.R2D.renderQuad(stack,Color.BLUE,0,0,w,h);
+            FontRenderers.getRenderer().drawString(stack, name, MathHelper.lerp(animation, 2, w / 2d - FontRenderers.getRenderer().getStringWidth(name) / 2d), (h - FontRenderers.getRenderer()
+                    .getMarginHeight()) / 2d, 0xFFFFFF);
         }
 
         void activated() {

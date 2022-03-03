@@ -9,6 +9,8 @@ import me.x150.coffee.feature.module.ModuleRegistry;
 import me.x150.coffee.feature.module.ModuleType;
 import me.x150.coffee.helper.font.FontRenderers;
 import me.x150.coffee.helper.font.adapter.impl.ClientFontRenderer;
+import me.x150.coffee.helper.render.ClipStack;
+import me.x150.coffee.helper.render.Rectangle;
 import me.x150.coffee.helper.render.Renderer;
 import net.minecraft.client.util.math.MatrixStack;
 
@@ -17,9 +19,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CategoryDisplay extends Element {
-    static final ClientFontRenderer cfr = FontRenderers.getCustomSize(20);
-    final List<ModuleDisplay> md = new ArrayList<>();
-    final ModuleType mt;
+    static final ClientFontRenderer  cfr = FontRenderers.getCustomSize(20);
+    final        List<ModuleDisplay> md  = new ArrayList<>();
+    final        ModuleType          mt;
     boolean selected = false;
 
     public CategoryDisplay(double x, double y, ModuleType mt) {
@@ -33,8 +35,7 @@ public class CategoryDisplay extends Element {
         }
     }
 
-    @Override
-    public boolean clicked(double x, double y, int button) {
+    @Override public boolean clicked(double x, double y, int button) {
         if (x >= this.x && x < this.x + this.width && y >= this.y && y < this.y + headerHeight()) {
             if (button == 0) {
                 selected = true;
@@ -50,8 +51,7 @@ public class CategoryDisplay extends Element {
         return false;
     }
 
-    @Override
-    public boolean dragged(double x, double y, double deltaX, double deltaY, int button) {
+    @Override public boolean dragged(double x, double y, double deltaX, double deltaY, int button) {
         if (selected) {
             this.x += deltaX;
             this.y += deltaY;
@@ -66,8 +66,7 @@ public class CategoryDisplay extends Element {
         return false;
     }
 
-    @Override
-    public boolean released() {
+    @Override public boolean released() {
         selected = false;
         for (ModuleDisplay moduleDisplay : getModules()) {
             moduleDisplay.released();
@@ -75,8 +74,7 @@ public class CategoryDisplay extends Element {
         return false;
     }
 
-    @Override
-    public boolean keyPressed(int keycode, int modifiers) {
+    @Override public boolean keyPressed(int keycode, int modifiers) {
         for (ModuleDisplay moduleDisplay : getModules()) {
             if (moduleDisplay.keyPressed(keycode, modifiers)) {
                 return true;
@@ -94,8 +92,7 @@ public class CategoryDisplay extends Element {
         return padding + cfr.getFontHeight() + padding;
     }
 
-    @Override
-    public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
+    @Override public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
         Theme theme = ClickGUI.theme;
         //        Renderer.R2D.fill(matrices, theme.getHeader(), x, y, x + width, y + headerHeight());
         double r = 5;
@@ -104,12 +101,16 @@ public class CategoryDisplay extends Element {
         double texDim = hheight - texPad * 2;
 
         double modHeight = getModules().stream().map(ModuleDisplay::getHeight).reduce(Double::sum).orElse(0d);
+        modHeight = Math.min(modHeight, 100);
         this.height = headerHeight() + modHeight; // pre calc height
-        if (modHeight != 0) height += r;
+        if (modHeight != 0) {
+            height += r;
+        }
+        ClipStack.globalInstance.addWindow(matrices, new Rectangle(x, y, x + width, y + this.height));
         Renderer.R2D.renderRoundedQuad(matrices, theme.getHeader(), x, y, x + width, y + this.height, r, 20);
         RenderSystem.setShaderTexture(0, mt.getTex());
         Renderer.R2D.renderTexture(matrices, x + texPad, y + texPad, texDim, texDim, 0, 0, texDim, texDim, texDim, texDim);
-//        cfr.drawCenteredString(matrices,mt.getName(),x+texPad+texDim+texPad,y+headerHeight()/2d-cfr.getFontHeight()/2d,0xFFFFFF);
+        //        cfr.drawCenteredString(matrices,mt.getName(),x+texPad+texDim+texPad,y+headerHeight()/2d-cfr.getFontHeight()/2d,0xFFFFFF);
         cfr.drawCenteredString(matrices, mt.getName(), x + width / 2d, y + headerHeight() / 2d - cfr.getFontHeight() / 2d, 0xFFFFFF);
         double y = headerHeight();
         for (ModuleDisplay moduleDisplay : getModules()) {
@@ -118,18 +119,17 @@ public class CategoryDisplay extends Element {
             moduleDisplay.render(matrices, mouseX, mouseY, scrollBeingUsed);
             y += moduleDisplay.getHeight();
         }
-//        FontRenderers.getRenderer().drawCenteredString(matrices, getModules().size() + " modules", this.x + this.width / 2d, this.y + this.height - 1 - FontRenderers.getRenderer().getMarginHeight(), 0xFFFFFF);
+        ClipStack.globalInstance.popWindow(matrices);
+        //        FontRenderers.getRenderer().drawCenteredString(matrices, getModules().size() + " modules", this.x + this.width / 2d, this.y + this.height - 1 - FontRenderers.getRenderer().getMarginHeight(), 0xFFFFFF);
     }
 
-    @Override
-    public void tickAnim() {
+    @Override public void tickAnim() {
         for (ModuleDisplay moduleDisplay : getModules()) {
             moduleDisplay.tickAnim();
         }
     }
 
-    @Override
-    public boolean charTyped(char c, int mods) {
+    @Override public boolean charTyped(char c, int mods) {
         for (ModuleDisplay moduleDisplay : getModules()) {
             if (moduleDisplay.charTyped(c, mods)) {
                 return true;

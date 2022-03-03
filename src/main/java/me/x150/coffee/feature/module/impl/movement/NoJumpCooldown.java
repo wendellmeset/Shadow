@@ -17,36 +17,30 @@ public class NoJumpCooldown extends Module {
         super("NoJumpCool", "Removes the jump cooldown", ModuleType.MOVEMENT);
     }
 
-    @Override
-    public void tick() {
+    @Override public void tick() {
         if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.getNetworkHandler() == null) {
             return;
         }
         ((ILivingEntityAccessor) CoffeeClientMain.client.player).setJumpingCooldown(0);
     }
 
-    @Override
-    public void enable() {
+    @Override public void enable() {
 
     }
 
-    @Override
-    public void disable() {
+    @Override public void disable() {
 
     }
 
-    @Override
-    public String getContext() {
+    @Override public String getContext() {
         return null;
     }
 
-    @Override
-    public void onWorldRender(MatrixStack matrices) {
+    @Override public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override
-    public void onHudRender() {
+    @Override public void onHudRender() {
 
     }
 }

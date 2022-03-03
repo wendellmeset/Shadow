@@ -6,8 +6,7 @@ public class StringSetting extends SettingBase<String> {
         super(defaultValue, name, description);
     }
 
-    @Override
-    public String parse(String value) {
+    @Override public String parse(String value) {
         return value;
     }
 
@@ -17,8 +16,7 @@ public class StringSetting extends SettingBase<String> {
             super(defaultValue);
         }
 
-        @Override
-        public StringSetting get() {
+        @Override public StringSetting get() {
             return new StringSetting(defaultValue, name, description);
         }
     }

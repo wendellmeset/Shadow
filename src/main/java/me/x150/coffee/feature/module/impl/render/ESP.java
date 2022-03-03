@@ -14,7 +14,13 @@ import me.x150.coffee.feature.module.Module;
 import me.x150.coffee.feature.module.ModuleType;
 import me.x150.coffee.helper.render.Renderer;
 import me.x150.coffee.helper.util.Utils;
-import net.minecraft.client.render.*;
+import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.BufferRenderer;
+import net.minecraft.client.render.Camera;
+import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexFormat;
+import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,39 +29,35 @@ import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3d;
 import org.lwjgl.opengl.GL11;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ESP extends Module {
     public final EnumSetting<Mode> outlineMode = this.config.create(new EnumSetting.Builder<>(Mode.Filled).name("Outline mode").description("How to render the outline").get());
-    public final BooleanSetting entities = this.config.create(new BooleanSetting.Builder(false).name("Show entities").description("Render entities").get());
-    public final BooleanSetting players = this.config.create(new BooleanSetting.Builder(true).name("Show players").description("Render players").get());
-    final DoubleSetting range = this.config.create(new DoubleSetting.Builder(64).name("Range").description("How far to render the entities").min(32).max(128).precision(1).get());
-    public List<double[]> vertexDumps = new ArrayList<>();
-    public boolean recording = false;
+    public final BooleanSetting    entities    = this.config.create(new BooleanSetting.Builder(false).name("Show entities").description("Render entities").get());
+    public final BooleanSetting    players     = this.config.create(new BooleanSetting.Builder(true).name("Show players").description("Render players").get());
+    final        DoubleSetting     range       = this.config.create(new DoubleSetting.Builder(64).name("Range").description("How far to render the entities").min(32).max(128).precision(1).get());
+    public       List<double[]>    vertexDumps = new ArrayList<>();
+    public       boolean           recording   = false;
 
     public ESP() {
         super("ESP", "Shows where entities are", ModuleType.RENDER);
     }
 
-    @Override
-    public void tick() {
+    @Override public void tick() {
 
     }
 
-    @Override
-    public void enable() {
+    @Override public void enable() {
 
     }
 
-    @Override
-    public void disable() {
+    @Override public void disable() {
 
     }
 
-    @Override
-    public String getContext() {
+    @Override public String getContext() {
         return null;
     }
 
@@ -63,8 +65,7 @@ public class ESP extends Module {
         return ((e instanceof PlayerEntity && players.getValue()) || entities.getValue());
     }
 
-    @Override
-    public void onWorldRender(MatrixStack matrices) {
+    @Override public void onWorldRender(MatrixStack matrices) {
         if (outlineMode.getValue() == Mode.Model) {
             float alpha = 1f;
             List<double[]> vertBuffer = new ArrayList<>();
@@ -73,7 +74,9 @@ public class ESP extends Module {
                 if (vertexDump.length == 0) {
                     verts.add(vertBuffer.toArray(double[][]::new));
                     vertBuffer.clear();
-                } else vertBuffer.add(vertexDump);
+                } else {
+                    vertBuffer.add(vertexDump);
+                }
             }
             verts.add(vertBuffer.toArray(double[][]::new));
             vertBuffer.clear();
@@ -88,8 +91,8 @@ public class ESP extends Module {
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
             buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
             for (double[][] vert : verts) {
-//                            p += 0.005;
-//                            p %= 1;
+                //                            p += 0.005;
+                //                            p %= 1;
 
 
                 for (double[] vertexDump : vert) {
@@ -132,8 +135,7 @@ public class ESP extends Module {
         }
     }
 
-    @Override
-    public void onHudRender() {
+    @Override public void onHudRender() {
 
     }
 

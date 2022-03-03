@@ -16,36 +16,31 @@ public class AutoAttack extends Module {
         super("AutoAttack", "Automatically attacks the entity you're looking at", ModuleType.COMBAT);
     }
 
-    @Override
-    public void tick() {
-        if (!(CoffeeClientMain.client.crosshairTarget instanceof EntityHitResult) || Objects.requireNonNull(CoffeeClientMain.client.player).getAttackCooldownProgress(0) < 1)
+    @Override public void tick() {
+        if (!(CoffeeClientMain.client.crosshairTarget instanceof EntityHitResult) || Objects.requireNonNull(CoffeeClientMain.client.player).getAttackCooldownProgress(0) < 1) {
             return;
+        }
         Objects.requireNonNull(CoffeeClientMain.client.interactionManager).attackEntity(CoffeeClientMain.client.player, ((EntityHitResult) CoffeeClientMain.client.crosshairTarget).getEntity());
         CoffeeClientMain.client.player.swingHand(Hand.MAIN_HAND);
     }
 
-    @Override
-    public void enable() {
+    @Override public void enable() {
 
     }
 
-    @Override
-    public void disable() {
+    @Override public void disable() {
 
     }
 
-    @Override
-    public String getContext() {
+    @Override public String getContext() {
         return null;
     }
 
-    @Override
-    public void onWorldRender(MatrixStack matrices) {
+    @Override public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override
-    public void onHudRender() {
+    @Override public void onHudRender() {
 
     }
 }

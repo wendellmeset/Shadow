@@ -12,8 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(EntityRenderDispatcher.class)
-public class EntityRenderDispatcherMixin {
+@Mixin(EntityRenderDispatcher.class) public class EntityRenderDispatcherMixin {
 
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     public <E extends Entity> void atomic_dispatchEntityRender(E entity, double x, double y, double z, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {

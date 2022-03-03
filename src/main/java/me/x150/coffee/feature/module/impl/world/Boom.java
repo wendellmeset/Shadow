@@ -38,9 +38,9 @@ public class Boom extends Module {
     //    final SliderValue speed = (SliderValue) this.config.create("Speed", 2, 1, 10, 1).description("How fast to fire the fireball");
     //    final SliderValue power = (SliderValue) this.config.create("Power", 20, 0, 127, 0).description("How big the fireball's gonna be");
     //    final MultiValue  mode  = (MultiValue) this.config.create("Mode", "fbGhast", "fbGhast", "fbInstant").description("How to do the funny");
-    final DoubleSetting speed = this.config.create(new DoubleSetting.Builder(2).name("Speed").description("How fast the fireball goes").min(1).max(10).precision(1).get());
-    final DoubleSetting power = this.config.create(new DoubleSetting.Builder(20).precision(0).name("Power").description("How big the fireball will be").min(0).max(127).get());
-    final EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.FireballGhast).name("Mode").description("How to send the fireball off").get());
+    final DoubleSetting     speed = this.config.create(new DoubleSetting.Builder(2).name("Speed").description("How fast the fireball goes").min(1).max(10).precision(1).get());
+    final DoubleSetting     power = this.config.create(new DoubleSetting.Builder(20).precision(0).name("Power").description("How big the fireball will be").min(0).max(127).get());
+    final EnumSetting<Mode> mode  = this.config.create(new EnumSetting.Builder<>(Mode.FireballGhast).name("Mode").description("How to send the fireball off").get());
     long lastFired = 0L;
 
     public Boom() {
@@ -118,36 +118,30 @@ public class Boom extends Module {
         lastFired = System.currentTimeMillis();
     }
 
-    @Override
-    public void tick() {
+    @Override public void tick() {
         if (!Objects.requireNonNull(CoffeeClientMain.client.interactionManager).hasCreativeInventory()) {
             Notification.create(6000, "", true, Notification.Type.INFO, "You need to be in creative");
             setEnabled(false);
         }
     }
 
-    @Override
-    public void enable() {
+    @Override public void enable() {
 
     }
 
-    @Override
-    public void disable() {
+    @Override public void disable() {
 
     }
 
-    @Override
-    public String getContext() {
+    @Override public String getContext() {
         return null;
     }
 
-    @Override
-    public void onWorldRender(MatrixStack matrices) {
+    @Override public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override
-    public void onHudRender() {
+    @Override public void onHudRender() {
 
     }
 

@@ -19,46 +19,34 @@ import java.util.Objects;
 
 public class Spinner extends Module {
 
-    final double r = 0;
+    final double        r     = 0;
     //    final SliderValue speed = (SliderValue) this.config.create("Timeout", 5, 0, 100, 0).description("How much to wait between rotations");
-    final DoubleSetting speed = this.config.create(new DoubleSetting.Builder(5)
-            .name("Delay")
-            .description("How much to wait when spinning")
-            .min(0)
-            .max(100)
-            .precision(0)
-            .get());
+    final DoubleSetting speed = this.config.create(new DoubleSetting.Builder(5).name("Delay").description("How much to wait when spinning").min(0).max(100).precision(0).get());
     int timeout = 0;
 
     public Spinner() {
         super("Spinner", "Spins around like a maniac and throws whatever you have", ModuleType.FUN);
     }
 
-    @Override
-    public void tick() {
+    @Override public void tick() {
     }
 
-    @Override
-    public void enable() {
-
-    }
-
-    @Override
-    public void disable() {
+    @Override public void enable() {
 
     }
 
-    @Override
-    public String getContext() {
+    @Override public void disable() {
+
+    }
+
+    @Override public String getContext() {
         return null;
     }
 
-    @Override
-    public void onWorldRender(MatrixStack matrices) {
+    @Override public void onWorldRender(MatrixStack matrices) {
     }
 
-    @Override
-    public void onFastTick() {
+    @Override public void onFastTick() {
         timeout--; // decrease timeout
         if (timeout > 0) {
             return; // if timeout isn't expired, do nothing
@@ -72,8 +60,7 @@ public class Spinner extends Module {
         CoffeeClientMain.client.getNetworkHandler().sendPacket(p1);
     }
 
-    @Override
-    public void onHudRender() {
+    @Override public void onHudRender() {
 
     }
 }

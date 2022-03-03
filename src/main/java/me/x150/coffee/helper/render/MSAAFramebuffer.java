@@ -20,14 +20,14 @@ public class MSAAFramebuffer extends Framebuffer {
     public static final int MIN_SAMPLES = 2;
     public static final int MAX_SAMPLES = GL30.glGetInteger(GL30C.GL_MAX_SAMPLES);
 
-    private static final Map<Integer, MSAAFramebuffer> INSTANCES = new HashMap<>();
-    private static final List<MSAAFramebuffer> ACTIVE_INSTANCES = new ArrayList<>();
-    private static final ConcurrentMap<Integer, ConcurrentLinkedQueue<Runnable>> RENDER_CALLS = new ConcurrentHashMap<>();
+    private static final Map<Integer, MSAAFramebuffer>                           INSTANCES        = new HashMap<>();
+    private static final List<MSAAFramebuffer>                                   ACTIVE_INSTANCES = new ArrayList<>();
+    private static final ConcurrentMap<Integer, ConcurrentLinkedQueue<Runnable>> RENDER_CALLS     = new ConcurrentHashMap<>();
 
-    private final int samples;
-    private int rboColor;
-    private int rboDepth;
-    private boolean inUse;
+    private final int     samples;
+    private       int     rboColor;
+    private       int     rboDepth;
+    private       boolean inUse;
 
     private MSAAFramebuffer(int samples) {
         super(true);
@@ -107,15 +107,13 @@ public class MSAAFramebuffer extends Framebuffer {
         }
     }
 
-    @Override
-    public void resize(int width, int height, boolean getError) {
+    @Override public void resize(int width, int height, boolean getError) {
         if (this.textureWidth != width || this.textureHeight != height) {
             super.resize(width, height, getError);
         }
     }
 
-    @Override
-    public void initFbo(int width, int height, boolean getError) {
+    @Override public void initFbo(int width, int height, boolean getError) {
         RenderSystem.assertOnRenderThreadOrInit();
         int maxSize = RenderSystem.maxSupportedTextureSize();
         if (width <= 0 || width > maxSize || height <= 0 || height > maxSize) {
@@ -151,8 +149,7 @@ public class MSAAFramebuffer extends Framebuffer {
         this.endRead();
     }
 
-    @Override
-    public void delete() {
+    @Override public void delete() {
         RenderSystem.assertOnRenderThreadOrInit();
         this.endRead();
         this.endWrite();
@@ -179,8 +176,7 @@ public class MSAAFramebuffer extends Framebuffer {
         this.textureHeight = -1;
     }
 
-    @Override
-    public void beginWrite(boolean setViewport) {
+    @Override public void beginWrite(boolean setViewport) {
         super.beginWrite(setViewport);
         if (!this.inUse) {
             ACTIVE_INSTANCES.add(this);
@@ -192,8 +188,7 @@ public class MSAAFramebuffer extends Framebuffer {
         return this.inUse;
     }
 
-    @Override
-    public void endWrite() {
+    @Override public void endWrite() {
         super.endWrite();
         if (this.inUse) {
             this.inUse = false;

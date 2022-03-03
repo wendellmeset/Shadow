@@ -21,10 +21,7 @@ import net.minecraft.util.math.Vec3d;
 
 public class Criticals extends Module {
 
-    final EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.Packet)
-            .name("Mode")
-            .description("How to deal crits")
-            .get());
+    final EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.Packet).name("Mode").description("How to deal crits").get());
 
     public Criticals() {
         super("Criticals", "Makes you deal a perfect 10/10 crit every time", ModuleType.COMBAT);
@@ -60,33 +57,27 @@ public class Criticals extends Module {
 
     }
 
-    @Override
-    public void tick() {
+    @Override public void tick() {
 
     }
 
-    @Override
-    public void enable() {
+    @Override public void enable() {
 
     }
 
-    @Override
-    public void disable() {
+    @Override public void disable() {
 
     }
 
-    @Override
-    public String getContext() {
+    @Override public String getContext() {
         return null;
     }
 
-    @Override
-    public void onWorldRender(MatrixStack matrices) {
+    @Override public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override
-    public void onHudRender() {
+    @Override public void onHudRender() {
 
     }
 

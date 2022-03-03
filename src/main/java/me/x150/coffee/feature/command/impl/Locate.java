@@ -17,7 +17,12 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.biome.source.MultiNoiseBiomeSource;
 import net.minecraft.world.biome.source.TheEndBiomeSource;
-import net.minecraft.world.gen.chunk.*;
+import net.minecraft.world.gen.chunk.ChunkGenerator;
+import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
+import net.minecraft.world.gen.chunk.NoiseChunkGenerator;
+import net.minecraft.world.gen.chunk.StrongholdConfig;
+import net.minecraft.world.gen.chunk.StructureConfig;
+import net.minecraft.world.gen.chunk.StructuresConfig;
 import net.minecraft.world.gen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.gen.feature.FeatureConfig;
 import net.minecraft.world.gen.feature.StructureFeature;
@@ -25,7 +30,12 @@ import net.minecraft.world.level.storage.LevelStorage;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -33,13 +43,13 @@ import java.util.stream.Collectors;
 public class Locate extends Command {
 
     private final DynamicRegistryManager jigsawRegistry = DynamicRegistryManager.create();
-    private List<ChunkPos> strongholds = Lists.newArrayList();
-    private BiomeSource biomeSource;
-    private StructuresConfig structuresConfig;
-    private long worldSeed;
-    private ChunkGenerator chunkGenerator;
-    private StructureManager structureManager;
-    private Registry<Biome> biomeRegistry;
+    private       List<ChunkPos>         strongholds    = Lists.newArrayList();
+    private       BiomeSource            biomeSource;
+    private       StructuresConfig       structuresConfig;
+    private       long                   worldSeed;
+    private       ChunkGenerator         chunkGenerator;
+    private       StructureManager       structureManager;
+    private       Registry<Biome>        biomeRegistry;
 
     public Locate() {
         super("Locate", "locates structures", "locate");
@@ -50,8 +60,7 @@ public class Locate extends Command {
         return category != Biome.Category.OCEAN && category != Biome.Category.RIVER && category != Biome.Category.BEACH && category != Biome.Category.SWAMP && category != Biome.Category.NETHER && category != Biome.Category.THEEND;
     }
 
-    @Override
-    public String[] getSuggestions(String fullCommand, String[] args) {
+    @Override public String[] getSuggestions(String fullCommand, String[] args) {
         if (args.length == 1) {
             String[] structures = new String[StructureFeature.STRUCTURES.size()];
             StructureFeature.STRUCTURES.keySet().toArray(structures);
@@ -60,8 +69,7 @@ public class Locate extends Command {
         return super.getSuggestions(fullCommand, args);
     }
 
-    @Override
-    public void onExecute(String[] args) {
+    @Override public void onExecute(String[] args) {
         if (args.length != 2) {
             message("syntax is .locate <structure> <seed>");
             return;
@@ -93,7 +101,6 @@ public class Locate extends Command {
             this.chunkGenerator = new NoiseChunkGenerator(BuiltinRegistries.NOISE_PARAMETERS, biomeSource, worldSeed, supplier);
             this.structuresConfig = chunkGenerator.getStructuresConfig();
             System.out.println(registryManager.get(Registry.STRUCTURE_POOL_KEY).toString());
-
 
         } catch (Exception e) {
             System.out.println(e.getLocalizedMessage());
@@ -128,8 +135,7 @@ public class Locate extends Command {
         this.biomeRegistry = null;
     }
 
-    @Nullable
-    public BlockPos locateStructure(StructureFeature<?> structureFeature, BlockPos center, int radius) {
+    @Nullable public BlockPos locateStructure(StructureFeature<?> structureFeature, BlockPos center, int radius) {
         if (structureFeature == StructureFeature.STRONGHOLD) {
             BlockPos blockPos = null;
             double d = Double.MAX_VALUE;
@@ -143,7 +149,9 @@ public class Locate extends Command {
                     d = e;
                     continue;
                 }
-                if (!(e < d)) continue;
+                if (!(e < d)) {
+                    continue;
+                }
                 blockPos = new BlockPos(mutable);
                 d = e;
             }
@@ -161,8 +169,7 @@ public class Locate extends Command {
         return locateStructure2(center, radius, structureConfig, structureFeature);
     }
 
-    @Nullable
-    private BlockPos locateStructure2(BlockPos searchStartPos, int searchRadius, StructureConfig config, StructureFeature<?> structureFeature) {
+    @Nullable private BlockPos locateStructure2(BlockPos searchStartPos, int searchRadius, StructureConfig config, StructureFeature<?> structureFeature) {
         int i = config.getSpacing();
         int j = ChunkSectionPos.getSectionCoord(searchStartPos.getX());
         int k = ChunkSectionPos.getSectionCoord(searchStartPos.getZ());
@@ -174,10 +181,14 @@ public class Locate extends Command {
                     ChunkPos chunkPos;
                     boolean bl2 = n == -l || n == l;
                     boolean structurePresence = getStructurePresence(chunkPos = structureFeature.getStartChunk(config, worldSeed, j + i * m, k + i * n), structureFeature);
-                    if (!bl && !bl2 || !structurePresence) continue;
+                    if (!bl && !bl2 || !structurePresence) {
+                        continue;
+                    }
                     return structureFeature.getLocatedPos(chunkPos);
                 }
-                if (l == 0) continue block0;
+                if (l == 0) {
+                    continue block0;
+                }
             }
         }
         return null;
@@ -186,7 +197,9 @@ public class Locate extends Command {
     private <F extends StructureFeature<?>> boolean getStructurePresence(ChunkPos pos2, F feature2) {
         ImmutableMultimap<ConfiguredStructureFeature<?, ?>, RegistryKey<Biome>> multimap = structuresConfig.getConfiguredStructureFeature(feature2);
         for (Map.Entry<ConfiguredStructureFeature<?, ?>, Collection<RegistryKey<Biome>>> entry : multimap.asMap().entrySet()) {
-            if (!this.isGenerationPossible(pos2, entry.getKey(), entry.getValue())) continue;
+            if (!this.isGenerationPossible(pos2, entry.getKey(), entry.getValue())) {
+                continue;
+            }
             return true;
         }
         return false;
@@ -207,7 +220,9 @@ public class Locate extends Command {
         }
         ArrayList<Biome> list = Lists.newArrayList();
         for (Biome biome : this.biomeSource.getBiomes()) {
-            if (!canPlaceStrongholdInBiome(biome)) continue;
+            if (!canPlaceStrongholdInBiome(biome)) {
+                continue;
+            }
             list.add(biome);
         }
         int i = strongholdConfig.getDistance();
@@ -229,7 +244,9 @@ public class Locate extends Command {
             }
             this.strongholds.add(new ChunkPos(n, o));
             d += Math.PI * 2 / (double) j;
-            if (++k != j) continue;
+            if (++k != j) {
+                continue;
+            }
             k = 0;
             j += 2 * j / (++l + 1);
             j = Math.min(j, biome - m);

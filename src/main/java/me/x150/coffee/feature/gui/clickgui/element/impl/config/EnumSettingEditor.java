@@ -7,13 +7,13 @@ import me.x150.coffee.helper.font.FontRenderers;
 import me.x150.coffee.helper.render.Renderer;
 import net.minecraft.client.util.math.MatrixStack;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EnumSettingEditor extends ConfigBase<EnumSetting<?>> {
-    static Color idk2 = new Color(0, 0, 20, 60);
-    final List<EnumSelectorClickable<?>> values = new ArrayList<>();
+    static Color                          idk2   = new Color(0, 0, 20, 60);
+    final  List<EnumSelectorClickable<?>> values = new ArrayList<>();
 
     public EnumSettingEditor(double x, double y, double width, EnumSetting<?> configValue) {
         super(x, y, width, 0, configValue);
@@ -31,8 +31,7 @@ public class EnumSettingEditor extends ConfigBase<EnumSetting<?>> {
         return configValue.getValue().equals(value) ? theme.getActive().getRGB() : theme.getInactive().getRGB();
     }
 
-    @Override
-    public boolean clicked(double x, double y, int button) {
+    @Override public boolean clicked(double x, double y, int button) {
         if (inBounds(x, y)) {
             for (EnumSelectorClickable<?> value : values) {
                 if (value.inBounds(x, y)) {
@@ -44,23 +43,19 @@ public class EnumSettingEditor extends ConfigBase<EnumSetting<?>> {
         return false;
     }
 
-    @Override
-    public boolean dragged(double x, double y, double deltaX, double deltaY, int button) {
+    @Override public boolean dragged(double x, double y, double deltaX, double deltaY, int button) {
         return false;
     }
 
-    @Override
-    public boolean released() {
+    @Override public boolean released() {
         return false;
     }
 
-    @Override
-    public boolean keyPressed(int keycode, int modifiers) {
+    @Override public boolean keyPressed(int keycode, int modifiers) {
         return false;
     }
 
-    @Override
-    public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
+    @Override public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
         double pad = 0;
         FontRenderers.getRenderer().drawString(matrices, configValue.name, x, y + 1, 0xFFFFFF);
         double yOffset = FontRenderers.getRenderer().getMarginHeight() + 2;
@@ -77,20 +72,18 @@ public class EnumSettingEditor extends ConfigBase<EnumSetting<?>> {
         this.height = yOffset + pad;
     }
 
-    @Override
-    public void tickAnim() {
+    @Override public void tickAnim() {
 
     }
 
-    @Override
-    public boolean charTyped(char c, int mods) {
+    @Override public boolean charTyped(char c, int mods) {
         return false;
     }
 
     static class EnumSelectorClickable<T extends Enum<?>> {
         final EnumSettingEditor instance;
-        final double height;
-        final T value;
+        final double            height;
+        final T                 value;
         double x;
         double y;
         double width;

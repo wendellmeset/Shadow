@@ -4,9 +4,9 @@ import me.x150.coffee.helper.event.events.base.Event;
 import net.minecraft.recipe.Recipe;
 
 public class RecipeClickedEvent extends Event {
-    final int syncId;
+    final int       syncId;
     final Recipe<?> recipe;
-    final boolean craftAll;
+    final boolean   craftAll;
 
     public RecipeClickedEvent(int syncId, Recipe<?> recipe, boolean craftAll) {
         this.syncId = syncId;

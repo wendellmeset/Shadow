@@ -14,8 +14,7 @@ public class Drop extends Command {
         super("Drop", "Drops all items in your inventory", "drop", "d", "throw");
     }
 
-    @Override
-    public void onExecute(String[] args) {
+    @Override public void onExecute(String[] args) {
         for (int i = 0; i < 36; i++) {
             Utils.Inventory.drop(i);
         }

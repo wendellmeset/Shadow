@@ -21,11 +21,11 @@ import java.util.Objects;
 
 public class Rotations {
 
-    static boolean enabled = false;
-    private static float clientPitch;
-    private static float clientYaw;
-    private static long lastModificationTime = 0;
-    private static Vec3d targetV3;
+    static         boolean enabled              = false;
+    private static float   clientPitch;
+    private static float   clientYaw;
+    private static long    lastModificationTime = 0;
+    private static Vec3d   targetV3;
 
     static {
         Events.registerEventHandler(EventType.PACKET_SEND, event1 -> {
@@ -125,7 +125,6 @@ public class Rotations {
             }
             CoffeeClientMain.client.player.setPitch(CoffeeClientMain.client.player.getPitch() + (float) add);
         }
-
 
     }
 

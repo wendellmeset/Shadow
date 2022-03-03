@@ -5,17 +5,19 @@ import me.x150.coffee.feature.gui.clickgui.element.Element;
 import me.x150.coffee.feature.gui.clickgui.theme.Theme;
 import me.x150.coffee.feature.module.Module;
 import me.x150.coffee.helper.font.FontRenderers;
+import me.x150.coffee.helper.render.ClipStack;
+import me.x150.coffee.helper.render.Rectangle;
 import me.x150.coffee.helper.render.Renderer;
 import me.x150.coffee.helper.util.Utils;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 
 public class ModuleDisplay extends Element {
-    final Module module;
+    final Module        module;
     final ConfigDisplay cd;
-    boolean extended = false;
-    double extendAnim = 0;
-    long hoverStart = System.currentTimeMillis();
+    boolean extended      = false;
+    double  extendAnim    = 0;
+    long    hoverStart    = System.currentTimeMillis();
     boolean hoveredBefore = false;
 
     public ModuleDisplay(double x, double y, Module module) {
@@ -24,8 +26,7 @@ public class ModuleDisplay extends Element {
         this.cd = new ConfigDisplay(x, y, module.config);
     }
 
-    @Override
-    public boolean clicked(double x, double y, int button) {
+    @Override public boolean clicked(double x, double y, int button) {
         if (inBounds(x, y)) {
             if (button == 0) {
                 module.setEnabled(!module.isEnabled()); // left click
@@ -40,13 +41,11 @@ public class ModuleDisplay extends Element {
         }
     }
 
-    @Override
-    public boolean dragged(double x, double y, double deltaX, double deltaY, int button) {
+    @Override public boolean dragged(double x, double y, double deltaX, double deltaY, int button) {
         return extended && cd.dragged(x, y, deltaX, deltaY, button);
     }
 
-    @Override
-    public boolean released() {
+    @Override public boolean released() {
         return extended && cd.released();
     }
 
@@ -55,18 +54,15 @@ public class ModuleDisplay extends Element {
 
     }
 
-    @Override
-    public double getHeight() {
+    @Override public double getHeight() {
         return super.getHeight() + cd.getHeight() * easeInOutCubic(extendAnim);
     }
 
-    @Override
-    public boolean keyPressed(int keycode, int modifiers) {
+    @Override public boolean keyPressed(int keycode, int modifiers) {
         return extended && cd.keyPressed(keycode, modifiers);
     }
 
-    @Override
-    public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
+    @Override public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
 
         Theme theme = ClickGUI.theme;
         boolean hovered = inBounds(mouseX, mouseY);
@@ -80,22 +76,22 @@ public class ModuleDisplay extends Element {
         Renderer.R2D.renderQuad(matrices, hovered ? theme.getModule().darker() : theme.getModule(), x, y, x + width, y + height);
         FontRenderers.getRenderer().drawCenteredString(matrices, module.getName(), x + width / 2d, y + height / 2d - FontRenderers.getRenderer().getMarginHeight() / 2d, 0xFFFFFF);
         if (module.isEnabled()) {
-//            Renderer.R2D.renderQuad(matrices, theme.getAccent(), x, y, x + 1, y + height);
+            //            Renderer.R2D.renderQuad(matrices, theme.getAccent(), x, y, x + 1, y + height);
             double wid = 1.5;
             Renderer.R2D.renderRoundedQuad(matrices, theme.getAccent(), x + 1, y + 1, x + 1 + wid, y + height - 1, wid / 2d, 6);
         }
         cd.setX(this.x);
         cd.setY(this.y + height);
-
-        Renderer.R2D.beginScissor(matrices, x, y, x + width, y + getHeight());
+        ClipStack.globalInstance.addWindow(matrices, new Rectangle(x, y, x + width, y + getHeight()));
+        //Renderer.R2D.beginScissor(matrices, x, y, x + width, y + getHeight());
         if (extendAnim > 0) {
             cd.render(matrices, mouseX, mouseY, getHeight() - super.getHeight());
         }
-        Renderer.R2D.endScissor();
+        //Renderer.R2D.endScissor();
+        ClipStack.globalInstance.popWindow(matrices);
     }
 
-    @Override
-    public void tickAnim() {
+    @Override public void tickAnim() {
         double a = 0.04;
         if (!extended) {
             a *= -1;
@@ -105,8 +101,7 @@ public class ModuleDisplay extends Element {
         cd.tickAnim();
     }
 
-    @Override
-    public boolean charTyped(char c, int mods) {
+    @Override public boolean charTyped(char c, int mods) {
         return extended && cd.charTyped(c, mods);
     }
 }

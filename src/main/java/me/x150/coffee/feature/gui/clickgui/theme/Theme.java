@@ -1,6 +1,6 @@
 package me.x150.coffee.feature.gui.clickgui.theme;
 
-import java.awt.*;
+import java.awt.Color;
 
 public interface Theme {
     String getName();

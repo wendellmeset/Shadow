@@ -41,8 +41,8 @@ import java.util.UUID;
 public class Kill extends Command {
 
     boolean pendingBook = false;
-    boolean sent2nd = false;
-    int bookSlot = -1;
+    boolean sent2nd     = false;
+    int     bookSlot    = -1;
 
     public Kill() {
         super("Kill", "Makes another person have a sudden heart attack (requires creative)", "kill");
@@ -61,8 +61,7 @@ public class Kill extends Command {
         });
     }
 
-    @Override
-    public String[] getSuggestions(String fullCommand, String[] args) {
+    @Override public String[] getSuggestions(String fullCommand, String[] args) {
         if (args.length == 1) {
             return new String[]{"(player username)", "U(uuid)"};
         }
@@ -128,8 +127,7 @@ public class Kill extends Command {
         CoffeeClientMain.client.getNetworkHandler().sendPacket(pack3);
     }
 
-    @Override
-    public void onExecute(String[] args) {
+    @Override public void onExecute(String[] args) {
         if (args.length == 0) {
             error("Cant kill no one");
             return;

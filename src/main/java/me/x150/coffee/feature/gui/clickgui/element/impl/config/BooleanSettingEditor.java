@@ -9,9 +9,9 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 
 public class BooleanSettingEditor extends ConfigBase<BooleanSetting> {
-    final double rw = 14;
-    final double rh = 5;
-    final double rid = 4;
+    final double rw     = 14;
+    final double rh     = 5;
+    final double rid    = 4;
     final double margin = .5;
     double animProgress = 0;
 
@@ -19,18 +19,15 @@ public class BooleanSettingEditor extends ConfigBase<BooleanSetting> {
         super(x, y, width, FontRenderers.getRenderer().getFontHeight() + 2, configValue);
     }
 
-    @Override
-    public boolean dragged(double x, double y, double deltaX, double deltaY, int button) {
+    @Override public boolean dragged(double x, double y, double deltaX, double deltaY, int button) {
         return false;
     }
 
-    @Override
-    public boolean released() {
+    @Override public boolean released() {
         return false;
     }
 
-    @Override
-    public boolean clicked(double x, double y, int button) {
+    @Override public boolean clicked(double x, double y, int button) {
         //        System.out.println(x+", "+y+", "+button);
         if (inBounds(x, y) && button == 0) {
             //            System.out.println("clicked");
@@ -49,13 +46,11 @@ public class BooleanSettingEditor extends ConfigBase<BooleanSetting> {
     //    double xSmooth = -1;
 
 
-    @Override
-    public boolean keyPressed(int keycode, int modifiers) {
+    @Override public boolean keyPressed(int keycode, int modifiers) {
         return false;
     }
 
-    @Override
-    public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
+    @Override public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
         Theme theme = ClickGUI.theme;
         double smoothAnimProgress = easeInOutCubic(animProgress);
         Renderer.R2D.renderRoundedQuad(matrices, Renderer.Util.lerp(theme.getActive(), theme.getInactive(), smoothAnimProgress), x, y + height / 2d - rh / 2d, x + rw, y + height / 2d + rh / 2d, rh / 2d, 5);
@@ -71,8 +66,7 @@ public class BooleanSettingEditor extends ConfigBase<BooleanSetting> {
 
     }
 
-    @Override
-    public void tickAnim() {
+    @Override public void tickAnim() {
         double a = 0.03;
         if (!configValue.getValue()) {
             a *= -1;
@@ -81,8 +75,7 @@ public class BooleanSettingEditor extends ConfigBase<BooleanSetting> {
         animProgress = MathHelper.clamp(animProgress, 0, 1);
     }
 
-    @Override
-    public boolean charTyped(char c, int mods) {
+    @Override public boolean charTyped(char c, int mods) {
         return false;
     }
 }

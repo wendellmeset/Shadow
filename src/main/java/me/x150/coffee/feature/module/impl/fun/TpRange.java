@@ -21,18 +21,18 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TpRange extends Module {
-    static final ExecutorService esv = Executors.newFixedThreadPool(1);
-    final EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.PaperBypass).name("Mode")
+    static final ExecutorService   esv     = Executors.newFixedThreadPool(1);
+    final        EnumSetting<Mode> mode    = this.config.create(new EnumSetting.Builder<>(Mode.PaperBypass).name("Mode")
             .description("How to exploit the range, Instant works on vanilla, PaperBypass on almost everything").get());
-    final AtomicBoolean running = new AtomicBoolean(false);
-    Vec3d spoofedPos = null;
+    final        AtomicBoolean     running = new AtomicBoolean(false);
+    Vec3d spoofedPos         = null;
     Vec3d previousSpoofedPos = null;
 
     public TpRange() {
@@ -118,35 +118,29 @@ public class TpRange extends Module {
         spoofedPos = null;
     }
 
-    @Override
-    public void tick() {
+    @Override public void tick() {
 
     }
 
-    @Override
-    public void enable() {
+    @Override public void enable() {
 
     }
 
-    @Override
-    public void disable() {
+    @Override public void disable() {
 
     }
 
-    @Override
-    public String getContext() {
+    @Override public String getContext() {
         return null;
     }
 
-    @Override
-    public void onWorldRender(MatrixStack matrices) {
+    @Override public void onWorldRender(MatrixStack matrices) {
         if (isDebuggerEnabled() && spoofedPos != null && previousSpoofedPos != null) {
             Renderer.R3D.renderLine(spoofedPos, previousSpoofedPos, Color.RED, matrices);
         }
     }
 
-    @Override
-    public void onHudRender() {
+    @Override public void onHudRender() {
 
     }
 

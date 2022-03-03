@@ -6,7 +6,9 @@ import me.x150.coffee.feature.gui.FastTickable;
 import me.x150.coffee.feature.gui.widget.RoundButton;
 import me.x150.coffee.feature.gui.widget.RoundTextFieldWidget;
 import me.x150.coffee.helper.font.FontRenderers;
+import me.x150.coffee.helper.render.ClipStack;
 import me.x150.coffee.helper.render.MSAAFramebuffer;
+import me.x150.coffee.helper.render.Rectangle;
 import me.x150.coffee.helper.render.Renderer;
 import me.x150.coffee.helper.util.Transitions;
 import net.minecraft.client.MinecraftClient;
@@ -14,7 +16,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.glfw.GLFW;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,32 +24,36 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
-    static final Color BACKGROUND = new Color(60, 60, 60);
-    static Color NORMAL = Color.BLACK;
-    static Color ERROR = new Color(214, 93, 62);
-    static Color SUCCESS = new Color(65, 217, 101);
-    static Color WARNING = Color.YELLOW;
+    static final   Color               BACKGROUND = new Color(60, 60, 60);
+    static         Color               NORMAL     = Color.BLACK;
+    static         Color               ERROR      = new Color(214, 93, 62);
+    static         Color               SUCCESS    = new Color(65, 217, 101);
+    static         Color               WARNING    = Color.YELLOW;
     private static CoffeeConsoleScreen instance;
-    final Color background = new Color(0, 0, 0, 120);
-    final List<LogEntry> logs = new ArrayList<>();
-    ClientScreen parent = null;
+    final          Color               background = new Color(0, 0, 0, 120);
+    final          List<LogEntry>      logs       = new ArrayList<>();
+    ClientScreen         parent         = null;
     RoundTextFieldWidget command;
-    double scroll = 0;
-    double smoothScroll = 0;
-    double lastLogsHeight = 0;
+    double               scroll         = 0;
+    double               smoothScroll   = 0;
+    double               lastLogsHeight = 0;
 
     private CoffeeConsoleScreen() {
         super(MSAAFramebuffer.MAX_SAMPLES);
     }
 
     public static CoffeeConsoleScreen instance(ClientScreen parent) {
-        if (instance == null) instance = new CoffeeConsoleScreen();
+        if (instance == null) {
+            instance = new CoffeeConsoleScreen();
+        }
         instance.parent = parent;
         return instance;
     }
 
     public static CoffeeConsoleScreen instance() {
-        if (instance == null) instance = new CoffeeConsoleScreen();
+        if (instance == null) {
+            instance = new CoffeeConsoleScreen();
+        }
         return instance;
     }
 
@@ -55,8 +61,7 @@ public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
         return 5;
     }
 
-    @Override
-    protected void init() {
+    @Override protected void init() {
         super.init();
         double widgetWidthA = width - padding() * 2;
         double buttonWidth = 60;
@@ -70,13 +75,14 @@ public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
     void execute() {
         String cmd = command.get();
         command.setText("");
-        if (cmd.isEmpty()) return;
+        if (cmd.isEmpty()) {
+            return;
+        }
         addLog(new LogEntry("> " + cmd, BACKGROUND));
         CommandRegistry.execute(cmd);
     }
 
-    @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+    @Override public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if (keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER) {
             execute();
             return true;
@@ -87,17 +93,22 @@ public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
-    @Override
-    public void resize(MinecraftClient client, int width, int height) {
-        if (parent != null) parent.resize(client, width, height);
+    @Override public void resize(MinecraftClient client, int width, int height) {
+        if (parent != null) {
+            parent.resize(client, width, height);
+        }
         super.resize(client, width, height);
     }
 
     void autocomplete() {
         String cmd = command.get();
-        if (cmd.isEmpty()) return;
+        if (cmd.isEmpty()) {
+            return;
+        }
         List<String> suggestions = getSuggestions(cmd);
-        if (suggestions.isEmpty()) return;
+        if (suggestions.isEmpty()) {
+            return;
+        }
         String[] cmdSplit = cmd.split(" +");
         if (cmd.endsWith(" ")) {
             String[] cmdSplitNew = new String[cmdSplit.length + 1];
@@ -144,9 +155,13 @@ public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
         String cmd = command.get();
         float cmdTWidth = FontRenderers.getRenderer().getStringWidth(cmd);
         double cmdXS = command.getX() + 5 + cmdTWidth;
-        if (cmd.isEmpty()) return;
+        if (cmd.isEmpty()) {
+            return;
+        }
         List<String> suggestions = getSuggestions(cmd);
-        if (suggestions.isEmpty()) return;
+        if (suggestions.isEmpty()) {
+            return;
+        }
         double probableHeight = suggestions.size() * FontRenderers.getRenderer().getMarginHeight() + padding();
         float yC = (float) (height - padding() - 20 - padding() - probableHeight) - 5;
         double probableWidth = 0;
@@ -169,21 +184,22 @@ public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
         }
     }
 
-    @Override
-    public void onFastTick() {
+    @Override public void onFastTick() {
         smoothScroll = Transitions.transition(smoothScroll, scroll, 7, 0);
     }
 
-    @Override
-    public void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
+    @Override public void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
 
         command.setFocused(true);
-        if (parent != null) parent.renderInternal(stack, mouseX, mouseY, delta);
+        if (parent != null) {
+            parent.renderInternal(stack, mouseX, mouseY, delta);
+        }
         Renderer.R2D.renderQuad(stack, background, 0, 0, width, height);
 
         // log field
         Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20), padding(), padding(), width - padding(), height - padding() - 20 - padding(), 5, 20);
-        Renderer.R2D.beginScissor(stack, padding(), padding(), width - padding(), height - padding() - 20 - padding());
+        ClipStack.globalInstance.addWindow(stack, new Rectangle(padding(), padding(), width - padding(), height - padding() - 20 - padding()));
+        //Renderer.R2D.beginScissor(stack, padding(), padding(), width - padding(), height - padding() - 20 - padding());
 
         // logs
         float startingY = (float) (padding() + 5);
@@ -192,7 +208,9 @@ public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
         double availHeight = height - padding() - 20 - padding() - 13.5;
 
         List<LogEntryIntern> processedLogs = new ArrayList<>();
-        while (logs.size() > 1000) logs.remove(0); // max log size of 1000 before we clear
+        while (logs.size() > 1000) {
+            logs.remove(0); // max log size of 1000 before we clear
+        }
         for (LogEntry log : logs) {
             List<String> logSplitToWidth = new ArrayList<>();
             StringBuilder currentLog = new StringBuilder();
@@ -202,8 +220,9 @@ public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
                 currentLog.append(current);
                 if (FontRenderers.getRenderer().getStringWidth(currentLog.toString()) > availWidth) {
                     currentLog.delete(currentLog.length() - 2, currentLog.length());
-                    while (currentLog.charAt(currentLog.length() - 1) == ' ')
+                    while (currentLog.charAt(currentLog.length() - 1) == ' ') {
                         currentLog.deleteCharAt(currentLog.length() - 1); // clear trailing whitespaces
+                    }
                     currentLog.append("-");
                     logSplitToWidth.add(currentLog.toString());
                     currentLog = new StringBuilder();
@@ -222,14 +241,16 @@ public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
         for (LogEntryIntern processedLog : processedLogs) {
             for (String s : processedLog.text) {
                 // we're in bounds, render
-                if (startingY + FontRenderers.getRenderer().getMarginHeight() >= padding() && startingY <= height - padding() - 20 - padding())
+                if (startingY + FontRenderers.getRenderer().getMarginHeight() >= padding() && startingY <= height - padding() - 20 - padding()) {
                     FontRenderers.getRenderer().drawString(stack, s, startingX, startingY, processedLog.color.getRGB(), false);
+                }
                 // else, just add
                 startingY += FontRenderers.getRenderer().getMarginHeight();
             }
         }
 
-        Renderer.R2D.endScissor();
+        ClipStack.globalInstance.popWindow(stack);
+        //Renderer.R2D.endScissor();
 
         if (logsHeight > availHeight) {
             double viewportHeight = (height - padding() - 20 - padding()) - padding();
@@ -245,7 +266,7 @@ public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
 
             Renderer.R2D.renderRoundedQuad(stack, new Color(10, 10, 10, 150), cursorX - wid / 2d, padding() * 2, cursorX + wid / 2d, padding() * 2 + barHeight, wid / 2d, 10);
 
-//            Renderer.R2D.renderCircle(stack, new Color(50, 50, 50, 150), cursorX, cursorY, 3, 10);
+            //            Renderer.R2D.renderCircle(stack, new Color(50, 50, 50, 150), cursorX, cursorY, 3, 10);
             Renderer.R2D.renderRoundedQuad(stack, new Color(50, 50, 50, 150), cursorX - wid / 2d, cursorY, cursorX + wid / 2d, cursorY + per * barHeight, wid / 2d, 10);
         }
 
@@ -253,20 +274,17 @@ public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
         super.renderInternal(stack, mouseX, mouseY, delta);
     }
 
-    @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
+    @Override public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
         scroll += (amount * 10);
         scroll = MathHelper.clamp(scroll, 0, Math.max(0, lastLogsHeight - (height - padding() - 20 - padding() - 13.5)));
         return super.mouseScrolled(mouseX, mouseY, amount);
     }
 
-    @Override
-    public void onClose() {
+    @Override public void onClose() {
         Objects.requireNonNull(client).setScreen(parent);
     }
 
-    @Override
-    public boolean isPauseScreen() {
+    @Override public boolean isPauseScreen() {
         return false;
     }
 

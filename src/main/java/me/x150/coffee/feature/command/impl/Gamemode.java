@@ -18,16 +18,14 @@ public class Gamemode extends Command {
         super("Gamemode", "Switch gamemodes client side", "gamemode", "gm", "gmode", "gamemodespoof", "gmspoof");
     }
 
-    @Override
-    public String[] getSuggestions(String fullCommand, String[] args) {
+    @Override public String[] getSuggestions(String fullCommand, String[] args) {
         if (args.length == 1) {
             return Arrays.stream(GameMode.values()).map(GameMode::getName).collect(Collectors.toList()).toArray(String[]::new);
         }
         return super.getSuggestions(fullCommand, args);
     }
 
-    @Override
-    public void onExecute(String[] args) {
+    @Override public void onExecute(String[] args) {
         if (CoffeeClientMain.client.interactionManager == null) {
             return;
         }

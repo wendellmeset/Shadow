@@ -5,7 +5,31 @@
 
 package me.x150.coffee.feature.command;
 
-import me.x150.coffee.feature.command.impl.*;
+import me.x150.coffee.feature.command.impl.Bind;
+import me.x150.coffee.feature.command.impl.Config;
+import me.x150.coffee.feature.command.impl.ConfigUtils;
+import me.x150.coffee.feature.command.impl.Drop;
+import me.x150.coffee.feature.command.impl.Effect;
+import me.x150.coffee.feature.command.impl.FakeItem;
+import me.x150.coffee.feature.command.impl.Find;
+import me.x150.coffee.feature.command.impl.ForEach;
+import me.x150.coffee.feature.command.impl.Gamemode;
+import me.x150.coffee.feature.command.impl.Help;
+import me.x150.coffee.feature.command.impl.Hologram;
+import me.x150.coffee.feature.command.impl.Invsee;
+import me.x150.coffee.feature.command.impl.Kickall;
+import me.x150.coffee.feature.command.impl.Kill;
+import me.x150.coffee.feature.command.impl.Locate;
+import me.x150.coffee.feature.command.impl.Panic;
+import me.x150.coffee.feature.command.impl.Plugins;
+import me.x150.coffee.feature.command.impl.RageQuit;
+import me.x150.coffee.feature.command.impl.Rename;
+import me.x150.coffee.feature.command.impl.Say;
+import me.x150.coffee.feature.command.impl.SkinExploit;
+import me.x150.coffee.feature.command.impl.Taco;
+import me.x150.coffee.feature.command.impl.Test;
+import me.x150.coffee.feature.command.impl.Toggle;
+import me.x150.coffee.feature.command.impl.ViewNbt;
 import me.x150.coffee.helper.util.Utils;
 
 import java.util.ArrayList;
@@ -62,16 +86,16 @@ public class CommandRegistry {
         if (c == null) {
             Utils.Logging.error("Command \"" + cmd + "\" not found");
         } else {
-//            CoffeeConsoleScreen.instance().log("> " + command, CoffeeConsoleScreen.CLIENT);
+            //            CoffeeConsoleScreen.instance().log("> " + command, CoffeeConsoleScreen.CLIENT);
             try {
                 c.onExecute(args);
             } catch (Exception e) {
                 Utils.Logging.error("Error while running command " + command);
-//                StringWriter sw = new StringWriter();
-//                e.printStackTrace(new PrintWriter(sw));
-//                for (String s : sw.toString().split("\n")) {
-//                    CoffeeConsoleScreen.instance().log(s, CoffeeConsoleScreen.BACKGROUND);
-//                }
+                //                StringWriter sw = new StringWriter();
+                //                e.printStackTrace(new PrintWriter(sw));
+                //                for (String s : sw.toString().split("\n")) {
+                //                    CoffeeConsoleScreen.instance().log(s, CoffeeConsoleScreen.BACKGROUND);
+                //                }
             }
         }
     }

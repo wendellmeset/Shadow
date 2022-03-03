@@ -29,8 +29,7 @@ public class EntityFly extends Module {
         super("EntityFly", "Allows you to fly with any entity", ModuleType.MOVEMENT);
     }
 
-    @Override
-    public void tick() {
+    @Override public void tick() {
         if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.getNetworkHandler() == null) {
             return;
         }
@@ -79,30 +78,25 @@ public class EntityFly extends Module {
         Objects.requireNonNull(client.getNetworkHandler()).sendPacket(p);
     }
 
-    @Override
-    public void enable() {
+    @Override public void enable() {
         Utils.Logging.message("Press left alt to descend");
     }
 
-    @Override
-    public void disable() {
+    @Override public void disable() {
         if (lastRide != null) {
             lastRide.setNoGravity(false);
         }
     }
 
-    @Override
-    public String getContext() {
+    @Override public String getContext() {
         return null;
     }
 
-    @Override
-    public void onWorldRender(MatrixStack matrices) {
+    @Override public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override
-    public void onHudRender() {
+    @Override public void onHudRender() {
 
     }
 }

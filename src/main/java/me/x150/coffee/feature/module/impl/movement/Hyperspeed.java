@@ -13,33 +13,27 @@ public class Hyperspeed extends Module {
         super("Hyperspeed", "Gives you an extreme speed boost", ModuleType.MOVEMENT);
     }
 
-    @Override
-    public void tick() {
+    @Override public void tick() {
         //        CoffeeClientMain.client.player.tickMovement();
     }
 
-    @Override
-    public void enable() {
+    @Override public void enable() {
 
     }
 
-    @Override
-    public void disable() {
+    @Override public void disable() {
 
     }
 
-    @Override
-    public String getContext() {
+    @Override public String getContext() {
         return null;
     }
 
-    @Override
-    public void onWorldRender(MatrixStack matrices) {
+    @Override public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override
-    public void onHudRender() {
+    @Override public void onHudRender() {
 
     }
 }

@@ -17,57 +17,48 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec2f;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.Objects;
 
 public class Scaffold extends Module {
 
     //    final SliderValue extend = this.config.create("Extend", 3, 0, 5, 1);
-    final DoubleSetting extend = this.config.create(new DoubleSetting.Builder(3)
-            .name("Extend")
-            .description("How many blocks to extend outwards")
-            .min(0)
-            .max(5)
-            .precision(1)
-            .get());
+    final DoubleSetting extend = this.config.create(new DoubleSetting.Builder(3).name("Extend").description("How many blocks to extend outwards").min(0).max(5).precision(1).get());
 
     public Scaffold() {
         super("Scaffold", "Places blocks below you as you walk", ModuleType.WORLD);
     }
 
-    @Override
-    public void tick() {
+    @Override public void tick() {
 
     }
 
-    @Override
-    public void enable() {
+    @Override public void enable() {
 
     }
 
-    @Override
-    public void disable() {
+    @Override public void disable() {
 
     }
 
-    @Override
-    public String getContext() {
+    @Override public String getContext() {
         return null;
     }
 
-    @Override
-    public void onWorldRender(MatrixStack matrices) {
+    @Override public void onWorldRender(MatrixStack matrices) {
         client.options.keySneak.setPressed(false);
     }
 
-    @Override
-    public void onHudRender() {
+    @Override public void onHudRender() {
 
     }
 
-    @Override
-    public void onFastTick() {
+    @Override public void onFastTick() {
         Vec3d ppos = Objects.requireNonNull(client.player).getPos().add(0, -1, 0);
         BlockPos bp = new BlockPos(ppos);
         int selIndex = client.player.getInventory().selectedSlot;

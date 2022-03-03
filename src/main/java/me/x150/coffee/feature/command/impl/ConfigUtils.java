@@ -15,7 +15,11 @@ import me.x150.coffee.feature.command.Command;
 import me.x150.coffee.feature.config.SettingBase;
 import me.x150.coffee.feature.module.Module;
 import me.x150.coffee.feature.module.ModuleRegistry;
-import net.minecraft.text.*;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.HoverEvent;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -31,11 +35,12 @@ public class ConfigUtils extends Command {
     public ConfigUtils() {
         super("ConfigUtils", "Config file management", "configUtils", "cu");
         if (!CONFIG_STORAGE.exists()) //noinspection ResultOfMethodCallIgnored
+        {
             CONFIG_STORAGE.mkdir();
+        }
     }
 
-    @Override
-    public String[] getSuggestions(String fullCommand, String[] args) {
+    @Override public String[] getSuggestions(String fullCommand, String[] args) {
         if (args.length == 1) {
             return new String[]{"load", "save"};
         } else if (args.length == 2 && args[0].equalsIgnoreCase("load")) {
@@ -44,8 +49,7 @@ public class ConfigUtils extends Command {
         return super.getSuggestions(fullCommand, args);
     }
 
-    @Override
-    public void onExecute(String[] args) {
+    @Override public void onExecute(String[] args) {
         if (args.length == 0) {
             error("I need an action, load or save");
             return;

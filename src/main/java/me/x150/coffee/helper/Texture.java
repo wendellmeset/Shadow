@@ -12,10 +12,14 @@ public class Texture extends Identifier {
     }
 
     static String validatePath(String path) {
-        if (isValid(path)) return path;
+        if (isValid(path)) {
+            return path;
+        }
         StringBuilder ret = new StringBuilder();
         for (char c : path.toLowerCase().toCharArray()) {
-            if (isPathCharacterValid(c)) ret.append(c);
+            if (isPathCharacterValid(c)) {
+                ret.append(c);
+            }
         }
         return ret.toString();
     }

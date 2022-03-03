@@ -46,38 +46,31 @@ public class AutoTool extends Module {
         }
     }
 
-    @Override
-    public void tick() {
-        if (Objects.requireNonNull(client.interactionManager).isBreakingBlock() && !Objects.requireNonNull(ModuleRegistry.getByClass(Nuker.class))
-                .isEnabled()) {
+    @Override public void tick() {
+        if (Objects.requireNonNull(client.interactionManager).isBreakingBlock() && !Objects.requireNonNull(ModuleRegistry.getByClass(Nuker.class)).isEnabled()) {
             BlockPos breaking = ((IClientPlayerInteractionManagerAccessor) client.interactionManager).getCurrentBreakingPos();
             BlockState bs = Objects.requireNonNull(client.world).getBlockState(breaking);
             pick(bs);
         }
     }
 
-    @Override
-    public void enable() {
+    @Override public void enable() {
 
     }
 
-    @Override
-    public void disable() {
+    @Override public void disable() {
 
     }
 
-    @Override
-    public String getContext() {
+    @Override public String getContext() {
         return null;
     }
 
-    @Override
-    public void onWorldRender(MatrixStack matrices) {
+    @Override public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override
-    public void onHudRender() {
+    @Override public void onHudRender() {
 
     }
 }

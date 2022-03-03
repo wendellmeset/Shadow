@@ -3,6 +3,8 @@ package me.x150.coffee.feature.gui.widget;
 import me.x150.coffee.CoffeeClientMain;
 import me.x150.coffee.feature.gui.DoesMSAA;
 import me.x150.coffee.helper.font.FontRenderers;
+import me.x150.coffee.helper.render.ClipStack;
+import me.x150.coffee.helper.render.Rectangle;
 import me.x150.coffee.helper.render.Renderer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Drawable;
@@ -14,19 +16,19 @@ import net.minecraft.util.math.MathHelper;
 import org.apache.commons.lang3.SystemUtils;
 import org.lwjgl.glfw.GLFW;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class RoundTextFieldWidget implements Element, Drawable, Selectable, DoesMSAA {
-    protected final String suggestion;
-    public Runnable changeListener = () -> {
+    protected final String   suggestion;
+    public          Runnable changeListener = () -> {
     };
-    protected String text = "";
-    protected boolean focused;
-    protected int cursor;
-    protected double textStart;
-    protected int selectionStart, selectionEnd;
+    protected       String   text           = "";
+    protected       boolean  focused;
+    protected       int      cursor;
+    protected       double   textStart;
+    protected       int      selectionStart, selectionEnd;
     boolean mouseOver = false;
-    double x, y, width, height;
+    double  x, y, width, height;
 
     public RoundTextFieldWidget(double x, double y, double width, double height, String text) {
         this.x = x;
@@ -40,8 +42,7 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
         return width - pad() * 2 - 1;
     }
 
-    @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+    @Override public boolean mouseReleased(double mouseX, double mouseY, int button) {
         int preSelectionCursor = 0;
         if (selectionStart < preSelectionCursor && preSelectionCursor == selectionEnd) {
             cursor = selectionStart;
@@ -52,9 +53,10 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
         return false;
     }
 
-    @Override
-    public boolean keyPressed(int key, int scanCode, int mods) {
-        if (!focused) return false;
+    @Override public boolean keyPressed(int key, int scanCode, int mods) {
+        if (!focused) {
+            return false;
+        }
 
         boolean control = MinecraftClient.IS_SYSTEM_MAC ? mods == GLFW.GLFW_MOD_SUPER : mods == GLFW.GLFW_MOD_CONTROL;
 
@@ -85,7 +87,9 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
     }
 
     public boolean onKeyRepeated(int key, int mods) {
-        if (!focused) return false;
+        if (!focused) {
+            return false;
+        }
 
         boolean control = MinecraftClient.IS_SYSTEM_MAC ? mods == GLFW.GLFW_MOD_SUPER : mods == GLFW.GLFW_MOD_CONTROL;
         boolean shift = mods == GLFW.GLFW_MOD_SHIFT;
@@ -115,23 +119,23 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
             cursor += addedChars;
             resetSelection();
 
-            if (!text.equals(preText)) runAction();
+            if (!text.equals(preText)) {
+                runAction();
+            }
             return true;
         } else if (key == GLFW.GLFW_KEY_BACKSPACE) {
             if (cursor > 0 && cursor == selectionStart && cursor == selectionEnd) {
                 String preText = text;
 
-                int count = (mods == isCtrlPressed)
-                        ? cursor
-                        : (mods == (SystemUtils.IS_OS_WINDOWS ? GLFW.GLFW_MOD_CONTROL : GLFW.GLFW_MOD_ALT))
-                        ? countToNextSpace(true)
-                        : 1;
+                int count = (mods == isCtrlPressed) ? cursor : (mods == (SystemUtils.IS_OS_WINDOWS ? GLFW.GLFW_MOD_CONTROL : GLFW.GLFW_MOD_ALT)) ? countToNextSpace(true) : 1;
 
                 text = text.substring(0, cursor - count) + text.substring(cursor);
                 cursor -= count;
                 resetSelection();
 
-                if (!text.equals(preText)) runAction();
+                if (!text.equals(preText)) {
+                    runAction();
+                }
             } else if (cursor != selectionStart || cursor != selectionEnd) {
                 clearSelection();
             }
@@ -144,15 +148,13 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
                     if (cursor == selectionStart && cursor == selectionEnd) {
                         String preText = text;
 
-                        int count = ctrl
-                                ? text.length() - cursor
-                                : (mods == (SystemUtils.IS_OS_WINDOWS ? GLFW.GLFW_MOD_CONTROL : GLFW.GLFW_MOD_ALT))
-                                ? countToNextSpace(false)
-                                : 1;
+                        int count = ctrl ? text.length() - cursor : (mods == (SystemUtils.IS_OS_WINDOWS ? GLFW.GLFW_MOD_CONTROL : GLFW.GLFW_MOD_ALT)) ? countToNextSpace(false) : 1;
 
                         text = text.substring(0, cursor) + text.substring(cursor + count);
 
-                        if (!text.equals(preText)) runAction();
+                        if (!text.equals(preText)) {
+                            runAction();
+                        }
                     } else {
                         clearSelection();
                     }
@@ -307,9 +309,10 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
         runAction();
     }
 
-    @Override
-    public boolean charTyped(char c, int modifiers) {
-        if (!focused) return false;
+    @Override public boolean charTyped(char c, int modifiers) {
+        if (!focused) {
+            return false;
+        }
 
         clearSelection();
 
@@ -326,17 +329,17 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
         return cx >= x && cx < x + width && cy >= y && cy < y + height;
     }
 
-    @Override
-    public void render(MatrixStack stack, int mouseX, int mouseY, float delta) {
+    @Override public void render(MatrixStack stack, int mouseX, int mouseY, float delta) {
         mouseOver = inBounds(mouseX, mouseY);
         double pad = pad();
         double overflowWidth = getOverflowWidthForRender();
         double innerHeight = FontRenderers.getRenderer().getFontHeight();
         double centerY = y + height / 2d - innerHeight / 2d;
 
-//        Renderer.R2D.renderQuad(stack,Color.RED,x,y+height,x+width,y+height+.5);
+        //        Renderer.R2D.renderQuad(stack,Color.RED,x,y+height,x+width,y+height+.5);
         Renderer.R2D.renderRoundedQuad(stack, new Color(40, 40, 40), x, y, x + width, y + height, 5, 20);
-        Renderer.R2D.beginScissor(stack, x + pad, y, x + width - pad, y + height);
+        ClipStack.globalInstance.addWindow(stack, new Rectangle(x + pad, y, x + width - pad, y + height));
+        //Renderer.R2D.beginScissor(stack, x + pad, y, x + width - pad, y + height);
         // Text content
         if (!text.isEmpty()) {
             FontRenderers.getRenderer().drawString(stack, text, (float) (x + pad - overflowWidth), (float) (centerY), 0xFFFFFF, false);
@@ -350,17 +353,20 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
             double selEnd = x + pad + getTextWidth(selectionEnd) - overflowWidth;
             Renderer.R2D.renderQuad(stack, new Color(50, 50, 255, 100), selStart, centerY, selEnd, centerY + FontRenderers.getRenderer().getMarginHeight());
         }
-        Renderer.R2D.endScissor();
+        ClipStack.globalInstance.popWindow(stack);
+        //Renderer.R2D.endScissor();
         boolean renderCursor = (System.currentTimeMillis() % 1000) / 500d > 1;
         if (focused && renderCursor) {
-            Renderer.R2D.renderQuad(stack, Color.WHITE, x + pad + getTextWidth(cursor) - overflowWidth, centerY, x + pad + getTextWidth(cursor) - overflowWidth + 1, centerY + FontRenderers.getRenderer().getMarginHeight());
+            Renderer.R2D.renderQuad(stack, Color.WHITE, x + pad + getTextWidth(cursor) - overflowWidth, centerY, x + pad + getTextWidth(cursor) - overflowWidth + 1, centerY + FontRenderers.getRenderer()
+                    .getMarginHeight());
         }
-
 
     }
 
     private void clearSelection() {
-        if (selectionStart == selectionEnd) return;
+        if (selectionStart == selectionEnd) {
+            return;
+        }
 
         String preText = text;
 
@@ -369,7 +375,9 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
         cursor = selectionStart;
         selectionEnd = cursor;
 
-        if (!text.equals(preText)) runAction();
+        if (!text.equals(preText)) {
+            runAction();
+        }
     }
 
     private void resetSelection() {
@@ -383,13 +391,22 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
 
         for (int i = cursor; toLeft ? i >= 0 : i < text.length(); i += toLeft ? -1 : 1) {
             int j = i;
-            if (toLeft) j--;
+            if (toLeft) {
+                j--;
+            }
 
-            if (j >= text.length()) continue;
-            if (j < 0) break;
+            if (j >= text.length()) {
+                continue;
+            }
+            if (j < 0) {
+                break;
+            }
 
-            if (hadNonSpace && Character.isWhitespace(text.charAt(j))) break;
-            else if (!Character.isWhitespace(text.charAt(j))) hadNonSpace = true;
+            if (hadNonSpace && Character.isWhitespace(text.charAt(j))) {
+                break;
+            } else if (!Character.isWhitespace(text.charAt(j))) {
+                hadNonSpace = true;
+            }
 
             count++;
         }
@@ -399,7 +416,9 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
 
     private void runAction() {
         cursorChanged();
-        if (changeListener != null) changeListener.run();
+        if (changeListener != null) {
+            changeListener.run();
+        }
     }
 
     private double textWidth() {
@@ -426,7 +445,9 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
     }
 
     protected double getTextWidth(int pos) {
-        if (pos < 0) return 0;
+        if (pos < 0) {
+            return 0;
+        }
         pos = Math.min(text.length(), pos);
         return FontRenderers.getRenderer().getStringWidth(text.substring(0, pos)) + 1;
     }
@@ -465,7 +486,9 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
 
         resetSelection();
 
-        if (wasJustFocused) onCursorChanged();
+        if (wasJustFocused) {
+            onCursorChanged();
+        }
     }
 
     public void setCursorMax() {
@@ -476,18 +499,15 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
         return 4;
     }
 
-    @Override
-    public SelectionType getType() {
+    @Override public SelectionType getType() {
         return mouseOver ? SelectionType.HOVERED : SelectionType.NONE;
     }
 
-    @Override
-    public void appendNarrations(NarrationMessageBuilder builder) {
+    @Override public void appendNarrations(NarrationMessageBuilder builder) {
 
     }
 
-    @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    @Override public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (mouseOver) {
             if (button == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
                 if (!text.isEmpty()) {
@@ -504,7 +524,9 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
             return true;
         }
 
-        if (focused) setFocused(false);
+        if (focused) {
+            setFocused(false);
+        }
 
         return false;
     }

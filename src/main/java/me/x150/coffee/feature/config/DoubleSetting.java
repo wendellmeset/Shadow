@@ -1,7 +1,7 @@
 package me.x150.coffee.feature.config;
 
 public class DoubleSetting extends SettingBase<Double> {
-    final int precision;
+    final int    precision;
     final double min;
     final double max;
 
@@ -24,8 +24,7 @@ public class DoubleSetting extends SettingBase<Double> {
         return precision;
     }
 
-    @Override
-    public Double parse(String value) {
+    @Override public Double parse(String value) {
         try {
             return Double.parseDouble(value);
         } catch (Exception ignored) {
@@ -33,8 +32,7 @@ public class DoubleSetting extends SettingBase<Double> {
         }
     }
 
-    @Override
-    public void setValue(Double value) {
+    @Override public void setValue(Double value) {
         if (value > max || value < min) {
             return;
         }
@@ -64,8 +62,7 @@ public class DoubleSetting extends SettingBase<Double> {
             return this;
         }
 
-        @Override
-        public DoubleSetting get() {
+        @Override public DoubleSetting get() {
             return new DoubleSetting(defaultValue, name, description, precision, min, max);
         }
     }

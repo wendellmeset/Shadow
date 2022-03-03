@@ -6,20 +6,104 @@
 package me.x150.coffee.feature.module;
 
 
-import me.x150.coffee.feature.module.impl.combat.*;
-import me.x150.coffee.feature.module.impl.exploit.*;
-import me.x150.coffee.feature.module.impl.fun.*;
-import me.x150.coffee.feature.module.impl.misc.*;
-import me.x150.coffee.feature.module.impl.movement.*;
-import me.x150.coffee.feature.module.impl.render.*;
-import me.x150.coffee.feature.module.impl.world.*;
+import me.x150.coffee.feature.module.impl.combat.AimAssist;
+import me.x150.coffee.feature.module.impl.combat.AutoAttack;
+import me.x150.coffee.feature.module.impl.combat.Criticals;
+import me.x150.coffee.feature.module.impl.combat.Killaura;
+import me.x150.coffee.feature.module.impl.combat.Velocity;
+import me.x150.coffee.feature.module.impl.exploit.AntiAntiXray;
+import me.x150.coffee.feature.module.impl.exploit.AntiReducedDebugInfo;
+import me.x150.coffee.feature.module.impl.exploit.Boaty;
+import me.x150.coffee.feature.module.impl.exploit.CarpetBomb;
+import me.x150.coffee.feature.module.impl.exploit.InstaBow;
+import me.x150.coffee.feature.module.impl.exploit.NoComCrash;
+import me.x150.coffee.feature.module.impl.exploit.OOBCrash;
+import me.x150.coffee.feature.module.impl.exploit.OffhandCrash;
+import me.x150.coffee.feature.module.impl.exploit.PingSpoof;
+import me.x150.coffee.feature.module.impl.exploit.SkinChangeExploit;
+import me.x150.coffee.feature.module.impl.exploit.VanillaSpoof;
+import me.x150.coffee.feature.module.impl.fun.AutoTrap;
+import me.x150.coffee.feature.module.impl.fun.Deadmau5;
+import me.x150.coffee.feature.module.impl.fun.FakeHacker;
+import me.x150.coffee.feature.module.impl.fun.Spinner;
+import me.x150.coffee.feature.module.impl.fun.Test;
+import me.x150.coffee.feature.module.impl.fun.TpRange;
+import me.x150.coffee.feature.module.impl.misc.AllowFormatCodes;
+import me.x150.coffee.feature.module.impl.misc.AntiOffhandCrash;
+import me.x150.coffee.feature.module.impl.misc.AntiPacketKick;
+import me.x150.coffee.feature.module.impl.misc.FireballDeflector;
+import me.x150.coffee.feature.module.impl.misc.InfChatLength;
+import me.x150.coffee.feature.module.impl.misc.MinehutAdBlocker;
+import me.x150.coffee.feature.module.impl.misc.NoTitles;
+import me.x150.coffee.feature.module.impl.misc.PortalGUI;
+import me.x150.coffee.feature.module.impl.misc.ShulkerDeflector;
+import me.x150.coffee.feature.module.impl.misc.Timer;
+import me.x150.coffee.feature.module.impl.misc.XCarry;
+import me.x150.coffee.feature.module.impl.movement.AirJump;
+import me.x150.coffee.feature.module.impl.movement.AntiAnvil;
+import me.x150.coffee.feature.module.impl.movement.AutoElytra;
+import me.x150.coffee.feature.module.impl.movement.Backtrack;
+import me.x150.coffee.feature.module.impl.movement.Blink;
+import me.x150.coffee.feature.module.impl.movement.BlocksmcFlight;
+import me.x150.coffee.feature.module.impl.movement.BoatPhase;
+import me.x150.coffee.feature.module.impl.movement.Boost;
+import me.x150.coffee.feature.module.impl.movement.EdgeJump;
+import me.x150.coffee.feature.module.impl.movement.EdgeSneak;
+import me.x150.coffee.feature.module.impl.movement.EntityFly;
+import me.x150.coffee.feature.module.impl.movement.Flight;
+import me.x150.coffee.feature.module.impl.movement.Hyperspeed;
+import me.x150.coffee.feature.module.impl.movement.IgnoreWorldBorder;
+import me.x150.coffee.feature.module.impl.movement.InventoryWalk;
+import me.x150.coffee.feature.module.impl.movement.Jesus;
+import me.x150.coffee.feature.module.impl.movement.LongJump;
+import me.x150.coffee.feature.module.impl.movement.MoonGravity;
+import me.x150.coffee.feature.module.impl.movement.NoFall;
+import me.x150.coffee.feature.module.impl.movement.NoJumpCooldown;
+import me.x150.coffee.feature.module.impl.movement.NoLevitation;
+import me.x150.coffee.feature.module.impl.movement.NoPush;
+import me.x150.coffee.feature.module.impl.movement.Phase;
+import me.x150.coffee.feature.module.impl.movement.Sprint;
+import me.x150.coffee.feature.module.impl.movement.Step;
+import me.x150.coffee.feature.module.impl.movement.Swing;
+import me.x150.coffee.feature.module.impl.render.CaveMapper;
+import me.x150.coffee.feature.module.impl.render.ClickGUI;
+import me.x150.coffee.feature.module.impl.render.ESP;
+import me.x150.coffee.feature.module.impl.render.FreeLook;
+import me.x150.coffee.feature.module.impl.render.Freecam;
+import me.x150.coffee.feature.module.impl.render.Fullbright;
+import me.x150.coffee.feature.module.impl.render.Hud;
+import me.x150.coffee.feature.module.impl.render.ItemByteSize;
+import me.x150.coffee.feature.module.impl.render.NameTags;
+import me.x150.coffee.feature.module.impl.render.TabGui;
+import me.x150.coffee.feature.module.impl.render.TargetHud;
+import me.x150.coffee.feature.module.impl.render.Tracers;
+import me.x150.coffee.feature.module.impl.render.Trail;
+import me.x150.coffee.feature.module.impl.render.Zoom;
+import me.x150.coffee.feature.module.impl.world.AnyPlacer;
+import me.x150.coffee.feature.module.impl.world.AutoLavacast;
+import me.x150.coffee.feature.module.impl.world.AutoTnt;
+import me.x150.coffee.feature.module.impl.world.AutoTool;
+import me.x150.coffee.feature.module.impl.world.BlockTagViewer;
+import me.x150.coffee.feature.module.impl.world.Boom;
+import me.x150.coffee.feature.module.impl.world.ClickNuke;
+import me.x150.coffee.feature.module.impl.world.FastUse;
+import me.x150.coffee.feature.module.impl.world.Flattener;
+import me.x150.coffee.feature.module.impl.world.GodBridge;
+import me.x150.coffee.feature.module.impl.world.InstantBreak;
+import me.x150.coffee.feature.module.impl.world.LetThereBeLight;
+import me.x150.coffee.feature.module.impl.world.MassUse;
+import me.x150.coffee.feature.module.impl.world.NoBreakDelay;
+import me.x150.coffee.feature.module.impl.world.Nuker;
+import me.x150.coffee.feature.module.impl.world.Scaffold;
+import me.x150.coffee.feature.module.impl.world.Voider;
+import me.x150.coffee.feature.module.impl.world.XRAY;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ModuleRegistry {
-    static final List<Module> modules = new ArrayList<>();
-    static boolean initialized = false;
+    static final List<Module> modules     = new ArrayList<>();
+    static       boolean      initialized = false;
 
     public static void init() {
         initialized = true;
@@ -123,8 +207,7 @@ public class ModuleRegistry {
         return modules;
     }
 
-    @SuppressWarnings("unchecked")
-    public static <T extends Module> T getByClass(Class<T> clazz) {
+    @SuppressWarnings("unchecked") public static <T extends Module> T getByClass(Class<T> clazz) {
         if (!initialized) {
             init();
         }

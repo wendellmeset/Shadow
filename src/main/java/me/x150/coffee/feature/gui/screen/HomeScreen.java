@@ -25,7 +25,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL40C;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Color;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -40,31 +40,33 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class HomeScreen extends ClientScreen implements FastTickable {
-    static final double padding = 5;
-    static final Texture background = new Texture("background.jpg");
-    static final HttpClient downloader = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(3)).build();
-    static boolean isDev = false;
-    static String version = "unknown";
-    static String changelog = "";
-    private static HomeScreen instance;
-    final ClientFontRenderer title = FontRenderers.getCustomSize(40);
-    final ClientFontRenderer smaller = FontRenderers.getCustomSize(30);
-    final ClientFontRenderer propFr = FontRenderers.getCustomSize(22);
-    final Texture currentAccountTexture = new Texture("dynamic/tex_currentaccount_home");
-    boolean loaded = false;
-    long initTime = System.currentTimeMillis();
-    double prog = 0;
-    boolean fadeOut = false;
-    double initProg = 0;
+    static final   double             padding               = 5;
+    static final   Texture            background            = new Texture("background.jpg");
+    static final   HttpClient         downloader            = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(3)).build();
+    static         boolean            isDev                 = false;
+    static         String             version               = "unknown";
+    static         String             changelog             = "";
+    private static HomeScreen         instance;
+    final          ClientFontRenderer title                 = FontRenderers.getCustomSize(40);
+    final          ClientFontRenderer smaller               = FontRenderers.getCustomSize(30);
+    final          ClientFontRenderer propFr                = FontRenderers.getCustomSize(22);
+    final          Texture            currentAccountTexture = new Texture("dynamic/tex_currentaccount_home");
+    boolean loaded                      = false;
+    long    initTime                    = System.currentTimeMillis();
+    double  prog                        = 0;
+    boolean fadeOut                     = false;
+    double  initProg                    = 0;
     boolean currentAccountTextureLoaded = false;
-    UUID previousChecked = null;
+    UUID    previousChecked             = null;
 
     private HomeScreen() {
         super(MSAAFramebuffer.MAX_SAMPLES);
     }
 
     public static HomeScreen instance() {
-        if (instance == null) instance = new HomeScreen();
+        if (instance == null) {
+            instance = new HomeScreen();
+        }
         return instance;
     }
 
@@ -86,8 +88,7 @@ public class HomeScreen extends ClientScreen implements FastTickable {
         }
     }
 
-    @Override
-    public void resize(MinecraftClient client, int width, int height) {
+    @Override public void resize(MinecraftClient client, int width, int height) {
         this.width = width;
         this.height = height;
         clearChildren();
@@ -101,10 +102,9 @@ public class HomeScreen extends ClientScreen implements FastTickable {
         RoundButton single = new RoundButton(bg, rightPad - (padding + 60), centerWidgetsY, 60, 20, "Singleplayer", () -> CoffeeClientMain.client.setScreen(new SelectWorldScreen(this)));
         RoundButton multi = new RoundButton(bg, rightPad - (padding + 60) * 2, centerWidgetsY, 60, 20, "Multiplayer", () -> CoffeeClientMain.client.setScreen(new MultiplayerScreen(this)));
         RoundButton realms = new RoundButton(bg, rightPad - (padding + 60) * 3, centerWidgetsY, 60, 20, "Realms", () -> CoffeeClientMain.client.setScreen(new RealmsMainScreen(this)));
-        RoundButton alts = new RoundButton(bg, rightPad - (padding + 60) * 4, centerWidgetsY, 60, 20, "Alts", () -> CoffeeClientMain.client.setScreen(
-                AltManagerScreen.instance()
-//                new TestScreen()
-        ));
+        RoundButton alts = new RoundButton(bg, rightPad - (padding + 60) * 4, centerWidgetsY, 60, 20, "Alts", () -> CoffeeClientMain.client.setScreen(AltManagerScreen.instance()
+                //                new TestScreen()
+                                                                                                                                                     ));
         RoundButton settings = new RoundButton(bg, rightPad - (padding + 60) * 5, centerWidgetsY, 60, 20, "Options", () -> CoffeeClientMain.client.setScreen(new OptionsScreen(this, CoffeeClientMain.client.options)));
         RoundButton quit = new RoundButton(bg, rightPad - (padding + 60) * 5 - padding - 20, centerWidgetsY, 20, 20, "X", CoffeeClientMain.client::scheduleStop);
         addDrawableChild(single);
@@ -115,13 +115,14 @@ public class HomeScreen extends ClientScreen implements FastTickable {
         addDrawableChild(quit);
     }
 
-    @Override
-    protected void init() {
+    @Override protected void init() {
         super.init();
         initTime = System.currentTimeMillis();
         initWidgets();
-        if (loaded) updateCurrentAccount(() -> {
-        }); // already loaded this instance, refresh on the fly
+        if (loaded) {
+            updateCurrentAccount(() -> {
+            }); // already loaded this instance, refresh on the fly
+        }
     }
 
     void complete() {
@@ -161,8 +162,7 @@ public class HomeScreen extends ClientScreen implements FastTickable {
         });
     }
 
-    @Override
-    public void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
+    @Override public void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
         double initProg = this.initProg * 2;
 
         Renderer.R2D.renderQuad(stack, new Color(20, 20, 20), 0, 0, width, height);
@@ -212,9 +212,11 @@ public class HomeScreen extends ClientScreen implements FastTickable {
 
         RenderSystem.blendFunc(GL40C.GL_DST_ALPHA, GL40C.GL_ONE_MINUS_DST_ALPHA);
         RenderSystem.setShaderTexture(0, currentAccountTextureLoaded ? currentAccountTexture : DefaultSkinHelper.getTexture());
-        if (currentAccountTextureLoaded)
+        if (currentAccountTextureLoaded) {
             Renderer.R2D.renderTexture(stack, fromX + padding, fromY + padding, texDim, texDim, 0, 0, 64, 64, 64, 64);
-        else Renderer.R2D.renderTexture(stack, fromX + padding, fromY + padding, texDim, texDim, 8, 8, 8, 8, 64, 64);
+        } else {
+            Renderer.R2D.renderTexture(stack, fromX + padding, fromY + padding, texDim, texDim, 8, 8, 8, 8, 64, 64);
+        }
         RenderSystem.defaultBlendFunc();
         String uuid = CoffeeClientMain.client.getSession().getUuid();
         double uuidWid = FontRenderers.getRenderer().getStringWidth(uuid);
@@ -224,7 +226,8 @@ public class HomeScreen extends ClientScreen implements FastTickable {
             uuid = FontRenderers.getRenderer().trimStringToWidth(uuid, maxWid - 1 - threeDotWidth);
             uuid += "...";
         }
-        AltManagerScreen.AltContainer.PropEntry[] props = new AltManagerScreen.AltContainer.PropEntry[]{new AltManagerScreen.AltContainer.PropEntry(CoffeeClientMain.client.getSession().getUsername(), FontRenderers.getCustomSize(22), 0xFFFFFF),
+        AltManagerScreen.AltContainer.PropEntry[] props = new AltManagerScreen.AltContainer.PropEntry[]{
+                new AltManagerScreen.AltContainer.PropEntry(CoffeeClientMain.client.getSession().getUsername(), FontRenderers.getCustomSize(22), 0xFFFFFF),
                 new AltManagerScreen.AltContainer.PropEntry(uuid, FontRenderers.getRenderer(), 0xAAAAAA)};
         float propsOffset = (float) (fromY + padding);
         for (AltManagerScreen.AltContainer.PropEntry prop : props) {
@@ -253,12 +256,14 @@ public class HomeScreen extends ClientScreen implements FastTickable {
         Renderer.R2D.renderLoadingSpinner(stack, (float) spinnerProg, width - 25, height - 25, 20, 1d, 20);
     }
 
-    @Override
-    public void onFastTick() {
-        if (CoffeeClientMain.client.getOverlay() == null && CoffeeClientMain.client.currentScreen == this && System.currentTimeMillis() - initTime > 1000 && !loaded)
+    @Override public void onFastTick() {
+        if (CoffeeClientMain.client.getOverlay() == null && CoffeeClientMain.client.currentScreen == this && System.currentTimeMillis() - initTime > 1000 && !loaded) {
             load();
+        }
         double delta = 10 / 600d;
-        if (fadeOut) delta *= -1;
+        if (fadeOut) {
+            delta *= -1;
+        }
         prog += delta;
         prog = MathHelper.clamp(prog, 0, 1);
 
@@ -269,9 +274,10 @@ public class HomeScreen extends ClientScreen implements FastTickable {
         }
     }
 
-    @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (prog != 0 || !fadeOut) return false;
+    @Override public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if (prog != 0 || !fadeOut) {
+            return false;
+        }
         return super.mouseClicked(mouseX, mouseY, button);
     }
 

@@ -17,8 +17,7 @@ public class Effect extends Command {
         super("Effect", "Gives you an effect client side", "effect", "eff");
     }
 
-    @Override
-    public String[] getSuggestions(String fullCommand, String[] args) {
+    @Override public String[] getSuggestions(String fullCommand, String[] args) {
         if (args.length == 1) {
             return new String[]{"give", "clear"};
         } else if (args.length == 2 && args[0].equalsIgnoreCase("give")) {
@@ -31,8 +30,7 @@ public class Effect extends Command {
         return super.getSuggestions(fullCommand, args);
     }
 
-    @Override
-    public void onExecute(String[] args) {
+    @Override public void onExecute(String[] args) {
         if (CoffeeClientMain.client.player == null) {
             return;
         }

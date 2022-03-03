@@ -11,10 +11,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 import java.util.Objects;
 
-@Mixin(ClientPlayerInteractionManager.class)
-public class ClientPlayerInteractionManagerMixin {
-    @Shadow
-    private int blockBreakingCooldown;
+@Mixin(ClientPlayerInteractionManager.class) public class ClientPlayerInteractionManagerMixin {
+    @Shadow private int blockBreakingCooldown;
 
     @Redirect(method = "updateBlockBreakingProgress",
             at = @At(value = "FIELD", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;blockBreakingCooldown:I", opcode = Opcodes.GETFIELD, ordinal = 0))

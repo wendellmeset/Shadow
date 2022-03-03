@@ -13,7 +13,9 @@ public class XCarry extends Module {
     public XCarry() {
         super("XCarry", "Allows you to store items in your crafting grid", ModuleType.MISC);
         Events.registerEventHandler(EventType.PACKET_SEND, event -> {
-            if (!this.isEnabled()) return;
+            if (!this.isEnabled()) {
+                return;
+            }
             PacketEvent pe = (PacketEvent) event;
             if (pe.getPacket() instanceof CloseHandledScreenC2SPacket) {
                 pe.setCancelled(true);
@@ -21,33 +23,27 @@ public class XCarry extends Module {
         });
     }
 
-    @Override
-    public void tick() {
+    @Override public void tick() {
 
     }
 
-    @Override
-    public void enable() {
+    @Override public void enable() {
 
     }
 
-    @Override
-    public void disable() {
+    @Override public void disable() {
 
     }
 
-    @Override
-    public String getContext() {
+    @Override public String getContext() {
         return null;
     }
 
-    @Override
-    public void onWorldRender(MatrixStack matrices) {
+    @Override public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override
-    public void onHudRender() {
+    @Override public void onHudRender() {
 
     }
 }

@@ -5,7 +5,6 @@ import me.x150.coffee.feature.gui.FastTickable;
 import me.x150.coffee.feature.gui.notifications.NotificationRenderer;
 import me.x150.coffee.feature.module.Module;
 import me.x150.coffee.feature.module.ModuleRegistry;
-import me.x150.coffee.helper.ManagerThread;
 import me.x150.coffee.helper.Rotations;
 import me.x150.coffee.helper.Texture;
 import me.x150.coffee.helper.event.EventType;
@@ -28,29 +27,27 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("ResultOfMethodCallIgnored")
-public class CoffeeClientMain implements ModInitializer {
+@SuppressWarnings("ResultOfMethodCallIgnored") public class CoffeeClientMain implements ModInitializer {
 
-    public static final String MOD_ID = "sipoverprivate";
-    public static final String MOD_NAME = "SipoverPrivate";
-    public static final Logger LOGGER = LogManager.getLogger();
-    public static final MinecraftClient client = MinecraftClient.getInstance();
-    public static final File BASE = new File(MinecraftClient.getInstance().runDirectory, "sip");
+    public static final String              MOD_ID           = "sipoverprivate";
+    public static final String              MOD_NAME         = "SipoverPrivate";
+    public static final Logger              LOGGER           = LogManager.getLogger();
+    public static final MinecraftClient     client           = MinecraftClient.getInstance();
+    public static final File                BASE             = new File(MinecraftClient.getInstance().runDirectory, "sip");
     //    public static final List<ResourceEntry> resources = List.of(
-//            new ResourceEntry(new Texture("background.jpg"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/background.jpg"),
-//            new ResourceEntry(new Texture("notif/error.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/error.png"),
-//            new ResourceEntry(new Texture("notif/info.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/info.png"),
-//            new ResourceEntry(new Texture("notif/success.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/success.png"),
-//            new ResourceEntry(new Texture("notif/warning.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/warning.png")
-//    );
-    public static final List<ResourceEntry> resources = new ArrayList<>();
-    public static long lastScreenChange = System.currentTimeMillis();
-    public static CoffeeClientMain INSTANCE;
-    public static Thread MODULE_FTTICKER;
-    public static Thread FAST_TICKER;
-    public static ManagerThread sman;
-    public static String sessionKey = null;
-    public boolean initialized = false;
+    //            new ResourceEntry(new Texture("background.jpg"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/background.jpg"),
+    //            new ResourceEntry(new Texture("notif/error.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/error.png"),
+    //            new ResourceEntry(new Texture("notif/info.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/info.png"),
+    //            new ResourceEntry(new Texture("notif/success.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/success.png"),
+    //            new ResourceEntry(new Texture("notif/warning.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/warning.png")
+    //    );
+    public static final List<ResourceEntry> resources        = new ArrayList<>();
+    public static       long                lastScreenChange = System.currentTimeMillis();
+    public static       CoffeeClientMain    INSTANCE;
+    public static       Thread              MODULE_FTTICKER;
+    public static       Thread              FAST_TICKER;
+    public static       String              sessionKey       = null;
+    public              boolean             initialized      = false;
 
     public static void log(Level level, String message) {
         LOGGER.log(level, "[" + MOD_NAME + "] " + message);
@@ -61,13 +58,14 @@ public class CoffeeClientMain implements ModInitializer {
     }
 
     public static String generateOrGetSessionToken() {
-        if (sessionKey != null) return sessionKey;
+        if (sessionKey != null) {
+            return sessionKey;
+        }
         sessionKey = RandomStringUtils.randomAlphabetic(32);
         return sessionKey;
     }
 
-    @Override
-    public void onInitialize() {
+    @Override public void onInitialize() {
         INSTANCE = this;
         log(Level.INFO, "Initializing");
 

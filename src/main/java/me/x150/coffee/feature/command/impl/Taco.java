@@ -27,13 +27,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 public class Taco extends Command {
-    public static final File storage = new File(CoffeeClientMain.BASE, "taco.sip");
-    public static final List<Frame> frames = new ArrayList<>();
-    public static final AtomicBoolean init = new AtomicBoolean(false);
-    static final File gifPath = new File(CoffeeClientMain.BASE, "tacoFrames");
-    public static TacoConfig config = new TacoConfig();
-    public static long currentFrame = 0;
-    static final Thread ticker = new Thread(() -> {
+    public static final File          storage      = new File(CoffeeClientMain.BASE, "taco.sip");
+    public static final List<Frame>   frames       = new ArrayList<>();
+    public static final AtomicBoolean init         = new AtomicBoolean(false);
+    static final        File          gifPath      = new File(CoffeeClientMain.BASE, "tacoFrames");
+    public static       TacoConfig    config       = new TacoConfig();
+    public static       long          currentFrame = 0;
+    static final        Thread        ticker       = new Thread(() -> {
         while (true) {
             long sleepTime = 1000 / config.fps;
             currentFrame++;
@@ -155,8 +155,7 @@ public class Taco extends Command {
         }
     }
 
-    @Override
-    public String[] getSuggestions(String fullCommand, String[] args) {
+    @Override public String[] getSuggestions(String fullCommand, String[] args) {
         if (args.length == 1) {
             return new String[]{"fps", "frames", "toggle"};
         } else if (args.length == 2) {
@@ -169,8 +168,7 @@ public class Taco extends Command {
         return super.getSuggestions(fullCommand, args);
     }
 
-    @Override
-    public void onExecute(String[] args) {
+    @Override public void onExecute(String[] args) {
         if (args.length == 0) {
             error("Please specify an action");
             return;
@@ -229,14 +227,14 @@ public class Taco extends Command {
     }
 
     public static class TacoConfig {
-        public long fps = 30;
+        public long    fps     = 30;
         public boolean enabled = false;
     }
 
     public static class Frame {
         static long frameCounter = 0;
         NativeImageBackedTexture tex;
-        Texture i;
+        Texture                  i;
 
         public Frame(BufferedImage image) {
             try {
@@ -248,7 +246,7 @@ public class Taco extends Command {
                 data.flip();
                 tex = new NativeImageBackedTexture(NativeImage.read(data));
 
-//                i = new Identifier("atomic", "tacoframe_" + frameCounter);
+                //                i = new Identifier("atomic", "tacoframe_" + frameCounter);
                 i = new Texture("taco/frame_" + frameCounter);
                 frameCounter++;
                 CoffeeClientMain.client.execute(() -> CoffeeClientMain.client.getTextureManager().registerTexture(i, tex));

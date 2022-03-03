@@ -7,6 +7,8 @@ import me.x150.coffee.feature.gui.widget.RoundButton;
 import me.x150.coffee.feature.gui.widget.RoundTextFieldWidget;
 import me.x150.coffee.helper.NbtFormatter;
 import me.x150.coffee.helper.font.FontRenderers;
+import me.x150.coffee.helper.render.ClipStack;
+import me.x150.coffee.helper.render.Rectangle;
 import me.x150.coffee.helper.render.Renderer;
 import me.x150.coffee.helper.util.Transitions;
 import net.minecraft.client.util.InputUtil;
@@ -18,31 +20,24 @@ import net.minecraft.util.math.MathHelper;
 import org.apache.commons.compress.utils.Lists;
 import org.lwjgl.glfw.GLFW;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 public class NbtEditorScreen extends ClientScreen implements FastTickable {
-    ItemStack stack;
-    List<String> initial = new ArrayList<>();
-    char[] suffixes = {
-            'b', 's', 'L', 'f', 'd'
-    };
-    int editorX = 0;
-    int editorY = 0;
-    double scrollX = 0;
-    double smoothScrollX = 0;
-    double scroll = 0;
-    double smoothScroll = 0;
+    ItemStack            stack;
+    List<String>         initial       = new ArrayList<>();
+    char[]               suffixes      = {'b', 's', 'L', 'f', 'd'};
+    int                  editorX       = 0;
+    int                  editorY       = 0;
+    double               scrollX       = 0;
+    double               smoothScrollX = 0;
+    double               scroll        = 0;
+    double               smoothScroll  = 0;
     RoundTextFieldWidget search;
-    char[][] appendPairs = {
-            {'"', '"'},
-            {'{', '}'},
-            {'\'', '\''},
-            {'[', ']'}
-    };
-    boolean skipAppend = false;
+    char[][]             appendPairs   = {{'"', '"'}, {'{', '}'}, {'\'', '\''}, {'[', ']'}};
+    boolean              skipAppend    = false;
 
     public NbtEditorScreen(ItemStack stack) {
         super();
@@ -54,13 +49,14 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
             if (entry == NbtFormatter.RGBColorText.NEWLINE) {
                 initial.add(current.toString());
                 current = new StringBuilder();
-            } else current.append(entry.value());
+            } else {
+                current.append(entry.value());
+            }
         }
         initial.add(current.toString());
     }
 
-    @Override
-    public boolean isPauseScreen() {
+    @Override public boolean isPauseScreen() {
         return false;
     }
 
@@ -84,7 +80,9 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
                 if (entry == NbtFormatter.RGBColorText.NEWLINE) {
                     initial.add(current.toString());
                     current = new StringBuilder();
-                } else current.append(entry.value());
+                } else {
+                    current.append(entry.value());
+                }
             }
             initial.add(current.toString());
         } catch (Exception e) {
@@ -103,8 +101,7 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
         }
     }
 
-    @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+    @Override public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
         if (mouseX > 5 && mouseX < width - 5 && mouseY > 5 && mouseY < height - 30) {
             scroll -= deltaY;
             scrollX -= deltaX;
@@ -113,8 +110,7 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
         return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
     }
 
-    @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    @Override public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (mouseX > 5 && mouseX < width - 5 && mouseY > 5 && mouseY < height - 30) {
             double relativeX = mouseX - 5 + smoothScrollX;
             double relativeY = mouseY - 5 + smoothScroll;
@@ -127,13 +123,11 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
                 editorX = relativeX < wid ? t.length() - 1 : t.length();
             }
 
-
         }
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
-    @Override
-    protected void init() {
+    @Override protected void init() {
         RoundButton format = new RoundButton(RoundButton.STANDARD, 5, height - 30 + 5, 64, 20, "Format", this::format);
         addDrawableChild(format);
         RoundButton save = new RoundButton(RoundButton.STANDARD, 5 + format.getWidth() + 5, height - 30 + 5, 64, 20, "Save", this::save);
@@ -149,26 +143,32 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
             if (total.charAt(i) == '"' && (i == 0 || total.charAt(i - 1) != '\\')) {
                 amountOfDoubles++;
             }
-            if (total.charAt(i) == '\'' && (i == 0 || total.charAt(i - 1) != '\\')) amountOfSingles++;
+            if (total.charAt(i) == '\'' && (i == 0 || total.charAt(i - 1) != '\\')) {
+                amountOfSingles++;
+            }
         }
         boolean inString = amountOfDoubles % 2 == 1;
         boolean inSingleString = amountOfSingles % 2 == 1;
         if (c == '"') {
             if (!(index > 0 && total.charAt(index - 1) == '\\')) {
-                if (total.indexOf('"', index + 1) == -1 && !inString) return 0xFF5555;
+                if (total.indexOf('"', index + 1) == -1 && !inString) {
+                    return 0xFF5555;
+                }
             }
         }
         if (c == '\'') {
             if (!(index > 0 && total.charAt(index - 1) == '\\')) {
-                if (total.indexOf('\'', index + 1) == -1 && !inSingleString) return 0xFF5555;
+                if (total.indexOf('\'', index + 1) == -1 && !inSingleString) {
+                    return 0xFF5555;
+                }
             }
         }
-        if (inString || inSingleString || c == '"' || c == '\'') return 0x55FF55;
+        if (inString || inSingleString || c == '"' || c == '\'') {
+            return 0x55FF55;
+        }
         // if the index of the next : from where we are right now is smaller than the index of the last , or the last , is beyond where we are now
         // and the next : from where we are right now is beyond where we are right now, mark it
-        if ((total.indexOf(':', index) < total.lastIndexOf(',') || total.lastIndexOf(',') < index)
-                && total.indexOf(' ', index) > total.indexOf(':', index)
-                && total.indexOf(':', index) > index) {
+        if ((total.indexOf(':', index) < total.lastIndexOf(',') || total.lastIndexOf(',') < index) && total.indexOf(' ', index) > total.indexOf(':', index) && total.indexOf(':', index) > index) {
             return 0x55FFFF;
         }
         boolean isSuffix = false;
@@ -184,14 +184,12 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
         return 0xFFFFFF;
     }
 
-    @Override
-    public void onFastTick() {
+    @Override public void onFastTick() {
         this.smoothScroll = Transitions.transition(smoothScroll, scroll, 7, 0);
         this.smoothScrollX = Transitions.transition(smoothScrollX, scrollX, 7, 0);
     }
 
-    @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
+    @Override public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
         double contentWidth = initial.stream().map(s -> FontRenderers.getMono().getStringWidth(s)).max(Comparator.comparingDouble(value -> value)).orElse(0f);
         double windowWidth = width - 14;
         double entitledX = contentWidth - windowWidth;
@@ -217,15 +215,19 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
         return 7 + FontRenderers.getMono().getStringWidth(i.substring(0, editorX)) - smoothScrollX;
     }
 
-    @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (super.keyPressed(keyCode, scanCode, modifiers)) return true;
+    @Override public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        if (super.keyPressed(keyCode, scanCode, modifiers)) {
+            return true;
+        }
         if (isPaste(keyCode)) {
             String clip = CoffeeClientMain.client.keyboard.getClipboard();
             skipAppend = true;
             for (char c : clip.toCharArray()) {
-                if (c == '\n') keyPressed(GLFW.GLFW_KEY_ENTER, 0, 0);
-                else charTyped(c, 0);
+                if (c == '\n') {
+                    keyPressed(GLFW.GLFW_KEY_ENTER, 0, 0);
+                } else {
+                    charTyped(c, 0);
+                }
             }
             skipAppend = false;
         } else {
@@ -254,7 +256,9 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
                 }
                 case GLFW.GLFW_KEY_DELETE -> {
                     String index = initial.get(editorY);
-                    if (editorY == initial.size() - 1 && editorX == index.length()) break;
+                    if (editorY == initial.size() - 1 && editorX == index.length()) {
+                        break;
+                    }
                     if (editorX < index.length()) {
                         StringBuilder sb = new StringBuilder(index);
                         sb.deleteCharAt(editorX);
@@ -277,7 +281,9 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
                     for (int i = 0; i <= editorY; i++) {
                         String p = initial.get(i);
                         String trimmed = p;
-                        while (trimmed.endsWith(",")) trimmed = trimmed.substring(0, trimmed.length() - 1);
+                        while (trimmed.endsWith(",")) {
+                            trimmed = trimmed.substring(0, trimmed.length() - 1);
+                        }
                         if (p.endsWith("{") || p.endsWith("[")) {
                             indent += 2;
                         } else if (trimmed.endsWith("}") || trimmed.endsWith("]")) {
@@ -330,16 +336,19 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
         return true;
     }
 
-    @Override
-    public boolean charTyped(char chr, int modifiers) {
+    @Override public boolean charTyped(char chr, int modifiers) {
         boolean b = super.charTyped(chr, modifiers);
-        if (b) return true;
+        if (b) {
+            return true;
+        }
         String index = initial.get(editorY);
         StringBuilder sb = new StringBuilder(index);
         sb.insert(editorX, chr);
-        if (!skipAppend) for (char[] appendPair : appendPairs) {
-            if (appendPair[0] == chr) {
-                sb.insert(editorX + 1, appendPair[1]);
+        if (!skipAppend) {
+            for (char[] appendPair : appendPairs) {
+                if (appendPair[0] == chr) {
+                    sb.insert(editorX + 1, appendPair[1]);
+                }
             }
         }
         initial.set(editorY, sb.toString());
@@ -347,12 +356,12 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
         return true;
     }
 
-    @Override
-    public void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
-//        stack.translate(50,50,0);
-//        stack.scale(0.7f,0.7f,1f);
+    @Override public void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
+        //        stack.translate(50,50,0);
+        //        stack.scale(0.7f,0.7f,1f);
         Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 200), 5, 5, width - 5, height - 30, 5, 20);
-        Renderer.R2D.beginScissor(stack, 5, 5, width - 5, height - 30);
+        ClipStack.globalInstance.addWindow(stack, new Rectangle(5, 5, width - 5, height - 30));
+        //Renderer.R2D.beginScissor(stack, 5, 5, width - 5, height - 30);
         double initY = 7 - smoothScroll;
 
         double initX = 7 - smoothScrollX;
@@ -375,13 +384,13 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
                     }
                 }
                 for (int i = 0; i < s.toCharArray().length; i++) {
-//                    boolean isInSearch = indexOfSearch != -1 && i >= indexOfSearch && i < indexOfSearch+searchLen;
+                    //                    boolean isInSearch = indexOfSearch != -1 && i >= indexOfSearch && i < indexOfSearch+searchLen;
                     char c = s.charAt(i);
                     double cw = FontRenderers.getMono().getStringWidth(c + "");
-//                    double cw = 8;
+                    //                    double cw = 8;
                     if (x > 5 - cw && x < width - 5) {
                         int color = getColor(s, i, c);
-//                        int color = 0xFFFFFF;
+                        //                        int color = 0xFFFFFF;
                         FontRenderers.getMono().drawString(stack, c + "", x, y, color);
                     }
                     x += cw;
@@ -396,7 +405,8 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
         String before = index.substring(0, editorX);
         double cx = FontRenderers.getMono().getStringWidth(before) + initX + 0.5;
         double cy = FontRenderers.getMono().getMarginHeight() * editorY + initY;
-        Renderer.R2D.endScissor();
+        //Renderer.R2D.endScissor();
+        ClipStack.globalInstance.popWindow(stack);
         Renderer.R2D.renderQuad(stack, Color.WHITE, cx, cy, cx + 1, cy + FontRenderers.getMono().getMarginHeight());
         super.renderInternal(stack, mouseX, mouseY, delta);
     }

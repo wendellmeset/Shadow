@@ -17,12 +17,12 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Objects;
 
 public class Swing extends Module {
     static BlockPos swinging;
-    static Color line = new Color(50, 50, 50, 255);
+    static Color    line = new Color(50, 50, 50, 255);
 
     public Swing() {
         super("Swing", "Swing around like spiderman", ModuleType.MOVEMENT);
@@ -50,8 +50,7 @@ public class Swing extends Module {
         });
     }
 
-    @Override
-    public void tick() {
+    @Override public void tick() {
         if (swinging == null) {
             return;
         }
@@ -63,23 +62,19 @@ public class Swing extends Module {
         }
     }
 
-    @Override
-    public void enable() {
+    @Override public void enable() {
 
     }
 
-    @Override
-    public void disable() {
+    @Override public void disable() {
 
     }
 
-    @Override
-    public String getContext() {
+    @Override public String getContext() {
         return null;
     }
 
-    @Override
-    public void onWorldRender(MatrixStack matrices) {
+    @Override public void onWorldRender(MatrixStack matrices) {
         if (swinging == null || CoffeeClientMain.client.player == null) {
             return;
         }
@@ -92,8 +87,7 @@ public class Swing extends Module {
         Renderer.R3D.renderLine(eSource, cringe2, line, matrices);
     }
 
-    @Override
-    public void onHudRender() {
+    @Override public void onHudRender() {
 
     }
 }

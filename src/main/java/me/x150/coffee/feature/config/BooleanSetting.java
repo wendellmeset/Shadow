@@ -9,8 +9,7 @@ public class BooleanSetting extends SettingBase<Boolean> {
         super(defaultValue, name, description);
     }
 
-    @Override
-    public Boolean parse(String value) {
+    @Override public Boolean parse(String value) {
         return (value.equalsIgnoreCase("true") || value.equalsIgnoreCase("1"));
     }
 
@@ -20,8 +19,7 @@ public class BooleanSetting extends SettingBase<Boolean> {
             super(defaultValue);
         }
 
-        @Override
-        public BooleanSetting get() {
+        @Override public BooleanSetting get() {
             return new BooleanSetting(defaultValue, name, description);
         }
     }

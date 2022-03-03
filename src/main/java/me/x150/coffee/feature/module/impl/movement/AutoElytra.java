@@ -18,15 +18,9 @@ import java.util.Objects;
 
 public class AutoElytra extends Module {
 
-//    final SliderValue fallDist = (SliderValue) this.config.create("Fall distance", 3, 2, 10, 1).description("How far to fall for the elytra to equip");
+    //    final SliderValue fallDist = (SliderValue) this.config.create("Fall distance", 3, 2, 10, 1).description("How far to fall for the elytra to equip");
 
-    final DoubleSetting fallDist = this.config.create(new DoubleSetting.Builder(3)
-            .name("Fall distance")
-            .description("How long to fall for the elytra to equip")
-            .min(2)
-            .max(10)
-            .precision(1)
-            .get());
+    final DoubleSetting fallDist = this.config.create(new DoubleSetting.Builder(3).name("Fall distance").description("How long to fall for the elytra to equip").min(2).max(10).precision(1).get());
 
     public AutoElytra() {
         super("AutoElytra", "Automatically equips an elytra from your inventory if you fell long enough", ModuleType.MOVEMENT);
@@ -36,8 +30,7 @@ public class AutoElytra extends Module {
         return Objects.requireNonNull(CoffeeClientMain.client.player).getInventory().armor.get(2).getItem() == Items.ELYTRA;
     }
 
-    @Override
-    public void tick() {
+    @Override public void tick() {
         if (Objects.requireNonNull(CoffeeClientMain.client.player).fallDistance > fallDist.getValue()) {
             if (!equippedElytra()) { // do we not have an elytra equipped?
                 for (int i = 0; i < (9 * 4 + 1); i++) { // gotta equip
@@ -51,18 +44,15 @@ public class AutoElytra extends Module {
         }
     }
 
-    @Override
-    public void enable() {
+    @Override public void enable() {
 
     }
 
-    @Override
-    public void disable() {
+    @Override public void disable() {
 
     }
 
-    @Override
-    public String getContext() {
+    @Override public String getContext() {
         float fd = Objects.requireNonNull(CoffeeClientMain.client.player).fallDistance;
         if (fd > fallDist.getMin()) {
             return Utils.Math.roundToDecimal(fd, 1) + " | " + fallDist.getValue();
@@ -70,13 +60,11 @@ public class AutoElytra extends Module {
         return null;
     }
 
-    @Override
-    public void onWorldRender(MatrixStack matrices) {
+    @Override public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override
-    public void onHudRender() {
+    @Override public void onHudRender() {
 
     }
 }

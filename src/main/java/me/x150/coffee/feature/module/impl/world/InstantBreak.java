@@ -26,12 +26,9 @@ import java.util.Objects;
 
 public class InstantBreak extends Module {
 
-    final List<Vec3d> positions = new ArrayList<>();
+    final List<Vec3d>                 positions = new ArrayList<>();
     final List<PlayerActionC2SPacket> whitelist = new ArrayList<>();
-    final EnumSetting<Priority> prio = this.config.create(new EnumSetting.Builder<>(Priority.Speed)
-            .name("Priority")
-            .description("What to do with the blocks being broken")
-            .get());
+    final EnumSetting<Priority>       prio      = this.config.create(new EnumSetting.Builder<>(Priority.Speed).name("Priority").description("What to do with the blocks being broken").get());
 
     public InstantBreak() {
         super("InstantBreak", "Breaks a block a lot faster", ModuleType.WORLD);
@@ -52,8 +49,7 @@ public class InstantBreak extends Module {
         });
     }
 
-    @Override
-    public void tick() {
+    @Override public void tick() {
         if (Objects.requireNonNull(client.interactionManager).isBreakingBlock()) {
             BlockPos last = ((IClientPlayerInteractionManagerAccessor) client.interactionManager).getCurrentBreakingPos();
             if (prio.getValue() == Priority.Order) {
@@ -86,31 +82,26 @@ public class InstantBreak extends Module {
         client.getNetworkHandler().sendPacket(new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK, bp, Direction.DOWN));
     }
 
-    @Override
-    public void enable() {
+    @Override public void enable() {
 
     }
 
-    @Override
-    public void disable() {
+    @Override public void disable() {
         positions.clear();
     }
 
-    @Override
-    public String getContext() {
+    @Override public String getContext() {
         return null;
     }
 
-    @Override
-    public void onWorldRender(MatrixStack matrices) {
+    @Override public void onWorldRender(MatrixStack matrices) {
         for (Vec3d position : new ArrayList<>(positions)) {
             Renderer.R3D.renderOutline(position, new Vec3d(1, 1, 1), Utils.getCurrentRGB(), matrices);
             //Renderer.renderFilled(position,new Vec3d(1,1,1),new Color(0,0,0,150),matrices);
         }
     }
 
-    @Override
-    public void onHudRender() {
+    @Override public void onHudRender() {
 
     }
 

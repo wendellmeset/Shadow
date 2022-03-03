@@ -19,13 +19,7 @@ import java.util.Objects;
 public class MassUse extends Module {
     final List<Packet<?>> dontRepeat = new ArrayList<>();
     //    SliderValue     uses       = (SliderValue) this.config.create("Uses", 3, 1, 100, 0).description("How many times to use the item");
-    final DoubleSetting uses = this.config.create(new DoubleSetting.Builder(3)
-            .name("Uses")
-            .description("How many times to use the item")
-            .min(1)
-            .max(100)
-            .precision(0)
-            .get());
+    final DoubleSetting   uses       = this.config.create(new DoubleSetting.Builder(3).name("Uses").description("How many times to use the item").min(1).max(100).precision(0).get());
 
     public MassUse() {
         super("MassUse", "Uses an item or block several times", ModuleType.WORLD);
@@ -54,33 +48,27 @@ public class MassUse extends Module {
         });
     }
 
-    @Override
-    public void tick() {
+    @Override public void tick() {
 
     }
 
-    @Override
-    public void enable() {
+    @Override public void enable() {
 
     }
 
-    @Override
-    public void disable() {
+    @Override public void disable() {
 
     }
 
-    @Override
-    public String getContext() {
+    @Override public String getContext() {
         return null;
     }
 
-    @Override
-    public void onWorldRender(MatrixStack matrices) {
+    @Override public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override
-    public void onHudRender() {
+    @Override public void onHudRender() {
 
     }
 }

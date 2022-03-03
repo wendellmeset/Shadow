@@ -8,23 +8,23 @@ package me.x150.coffee.feature.gui.notifications;
 import me.x150.coffee.helper.Texture;
 import me.x150.coffee.helper.font.FontRenderers;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Notification {
-    public final String title;
-    public final long creationDate;
-    public String[] contents;
-    public long duration;
-    public double posX;
-    public double posY;
-    public double renderPosX = 0;
-    public double renderPosY = 0;
-    public double animationProgress = 0;
-    public double animationGoal = 0;
-    public boolean shouldDoAnimation = false;
-    public Type type;
+    public final String   title;
+    public final long     creationDate;
+    public       String[] contents;
+    public       long     duration;
+    public       double   posX;
+    public       double   posY;
+    public       double   renderPosX        = 0;
+    public       double   renderPosY        = 0;
+    public       double   animationProgress = 0;
+    public       double   animationGoal     = 0;
+    public       boolean  shouldDoAnimation = false;
+    public       Type     type;
 
     public Notification(long duration, String title, Type type, String... contents) {
         this.duration = duration;
@@ -64,8 +64,7 @@ public class Notification {
         return create(duration, title, false, type, contents);
     }
 
-    @SuppressWarnings("UnusedReturnValue")
-    public static Notification create(long duration, String title, Type type, String split) {
+    @SuppressWarnings("UnusedReturnValue") public static Notification create(long duration, String title, Type type, String split) {
         List<String> splitContent = new ArrayList<>();
         StringBuilder line = new StringBuilder();
         for (String c : split.split(" +")) {
@@ -80,11 +79,9 @@ public class Notification {
     }
 
     public enum Type {
-        SUCCESS(new Texture("notif/success.png"), new Color(58, 223, 118)),
-        INFO(new Texture("notif/info.png"), new Color(39, 186, 253)),
-        WARNING(new Texture("notif/warning.png"), new Color(255, 189, 17)),
-        ERROR(new Texture("notif/error.png"), new Color(254, 92, 92));
-        Color c;
+        SUCCESS(new Texture("notif/success.png"), new Color(58, 223, 118)), INFO(new Texture("notif/info.png"), new Color(39, 186, 253)),
+        WARNING(new Texture("notif/warning.png"), new Color(255, 189, 17)), ERROR(new Texture("notif/error.png"), new Color(254, 92, 92));
+        Color   c;
         Texture i;
 
         Type(Texture icon, Color color) {

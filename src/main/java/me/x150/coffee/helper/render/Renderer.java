@@ -5,15 +5,29 @@ import me.x150.coffee.CoffeeClientMain;
 import me.x150.coffee.helper.math.Matrix4x4;
 import me.x150.coffee.helper.math.Vector3D;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.*;
+import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.BufferRenderer;
+import net.minecraft.client.render.Camera;
+import net.minecraft.client.render.DiffuseLighting;
+import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.VertexFormat;
+import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Matrix4f;
+import net.minecraft.util.math.Quaternion;
+import net.minecraft.util.math.Vec2f;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.math.Vector4f;
 import net.minecraft.util.shape.VoxelShape;
 import org.lwjgl.opengl.GL11;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class Renderer {
 
@@ -28,7 +42,7 @@ public class Renderer {
             start = start.subtract(camPos);
             stack.push();
             stack.translate(start.x, start.y, start.z);
-//            stack.multiply(new Quaternion(0, (System.currentTimeMillis() % 2000) / 2000f * 360f, 0, true));
+            //            stack.multiply(new Quaternion(0, (System.currentTimeMillis() % 2000) / 2000f * 360f, 0, true));
             segments = MathHelper.clamp(segments, 2, 90);
             RenderSystem.setShaderColor(1, 1, 1, 1);
             int color = c.getRGB();
@@ -106,7 +120,7 @@ public class Renderer {
 
         //you can call renderOutlineIntern multiple times to save performance
         public static void renderOutline(Vec3d start, Vec3d dimensions, Color color, MatrixStack stack) {
-//            RenderSystem.defaultBlendFunc();
+            //            RenderSystem.defaultBlendFunc();
             RenderSystem.enableBlend();
             BufferBuilder buffer = renderPrepare(color);
 
@@ -161,7 +175,7 @@ public class Renderer {
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
             GL11.glDepthFunc(GLMODE);
             RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-//            RenderSystem.defaultBlendFunc();
+            //            RenderSystem.defaultBlendFunc();
             RenderSystem.enableBlend();
             RenderSystem.disableCull();
             buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
@@ -219,7 +233,7 @@ public class Renderer {
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
             GL11.glDepthFunc(GL11.GL_ALWAYS);
             RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-//            RenderSystem.defaultBlendFunc();
+            //            RenderSystem.defaultBlendFunc();
             RenderSystem.enableBlend();
             buffer.begin(VertexFormat.DrawMode.DEBUG_LINES, VertexFormats.POSITION_COLOR);
 
@@ -347,18 +361,22 @@ public class Renderer {
             RenderSystem.disableCull();
 
             renderRoundedQuadInternal(mat, color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f, roundStartX, roundStartY, roundStartX + width, roundStartY + height, 5, 20);
-//            RenderSystem.setShader(GameRenderer::getPositionColorShader);
+            //            RenderSystem.setShader(GameRenderer::getPositionColorShader);
             Tessellator t = Tessellator.getInstance();
             BufferBuilder bb = t.getBuffer();
             bb.begin(VertexFormat.DrawMode.TRIANGLES, VertexFormats.POSITION_COLOR);
             if (renderUpsideDown) {
                 bb.vertex(mat, (float) arrowX, (float) arrowY - .5f, 0).color(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f).next();
-                bb.vertex(mat, (float) (arrowX - arrowDimX / 2f), (float) (arrowY - arrowDimY - .5), 0).color(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f).next();
-                bb.vertex(mat, (float) (arrowX + arrowDimX / 2f), (float) (arrowY - arrowDimY - .5), 0).color(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f).next();
+                bb.vertex(mat, (float) (arrowX - arrowDimX / 2f), (float) (arrowY - arrowDimY - .5), 0)
+                        .color(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f).next();
+                bb.vertex(mat, (float) (arrowX + arrowDimX / 2f), (float) (arrowY - arrowDimY - .5), 0)
+                        .color(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f).next();
             } else {
                 bb.vertex(mat, (float) arrowX, (float) arrowY + .5f, 0).color(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f).next();
-                bb.vertex(mat, (float) (arrowX - arrowDimX / 2f), (float) (arrowY + arrowDimY + .5), 0).color(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f).next();
-                bb.vertex(mat, (float) (arrowX + arrowDimX / 2f), (float) (arrowY + arrowDimY + .5), 0).color(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f).next();
+                bb.vertex(mat, (float) (arrowX - arrowDimX / 2f), (float) (arrowY + arrowDimY + .5), 0)
+                        .color(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f).next();
+                bb.vertex(mat, (float) (arrowX + arrowDimX / 2f), (float) (arrowY + arrowDimY + .5), 0)
+                        .color(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f).next();
             }
             t.draw();
 
@@ -376,30 +394,30 @@ public class Renderer {
             double translateY = originY * (1 - progress);
             stack.translate(translateX, translateY, 0);
             stack.scale((float) progress, (float) progress, 1);
-//            Matrix4f matrix = stack.peek().getPositionMatrix();
-//            RenderSystem.enableBlend();
-//            double x0 = maskX;
-//            double y0 = maskY;
-//            double x1 = maskX+width;
-//            double y1 = maskY+height;
-//            double z = 0;
-////            RenderSystem.blendFunc(GL40C.GL_SRC_ALPHA, GL40C.GL_SRC_ALPHA);
-//            RenderSystem.blendFuncSeparate(GL40.GL_ONE,GL40.GL_ONE,GL40C.GL_SRC_ALPHA,GL40C.GL_SRC_ALPHA);
-//            RenderSystem.blendEquation(GL14.GL_FUNC_ADD);
-////            GL11.glAlphaFunc(GL11.GL_GREATER, 0.6f);
-////            GL11.glEnable(GL11.GL_ALPHA_TEST);
-//            RenderSystem.setShader(GameRenderer::getPositionColorShader);
-//            BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
-//            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-//            bufferBuilder.vertex(matrix, (float) x0, (float) y1, (float) z).color(1f,0f,0f,(float) (1f-progress)).next();
-//            bufferBuilder.vertex(matrix, (float) x1, (float) y1, (float) z).color(0f,1f,0f,(float) (1f-progress)).next();
-//            bufferBuilder.vertex(matrix, (float) x1, (float) y0, (float) z).color(0f,0f,1f,(float) (1f-progress)).next();
-//            bufferBuilder.vertex(matrix, (float) x0, (float) y0, (float) z).color(1f,1f,0f,(float) (1f-progress)).next();
-//            bufferBuilder.end();
-//            BufferRenderer.draw(bufferBuilder);
-////            RenderSystem.blendFunc(GlStateManager.SrcFactor.DST_ALPHA, GlStateManager.DstFactor.SRC_ALPHA);
-////            RenderSystem.defaultBlendFunc();
-//            RenderSystem.blendFuncSeparate(GL40.GL_DST_COLOR,GL40.GL_SRC_COLOR,GL40C.GL_DST_ALPHA,GL40C.GL_SRC_ALPHA);
+            //            Matrix4f matrix = stack.peek().getPositionMatrix();
+            //            RenderSystem.enableBlend();
+            //            double x0 = maskX;
+            //            double y0 = maskY;
+            //            double x1 = maskX+width;
+            //            double y1 = maskY+height;
+            //            double z = 0;
+            ////            RenderSystem.blendFunc(GL40C.GL_SRC_ALPHA, GL40C.GL_SRC_ALPHA);
+            //            RenderSystem.blendFuncSeparate(GL40.GL_ONE,GL40.GL_ONE,GL40C.GL_SRC_ALPHA,GL40C.GL_SRC_ALPHA);
+            //            RenderSystem.blendEquation(GL14.GL_FUNC_ADD);
+            ////            GL11.glAlphaFunc(GL11.GL_GREATER, 0.6f);
+            ////            GL11.glEnable(GL11.GL_ALPHA_TEST);
+            //            RenderSystem.setShader(GameRenderer::getPositionColorShader);
+            //            BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
+            //            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+            //            bufferBuilder.vertex(matrix, (float) x0, (float) y1, (float) z).color(1f,0f,0f,(float) (1f-progress)).next();
+            //            bufferBuilder.vertex(matrix, (float) x1, (float) y1, (float) z).color(0f,1f,0f,(float) (1f-progress)).next();
+            //            bufferBuilder.vertex(matrix, (float) x1, (float) y0, (float) z).color(0f,0f,1f,(float) (1f-progress)).next();
+            //            bufferBuilder.vertex(matrix, (float) x0, (float) y0, (float) z).color(1f,1f,0f,(float) (1f-progress)).next();
+            //            bufferBuilder.end();
+            //            BufferRenderer.draw(bufferBuilder);
+            ////            RenderSystem.blendFunc(GlStateManager.SrcFactor.DST_ALPHA, GlStateManager.DstFactor.SRC_ALPHA);
+            ////            RenderSystem.defaultBlendFunc();
+            //            RenderSystem.blendFuncSeparate(GL40.GL_DST_COLOR,GL40.GL_SRC_COLOR,GL40C.GL_DST_ALPHA,GL40C.GL_SRC_ALPHA);
         }
 
         public static void beginScissor(MatrixStack stack, double x, double y, double endX, double endY) {
@@ -446,7 +464,7 @@ public class Renderer {
 
             Matrix4f matrix = stack.peek().getPositionMatrix();
             BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
-//            RenderSystem.defaultBlendFunc();
+            //            RenderSystem.defaultBlendFunc();
             RenderSystem.enableBlend();
             RenderSystem.disableTexture();
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
@@ -489,7 +507,7 @@ public class Renderer {
             float h = (float) (color >> 8 & 255) / 255.0F;
             float k = (float) (color & 255) / 255.0F;
             BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
-//            RenderSystem.defaultBlendFunc();
+            //            RenderSystem.defaultBlendFunc();
             RenderSystem.enableBlend();
             RenderSystem.disableTexture();
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
@@ -534,7 +552,7 @@ public class Renderer {
             float h = (float) (color >> 8 & 255) / 255.0F;
             float k = (float) (color & 255) / 255.0F;
             BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
-//            RenderSystem.defaultBlendFunc();
+            //            RenderSystem.defaultBlendFunc();
             RenderSystem.enableBlend();
             RenderSystem.disableTexture();
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
@@ -631,7 +649,7 @@ public class Renderer {
             float f1 = end.getAlpha() / 255f;
             Matrix4f m = R3D.getEmptyMatrixStack().peek().getPositionMatrix();
             BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
-////            RenderSystem.defaultBlendFunc();
+            ////            RenderSystem.defaultBlendFunc();
             RenderSystem.enableBlend();
             RenderSystem.disableTexture();
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
@@ -665,7 +683,7 @@ public class Renderer {
             float h = (float) (color >> 8 & 255) / 255.0F;
             float k = (float) (color & 255) / 255.0F;
             BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
-////            RenderSystem.defaultBlendFunc();
+            ////            RenderSystem.defaultBlendFunc();
             RenderSystem.enableBlend();
             RenderSystem.disableTexture();
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
@@ -705,7 +723,7 @@ public class Renderer {
             }
             Matrix4f matrix = matrices.peek().getPositionMatrix();
             BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
-//            RenderSystem.defaultBlendFunc();
+            //            RenderSystem.defaultBlendFunc();
             RenderSystem.enableBlend();
             RenderSystem.disableTexture();
 
@@ -749,7 +767,7 @@ public class Renderer {
         }
 
         public static void renderRoundedQuad(MatrixStack matrices, Color c, double fromX, double fromY, double toX, double toY, double rad, double samples) {
-//            RenderSystem.defaultBlendFunc();
+            //            RenderSystem.defaultBlendFunc();
 
             int color = c.getRGB();
             Matrix4f matrix = matrices.peek().getPositionMatrix();
@@ -775,7 +793,7 @@ public class Renderer {
             float f = c.getAlpha() / 255f;
             Matrix4f m = stack.peek().getPositionMatrix();
             BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
-//            RenderSystem.defaultBlendFunc();
+            //            RenderSystem.defaultBlendFunc();
             RenderSystem.enableBlend();
             RenderSystem.disableTexture();
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
@@ -815,7 +833,6 @@ public class Renderer {
         public static Color modify(Color original, int redOverwrite, int greenOverwrite, int blueOverwrite, int alphaOverwrite) {
             return new Color(redOverwrite == -1 ? original.getRed() : redOverwrite, greenOverwrite == -1 ? original.getGreen() : greenOverwrite, blueOverwrite == -1 ? original.getBlue() : blueOverwrite, alphaOverwrite == -1 ? original.getAlpha() : alphaOverwrite);
         }
-
 
     }
 

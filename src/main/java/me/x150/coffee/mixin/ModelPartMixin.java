@@ -10,11 +10,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(ModelPart.class)
-public class ModelPartMixin {
+@Mixin(ModelPart.class) public class ModelPartMixin {
     @Inject(method = "renderCuboids", at = @At("HEAD"))
     void renderCub(MatrixStack.Entry entry, VertexConsumer vertexConsumer, int light, int overlay, float red, float green, float blue, float alpha, CallbackInfo ci) {
-        if (ModuleRegistry.getByClass(ESP.class).recording)
+        if (ModuleRegistry.getByClass(ESP.class).recording) {
             ModuleRegistry.getByClass(ESP.class).vertexDumps.add(new double[0]);
+        }
     }
 }

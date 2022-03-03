@@ -15,8 +15,7 @@ public class ClientFontRenderer implements FontAdapter {
         return renderer;
     }
 
-    @Override
-    public int drawString(MatrixStack matrices, String text, float x, float y, int color) {
+    @Override public int drawString(MatrixStack matrices, String text, float x, float y, int color) {
         if ((color & 0xfc000000) == 0) {
             color |= 0xff000000;
         }
@@ -27,8 +26,7 @@ public class ClientFontRenderer implements FontAdapter {
         return renderer.drawString(matrices, text, x, y, r, g, b, alpha);
     }
 
-    @Override
-    public int drawString(MatrixStack matrices, String text, double x, double y, int color) {
+    @Override public int drawString(MatrixStack matrices, String text, double x, double y, int color) {
         if ((color & 0xfc000000) == 0) {
             color |= 0xff000000;
         }
@@ -39,13 +37,11 @@ public class ClientFontRenderer implements FontAdapter {
         return renderer.drawString(matrices, text, x, y, r, g, b, alpha);
     }
 
-    @Override
-    public int drawString(MatrixStack matrices, String text, float x, float y, float r, float g, float b, float a) {
+    @Override public int drawString(MatrixStack matrices, String text, float x, float y, float r, float g, float b, float a) {
         return renderer.drawString(matrices, text, x, y, r, g, b, a);
     }
 
-    @Override
-    public int drawCenteredString(MatrixStack matrices, String text, double x, double y, int color) {
+    @Override public int drawCenteredString(MatrixStack matrices, String text, double x, double y, int color) {
         if ((color & 0xfc000000) == 0) {
             color |= 0xff000000;
         }
@@ -56,33 +52,27 @@ public class ClientFontRenderer implements FontAdapter {
         return renderer.drawCenteredString(matrices, text, x, y, r, g, b, alpha);
     }
 
-    @Override
-    public int drawCenteredString(MatrixStack matrices, String text, double x, double y, float r, float g, float b, float a) {
+    @Override public int drawCenteredString(MatrixStack matrices, String text, double x, double y, float r, float g, float b, float a) {
         return renderer.drawCenteredString(matrices, text, x, y, r, g, b, a);
     }
 
-    @Override
-    public float getStringWidth(String text) {
+    @Override public float getStringWidth(String text) {
         return renderer.getStringWidth(text);
     }
 
-    @Override
-    public float getFontHeight() {
+    @Override public float getFontHeight() {
         return renderer.getFontHeight();
     }
 
-    @Override
-    public float getFontHeight(String text) {
+    @Override public float getFontHeight(String text) {
         return renderer.getHeight(text);
     }
 
-    @Override
-    public float getMarginHeight() {
+    @Override public float getMarginHeight() {
         return getFontHeight();
     }
 
-    @Override
-    public void drawString(MatrixStack matrices, String s, float x, float y, int color, boolean dropShadow) {
+    @Override public void drawString(MatrixStack matrices, String s, float x, float y, int color, boolean dropShadow) {
         if ((color & 0xfc000000) == 0) {
             color |= 0xff000000;
         }
@@ -93,18 +83,15 @@ public class ClientFontRenderer implements FontAdapter {
         drawString(matrices, s, x, y, r, g, b, alpha, dropShadow);
     }
 
-    @Override
-    public void drawString(MatrixStack matrices, String s, float x, float y, float r, float g, float b, float a, boolean dropShadow) {
+    @Override public void drawString(MatrixStack matrices, String s, float x, float y, float r, float g, float b, float a, boolean dropShadow) {
         renderer.drawString(matrices, s, x, y, r, g, b, a, dropShadow);
     }
 
-    @Override
-    public String trimStringToWidth(String in, double width) {
+    @Override public String trimStringToWidth(String in, double width) {
         return renderer.trimStringToWidth(in, width);
     }
 
-    @Override
-    public String trimStringToWidth(String in, double width, boolean reverse) {
+    @Override public String trimStringToWidth(String in, double width, boolean reverse) {
         return renderer.trimStringToWidth(in, width, reverse);
     }
 

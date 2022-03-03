@@ -16,14 +16,13 @@ import java.util.Objects;
 
 public class SpeedHud extends HudElement {
     List<Double> speedSaved = new ArrayList<>();
-    Timer update = new Timer();
+    Timer        update     = new Timer();
 
     public SpeedHud() {
         super("Speed", CoffeeClientMain.client.getWindow().getScaledWidth() / 2d - 160 / 2d, CoffeeClientMain.client.getWindow().getScaledHeight() - 40 - 64, 160, 64);
     }
 
-    @Override
-    public void renderIntern(MatrixStack stack) {
+    @Override public void renderIntern(MatrixStack stack) {
         if (ModuleRegistry.getByClass(Hud.class).speed.getValue()) {
             MSAAFramebuffer.use(MSAAFramebuffer.MAX_SAMPLES, () -> {
                 double size = speedSaved.size();
@@ -40,11 +39,7 @@ public class SpeedHud extends HudElement {
 
                 double previous = height - ((speeds.get(0) - min) / max) * height;
                 for (int i = 1; i < speeds.size(); i++) {
-                    double ppr = Math.sin(
-                            Math.toRadians(
-                                    ((double) i / speeds.size() + (System.currentTimeMillis() % 3000) / -3000d) * 360 * 3
-                            )
-                    ) + 1;
+                    double ppr = Math.sin(Math.toRadians(((double) i / speeds.size() + (System.currentTimeMillis() % 3000) / -3000d) * 360 * 3)) + 1;
                     ppr /= 2d;
                     double aDouble = speeds.get(i);
                     double prog = ((aDouble - min) / max);
@@ -60,13 +55,14 @@ public class SpeedHud extends HudElement {
         }
     }
 
-    @Override
-    public void fastTick() {
+    @Override public void fastTick() {
         if (update.hasExpired(50)) { // update when velocity gets updated
             double speedCombined = CoffeeClientMain.client.player.getVelocity().length();
             double last = speedSaved.isEmpty() ? speedCombined : speedSaved.get(speedSaved.size() - 1);
             speedSaved.add((speedCombined + last) / 2d);
-            while (speedSaved.size() > 50) speedSaved.remove(0);
+            while (speedSaved.size() > 50) {
+                speedSaved.remove(0);
+            }
             update.reset();
         }
         super.fastTick();

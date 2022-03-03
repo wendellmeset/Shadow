@@ -11,19 +11,19 @@ import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class RoundButton implements Element, Drawable, Selectable, FastTickable, DoesMSAA {
 
     public static Color STANDARD = new Color(40, 40, 40);
 
     final Runnable onPress;
-    final Color color;
+    final Color    color;
     String text;
     double x, y, width, height;
-    double animProgress = 0;
-    boolean isHovered = false;
-    boolean enabled = true;
+    double  animProgress = 0;
+    boolean isHovered    = false;
+    boolean enabled      = true;
 
     public RoundButton(Color color, double x, double y, double w, double h, String t, Runnable a) {
         this.onPress = a;
@@ -97,8 +97,7 @@ public class RoundButton implements Element, Drawable, Selectable, FastTickable,
         return cx >= x && cx < x + width && cy >= y && cy < y + height;
     }
 
-    @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    @Override public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         isHovered = inBounds(mouseX, mouseY) && isEnabled();
         matrices.push();
         matrices.translate(x + width / 2d, y + height / 2d, 0);
@@ -107,23 +106,21 @@ public class RoundButton implements Element, Drawable, Selectable, FastTickable,
         double originX = -width / 2d;
         double originY = -height / 2d;
         Renderer.R2D.renderRoundedQuad(matrices, color, originX, originY, width / 2d, height / 2d, Math.min(height / 2d, 5), 20);
-        FontRenderers.getRenderer().drawString(matrices, text, -(FontRenderers.getRenderer().getStringWidth(text) + 2) / 2f, -FontRenderers.getRenderer().getMarginHeight() / 2f, isEnabled() ? 0xFFFFFF : 0xAAAAAA, false);
+        FontRenderers.getRenderer().drawString(matrices, text, -(FontRenderers.getRenderer().getStringWidth(text) + 2) / 2f, -FontRenderers.getRenderer()
+                .getMarginHeight() / 2f, isEnabled() ? 0xFFFFFF : 0xAAAAAA, false);
         matrices.pop();
     }
 
-    @Override
-    public SelectionType getType() {
+    @Override public SelectionType getType() {
         return isHovered ? SelectionType.HOVERED : SelectionType.NONE;
     }
 
 
-    @Override
-    public void appendNarrations(NarrationMessageBuilder builder) {
+    @Override public void appendNarrations(NarrationMessageBuilder builder) {
 
     }
 
-    @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    @Override public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (inBounds(mouseX, mouseY) && isEnabled() && button == 0) {
             onPress.run();
             return true;

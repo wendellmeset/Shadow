@@ -6,7 +6,7 @@ import java.io.DataOutput;
 
 public class ByteCounter implements DataOutput {
     private static final ByteCounter instance = new ByteCounter();
-    private long c;
+    private              long        c;
 
     public static ByteCounter instance() {
         return instance;
@@ -20,73 +20,59 @@ public class ByteCounter implements DataOutput {
         c = 0;
     }
 
-    @Override
-    public void write(int b) {
+    @Override public void write(int b) {
         c++;
     }
 
-    @Override
-    public void write(byte[] b) {
+    @Override public void write(byte[] b) {
         c += b.length;
     }
 
-    @Override
-    public void write(byte @NotNull [] b, int off, int len) {
+    @Override public void write(byte @NotNull [] b, int off, int len) {
         c += len;
     }
 
-    @Override
-    public void writeBoolean(boolean v) {
+    @Override public void writeBoolean(boolean v) {
         c++;
     }
 
-    @Override
-    public void writeByte(int v) {
+    @Override public void writeByte(int v) {
         c++;
     }
 
-    @Override
-    public void writeShort(int v) {
+    @Override public void writeShort(int v) {
         c += 2;
     }
 
-    @Override
-    public void writeChar(int v) {
+    @Override public void writeChar(int v) {
         c += 2;
     }
 
-    @Override
-    public void writeInt(int v) {
+    @Override public void writeInt(int v) {
         c += 4;
     }
 
-    @Override
-    public void writeLong(long v) {
+    @Override public void writeLong(long v) {
         c += 8;
     }
 
-    @Override
-    public void writeFloat(float v) {
+    @Override public void writeFloat(float v) {
         c += 4;
     }
 
-    @Override
-    public void writeDouble(double v) {
+    @Override public void writeDouble(double v) {
         c += 8;
     }
 
-    @Override
-    public void writeBytes(String s) {
+    @Override public void writeBytes(String s) {
         c += s.length();
     }
 
-    @Override
-    public void writeChars(String s) {
+    @Override public void writeChars(String s) {
         c += s.length() * 2L;
     }
 
-    @Override
-    public void writeUTF(@NotNull String s) {
+    @Override public void writeUTF(@NotNull String s) {
         c += getUTFLength(s) + 2;
     }
 

@@ -20,8 +20,7 @@ public class Config extends Command {
         super("Config", "Changes configuration of a module", "config", "conf");
     }
 
-    @Override
-    public String[] getSuggestions(String fullCommand, String[] args) {
+    @Override public String[] getSuggestions(String fullCommand, String[] args) {
         if (args.length == 1) {
             return ModuleRegistry.getModules().stream().map(Module::getName).collect(Collectors.toList()).toArray(String[]::new);
         } else if (args.length == 2 && ModuleRegistry.getByName(args[0]) != null) {
@@ -32,8 +31,7 @@ public class Config extends Command {
         return super.getSuggestions(fullCommand, args);
     }
 
-    @Override
-    public void onExecute(String[] args) {
+    @Override public void onExecute(String[] args) {
         if (args.length == 0) {
             message("Syntax: .config (module) <key> <value>");
             message("For a module or key with spaces, use - as a separator");

@@ -23,10 +23,10 @@ import java.util.zip.InflaterOutputStream;
 
 public class ConfigManager {
 
-    static final List<Module> toBeEnabled = new ArrayList<>();
-    static final File CONFIG_FILE;
-    public static boolean loaded = false;
-    public static boolean enabled = false;
+    static final  List<Module> toBeEnabled = new ArrayList<>();
+    static final  File         CONFIG_FILE;
+    public static boolean      loaded      = false;
+    public static boolean      enabled     = false;
 
     static {
         CONFIG_FILE = new File(CoffeeClientMain.BASE, "config.sip");

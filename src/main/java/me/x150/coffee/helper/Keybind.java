@@ -11,7 +11,9 @@ public class Keybind {
     }
 
     public boolean isPressed() {
-        if (keycode < 0) return false;
+        if (keycode < 0) {
+            return false;
+        }
         boolean isActuallyPressed = InputUtil.isKeyPressed(CoffeeClientMain.client.getWindow().getHandle(), keycode);
         return CoffeeClientMain.client.currentScreen == null && isActuallyPressed;
     }

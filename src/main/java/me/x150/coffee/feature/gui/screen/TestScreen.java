@@ -12,24 +12,23 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import org.apache.commons.compress.utils.Lists;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class TestScreen extends Screen implements FastTickable {
     DoubleOptionSliderWidget goopy;
     DoubleOptionSliderWidget curve;
-    double goopyV = 1d;
-    double curveV = 1d;
-    double[] data = new double[100];
-    double[] viewerData = new double[data.length];
-    Timer updater = new Timer();
+    double                   goopyV     = 1d;
+    double                   curveV     = 1d;
+    double[]                 data       = new double[100];
+    double[]                 viewerData = new double[data.length];
+    Timer                    updater    = new Timer();
 
     public TestScreen() {
         super(Text.of(""));
 
     }
 
-    @Override
-    protected void init() {
+    @Override protected void init() {
         DoubleOption dop = new DoubleOption("bruh", 1, 10, 0.01f, gameOptions -> 1d, (gameOptions, aDouble) -> goopyV = aDouble, (gameOptions, doubleOption) -> Text.of("goopy"));
         goopy = new DoubleOptionSliderWidget(CoffeeClientMain.client.options, 5, height - 30, 100, 20, dop, Lists.newArrayList());
         DoubleOption curve = new DoubleOption("curve", 1, 10, 0.01f, gameOptions -> 1d, (gameOptions, aDouble) -> curveV = aDouble, (gameOptions, doubleOption) -> Text.of("real"));
@@ -39,8 +38,7 @@ public class TestScreen extends Screen implements FastTickable {
         super.init();
     }
 
-    @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    @Override public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         renderBackground(matrices);
 
 
@@ -66,8 +64,7 @@ public class TestScreen extends Screen implements FastTickable {
         super.render(matrices, mouseX, mouseY, delta);
     }
 
-    @Override
-    public void onFastTick() {
+    @Override public void onFastTick() {
         if (updater.hasExpired(5000)) {
             updater.reset();
             for (int i = 0; i < data.length; i++) {

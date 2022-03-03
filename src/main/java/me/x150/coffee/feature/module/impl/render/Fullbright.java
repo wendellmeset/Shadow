@@ -15,38 +15,31 @@ public class Fullbright extends Module {
         super("Fullbright", "Allows you to see in complete darkness", ModuleType.RENDER);
     }
 
-    @Override
-    public void tick() {
+    @Override public void tick() {
 
     }
 
-    @Override
-    public void enable() {
+    @Override public void enable() {
         og = MathHelper.clamp(CoffeeClientMain.client.options.gamma, 0, 1);
     }
 
-    @Override
-    public void disable() {
+    @Override public void disable() {
         CoffeeClientMain.client.options.gamma = og;
     }
 
-    @Override
-    public void onFastTick() {
+    @Override public void onFastTick() {
         CoffeeClientMain.client.options.gamma = Transitions.transition(CoffeeClientMain.client.options.gamma, 10, 300);
     }
 
-    @Override
-    public String getContext() {
+    @Override public String getContext() {
         return null;
     }
 
-    @Override
-    public void onWorldRender(MatrixStack matrices) {
+    @Override public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override
-    public void onHudRender() {
+    @Override public void onHudRender() {
 
     }
 }

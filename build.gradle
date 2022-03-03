@@ -30,6 +30,9 @@ dependencies {
 //	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 //	modImplementation ("net.fabricmc.fabric-api:fabric-resource-loader:0.1.0")
 
+	compileOnly 'org.projectlombok:lombok:1.18.22'
+	annotationProcessor 'org.projectlombok:lombok:1.18.22'
+
 	impl(name: "xauthlib-1.0.0")
 	impl("org.java-websocket:Java-WebSocket:1.5.2")
 

@@ -9,23 +9,24 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BlocksmcFlight extends Module {
-    List<AnimatedCircle> circles = new ArrayList<>();
-    int jumpTimeout = 0;
-    double yStart = 0;
+    List<AnimatedCircle> circles     = new ArrayList<>();
+    int                  jumpTimeout = 0;
+    double               yStart      = 0;
 
     public BlocksmcFlight() {
         super("BlocksMCFlight", "Bypasses the blocksmc anticheat and flies", ModuleType.MOVEMENT);
     }
 
-    @Override
-    public void tick() {
+    @Override public void tick() {
         jumpTimeout--;
-        if (jumpTimeout < 0) jumpTimeout = 0;
+        if (jumpTimeout < 0) {
+            jumpTimeout = 0;
+        }
         if (CoffeeClientMain.client.player.getPos().y < yStart && jumpTimeout == 0) {
             CoffeeClientMain.client.player.jump();
             AnimatedCircle ac = new AnimatedCircle();
@@ -35,23 +36,19 @@ public class BlocksmcFlight extends Module {
         }
     }
 
-    @Override
-    public void enable() {
+    @Override public void enable() {
         yStart = CoffeeClientMain.client.player.getPos().y;
     }
 
-    @Override
-    public void disable() {
+    @Override public void disable() {
 
     }
 
-    @Override
-    public String getContext() {
+    @Override public String getContext() {
         return null;
     }
 
-    @Override
-    public void onWorldRender(MatrixStack matrices) {
+    @Override public void onWorldRender(MatrixStack matrices) {
 
         Vec3d ppos = Utils.getInterpolatedEntityPosition(CoffeeClientMain.client.player);
         Vec3d renderPos = new Vec3d(ppos.x, yStart, ppos.z);
@@ -62,24 +59,22 @@ public class BlocksmcFlight extends Module {
         }
     }
 
-    @Override
-    public void onFastTick() {
+    @Override public void onFastTick() {
         for (AnimatedCircle circle : circles) {
             circle.animProg += 0.005;
         }
         super.onFastTick();
     }
 
-    @Override
-    public void onHudRender() {
+    @Override public void onHudRender() {
 
     }
 
     static class AnimatedCircle {
         double animProg = 0;
-        Vec3d spawnPos;
-        Color a = new Color(200, 200, 200);
-        Color b = new Color(200, 200, 200, 0);
+        Vec3d  spawnPos;
+        Color  a        = new Color(200, 200, 200);
+        Color  b        = new Color(200, 200, 200, 0);
 
         public void render(MatrixStack stack) {
             double progI = animProg * 2;

@@ -5,7 +5,7 @@
 
 package me.x150.coffee.helper.util;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class Transitions {
 

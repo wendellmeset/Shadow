@@ -22,12 +22,10 @@ import java.util.Objects;
 
 public class GodBridge extends Module {
 
-    final float mOffset = 0.20f;
-    final Direction[] allowedSides = new Direction[]{Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
+    final float          mOffset       = 0.20f;
+    final Direction[]    allowedSides  = new Direction[]{Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
     //    final BooleanValue courseCorrect = (BooleanValue) this.config.create("Course correct", true).description("Prevent you from falling off the track by accident");
-    final BooleanSetting courseCorrect = this.config.create(new BooleanSetting.Builder(true)
-            .name("Course correct")
-            .description("Prevents you from accidentally falling off a side of the bridge")
+    final BooleanSetting courseCorrect = this.config.create(new BooleanSetting.Builder(true).name("Course correct").description("Prevents you from accidentally falling off a side of the bridge")
             .get());
     Notification isReady = null;
 
@@ -39,8 +37,7 @@ public class GodBridge extends Module {
         return Objects.requireNonNull(client.player).getPitch() > 82;
     }
 
-    @Override
-    public void tick() {
+    @Override public void tick() {
         // Notification.create(5000, "GodBridge", "Look down, as you would normally while godbridging to start");
         if (!isReady()) {
             if (isReady == null) {
@@ -56,34 +53,28 @@ public class GodBridge extends Module {
         }
     }
 
-    @Override
-    public void enable() {
+    @Override public void enable() {
     }
 
-    @Override
-    public void disable() {
+    @Override public void disable() {
         if (isReady != null) {
             isReady.duration = 0;
         }
     }
 
-    @Override
-    public String getContext() {
+    @Override public String getContext() {
         return isReady() ? "Ready" : "Not ready";
     }
 
-    @Override
-    public void onWorldRender(MatrixStack matrices) {
+    @Override public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override
-    public void onHudRender() {
+    @Override public void onHudRender() {
 
     }
 
-    @Override
-    public void onFastTick() {
+    @Override public void onFastTick() {
         if (!isReady()) {
             return;
         }

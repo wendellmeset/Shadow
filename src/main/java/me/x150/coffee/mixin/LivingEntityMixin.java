@@ -21,10 +21,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Objects;
 
-@Mixin(LivingEntity.class)
-public class LivingEntityMixin {
-    @Inject(method = "onAttacking", at = @At("HEAD"))
-    public void atomic_setLastAttacked(Entity target, CallbackInfo ci) {
+@Mixin(LivingEntity.class) public class LivingEntityMixin {
+    @Inject(method = "onAttacking", at = @At("HEAD")) public void atomic_setLastAttacked(Entity target, CallbackInfo ci) {
         if (this.equals(CoffeeClientMain.client.player) && target instanceof LivingEntity entity) {
             AttackManager.registerLastAttacked(entity);
         }
@@ -42,8 +40,7 @@ public class LivingEntityMixin {
     //        }
     //        return value;
     //    }
-    @Inject(method = "canWalkOnFluid", at = @At("HEAD"), cancellable = true)
-    public void atomic_overwriteCanWalkOnFluid(Fluid fluid, CallbackInfoReturnable<Boolean> cir) {
+    @Inject(method = "canWalkOnFluid", at = @At("HEAD"), cancellable = true) public void atomic_overwriteCanWalkOnFluid(Fluid fluid, CallbackInfoReturnable<Boolean> cir) {
         if (CoffeeClientMain.client.player == null) {
             return;
         }
@@ -65,8 +62,7 @@ public class LivingEntityMixin {
         }
     }
 
-    @Inject(method = "pushAwayFrom", at = @At("HEAD"), cancellable = true)
-    public void atomic_cancelPush(Entity entity, CallbackInfo ci) {
+    @Inject(method = "pushAwayFrom", at = @At("HEAD"), cancellable = true) public void atomic_cancelPush(Entity entity, CallbackInfo ci) {
         if (this.equals(CoffeeClientMain.client.player)) {
             if (Objects.requireNonNull(ModuleRegistry.getByClass(NoPush.class)).isEnabled()) {
                 ci.cancel();
@@ -74,8 +70,7 @@ public class LivingEntityMixin {
         }
     }
 
-    @Redirect(method = "jump", at = @At(value = "INVOKE", target = "net/minecraft/entity/LivingEntity.getYaw()F"))
-    private float atomic_overwriteFreelookYaw(LivingEntity instance) {
+    @Redirect(method = "jump", at = @At(value = "INVOKE", target = "net/minecraft/entity/LivingEntity.getYaw()F")) private float atomic_overwriteFreelookYaw(LivingEntity instance) {
         if (instance.equals(CoffeeClientMain.client.player) && ModuleRegistry.getByClass(FreeLook.class).isEnabled()) {
             return ModuleRegistry.getByClass(FreeLook.class).newyaw;
         }

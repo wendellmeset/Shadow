@@ -9,22 +9,24 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import me.x150.coffee.CoffeeClientMain;
 import me.x150.coffee.feature.gui.clickgui.ClickGUI;
 import me.x150.coffee.helper.font.FontRenderers;
+import me.x150.coffee.helper.render.ClipStack;
+import me.x150.coffee.helper.render.Rectangle;
 import me.x150.coffee.helper.render.Renderer;
 import me.x150.coffee.helper.util.Transitions;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 public class NotificationRenderer {
 
-    public static final List<Notification> notifications = new ArrayList<>();
+    public static final List<Notification> notifications       = new ArrayList<>();
     public static final List<Notification> topBarNotifications = new ArrayList<>();
-    static Color topBg = new Color(28, 28, 28, 200);
-    static Color rightBg = new Color(28, 28, 28);
+    static              Color              topBg               = new Color(28, 28, 28, 200);
+    static              Color              rightBg             = new Color(28, 28, 28);
 
     public static void render() {
         renderSide();
@@ -87,7 +89,8 @@ public class NotificationRenderer {
             float width = FontRenderers.getRenderer().getStringWidth(contents) + 5;
             width = width / 2f;
             width = Math.max(minWidth, width);
-            Renderer.R2D.beginScissor(Renderer.R3D.getEmptyMatrixStack(), notification.renderPosX - width * notification.animationProgress, notification.renderPosY, notification.renderPosX + width * notification.animationProgress + 1, notification.renderPosY + height + 1);
+            ClipStack.globalInstance.addWindow(Renderer.R3D.getEmptyMatrixStack(), new Rectangle(notification.renderPosX - width * notification.animationProgress, notification.renderPosY, notification.renderPosX + width * notification.animationProgress + 1, notification.renderPosY + height + 1));
+            //Renderer.R2D.beginScissor(Renderer.R3D.getEmptyMatrixStack(), notification.renderPosX - width * notification.animationProgress, notification.renderPosY, notification.renderPosX + width * notification.animationProgress + 1, notification.renderPosY + height + 1);
             Renderer.R2D.renderQuad(ms, topBg, notification.renderPosX - width, notification.renderPosY, notification.renderPosX + width + 1, notification.renderPosY + height);
             FontRenderers.getRenderer().drawCenteredString(ms, contents, notification.renderPosX, notification.renderPosY + height / 2f - FontRenderers.getRenderer().getFontHeight() / 2f, 0xFFFFFF);
             double timeRemainingInv = 1 - timeRemaining;
@@ -104,7 +107,8 @@ public class NotificationRenderer {
                 Renderer.R2D.renderQuad(ms, ClickGUI.theme.getActive(), notification.renderPosX - width, notification.renderPosY + height - 1, notification.renderPosX + width + 1, notification.renderPosY + height);
                 Renderer.R2D.renderQuad(ms, ClickGUI.theme.getAccent(), notification.renderPosX - width, notification.renderPosY + height - 1, notification.renderPosX - width + ((width + 1) * 2 * timeRemainingInv), notification.renderPosY + height);
             }
-            Renderer.R2D.endScissor();
+            ClipStack.globalInstance.popWindow(Renderer.R3D.getEmptyMatrixStack());
+            //Renderer.R2D.endScissor();
             currentYOffset += height + 3;
         }
     }
@@ -116,8 +120,8 @@ public class NotificationRenderer {
         int baseY = CoffeeClientMain.client.getWindow().getScaledHeight() - 10;
         long c = System.currentTimeMillis();
         for (Notification notification : new ArrayList<>(notifications)) {
-//            double timeRemaining = Math.abs(c - notification.creationDate - notification.duration) / (double) notification.duration;
-//            timeRemaining = MathHelper.clamp(timeRemaining, 0, 1);
+            //            double timeRemaining = Math.abs(c - notification.creationDate - notification.duration) / (double) notification.duration;
+            //            timeRemaining = MathHelper.clamp(timeRemaining, 0, 1);
             boolean notificationExpired = notification.creationDate + notification.duration < c;
             int notifHeight = (int) (2 + ((notification.contents.length + (notification.title.isEmpty() ? 0 : 1)) * FontRenderers.getRenderer().getFontHeight()));
             notifHeight = Math.max(notifHeight, 32);

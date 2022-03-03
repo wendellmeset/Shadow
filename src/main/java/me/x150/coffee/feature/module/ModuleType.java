@@ -8,10 +8,11 @@ package me.x150.coffee.feature.module;
 import me.x150.coffee.helper.Texture;
 
 public enum ModuleType {
-    RENDER("Render", new Texture("icons/render")), MOVEMENT("Movement", new Texture("icons/move")), MISC("Miscellaneous", new Texture("icons/misc")), WORLD("World", new Texture("icons/world")), EXPLOIT("Exploit", new Texture("icons/exploit")), FUN("Fun", new Texture("icons/fun")), COMBAT("Combat", new Texture("icons/combat"));
+    RENDER("Render", new Texture("icons/render")), MOVEMENT("Movement", new Texture("icons/move")), MISC("Miscellaneous", new Texture("icons/misc")), WORLD("World", new Texture("icons/world")),
+    EXPLOIT("Exploit", new Texture("icons/exploit")), FUN("Fun", new Texture("icons/fun")), COMBAT("Combat", new Texture("icons/combat"));
 
 
-    final String name;
+    final String  name;
     final Texture tex;
 
     ModuleType(String n, Texture tex) {

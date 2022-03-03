@@ -23,8 +23,7 @@ public class DoubleSettingEditor extends ConfigBase<DoubleSetting> {
         configValue.setValue(Utils.Math.roundToDecimal(perIn * (configValue.getMax() - configValue.getMin()) + configValue.getMin(), configValue.getPrecision()));
     }
 
-    @Override
-    public boolean clicked(double x, double y, int button) {
+    @Override public boolean clicked(double x, double y, int button) {
         if (inBounds(x, y)) {
             clicked = true;
             if (button == 0) {
@@ -35,22 +34,19 @@ public class DoubleSettingEditor extends ConfigBase<DoubleSetting> {
         return false;
     }
 
-    @Override
-    public boolean dragged(double x, double y, double deltaX, double deltaY, int button) {
+    @Override public boolean dragged(double x, double y, double deltaX, double deltaY, int button) {
         if (clicked) {
             handleClick(x);
         }
         return false;
     }
 
-    @Override
-    public boolean released() {
+    @Override public boolean released() {
         clicked = false;
         return false;
     }
 
-    @Override
-    public boolean keyPressed(int keycode, int modifiers) {
+    @Override public boolean keyPressed(int keycode, int modifiers) {
         return false;
     }
 
@@ -58,8 +54,7 @@ public class DoubleSettingEditor extends ConfigBase<DoubleSetting> {
         return MathHelper.clamp((configValue.getValue() - configValue.getMin()) / (configValue.getMax() - configValue.getMin()), 0, 1);
     }
 
-    @Override
-    public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
+    @Override public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
         Theme theme = ClickGUI.theme;
         FontRenderers.getRenderer().drawString(matrices, configValue.name, x, y, 0xFFFFFF);
         String t = configValue.getValue().toString();
@@ -71,13 +66,11 @@ public class DoubleSettingEditor extends ConfigBase<DoubleSetting> {
         Renderer.R2D.renderCircle(matrices, theme.getAccent(), x + width * getPer(), h + 9 / 2d, 2, 10);
     }
 
-    @Override
-    public void tickAnim() {
+    @Override public void tickAnim() {
 
     }
 
-    @Override
-    public boolean charTyped(char c, int mods) {
+    @Override public boolean charTyped(char c, int mods) {
         return false;
     }
 }

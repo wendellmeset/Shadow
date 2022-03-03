@@ -23,24 +23,28 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec2f;
 import org.lwjgl.glfw.GLFW;
 
-import java.awt.*;
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.*;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ClickGUI extends Screen implements FastTickable {
-    public static final Theme theme = new SipoverV1();
-    static Color idk = new Color(20, 20, 30, 255);
-    private static ClickGUI instance;
-    final List<Element> elements = new ArrayList<>();
-    final ParticleRenderer real = new ParticleRenderer(100);
-    public String searchTerm = "";
+    public static final Theme            theme      = new SipoverV1();
+    static              Color            idk        = new Color(20, 20, 30, 255);
+    private static      ClickGUI         instance;
+    final               List<Element>    elements   = new ArrayList<>();
+    final               ParticleRenderer real       = new ParticleRenderer(100);
+    public              String           searchTerm = "";
     String desc = null;
     double descX, descY;
-    double scroll = 0;
-    double trackedScroll = 0;
-    double introAnimation = 0;
-    boolean closing = false;
+    double  scroll         = 0;
+    double  trackedScroll  = 0;
+    double  introAnimation = 0;
+    boolean closing        = false;
 
     private ClickGUI() {
         super(Text.of(""));
@@ -60,22 +64,19 @@ public class ClickGUI extends Screen implements FastTickable {
         return instance;
     }
 
-    @Override
-    protected void init() {
+    @Override protected void init() {
         closing = false;
         introAnimation = 0;
         //        this.real.particles.clear();
         this.real.shouldAdd = true;
     }
 
-    @Override
-    public void onClose() {
+    @Override public void onClose() {
         closing = true;
         this.real.shouldAdd = false;
     }
 
-    @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
+    @Override public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
         scroll -= amount * 10;
         double bottomMost = 0;
         for (Element element : elements) {
@@ -100,7 +101,8 @@ public class ClickGUI extends Screen implements FastTickable {
         double x = 5;
         double y = 5;
         double tallestInTheRoom = 0;
-        for (ModuleType value : Arrays.stream(ModuleType.values()).sorted(Comparator.comparingLong(value -> -ModuleRegistry.getModules().stream().filter(module -> module.getModuleType() == value).count())).collect(Collectors.toList())) {
+        for (ModuleType value : Arrays.stream(ModuleType.values())
+                .sorted(Comparator.comparingLong(value -> -ModuleRegistry.getModules().stream().filter(module -> module.getModuleType() == value).count())).collect(Collectors.toList())) {
             CategoryDisplay cd = new CategoryDisplay(x, y, value);
             tallestInTheRoom = Math.max(tallestInTheRoom, cd.getHeight());
             x += cd.getWidth() + 5;
@@ -118,8 +120,7 @@ public class ClickGUI extends Screen implements FastTickable {
 
     }
 
-    @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    @Override public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         if (closing && introAnimation == 0) {
             Objects.requireNonNull(client).setScreen(null);
             return;
@@ -158,7 +159,7 @@ public class ClickGUI extends Screen implements FastTickable {
         super.render(matrices, mouseX, mouseY, delta);
         if (desc != null) {
 
-//            double width = FontRenderers.getNormal().getStringWidth(desc);
+            //            double width = FontRenderers.getNormal().getStringWidth(desc);
             double width = 0;
             List<String> text = Arrays.stream(desc.split("\n")).map(s -> s = s.trim()).collect(Collectors.toList());
             for (String s : text) {
@@ -178,8 +179,7 @@ public class ClickGUI extends Screen implements FastTickable {
         }
     }
 
-    @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    @Override public boolean mouseClicked(double mouseX, double mouseY, int button) {
         mouseY += trackedScroll;
         for (Element element : new ArrayList<>(elements)) {
             if (element.clicked(mouseX, mouseY, button)) {
@@ -191,8 +191,7 @@ public class ClickGUI extends Screen implements FastTickable {
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
-    @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+    @Override public boolean mouseReleased(double mouseX, double mouseY, int button) {
         mouseY += trackedScroll;
         for (Element element : elements) {
             element.released();
@@ -200,8 +199,7 @@ public class ClickGUI extends Screen implements FastTickable {
         return super.mouseReleased(mouseX, mouseY, button);
     }
 
-    @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+    @Override public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
         mouseY += trackedScroll;
         for (Element element : elements) {
             if (element.dragged(mouseX, mouseY, deltaX, deltaY, button)) {
@@ -211,8 +209,7 @@ public class ClickGUI extends Screen implements FastTickable {
         return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
     }
 
-    @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+    @Override public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         for (Element element : elements) {
             if (element.keyPressed(keyCode, modifiers)) {
                 return true;
@@ -228,13 +225,11 @@ public class ClickGUI extends Screen implements FastTickable {
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
-    @Override
-    public boolean isPauseScreen() {
+    @Override public boolean isPauseScreen() {
         return false;
     }
 
-    @Override
-    public void onFastTick() {
+    @Override public void onFastTick() {
         double d = 0.03;
         if (closing) {
             d *= -1;
@@ -247,10 +242,11 @@ public class ClickGUI extends Screen implements FastTickable {
         }
     }
 
-    @Override
-    public boolean charTyped(char chr, int modifiers) {
+    @Override public boolean charTyped(char chr, int modifiers) {
         for (Element element : elements) {
-            if (element.charTyped(chr, modifiers)) return true;
+            if (element.charTyped(chr, modifiers)) {
+                return true;
+            }
         }
         searchTerm += chr;
         return false;

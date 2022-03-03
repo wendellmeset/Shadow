@@ -19,8 +19,7 @@ public class EdgeJump extends Module {
         super("EdgeJump", "Jumps automatically at the edges of blocks", ModuleType.MOVEMENT);
     }
 
-    @Override
-    public void tick() {
+    @Override public void tick() {
         if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.world == null) {
             return;
         }
@@ -36,28 +35,23 @@ public class EdgeJump extends Module {
         }
     }
 
-    @Override
-    public void enable() {
+    @Override public void enable() {
 
     }
 
-    @Override
-    public void disable() {
+    @Override public void disable() {
 
     }
 
-    @Override
-    public String getContext() {
+    @Override public String getContext() {
         return null;
     }
 
-    @Override
-    public void onWorldRender(MatrixStack matrices) {
+    @Override public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override
-    public void onHudRender() {
+    @Override public void onHudRender() {
 
     }
 }

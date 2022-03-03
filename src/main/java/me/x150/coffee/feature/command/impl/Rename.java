@@ -17,16 +17,14 @@ public class Rename extends Command {
         super("Rename", "Renames an item (requires creative)", "rename", "rn", "name");
     }
 
-    @Override
-    public String[] getSuggestions(String fullCommand, String[] args) {
+    @Override public String[] getSuggestions(String fullCommand, String[] args) {
         if (args.length == 1) {
             return new String[]{"(new item name)"};
         }
         return super.getSuggestions(fullCommand, args);
     }
 
-    @Override
-    public void onExecute(String[] args) {
+    @Override public void onExecute(String[] args) {
         if (args.length == 0) {
             error("I need a new name dude");
             error("example: rename &c&lthe &afunny");

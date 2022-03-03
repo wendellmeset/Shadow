@@ -11,7 +11,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
-import java.awt.*;
+import java.awt.Color;
 
 import static me.x150.coffee.feature.module.impl.render.TargetHud.GREEN;
 import static me.x150.coffee.feature.module.impl.render.TargetHud.RED;
@@ -22,13 +22,11 @@ public class NameTags extends Module {
     }
 
 
-    @Override
-    public void tick() {
+    @Override public void tick() {
 
     }
 
-    @Override
-    public void enable() {
+    @Override public void enable() {
 
     }
 
@@ -46,7 +44,7 @@ public class NameTags extends Module {
                 float width = fontWidth;
                 width = Math.max(width, 60);
                 Renderer.R2D.renderRoundedQuad(stack1, new Color(0, 0, 0, 200), actual.x - width / 2d, actual.y, actual.x + width / 2d, actual.y + labelHeight, 3, 20);
-//                FontRenderers.getNormal().drawCenteredString(stack,t,actual.x,actual.y+2,0xFFFFFF);
+                //                FontRenderers.getNormal().drawCenteredString(stack,t,actual.x,actual.y+2,0xFFFFFF);
                 FontRenderers.getRenderer().drawString(stack1, t, actual.x - fontWidth / 2d + 2, actual.y + 2, 0xFFFFFF);
                 Renderer.R2D.renderRoundedQuad(stack1, new Color(60, 60, 60, 255), actual.x - width / 2d + 2, actual.y + labelHeight - 2 - healthHeight, actual.x + width / 2d - 2, actual.y + labelHeight - 2, healthHeight / 2d, 10);
                 float health = entity.getHealth();
@@ -60,23 +58,19 @@ public class NameTags extends Module {
         }
     }
 
-    @Override
-    public void disable() {
+    @Override public void disable() {
 
     }
 
-    @Override
-    public String getContext() {
+    @Override public String getContext() {
         return null;
     }
 
-    @Override
-    public void onWorldRender(MatrixStack matrices) {
+    @Override public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override
-    public void onHudRender() {
+    @Override public void onHudRender() {
 
     }
 }
