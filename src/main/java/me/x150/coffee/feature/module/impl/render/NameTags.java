@@ -11,7 +11,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
-import java.awt.Color;
+import java.awt.*;
 
 import static me.x150.coffee.feature.module.impl.render.TargetHud.GREEN;
 import static me.x150.coffee.feature.module.impl.render.TargetHud.RED;
@@ -22,11 +22,13 @@ public class NameTags extends Module {
     }
 
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
 
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
 
     }
 
@@ -58,19 +60,23 @@ public class NameTags extends Module {
         }
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
 
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return null;
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
 
     }
 }

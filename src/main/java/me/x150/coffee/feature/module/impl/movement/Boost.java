@@ -17,18 +17,20 @@ public class Boost extends Module {
 
     //    final SliderValue strength = (SliderValue) this.config.create("Strength", 3, 0.1, 10, 1).description("The strength to boost you by");
     //    final MultiValue  mode     = (MultiValue) this.config.create("Mode", "add", "add", "overwrite").description("The mode of which to affect your velocity by");
-    final DoubleSetting     strength = this.config.create(new DoubleSetting.Builder(3).name("Strength").description("How much to boost you with").min(0.1).max(10).precision(1).get());
-    final EnumSetting<Mode> mode     = this.config.create(new EnumSetting.Builder<>(Mode.Add).name("Mode").description("How to boost you").get());
+    final DoubleSetting strength = this.config.create(new DoubleSetting.Builder(3).name("Strength").description("How much to boost you with").min(0.1).max(10).precision(1).get());
+    final EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.Add).name("Mode").description("How to boost you").get());
 
     public Boost() {
         super("Boost", "Boosts you into the air", ModuleType.MOVEMENT);
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
 
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
         if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.getNetworkHandler() == null) {
             return;
         }
@@ -41,19 +43,23 @@ public class Boost extends Module {
         }
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
 
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return null;
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
 
     }
 

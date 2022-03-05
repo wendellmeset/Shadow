@@ -19,16 +19,16 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class AutoLavacast extends Module {
 
     static boolean moveForwards = false;
     EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.Bypass).name("Mode").description("How to place and move. Bypass is slow but looks legit, fast is VERY speedy").get());
 
-    Input    original;
-    Timer    timer = new Timer();
-    Vec3i    incr;
+    Input original;
+    Timer timer = new Timer();
+    Vec3i incr;
     BlockPos start;
 
     public AutoLavacast() {
@@ -49,7 +49,8 @@ public class AutoLavacast extends Module {
         return null;
     }
 
-    @Override public void onFastTick() {
+    @Override
+    public void onFastTick() {
         if (mode.getValue() == Mode.Fast && !timer.hasExpired(100)) {
             return;
         }
@@ -95,11 +96,13 @@ public class AutoLavacast extends Module {
         }
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
 
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
         if (original == null) {
             original = CoffeeClientMain.client.player.input;
         }
@@ -110,15 +113,18 @@ public class AutoLavacast extends Module {
         start = CoffeeClientMain.client.player.getBlockPos();
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
         CoffeeClientMain.client.player.input = original;
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return null;
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
         BlockPos next = getNextPosition();
         Renderer.R3D.renderOutline(Vec3d.of(start), new Vec3d(1, 0.01, 1), Color.RED, matrices);
         if (next != null) {
@@ -126,7 +132,8 @@ public class AutoLavacast extends Module {
         }
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
 
     }
 
@@ -135,7 +142,8 @@ public class AutoLavacast extends Module {
     }
 
     static class ListenInput extends Input {
-        @Override public void tick(boolean slowDown) {
+        @Override
+        public void tick(boolean slowDown) {
             this.movementForward = moveForwards ? 1 : 0;
         }
     }

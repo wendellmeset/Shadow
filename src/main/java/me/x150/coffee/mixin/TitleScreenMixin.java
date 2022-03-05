@@ -11,12 +11,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Objects;
 
-@Mixin(TitleScreen.class) public class TitleScreenMixin extends Screen {
+@Mixin(TitleScreen.class)
+public class TitleScreenMixin extends Screen {
     public TitleScreenMixin() {
         super(Text.of(""));
     }
 
-    @Inject(method = "init", at = @At("RETURN")) void real(CallbackInfo ci) {
+    @Inject(method = "init", at = @At("RETURN"))
+    void real(CallbackInfo ci) {
         Objects.requireNonNull(client).setScreen(LoadingScreen.instance());
     }
 }

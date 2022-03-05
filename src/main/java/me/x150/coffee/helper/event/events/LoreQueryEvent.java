@@ -13,7 +13,7 @@ import java.util.List;
 
 public class LoreQueryEvent extends NonCancellableEvent {
 
-    final ItemStack  source;
+    final ItemStack source;
     final List<Text> lore;
 
     public LoreQueryEvent(ItemStack stack, List<Text> currentLore) {

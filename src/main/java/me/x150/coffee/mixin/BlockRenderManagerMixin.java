@@ -16,7 +16,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Random;
 
-@Mixin(BlockRenderManager.class) public class BlockRenderManagerMixin {
+@Mixin(BlockRenderManager.class)
+public class BlockRenderManagerMixin {
 
     @Inject(method = "renderBlock", at = @At("HEAD"), cancellable = true)
     public void atomic_dispatchRenderBlock(BlockState state, BlockPos pos, BlockRenderView world, MatrixStack matrix, VertexConsumer vertexConsumer, boolean cull, Random random, CallbackInfoReturnable<Boolean> cir) {

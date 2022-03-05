@@ -12,11 +12,16 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-@Mixin(CustomPayloadC2SPacket.class) public interface ICustomPayloadC2SPacketAccessor {
+@Mixin(CustomPayloadC2SPacket.class)
+public interface ICustomPayloadC2SPacketAccessor {
 
-    @Accessor("channel") Identifier getChannel();
+    @Accessor("channel")
+    Identifier getChannel();
 
-    @Accessor("data") PacketByteBuf getData();
+    @Accessor("data")
+    PacketByteBuf getData();
 
-    @Mutable @Accessor("data") void setData(PacketByteBuf newValue);
+    @Mutable
+    @Accessor("data")
+    void setData(PacketByteBuf newValue);
 }

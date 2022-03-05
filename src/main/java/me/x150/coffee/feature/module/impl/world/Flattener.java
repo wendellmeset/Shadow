@@ -19,34 +19,35 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
 public class Flattener extends Module {
-    static Color             breakCol        = new Color(31, 232, 148, 70);
-    final  List<RenderEntry> renders         = new ArrayList<>();
-    final  double            range           = 8;
+    static Color breakCol = new Color(31, 232, 148, 70);
+    final List<RenderEntry> renders = new ArrayList<>();
+    final double range = 8;
     //    final BooleanValue makeSame        = (BooleanValue) this.config.create("Make same", false).description("Make the floor the block you're holding, no matter what.");
     //    final BooleanValue      asyncPlaceBreak = (BooleanValue) this.config.create("Async place / break", true).description("Whether or not to place blocks and break them at the same time");
     //    final BooleanValue      breakSides      = (BooleanValue) this.config.create("Break sides", true).description("Whether or not to clear the area so you can walk on it");
     //    final SliderValue       amountPerTick   = (SliderValue) this.config.create("Amount Per Tick", 3, 1, 20, 0).description("How many actions to do / tick");
-    final  BooleanSetting    makeSame        = this.config.create(new BooleanSetting.Builder(false).name("Make same").description("Makes the floor the same material you're holding").get());
-    final  BooleanSetting    asyncPlaceBreak = this.config.create(new BooleanSetting.Builder(true).name("Async place / break").description("Does block breaking and placing at the same time").get());
-    final  BooleanSetting    breakSides      = this.config.create(new BooleanSetting.Builder(true).name("Break sides").description("Clears the area 3 blocks up so you can walk into it").get());
-    final  DoubleSetting     amountPerTick   = this.config.create(new DoubleSetting.Builder(3).name("Amount per tick").description("How many actions to do per tick").min(1).max(20).precision(0)
+    final BooleanSetting makeSame = this.config.create(new BooleanSetting.Builder(false).name("Make same").description("Makes the floor the same material you're holding").get());
+    final BooleanSetting asyncPlaceBreak = this.config.create(new BooleanSetting.Builder(true).name("Async place / break").description("Does block breaking and placing at the same time").get());
+    final BooleanSetting breakSides = this.config.create(new BooleanSetting.Builder(true).name("Break sides").description("Clears the area 3 blocks up so you can walk into it").get());
+    final DoubleSetting amountPerTick = this.config.create(new DoubleSetting.Builder(3).name("Amount per tick").description("How many actions to do per tick").min(1).max(20).precision(0)
             .get());
-    Vec3d   origin             = null;
-    int     prevSlot           = -1;
+    Vec3d origin = null;
+    int prevSlot = -1;
     boolean toBreakEmptyBefore = false;
 
     public Flattener() {
         super("Flattener", "Makes everything around you flat, good for making a floor or base", ModuleType.WORLD);
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
         Vec3d eyep = Objects.requireNonNull(client.player).getEyePos();
         double rangeMid = range / 2d;
         List<BlockPos> toPlace = new ArrayList<>();
@@ -125,26 +126,31 @@ public class Flattener extends Module {
         }
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
         origin = Objects.requireNonNull(client.player).getPos();
         prevSlot = client.player.getInventory().selectedSlot;
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
 
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return null;
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
         for (RenderEntry render : renders) {
             Renderer.R3D.renderFilled(Vec3d.of(render.pos()), render.dimensions(), render.color(), matrices);
         }
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
 
     }
 

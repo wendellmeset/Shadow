@@ -27,13 +27,14 @@ import java.util.Objects;
 public class BlockTagViewer extends Module {
 
     List<Entry> entries = new ArrayList<>();
-    float       mw      = 0;
+    float mw = 0;
 
     public BlockTagViewer() {
         super("BlockTagViewer", "Shows data about the viewed block", ModuleType.WORLD);
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
         HitResult hr = client.crosshairTarget;
         if (hr instanceof BlockHitResult bhr) {
             BlockPos bp = bhr.getBlockPos();
@@ -57,22 +58,27 @@ public class BlockTagViewer extends Module {
         }
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
 
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return null;
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override public void onFastTick() {
+    @Override
+    public void onFastTick() {
         for (Entry entry : new ArrayList<>(entries)) {
             double c = 0.05;
             if (entry.removed) {
@@ -90,7 +96,8 @@ public class BlockTagViewer extends Module {
         return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
         List<Entry> l = new ArrayList<>(entries);
         l.sort(Comparator.comparingDouble(value -> -FontRenderers.getRenderer().getStringWidth(value.v)));
         entries = l;
@@ -130,9 +137,9 @@ public class BlockTagViewer extends Module {
 
     static class Entry {
 
-        public final String  v;
-        public       double  animProg = 0;
-        public       boolean removed  = false;
+        public final String v;
+        public double animProg = 0;
+        public boolean removed = false;
 
         public Entry(String v) {
             this.v = v;

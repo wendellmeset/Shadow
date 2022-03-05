@@ -22,11 +22,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Nuker extends Module {
@@ -38,20 +34,20 @@ public class Nuker extends Module {
     //    final BooleanValue ignoreXray        = (BooleanValue) this.config.create("Ignore xray", true).description("Whether or not to ignore xray blocks");
     //    final MultiValue     mode              = (MultiValue) this.config.create("Mode", "Everything", "Everything", "Torches", "Fire", "Wood", "Grass").description("What to nuke");
     //    final BooleanValue   autoTool          = (BooleanValue) this.config.create("Auto tool", true).description("Automatically picks the best tool from your inventory, for the block being broken");
-    final Block[]        WOOD    = new Block[]{Blocks.ACACIA_LOG, Blocks.BIRCH_LOG, Blocks.DARK_OAK_LOG, Blocks.JUNGLE_LOG, Blocks.OAK_LOG, Blocks.SPRUCE_LOG, Blocks.STRIPPED_ACACIA_LOG,
+    final Block[] WOOD = new Block[]{Blocks.ACACIA_LOG, Blocks.BIRCH_LOG, Blocks.DARK_OAK_LOG, Blocks.JUNGLE_LOG, Blocks.OAK_LOG, Blocks.SPRUCE_LOG, Blocks.STRIPPED_ACACIA_LOG,
             Blocks.STRIPPED_BIRCH_LOG, Blocks.STRIPPED_DARK_OAK_LOG, Blocks.STRIPPED_JUNGLE_LOG, Blocks.STRIPPED_OAK_LOG, Blocks.STRIPPED_SPRUCE_LOG};
     //    final MultiValue     mv                = (MultiValue) this.config.create("Sort", "Out -> In", "Out -> In", "In -> Out", "Strength", "Random").description("How to sort");
     //    final BooleanValue   ignoreUnbreakable = (BooleanValue) this.config.create("Ignore unbreakable", true).description("Ignore survival unbreakable blocks");
 
-    final DoubleSetting         range             = this.config.create(new DoubleSetting.Builder(4).name("Range").description("How far to break blocks").min(0).max(4).precision(1).get());
-    final DoubleSetting         blocksPerTick     = this.config.create(new DoubleSetting.Builder(1).name("Blocks per tick").description("How many blocks to break per tick").min(1).max(20).precision(0)
+    final DoubleSetting range = this.config.create(new DoubleSetting.Builder(4).name("Range").description("How far to break blocks").min(0).max(4).precision(1).get());
+    final DoubleSetting blocksPerTick = this.config.create(new DoubleSetting.Builder(1).name("Blocks per tick").description("How many blocks to break per tick").min(1).max(20).precision(0)
             .get());
-    final DoubleSetting         delay             = this.config.create(new DoubleSetting.Builder(0).name("Delay").description("How much to wait between ticks").min(0).max(20).precision(0).get());
-    final BooleanSetting        ignoreXray        = this.config.create(new BooleanSetting.Builder(true).name("Ignore XRAY").description("Ignores XRAY blocks").get());
-    final EnumSetting<Mode>     mode              = this.config.create(new EnumSetting.Builder<>(Mode.Everything).name("Mode").description("What to break").get());
-    final BooleanSetting        autoTool          = this.config.create(new BooleanSetting.Builder(true).name("Auto tool").description("Automatically picks the best tool for the block").get());
-    final EnumSetting<SortMode> mv                = this.config.create(new EnumSetting.Builder<>(SortMode.OutIn).name("Sorting").description("In which order to break the blocks").get());
-    final BooleanSetting        ignoreUnbreakable = this.config.create(new BooleanSetting.Builder(true).name("Ignore unbreakable").description("Ignores unbreakable blocks").get());
+    final DoubleSetting delay = this.config.create(new DoubleSetting.Builder(0).name("Delay").description("How much to wait between ticks").min(0).max(20).precision(0).get());
+    final BooleanSetting ignoreXray = this.config.create(new BooleanSetting.Builder(true).name("Ignore XRAY").description("Ignores XRAY blocks").get());
+    final EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.Everything).name("Mode").description("What to break").get());
+    final BooleanSetting autoTool = this.config.create(new BooleanSetting.Builder(true).name("Auto tool").description("Automatically picks the best tool for the block").get());
+    final EnumSetting<SortMode> mv = this.config.create(new EnumSetting.Builder<>(SortMode.OutIn).name("Sorting").description("In which order to break the blocks").get());
+    final BooleanSetting ignoreUnbreakable = this.config.create(new BooleanSetting.Builder(true).name("Ignore unbreakable").description("Ignores unbreakable blocks").get());
     int delayPassed = 0;
 
     public Nuker() {
@@ -73,7 +69,8 @@ public class Nuker extends Module {
         return false;
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
         if (client.player == null || client.world == null || client.interactionManager == null || client.getNetworkHandler() == null) {
             return;
         }
@@ -142,25 +139,30 @@ public class Nuker extends Module {
         return b.getHardness() == -1;
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return null;
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
         for (BlockPos render : renders) {
             Vec3d vp = new Vec3d(render.getX(), render.getY(), render.getZ());
             Renderer.R3D.renderFilled(vp, new Vec3d(1, 1, 1), Renderer.Util.modify(Utils.getCurrentRGB(), -1, -1, -1, 50), matrices);
         }
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
 
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
 
     }
 

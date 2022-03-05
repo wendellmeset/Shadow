@@ -24,9 +24,9 @@ public class Freecam extends Module {
 
     //    final SliderValue speed = (SliderValue) this.config.create("Speed", 1, 0, 10, 1).description("The speed to fly with");
     final DoubleSetting speed = this.config.create(new DoubleSetting.Builder(1).name("Speed").description("The speed to fly with").min(0).max(10).precision(1).get());
-    Vec3d   startloc;
-    float   pitch = 0f;
-    float   yaw   = 0f;
+    Vec3d startloc;
+    float pitch = 0f;
+    float yaw = 0f;
     boolean flewBefore;
 
     public Freecam() {
@@ -51,12 +51,14 @@ public class Freecam extends Module {
         });
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
         Objects.requireNonNull(client.player).getAbilities().setFlySpeed((float) (this.speed.getValue() + 0f) / 20f);
         client.player.getAbilities().flying = true;
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
         startloc = Objects.requireNonNull(client.player).getPos();
         pitch = client.player.getPitch();
         yaw = client.player.getYaw();
@@ -65,7 +67,8 @@ public class Freecam extends Module {
         client.player.setOnGround(false);
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
         if (startloc != null) {
             Objects.requireNonNull(client.player).updatePosition(startloc.x, startloc.y, startloc.z);
         }
@@ -79,16 +82,19 @@ public class Freecam extends Module {
         client.player.setVelocity(0, 0, 0);
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return null;
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
         Objects.requireNonNull(client.player).setSwimming(false);
         client.player.setPose(EntityPose.STANDING);
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
 
     }
 }

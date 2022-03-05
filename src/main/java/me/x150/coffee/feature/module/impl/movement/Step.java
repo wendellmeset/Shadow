@@ -22,33 +22,39 @@ public class Step extends Module {
         super("Step", "Allows you to step up full blocks", ModuleType.MOVEMENT);
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
         if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.getNetworkHandler() == null) {
             return;
         }
         CoffeeClientMain.client.player.stepHeight = (float) (height.getValue() + 0);
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
 
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
         if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.getNetworkHandler() == null) {
             return;
         }
         Objects.requireNonNull(client.player).stepHeight = 0.6f;
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return null;
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
 
     }
 }

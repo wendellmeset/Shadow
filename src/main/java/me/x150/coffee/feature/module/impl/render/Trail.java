@@ -8,7 +8,7 @@ import me.x150.coffee.helper.util.Utils;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Vec3d;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,30 +19,36 @@ public class Trail extends Module {
         super("Trail", "Leaves behind a short trail when you travel", ModuleType.RENDER);
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
 
     }
 
-    @Override public void onFastTick() {
+    @Override
+    public void onFastTick() {
         positions.add(Utils.getInterpolatedEntityPosition(CoffeeClientMain.client.player));
         while (positions.size() > 1000) {
             positions.remove(0);
         }
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
 
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
 
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return null;
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
         List<Vec3d> bk = new ArrayList<>(positions);
         float progressOffset = (System.currentTimeMillis() % 1000) / 1000f;
         for (int i = 0; i < bk.size(); i++) {
@@ -67,7 +73,8 @@ public class Trail extends Module {
 
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
 
     }
 }

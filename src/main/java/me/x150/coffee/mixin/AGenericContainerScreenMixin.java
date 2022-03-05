@@ -22,14 +22,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Objects;
 
 
-@Mixin(HandledScreen.class) public abstract class AGenericContainerScreenMixin {
+@Mixin(HandledScreen.class)
+public abstract class AGenericContainerScreenMixin {
 
-    final             KeyBinding arrowRight = new KeyBinding("", GLFW.GLFW_KEY_RIGHT, "");
-    final             KeyBinding arrowLeft  = new KeyBinding("", GLFW.GLFW_KEY_LEFT, "");
-    final             KeyBinding arrowUp    = new KeyBinding("", GLFW.GLFW_KEY_UP, "");
-    final             KeyBinding arrowDown  = new KeyBinding("", GLFW.GLFW_KEY_DOWN, "");
-    @Shadow protected int        x;
-    @Shadow protected int        y;
+    final KeyBinding arrowRight = new KeyBinding("", GLFW.GLFW_KEY_RIGHT, "");
+    final KeyBinding arrowLeft = new KeyBinding("", GLFW.GLFW_KEY_LEFT, "");
+    final KeyBinding arrowUp = new KeyBinding("", GLFW.GLFW_KEY_UP, "");
+    final KeyBinding arrowDown = new KeyBinding("", GLFW.GLFW_KEY_DOWN, "");
+    @Shadow
+    protected int x;
+    @Shadow
+    protected int y;
 
     boolean keyPressed(KeyBinding bind) {
         return InputUtil.isKeyPressed(CoffeeClientMain.client.getWindow().getHandle(), bind.getDefaultKey().getCode());
@@ -39,7 +42,8 @@ import java.util.Objects;
         bind.setPressed(keyPressed(bind));
     }
 
-    @Inject(method = "tick", at = @At("HEAD")) public void atomic_preTick(CallbackInfo ci) {
+    @Inject(method = "tick", at = @At("HEAD"))
+    public void atomic_preTick(CallbackInfo ci) {
         if (!ModuleRegistry.getByClass(InventoryWalk.class).isEnabled()) {
             return;
         }

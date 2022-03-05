@@ -21,7 +21,8 @@ public class AntiAnvil extends Module {
         super("AntiAnvil", "Prevents you from getting anvil damage", ModuleType.MOVEMENT);
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
         //        Vec3d currentPos = CoffeeClientMain.client.player.getPos();
         BlockPos currentPos = Objects.requireNonNull(CoffeeClientMain.client.player).getBlockPos();
         Vec3d ppos = CoffeeClientMain.client.player.getPos();
@@ -46,23 +47,28 @@ public class AntiAnvil extends Module {
         }
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
 
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
 
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return null;
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
 
     }
 }

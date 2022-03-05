@@ -16,19 +16,19 @@ import net.minecraft.util.math.MathHelper;
 import org.apache.commons.lang3.SystemUtils;
 import org.lwjgl.glfw.GLFW;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class RoundTextFieldWidget implements Element, Drawable, Selectable, DoesMSAA {
-    protected final String   suggestion;
-    public          Runnable changeListener = () -> {
+    protected final String suggestion;
+    public Runnable changeListener = () -> {
     };
-    protected       String   text           = "";
-    protected       boolean  focused;
-    protected       int      cursor;
-    protected       double   textStart;
-    protected       int      selectionStart, selectionEnd;
+    protected String text = "";
+    protected boolean focused;
+    protected int cursor;
+    protected double textStart;
+    protected int selectionStart, selectionEnd;
     boolean mouseOver = false;
-    double  x, y, width, height;
+    double x, y, width, height;
 
     public RoundTextFieldWidget(double x, double y, double width, double height, String text) {
         this.x = x;
@@ -42,7 +42,8 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
         return width - pad() * 2 - 1;
     }
 
-    @Override public boolean mouseReleased(double mouseX, double mouseY, int button) {
+    @Override
+    public boolean mouseReleased(double mouseX, double mouseY, int button) {
         int preSelectionCursor = 0;
         if (selectionStart < preSelectionCursor && preSelectionCursor == selectionEnd) {
             cursor = selectionStart;
@@ -53,7 +54,8 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
         return false;
     }
 
-    @Override public boolean keyPressed(int key, int scanCode, int mods) {
+    @Override
+    public boolean keyPressed(int key, int scanCode, int mods) {
         if (!focused) {
             return false;
         }
@@ -309,7 +311,8 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
         runAction();
     }
 
-    @Override public boolean charTyped(char c, int modifiers) {
+    @Override
+    public boolean charTyped(char c, int modifiers) {
         if (!focused) {
             return false;
         }
@@ -329,7 +332,8 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
         return cx >= x && cx < x + width && cy >= y && cy < y + height;
     }
 
-    @Override public void render(MatrixStack stack, int mouseX, int mouseY, float delta) {
+    @Override
+    public void render(MatrixStack stack, int mouseX, int mouseY, float delta) {
         mouseOver = inBounds(mouseX, mouseY);
         double pad = pad();
         double overflowWidth = getOverflowWidthForRender();
@@ -499,15 +503,18 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
         return 4;
     }
 
-    @Override public SelectionType getType() {
+    @Override
+    public SelectionType getType() {
         return mouseOver ? SelectionType.HOVERED : SelectionType.NONE;
     }
 
-    @Override public void appendNarrations(NarrationMessageBuilder builder) {
+    @Override
+    public void appendNarrations(NarrationMessageBuilder builder) {
 
     }
 
-    @Override public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (mouseOver) {
             if (button == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
                 if (!text.isEmpty()) {

@@ -37,27 +37,33 @@ public class XRAY extends Module {
         return c1 || c2;
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
 
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
         CoffeeClientMain.client.worldRenderer.reload();
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
         CoffeeClientMain.client.worldRenderer.reload();
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return null;
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
 
     }
 }

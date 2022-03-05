@@ -16,7 +16,8 @@ public class AirJump extends Module {
         super("AirJump", "Allows you to jump mid air", ModuleType.MOVEMENT);
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
         if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.getNetworkHandler() == null) {
             return;
         }
@@ -26,23 +27,28 @@ public class AirJump extends Module {
         }
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
 
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
 
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return null;
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
 
     }
 }

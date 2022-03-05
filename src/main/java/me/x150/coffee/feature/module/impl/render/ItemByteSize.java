@@ -52,27 +52,33 @@ public class ItemByteSize extends Module {
         return String.format("%.1f %ciB", value / 1024.0, ci.current());
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
 
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
 
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
 
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return null;
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
 
     }
 }

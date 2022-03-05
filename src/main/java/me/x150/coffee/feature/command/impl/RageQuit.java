@@ -40,7 +40,8 @@ public class RageQuit extends Command {
         return true;
     }
 
-    @Override public void onExecute(String[] args) {
+    @Override
+    public void onExecute(String[] args) {
         try {
             boolean i = shutdown(0);
             if (!i) {

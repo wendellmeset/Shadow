@@ -20,27 +20,33 @@ public class Timer extends Module {
         super("Timer", "Changes the speed of the game client side", ModuleType.MISC);
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
         Utils.setClientTps((float) (newTps.getValue() + 0d));
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
 
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
         Utils.setClientTps(20f);
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return null;
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
 
     }
 }

@@ -14,13 +14,13 @@ import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.math.Vec3d;
 import org.lwjgl.glfw.GLFW;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Backtrack extends Module {
-    boolean             committed = false;
-    List<PositionEntry> entries   = new ArrayList<>();
+    boolean committed = false;
+    List<PositionEntry> entries = new ArrayList<>();
 
     public Backtrack() {
         super("Backtrack", "Allows you to redo your movement if you messed up", ModuleType.MOVEMENT);
@@ -47,7 +47,8 @@ public class Backtrack extends Module {
         return a;
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
 
     }
 
@@ -58,19 +59,22 @@ public class Backtrack extends Module {
         CoffeeClientMain.client.player.setVelocity(e.vel);
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
         Utils.Logging.message("To backtrack, use the left alt key");
         Utils.Logging.message("To do the movement, press enter");
         Utils.Logging.message("To cancel, disable the module");
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
         entries.clear();
         committed = false;
         CoffeeClientMain.client.player.setNoGravity(false);
     }
 
-    @Override public void onFastTick() {
+    @Override
+    public void onFastTick() {
 
         if (shouldBacktrack() && !committed && !entries.isEmpty()) {
             entries.remove(entries.size() - 1);
@@ -91,17 +95,20 @@ public class Backtrack extends Module {
         super.onFastTick();
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return entries.size() + "";
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
         for (int i = Math.max(1, entries.size() - 30); i < entries.size(); i++) {
             Renderer.R3D.renderLine(entries.get(i - 1).pos(), entries.get(i).pos(), Color.RED, matrices);
         }
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
 
     }
 

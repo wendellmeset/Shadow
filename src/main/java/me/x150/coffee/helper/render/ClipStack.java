@@ -6,15 +6,12 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vector4f;
 
-import java.awt.*;
 import java.util.Deque;
 import java.util.Stack;
 
 public class ClipStack {
     public static final ClipStack globalInstance = new ClipStack();
     Stack<TransformationEntry> clipStack = new Stack<>();
-
-    record TransformationEntry(Rectangle rect, MatrixStack.Entry transformationEntry) {}
 
     //Rectangle lastStack = null;
     public void addWindow(MatrixStack stack, Rectangle r1) {
@@ -27,12 +24,12 @@ public class ClipStack {
         double y = coord.getY();
         double endX = end.getX();
         double endY = end.getY();
-        Rectangle r = new Rectangle(x,y,endX,endY);
+        Rectangle r = new Rectangle(x, y, endX, endY);
         if (clipStack.empty()) {
             clipStack.push(new TransformationEntry(r, stack.peek()));
 //            Renderer.R2D.renderLine(stack,Color.RED,r.getX(),r.getY(),r.getX1(),r.getY1());
 
-            Renderer.R2D.beginScissor(r.getX(),r.getY(),r.getX1(),r.getY1());
+            Renderer.R2D.beginScissor(r.getX(), r.getY(), r.getX1(), r.getY1());
         } else {
             Rectangle lastClip = clipStack.peek().rect;
             double lsx = lastClip.getX();
@@ -43,7 +40,7 @@ public class ClipStack {
             double nsy = MathHelper.clamp(r.getY(), lsy, lsty);
             double nstx = MathHelper.clamp(r.getX1(), nsx, lstx);
             double nsty = MathHelper.clamp(r.getY1(), nsy, lsty); // totally intended varname
-            clipStack.push(new TransformationEntry(new Rectangle(nsx, nsy, nstx, nsty),stack.peek()));
+            clipStack.push(new TransformationEntry(new Rectangle(nsx, nsy, nstx, nsty), stack.peek()));
 //            Renderer.R2D.renderLine(stack,Color.RED,nsx,nsy,nstx,nsty);
             Renderer.R2D.beginScissor(nsx, nsy, nstx, nsty);
         }
@@ -62,7 +59,7 @@ public class ClipStack {
             Deque<MatrixStack.Entry> p = ((MatrixStackAccessor) s).getStack();
             p.clear();
             p.add(r1.transformationEntry);
-            Renderer.R2D.beginScissor( r.getX(), r.getY(), r.getX1(), r.getY1());
+            Renderer.R2D.beginScissor(r.getX(), r.getY(), r.getX1(), r.getY1());
 
         }
     }
@@ -74,7 +71,10 @@ public class ClipStack {
             Renderer.R2D.endScissor();
             e.run();
             Rectangle r = clipStack.peek().rect;
-            Renderer.R2D.beginScissor( r.getX(), r.getY(), r.getX1(), r.getY1());
+            Renderer.R2D.beginScissor(r.getX(), r.getY(), r.getX1(), r.getY1());
         }
+    }
+
+    record TransformationEntry(Rectangle rect, MatrixStack.Entry transformationEntry) {
     }
 }

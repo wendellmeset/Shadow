@@ -5,19 +5,13 @@ import me.x150.coffee.CoffeeClientMain;
 import me.x150.coffee.feature.module.Module;
 import me.x150.coffee.feature.module.ModuleType;
 import me.x150.coffee.helper.util.Utils;
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.BufferRenderer;
-import net.minecraft.client.render.Camera;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormat;
-import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3f;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class Test extends Module {
 
@@ -25,23 +19,28 @@ public class Test extends Module {
         super("Test", "Testing stuff with the client, can be ignored", ModuleType.FUN);
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
 
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
 
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
 
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return null;
     }
 
-    @Override public void onWorldRender(MatrixStack s) {
+    @Override
+    public void onWorldRender(MatrixStack s) {
         Vec3d start = Utils.getInterpolatedEntityPosition(CoffeeClientMain.client.player).add(0, 4, 0);
         Camera camera = CoffeeClientMain.client.gameRenderer.getCamera();
         Vec3d camPos = camera.getPos();
@@ -93,7 +92,8 @@ public class Test extends Module {
 
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
 
     }
 }

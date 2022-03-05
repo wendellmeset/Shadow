@@ -9,8 +9,8 @@ import java.util.List;
 
 public class FontRenderers {
     private static final List<ClientFontRenderer> fontRenderers = new ArrayList<>();
-    private static       FontAdapter              normal;
-    private static       FontAdapter              mono;
+    private static FontAdapter normal;
+    private static FontAdapter mono;
 
     public static FontAdapter getRenderer() {
         return normal;

@@ -4,31 +4,11 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import net.minecraft.nbt.NbtByte;
-import net.minecraft.nbt.NbtByteArray;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtDouble;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtEnd;
-import net.minecraft.nbt.NbtFloat;
-import net.minecraft.nbt.NbtInt;
-import net.minecraft.nbt.NbtIntArray;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtLong;
-import net.minecraft.nbt.NbtLongArray;
-import net.minecraft.nbt.NbtShort;
-import net.minecraft.nbt.NbtString;
+import net.minecraft.nbt.*;
 import net.minecraft.nbt.visitor.NbtElementVisitor;
 import net.minecraft.util.Util;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -38,18 +18,18 @@ public class NbtFormatter implements NbtElementVisitor {
         map.put("{}.data.[].{}", Lists.newArrayList("pos", "state", "nbt"));
         map.put("{}.entities.[].{}", Lists.newArrayList("blockPos", "pos"));
     });
-    private static final Set<String>               IGNORED_PATHS         = Sets.newHashSet("{}.size.[]", "{}.data.[].{}", "{}.palette.[].{}", "{}.entities.[].{}");
-    private static final Pattern                   SIMPLE_NAME           = Pattern.compile("[A-Za-z0-9._+-]+");
-    private static final String                    KEY_VALUE_SEPARATOR   = String.valueOf(':');
-    private static final String                    ENTRY_SEPARATOR       = String.valueOf(',');
-    private static final int                       NAME_COLOR            = 0x55FFFF;
-    private static final int                       STRING_COLOR          = 0x55FF55;
-    private static final int                       NUMBER_COLOR          = 0xFFAA00;
-    private static final int                       TYPE_SUFFIX_COLOR     = 0xFF5555;
-    private final        String                    prefix;
-    private final        int                       indentationLevel;
-    private final        List<String>              pathParts;
-    private              RGBColorText              result;
+    private static final Set<String> IGNORED_PATHS = Sets.newHashSet("{}.size.[]", "{}.data.[].{}", "{}.palette.[].{}", "{}.entities.[].{}");
+    private static final Pattern SIMPLE_NAME = Pattern.compile("[A-Za-z0-9._+-]+");
+    private static final String KEY_VALUE_SEPARATOR = String.valueOf(':');
+    private static final String ENTRY_SEPARATOR = String.valueOf(',');
+    private static final int NAME_COLOR = 0x55FFFF;
+    private static final int STRING_COLOR = 0x55FF55;
+    private static final int NUMBER_COLOR = 0xFFAA00;
+    private static final int TYPE_SUFFIX_COLOR = 0xFF5555;
+    private final String prefix;
+    private final int indentationLevel;
+    private final List<String> pathParts;
+    private RGBColorText result;
 
     public NbtFormatter() {
         this("    ", 0, Lists.newArrayList());
@@ -250,8 +230,8 @@ public class NbtFormatter implements NbtElementVisitor {
 
     public static class RGBColorText {
 
-        public static final RGBEntry       NEWLINE = new RGBEntry("\n", 0xFFFFFF);
-        final               List<RGBEntry> entries = new ArrayList<>();
+        public static final RGBEntry NEWLINE = new RGBEntry("\n", 0xFFFFFF);
+        final List<RGBEntry> entries = new ArrayList<>();
 
         public RGBColorText(RGBColorText text) {
             append(text);

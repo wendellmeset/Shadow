@@ -21,11 +21,11 @@ import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
  */
 public class NoFall extends Module {
 
-    final  EnumSetting<Mode> mode     = this.config.create(new EnumSetting.Builder<>(Mode.OnGround).name("Mode").description("How to spoof packets (packet drowns the others out, use with caution)")
+    final EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.OnGround).name("Mode").description("How to spoof packets (packet drowns the others out, use with caution)")
             .get());
-    final  DoubleSetting     fallDist = this.config.create(new DoubleSetting.Builder(3).name("Fall distance").description("How much to fall before breaking the fall").min(1).max(10).precision(1)
+    final DoubleSetting fallDist = this.config.create(new DoubleSetting.Builder(3).name("Fall distance").description("How much to fall before breaking the fall").min(1).max(10).precision(1)
             .get());
-    public boolean           enabled  = true;
+    public boolean enabled = true;
 
     public NoFall() {
         super("NoFall", "Prevents fall damage", ModuleType.MOVEMENT);
@@ -46,7 +46,8 @@ public class NoFall extends Module {
         });
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
         if (client.player == null || client.getNetworkHandler() == null) {
             return;
         }
@@ -61,23 +62,28 @@ public class NoFall extends Module {
         }
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
 
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
 
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return mode.getValue().name();
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
 
     }
 

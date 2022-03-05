@@ -18,18 +18,18 @@ import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.Vec3d;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Objects;
 import java.util.Random;
 
 public class Flight extends Module {
 
-    final EnumSetting<FlightMode> mode            = this.config.create(new EnumSetting.Builder<>(FlightMode.Static).name("Mode").description("How you fly").get());
-    final BooleanSetting          bypassVanillaAc = this.config.create(new BooleanSetting.Builder(true).name("Bypass vanilla AC").description("Whether to bypass the vanilla anticheat").get());
-    final DoubleSetting           speed           = this.config.create(new DoubleSetting.Builder(1).name("Speed").description("How fast you fly").min(0).max(10).get());
+    final EnumSetting<FlightMode> mode = this.config.create(new EnumSetting.Builder<>(FlightMode.Static).name("Mode").description("How you fly").get());
+    final BooleanSetting bypassVanillaAc = this.config.create(new BooleanSetting.Builder(true).name("Bypass vanilla AC").description("Whether to bypass the vanilla anticheat").get());
+    final DoubleSetting speed = this.config.create(new DoubleSetting.Builder(1).name("Speed").description("How fast you fly").min(0).max(10).get());
 
-    int     bypassTimer = 0;
-    boolean flewBefore  = false;
+    int bypassTimer = 0;
+    boolean flewBefore = false;
 
     public Flight() {
         super("Flight", "Allows you to fly without having permission to", ModuleType.MOVEMENT);
@@ -44,7 +44,8 @@ public class Flight extends Module {
         });
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
         if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.world == null || CoffeeClientMain.client.getNetworkHandler() == null) {
             return;
         }
@@ -115,23 +116,27 @@ public class Flight extends Module {
         }
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
         bypassTimer = 0;
         flewBefore = Objects.requireNonNull(CoffeeClientMain.client.player).getAbilities().flying;
         CoffeeClientMain.client.player.setOnGround(false);
         Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).sendPacket(new ClientCommandC2SPacket(CoffeeClientMain.client.player, ClientCommandC2SPacket.Mode.RELEASE_SHIFT_KEY));
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
         Objects.requireNonNull(CoffeeClientMain.client.player).getAbilities().flying = flewBefore;
         CoffeeClientMain.client.player.getAbilities().setFlySpeed(0.05f);
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return mode.getValue() + "";
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
         if (isDebuggerEnabled()) {
             Vec3d a = Utils.getInterpolatedEntityPosition(Objects.requireNonNull(CoffeeClientMain.client.player));
             Vec3d b = a.add(CoffeeClientMain.client.player.getVelocity());
@@ -139,7 +144,8 @@ public class Flight extends Module {
         }
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
 
     }
 

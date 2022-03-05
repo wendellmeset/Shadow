@@ -14,9 +14,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
 
-@Mixin(ItemStack.class) public class ItemStackMixin {
+@Mixin(ItemStack.class)
+public class ItemStackMixin {
 
-    @Inject(method = "getTooltip", at = @At("RETURN"), cancellable = true) void atomic_dispatchTooltipRender(PlayerEntity player, TooltipContext context, CallbackInfoReturnable<List<Text>> cir) {
+    @Inject(method = "getTooltip", at = @At("RETURN"), cancellable = true)
+    void atomic_dispatchTooltipRender(PlayerEntity player, TooltipContext context, CallbackInfoReturnable<List<Text>> cir) {
         List<Text> cval = cir.getReturnValue();
         LoreQueryEvent event = new LoreQueryEvent((ItemStack) (Object) this, cval);
         Events.fireEvent(EventType.LORE_QUERY, event);

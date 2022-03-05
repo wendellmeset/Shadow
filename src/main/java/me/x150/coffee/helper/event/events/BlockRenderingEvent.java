@@ -11,7 +11,7 @@ import net.minecraft.util.math.BlockPos;
 
 public class BlockRenderingEvent extends RenderEvent {
 
-    final BlockPos   bp;
+    final BlockPos bp;
     final BlockState state;
 
     public BlockRenderingEvent(MatrixStack stack, BlockPos pos, BlockState state) {
@@ -20,7 +20,8 @@ public class BlockRenderingEvent extends RenderEvent {
         this.state = state;
     }
 
-    @SuppressWarnings("unused") public BlockPos getPosition() {
+    @SuppressWarnings("unused")
+    public BlockPos getPosition() {
         return bp;
     }
 

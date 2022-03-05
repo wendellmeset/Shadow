@@ -10,15 +10,15 @@ import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class ProxyManagerScreen extends ClientScreen {
-    public static Proxy              currentProxy = null;
-    static        double             widgetWidth  = 300;
-    static        double             widgetHeight = 400;
-    static        ClientFontRenderer title        = FontRenderers.getCustomSize(40);
-    static        boolean            isSocks4     = false;
-    Screen               parent;
+    public static Proxy currentProxy = null;
+    static double widgetWidth = 300;
+    static double widgetHeight = 400;
+    static ClientFontRenderer title = FontRenderers.getCustomSize(40);
+    static boolean isSocks4 = false;
+    Screen parent;
     RoundTextFieldWidget ip, port;
     RoundButton reset, apply, type;
 
@@ -31,7 +31,8 @@ public class ProxyManagerScreen extends ClientScreen {
         return 5;
     }
 
-    @Override protected void init() {
+    @Override
+    protected void init() {
 
         RoundButton exit = new RoundButton(new Color(40, 40, 40), width - 20 - 5, 5, 20, 20, "X", this::close);
         addDrawableChild(exit);
@@ -71,7 +72,8 @@ public class ProxyManagerScreen extends ClientScreen {
         super.init();
     }
 
-    @Override public void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
+    @Override
+    public void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
         if (parent != null) {
             parent.render(stack, mouseX, mouseY, delta);
         }
@@ -132,14 +134,16 @@ public class ProxyManagerScreen extends ClientScreen {
     }
 
 
-    @Override public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
         for (Element child : children()) {
             child.mouseClicked(0, 0, button);
         }
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
-    @Override public void close() {
+    @Override
+    public void close() {
         client.setScreen(parent);
     }
 

@@ -42,30 +42,30 @@ import java.util.stream.Collectors;
 
 public class Killaura extends Module {
 
-    final Timer          delayExec     = new Timer();
+    final Timer delayExec = new Timer();
     final BooleanSetting capRangeAtMax = this.config.create(new BooleanSetting.Builder(true).name("Auto range").description("Whether or not to set the range to the vanilla one").get());
-    final DoubleSetting  range         = this.config.create(new DoubleSetting.Builder(3.2).name("Range").description("How far to reach").min(0.1).max(7).precision(1).get());
+    final DoubleSetting range = this.config.create(new DoubleSetting.Builder(3.2).name("Range").description("How far to reach").min(0.1).max(7).precision(1).get());
 
     final BooleanSetting automaticDelay = this.config.create(new BooleanSetting.Builder(true).name("Auto delay").description("Whether or not to automatically calculate perfect delay").get());
-    final DoubleSetting  delay          = this.config.create(new DoubleSetting.Builder(0).name("Delay").description("How much to wait between attacks").min(0).max(20).precision(1).get());
+    final DoubleSetting delay = this.config.create(new DoubleSetting.Builder(0).name("Delay").description("How much to wait between attacks").min(0).max(20).precision(1).get());
 
     final BooleanSetting attackOnlyCombatPartner = this.config.create(new BooleanSetting.Builder(true).name("Attack only combat").description("Whether or not to only aim at the combat partner")
             .get());
-    final BooleanSetting attackPlayers           = this.config.create(new BooleanSetting.Builder(true).name("Attack players").description("Whether or not to aim at players").get());
-    final BooleanSetting attackHostile           = this.config.create(new BooleanSetting.Builder(true).name("Attack hostile").description("Whether or not to aim at hostile entities").get());
-    final BooleanSetting attackNeutral           = this.config.create(new BooleanSetting.Builder(true).name("Attack neutral").description("Whether or not to aim at neutral entities").get());
-    final BooleanSetting attackPassive           = this.config.create(new BooleanSetting.Builder(true).name("Attack passive").description("Whether or nott o aim at passive entities").get());
-    final BooleanSetting attackEverything        = this.config.create(new BooleanSetting.Builder(true).name("Attack everything").description("Whether or not to aim at everything else").get());
+    final BooleanSetting attackPlayers = this.config.create(new BooleanSetting.Builder(true).name("Attack players").description("Whether or not to aim at players").get());
+    final BooleanSetting attackHostile = this.config.create(new BooleanSetting.Builder(true).name("Attack hostile").description("Whether or not to aim at hostile entities").get());
+    final BooleanSetting attackNeutral = this.config.create(new BooleanSetting.Builder(true).name("Attack neutral").description("Whether or not to aim at neutral entities").get());
+    final BooleanSetting attackPassive = this.config.create(new BooleanSetting.Builder(true).name("Attack passive").description("Whether or nott o aim at passive entities").get());
+    final BooleanSetting attackEverything = this.config.create(new BooleanSetting.Builder(true).name("Attack everything").description("Whether or not to aim at everything else").get());
 
-    final EnumSetting<SelectMode>   mode       = this.config.create(new EnumSetting.Builder<>(SelectMode.Single).name("Mode").description("How to attack the entities").get());
-    final DoubleSetting             multiLimit = this.config.create(new DoubleSetting.Builder(1).name("Targets").description("How many multi targets to attack").min(1).max(10).precision(0).get());
-    final EnumSetting<PriorityMode> prio       = this.config.create(new EnumSetting.Builder<>(PriorityMode.Distance).name("Priority").description("What to prioritize when aiming").get());
+    final EnumSetting<SelectMode> mode = this.config.create(new EnumSetting.Builder<>(SelectMode.Single).name("Mode").description("How to attack the entities").get());
+    final DoubleSetting multiLimit = this.config.create(new DoubleSetting.Builder(1).name("Targets").description("How many multi targets to attack").min(1).max(10).precision(0).get());
+    final EnumSetting<PriorityMode> prio = this.config.create(new EnumSetting.Builder<>(PriorityMode.Distance).name("Priority").description("What to prioritize when aiming").get());
 
 
-    final BooleanSetting           enableConfuse    = this.config.create(new BooleanSetting.Builder(false).name("Enable confuse").description("Whether or not to enable confuse").get());
-    final EnumSetting<ConfuseMode> confuseMode      = this.config.create(new EnumSetting.Builder<>(ConfuseMode.TP).name("Confuse mode").description("How to confuse the enemy").get());
-    final BooleanSetting           confuseAllowClip = this.config.create(new BooleanSetting.Builder(false).name("Confuse into solid").description("Allow confuse to tp into blocks").get());
-    final List<Entity>             attacks          = new ArrayList<>();
+    final BooleanSetting enableConfuse = this.config.create(new BooleanSetting.Builder(false).name("Enable confuse").description("Whether or not to enable confuse").get());
+    final EnumSetting<ConfuseMode> confuseMode = this.config.create(new EnumSetting.Builder<>(ConfuseMode.TP).name("Confuse mode").description("How to confuse the enemy").get());
+    final BooleanSetting confuseAllowClip = this.config.create(new BooleanSetting.Builder(false).name("Confuse into solid").description("Allow confuse to tp into blocks").get());
+    final List<Entity> attacks = new ArrayList<>();
     Entity combatPartner;
     double circleProg = 0;
 
@@ -148,7 +148,8 @@ public class Killaura extends Module {
         }
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
         if (CoffeeClientMain.client.world == null || CoffeeClientMain.client.player == null || CoffeeClientMain.client.interactionManager == null) {
             return;
         }
@@ -289,15 +290,18 @@ public class Killaura extends Module {
         }
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
 
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
 
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         List<String> t = new ArrayList<>();
         t.add("T" + attacks.size());
         t.add("D" + getDelay());
@@ -306,7 +310,8 @@ public class Killaura extends Module {
         return "[" + String.join(";", t) + "]";
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
         if (!attackOnlyCombatPartner.getValue()) {
             return;
         }
@@ -317,7 +322,8 @@ public class Killaura extends Module {
         }
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
 
     }
 

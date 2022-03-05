@@ -19,7 +19,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.glfw.GLFW;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -28,14 +28,14 @@ import java.util.function.BooleanSupplier;
 import static me.x150.coffee.feature.module.impl.render.Hud.getTitleFr;
 
 public class TabGui extends Module {
-    int            scrollerIndex   = 0;
-    double         scrollerRenderY = 0;
-    double         scrollerY       = 0;
-    List<GuiEntry> entries         = new ArrayList<>();
-    List<GuiEntry> root            = new ArrayList<>();
-    double         scroll          = 0;
-    double         smoothScroll    = 0;
-    Timer          updater         = new Timer();
+    int scrollerIndex = 0;
+    double scrollerRenderY = 0;
+    double scrollerY = 0;
+    List<GuiEntry> entries = new ArrayList<>();
+    List<GuiEntry> root = new ArrayList<>();
+    double scroll = 0;
+    double smoothScroll = 0;
+    Timer updater = new Timer();
 
     public TabGui() {
         super("TabGui", "Renders a small module manager top left", ModuleType.RENDER);
@@ -70,27 +70,33 @@ public class TabGui extends Module {
         return index;
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
 
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
         entries.clear();
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
 
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return null;
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
         double innerPad = 5;
         double heightOffsetLeft = 6 + Math.max(getTitleFr().getMarginHeight(), FontRenderers.getRenderer().getMarginHeight()) + 2 + innerPad;
         if (CoffeeClientMain.client.options.debugEnabled) {
@@ -198,7 +204,8 @@ public class TabGui extends Module {
         stack.pop();
     }
 
-    @Override public void onFastTick() {
+    @Override
+    public void onFastTick() {
         scrollerRenderY = Transitions.transition(scrollerRenderY, scrollerY, 7, 0.00001);
         smoothScroll = Transitions.transition(smoothScroll, scroll, 7, 0.00001);
         if (updater.hasExpired(3000)) {
@@ -210,12 +217,12 @@ public class TabGui extends Module {
     }
 
     static class GuiEntry {
-        double   animation     = 0;
-        double   animationGoal = 0;
+        double animation = 0;
+        double animationGoal = 0;
         Runnable r, back;
         BooleanSupplier bs;
-        String          name;
-        double          h, w;
+        String name;
+        double h, w;
 
         public GuiEntry(Runnable r, Runnable back, BooleanSupplier isEnabled, String name, double height, double width) {
             this.r = r;

@@ -19,14 +19,14 @@ import java.util.Objects;
 
 public class Zoom extends Module {
 
-    static long           enabledTime = 0;
+    static long enabledTime = 0;
     //    SliderValue  finalFov;
     //    final BooleanValue hold        = (BooleanValue) this.config.create("Hold", true).description("Whether or not to disable the module when the keybind is unpressed");
-    final  DoubleSetting  finalFov    = this.config.create(new DoubleSetting.Builder(30).name("FOV").description("How far to zoom in").min(1).max(180).precision(0).get());
-    final  BooleanSetting hold        = this.config.create(new BooleanSetting.Builder(true).name("Hold").description("Disables the module when you unpress the keybind").get());
+    final DoubleSetting finalFov = this.config.create(new DoubleSetting.Builder(30).name("FOV").description("How far to zoom in").min(1).max(180).precision(0).get());
+    final BooleanSetting hold = this.config.create(new BooleanSetting.Builder(true).name("Hold").description("Disables the module when you unpress the keybind").get());
 
     Keybind kb;
-    double  msens = 0.5d;
+    double msens = 0.5d;
 
     public Zoom() {
         super("Zoom", "Imitates the spyglass with more options", ModuleType.RENDER);
@@ -47,7 +47,8 @@ public class Zoom extends Module {
         return Renderer.Util.lerp(vanilla, finalFov.getValue(), prog);
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
         if (kb == null) {
             return;
         }
@@ -56,7 +57,8 @@ public class Zoom extends Module {
         }
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
         msens = client.options.mouseSensitivity;
         client.options.mouseSensitivity = msens * (finalFov.getValue() / client.options.fov);
         // retard the keybind thing is always an int shut the fuck up
@@ -64,20 +66,24 @@ public class Zoom extends Module {
         enabledTime = System.currentTimeMillis();
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
         enabledTime = System.currentTimeMillis();
         client.options.mouseSensitivity = msens;
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return null;
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
 
     }
 }

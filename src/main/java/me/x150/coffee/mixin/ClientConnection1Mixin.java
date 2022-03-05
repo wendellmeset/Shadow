@@ -12,9 +12,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.net.InetSocketAddress;
 
-@Mixin(targets = "net/minecraft/network/ClientConnection$1") @Debug(export = true) public class ClientConnection1Mixin {
+@Mixin(targets = "net/minecraft/network/ClientConnection$1")
+@Debug(export = true)
+public class ClientConnection1Mixin {
 
-    @Inject(method = "initChannel(Lio/netty/channel/Channel;)V", at = @At("HEAD")) public void atomic_applyProxy(Channel channel, CallbackInfo ci) {
+    @Inject(method = "initChannel(Lio/netty/channel/Channel;)V", at = @At("HEAD"))
+    public void atomic_applyProxy(Channel channel, CallbackInfo ci) {
         ProxyManagerScreen.Proxy currentProxy = ProxyManagerScreen.currentProxy;
         if (currentProxy != null) {
             if (currentProxy.socks4()) {

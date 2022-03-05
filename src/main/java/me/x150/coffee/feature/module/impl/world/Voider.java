@@ -11,23 +11,24 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Voider extends Module {
     final DoubleSetting radius = this.config.create(new DoubleSetting.Builder(100).precision(0).name("Radius").description("How much to erase on X and Z").min(20).max(500).get());
-    final DoubleSetting delay  = this.config.create(new DoubleSetting.Builder(30).precision(0).name("Delay").description("How much delay to use while erasing").min(0).max(1000).get());
+    final DoubleSetting delay = this.config.create(new DoubleSetting.Builder(30).precision(0).name("Delay").description("How much delay to use while erasing").min(0).max(1000).get());
     final AtomicBoolean cancel = new AtomicBoolean(false);
     Thread runner;
-    Vec3d  startPos = null;
-    Vec3d  latest   = null;
+    Vec3d startPos = null;
+    Vec3d latest = null;
 
     public Voider() {
         super("Voider", "Transforms a radius around you to void", ModuleType.WORLD);
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
 
     }
 
@@ -49,23 +50,27 @@ public class Voider extends Module {
         setEnabled(false);
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
         startPos = Objects.requireNonNull(CoffeeClientMain.client.player).getPos();
         cancel.set(false);
         runner = new Thread(this::run);
         runner.start();
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
         Notification.create(6000, "Voider", Notification.Type.INFO, "Waiting for cleanup...");
         cancel.set(true);
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return null;
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
         if (latest != null) {
             Renderer.R3D.renderFilled(new Vec3d(latest.x - 2, Objects.requireNonNull(CoffeeClientMain.client.world)
                     .getBottomY(), latest.z - 2), new Vec3d(5, 0.001, 5), Utils.getCurrentRGB(), matrices);
@@ -73,7 +78,8 @@ public class Voider extends Module {
         }
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
 
     }
 }

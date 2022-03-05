@@ -11,7 +11,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,8 +21,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Objects;
 
-@Mixin(LivingEntity.class) public class LivingEntityMixin {
-    @Inject(method = "onAttacking", at = @At("HEAD")) public void atomic_setLastAttacked(Entity target, CallbackInfo ci) {
+@Mixin(LivingEntity.class)
+public class LivingEntityMixin {
+    @Inject(method = "onAttacking", at = @At("HEAD"))
+    public void atomic_setLastAttacked(Entity target, CallbackInfo ci) {
         if (this.equals(CoffeeClientMain.client.player) && target instanceof LivingEntity entity) {
             AttackManager.registerLastAttacked(entity);
         }
@@ -41,7 +42,8 @@ import java.util.Objects;
     //        }
     //        return value;
     //    }
-    @Inject(method = "canWalkOnFluid", at = @At("HEAD"), cancellable = true) public void atomic_overwriteCanWalkOnFluid(FluidState fluidState, CallbackInfoReturnable<Boolean> cir) {
+    @Inject(method = "canWalkOnFluid", at = @At("HEAD"), cancellable = true)
+    public void atomic_overwriteCanWalkOnFluid(FluidState fluidState, CallbackInfoReturnable<Boolean> cir) {
         if (CoffeeClientMain.client.player == null) {
             return;
         }
@@ -63,7 +65,8 @@ import java.util.Objects;
         }
     }
 
-    @Inject(method = "pushAwayFrom", at = @At("HEAD"), cancellable = true) public void atomic_cancelPush(Entity entity, CallbackInfo ci) {
+    @Inject(method = "pushAwayFrom", at = @At("HEAD"), cancellable = true)
+    public void atomic_cancelPush(Entity entity, CallbackInfo ci) {
         if (this.equals(CoffeeClientMain.client.player)) {
             if (Objects.requireNonNull(ModuleRegistry.getByClass(NoPush.class)).isEnabled()) {
                 ci.cancel();
@@ -71,7 +74,8 @@ import java.util.Objects;
         }
     }
 
-    @Redirect(method = "jump", at = @At(value = "INVOKE", target = "net/minecraft/entity/LivingEntity.getYaw()F")) private float atomic_overwriteFreelookYaw(LivingEntity instance) {
+    @Redirect(method = "jump", at = @At(value = "INVOKE", target = "net/minecraft/entity/LivingEntity.getYaw()F"))
+    private float atomic_overwriteFreelookYaw(LivingEntity instance) {
         if (instance.equals(CoffeeClientMain.client.player) && ModuleRegistry.getByClass(FreeLook.class).isEnabled()) {
             return ModuleRegistry.getByClass(FreeLook.class).newyaw;
         }

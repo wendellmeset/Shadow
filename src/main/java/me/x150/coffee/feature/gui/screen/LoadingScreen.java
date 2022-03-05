@@ -15,7 +15,7 @@ import net.minecraft.util.math.MathHelper;
 import org.apache.logging.log4j.Level;
 
 import javax.imageio.ImageIO;
-import java.awt.Color;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -30,17 +30,17 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class LoadingScreen extends ClientScreen implements FastTickable {
-    static final int           atOnce   = 3;
-    static       LoadingScreen INSTANCE = null;
-    static       Color         GREEN    = new Color(100, 255, 20);
-    static       Color         RED      = new Color(255, 50, 20);
-    AtomicBoolean loaded     = new AtomicBoolean(false);
+    static final int atOnce = 3;
+    static LoadingScreen INSTANCE = null;
+    static Color GREEN = new Color(100, 255, 20);
+    static Color RED = new Color(255, 50, 20);
+    AtomicBoolean loaded = new AtomicBoolean(false);
     AtomicBoolean loadInProg = new AtomicBoolean(false);
     //    double progress = 0;
     volatile AtomicDouble progress = new AtomicDouble();
-    double             smoothProgress = 0;
-    double             opacity        = 1;
-    ClientFontRenderer title          = FontRenderers.getCustomSize(40);
+    double smoothProgress = 0;
+    double opacity = 1;
+    ClientFontRenderer title = FontRenderers.getCustomSize(40);
     Map<CoffeeClientMain.ResourceEntry, ProgressData> progressMap = new ConcurrentHashMap<>();
 
     String warningIfPresent = "";
@@ -56,7 +56,8 @@ public class LoadingScreen extends ClientScreen implements FastTickable {
         return INSTANCE;
     }
 
-    @Override protected void init() {
+    @Override
+    protected void init() {
         assert client != null;
         HomeScreen.instance().init(client, width, height);
         if (loaded.get() && opacity == 0.001) {
@@ -65,7 +66,8 @@ public class LoadingScreen extends ClientScreen implements FastTickable {
         super.init();
     }
 
-    @Override public void onFastTick() {
+    @Override
+    public void onFastTick() {
 
         //System.out.println(progressMap.values().stream().map(AtomicDouble::get).reduce(Double::sum)+"-"+CoffeeClientMain.resources.size());
         progress.set(progressMap.values().stream().map(progressData -> progressData.getProgress().get()).reduce(Double::sum).orElse(0d) / CoffeeClientMain.resources.size());
@@ -124,9 +126,9 @@ public class LoadingScreen extends ClientScreen implements FastTickable {
                     CoffeeClientMain.log(Level.INFO, "Downloaded " + resource.url());
                 } catch (Exception e) {
                     CoffeeClientMain.log(Level.ERROR, "Failed to download " + resource.url() + ": " + e.getMessage());
-                    BufferedImage empty = new BufferedImage(1,1, BufferedImage.TYPE_INT_ARGB);
-                    empty.setRGB(0,0,0xFF000000);
-                    Utils.registerBufferedImageTexture(resource.tex(),empty);
+                    BufferedImage empty = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+                    empty.setRGB(0, 0, 0xFF000000);
+                    Utils.registerBufferedImageTexture(resource.tex(), empty);
                     warningIfPresent = "Some textures failed to download. They won't show up in game.";
                 } finally {
                     progressMap.get(resource).getProgress().set(1);
@@ -151,7 +153,8 @@ public class LoadingScreen extends ClientScreen implements FastTickable {
         }, "Loader").start();
     }
 
-    @Override public void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
+    @Override
+    public void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
 
         if (loaded.get()) {
             HomeScreen.instance().renderInternal(stack, mouseX, mouseY, delta);
@@ -191,17 +194,18 @@ public class LoadingScreen extends ClientScreen implements FastTickable {
         }
         //Renderer.R2D.renderQuad(stack,Color.BLACK,width/2d-pslen/2d,centerY1 + textHeight / 2d + pad,width/2d+pslen/2d,centerY1 + textHeight / 2d + pad + barHeight);
         FontRenderers.getRenderer().drawCenteredString(stack, perStr, width / 2d, currentY + 3, 1f, 1f, 1f, (float) opacity);
-        String[] warningLines = Utils.splitLinesToWidth(warningIfPresent,300,FontRenderers.getRenderer());
-        double yOffset = FontRenderers.getRenderer().getFontHeight()*warningLines.length;
+        String[] warningLines = Utils.splitLinesToWidth(warningIfPresent, 300, FontRenderers.getRenderer());
+        double yOffset = FontRenderers.getRenderer().getFontHeight() * warningLines.length;
         for (String warningLine : warningLines) {
-            FontRenderers.getRenderer().drawCenteredString(stack,warningLine,width/2d,height-20-yOffset,1f,1f,1f,(float)opacity);
+            FontRenderers.getRenderer().drawCenteredString(stack, warningLine, width / 2d, height - 20 - yOffset, 1f, 1f, 1f, (float) opacity);
             yOffset += FontRenderers.getRenderer().getFontHeight();
         }
         super.renderInternal(stack, mouseX, mouseY, delta);
     }
 
-    @Data static class ProgressData {
-        AtomicDouble  progress    = new AtomicDouble(0);
+    @Data
+    static class ProgressData {
+        AtomicDouble progress = new AtomicDouble(0);
         AtomicBoolean workingOnIt = new AtomicBoolean(false);
     }
 }

@@ -6,14 +6,14 @@ import me.x150.coffee.helper.render.Renderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 
-import java.awt.Color;
+import java.awt.*;
 
 public abstract class HudElement {
 
     static final MatrixStack stack = new MatrixStack();
-    final        double      width;
-    final        double      height;
-    final        String      id;
+    final double width;
+    final double height;
+    final String id;
     double posX, posY;
     boolean selected = false;
 

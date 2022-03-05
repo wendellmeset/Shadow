@@ -16,7 +16,8 @@ public class MoonGravity extends Module {
         super("MoonGravity", "Imitates gravity on the moon", ModuleType.MOVEMENT);
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
         if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.getNetworkHandler() == null) {
             return;
         }
@@ -24,23 +25,28 @@ public class MoonGravity extends Module {
         // yea that's literally it
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
 
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
 
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return null;
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
 
     }
 }

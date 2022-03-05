@@ -8,16 +8,7 @@ package me.x150.coffee.feature.command.impl;
 import me.x150.coffee.CoffeeClientMain;
 import me.x150.coffee.feature.command.Command;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtByte;
-import net.minecraft.nbt.NbtByteArray;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtHelper;
-import net.minecraft.nbt.NbtInt;
-import net.minecraft.nbt.NbtIntArray;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtLong;
-import net.minecraft.nbt.NbtLongArray;
+import net.minecraft.nbt.*;
 import net.minecraft.text.Text;
 
 import java.util.Objects;
@@ -30,14 +21,16 @@ public class ViewNbt extends Command {
         super("ViewNbt", "Views the nbt data of the current item", "viewnbt", "shownbt");
     }
 
-    @Override public String[] getSuggestions(String fullCommand, String[] args) {
+    @Override
+    public String[] getSuggestions(String fullCommand, String[] args) {
         if (args.length == 1) {
             return new String[]{"(flags)"};
         }
         return super.getSuggestions(fullCommand, args);
     }
 
-    @Override public void onExecute(String[] args) {
+    @Override
+    public void onExecute(String[] args) {
         boolean formatted = false;
         boolean copy = false;
         boolean noColor = false;

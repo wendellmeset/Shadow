@@ -22,7 +22,8 @@ public class ClientScreen extends Screen {
         super.render(stack, mouseX, mouseY, delta);
     }
 
-    @Override public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    @Override
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         CoffeeClientMain.client.keyboard.setRepeatEvents(true);
         if (samples != -1) {
             if (!MSAAFramebuffer.framebufferInUse()) {

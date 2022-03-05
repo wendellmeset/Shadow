@@ -24,15 +24,15 @@ import java.util.List;
 
 public class HudRenderer {
 
-    static final   File             CONFIG   = new File(CoffeeClientMain.BASE, "hud.sip");
-    private static HudRenderer      INSTANCE;
-    final          List<HudElement> elements = register();
-    boolean isEditing     = false;
+    static final File CONFIG = new File(CoffeeClientMain.BASE, "hud.sip");
+    private static HudRenderer INSTANCE;
+    final List<HudElement> elements = register();
+    boolean isEditing = false;
     boolean mouseHeldDown = false;
-    double  prevX         = Utils.Mouse.getMouseX();
-    double  prevY         = Utils.Mouse.getMouseY();
-    double  prevWX        = CoffeeClientMain.client.getWindow().getScaledWidth();
-    double  prevWY        = CoffeeClientMain.client.getWindow().getScaledHeight();
+    double prevX = Utils.Mouse.getMouseX();
+    double prevY = Utils.Mouse.getMouseY();
+    double prevWX = CoffeeClientMain.client.getWindow().getScaledWidth();
+    double prevWY = CoffeeClientMain.client.getWindow().getScaledHeight();
 
     private HudRenderer() {
         Events.registerEventHandler(EventType.MOUSE_EVENT, event -> {
@@ -92,7 +92,8 @@ public class HudRenderer {
         }
     }
 
-    @SuppressWarnings("ResultOfMethodCallIgnored") void loadConfig() {
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    void loadConfig() {
         CoffeeClientMain.log(Level.INFO, "Loading hud");
         if (!CONFIG.isFile()) {
             CONFIG.delete();

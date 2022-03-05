@@ -21,7 +21,8 @@ public class Invsee extends Command {
         super("Invsee", "Shows you the inventory of another player", "invsee", "isee");
     }
 
-    @Override public String[] getSuggestions(String fullCommand, String[] args) {
+    @Override
+    public String[] getSuggestions(String fullCommand, String[] args) {
         if (args.length == 1) {
             return Objects.requireNonNull(CoffeeClientMain.client.world).getPlayers().stream().map(abstractClientPlayerEntity -> abstractClientPlayerEntity.getGameProfile().getName())
                     .collect(Collectors.toList()).toArray(String[]::new);
@@ -29,7 +30,8 @@ public class Invsee extends Command {
         return super.getSuggestions(fullCommand, args);
     }
 
-    @Override public void onExecute(String[] args) {
+    @Override
+    public void onExecute(String[] args) {
         if (args.length == 0) {
             message("i need username");
             return;

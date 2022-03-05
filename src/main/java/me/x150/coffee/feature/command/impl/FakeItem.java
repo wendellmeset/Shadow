@@ -22,7 +22,8 @@ public class FakeItem extends Command {
         super("FakeItem", "Fakes a person holding a specific item", "spoofitem", "fakeitem");
     }
 
-    @Override public String[] getSuggestions(String fullCommand, String[] args) {
+    @Override
+    public String[] getSuggestions(String fullCommand, String[] args) {
         if (args.length == 1) {
             return Objects.requireNonNull(CoffeeClientMain.client.world).getPlayers().stream().map(abstractClientPlayerEntity -> abstractClientPlayerEntity.getGameProfile().getName())
                     .collect(Collectors.toList()).toArray(String[]::new);
@@ -34,7 +35,8 @@ public class FakeItem extends Command {
         return super.getSuggestions(fullCommand, args);
     }
 
-    @Override public void onExecute(String[] args) {
+    @Override
+    public void onExecute(String[] args) {
         if (args.length == 0) { // no uuid or item
             error("Specify player UUID or player username and item");
             return;

@@ -14,7 +14,8 @@ public class ClickGUI extends Module {
         super("ClickGUI", "A visual manager for all modules", ModuleType.RENDER);
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
         t--;
         if (t == 0) {
             CoffeeClientMain.client.setScreen(me.x150.coffee.feature.gui.clickgui.ClickGUI.instance());
@@ -22,22 +23,27 @@ public class ClickGUI extends Module {
         }
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
         t = 2;
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return null;
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
 
     }
 }

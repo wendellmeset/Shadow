@@ -8,7 +8,7 @@ package me.x150.coffee.feature.command.impl;
 import me.x150.coffee.feature.command.Command;
 import me.x150.coffee.feature.command.CommandRegistry;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class Help extends Command {
 
@@ -16,7 +16,8 @@ public class Help extends Command {
         super("Help", "Shows all commands", "help", "h", "?", "cmds", "commands", "manual", "man");
     }
 
-    @Override public void onExecute(String[] args) {
+    @Override
+    public void onExecute(String[] args) {
         message("All commands and their description");
         for (Command command : CommandRegistry.getCommands()) {
             message(command.getName() + ": " + command.getDescription());

@@ -16,7 +16,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.glfw.GLFW;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,19 +24,19 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
-    static final   Color               BACKGROUND = new Color(60, 60, 60);
-    static         Color               NORMAL     = Color.BLACK;
-    static         Color               ERROR      = new Color(214, 93, 62);
-    static         Color               SUCCESS    = new Color(65, 217, 101);
-    static         Color               WARNING    = Color.YELLOW;
+    static final Color BACKGROUND = new Color(60, 60, 60);
+    static Color NORMAL = Color.BLACK;
+    static Color ERROR = new Color(214, 93, 62);
+    static Color SUCCESS = new Color(65, 217, 101);
+    static Color WARNING = Color.YELLOW;
     private static CoffeeConsoleScreen instance;
-    final          Color               background = new Color(0, 0, 0, 120);
-    final          List<LogEntry>      logs       = new ArrayList<>();
-    ClientScreen         parent         = null;
+    final Color background = new Color(0, 0, 0, 120);
+    final List<LogEntry> logs = new ArrayList<>();
+    ClientScreen parent = null;
     RoundTextFieldWidget command;
-    double               scroll         = 0;
-    double               smoothScroll   = 0;
-    double               lastLogsHeight = 0;
+    double scroll = 0;
+    double smoothScroll = 0;
+    double lastLogsHeight = 0;
 
     private CoffeeConsoleScreen() {
         super(MSAAFramebuffer.MAX_SAMPLES);
@@ -61,7 +61,8 @@ public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
         return 5;
     }
 
-    @Override protected void init() {
+    @Override
+    protected void init() {
         super.init();
         double widgetWidthA = width - padding() * 2;
         double buttonWidth = 60;
@@ -82,7 +83,8 @@ public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
         CommandRegistry.execute(cmd);
     }
 
-    @Override public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if (keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER) {
             execute();
             return true;
@@ -93,7 +95,8 @@ public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
-    @Override public void resize(MinecraftClient client, int width, int height) {
+    @Override
+    public void resize(MinecraftClient client, int width, int height) {
         if (parent != null) {
             parent.resize(client, width, height);
         }
@@ -184,11 +187,13 @@ public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
         }
     }
 
-    @Override public void onFastTick() {
+    @Override
+    public void onFastTick() {
         smoothScroll = Transitions.transition(smoothScroll, scroll, 7, 0);
     }
 
-    @Override public void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
+    @Override
+    public void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
 
         command.setFocused(true);
         if (parent != null) {
@@ -274,17 +279,20 @@ public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
         super.renderInternal(stack, mouseX, mouseY, delta);
     }
 
-    @Override public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
         scroll += (amount * 10);
         scroll = MathHelper.clamp(scroll, 0, Math.max(0, lastLogsHeight - (height - padding() - 20 - padding() - 13.5)));
         return super.mouseScrolled(mouseX, mouseY, amount);
     }
 
-    @Override public void close() {
+    @Override
+    public void close() {
         Objects.requireNonNull(client).setScreen(parent);
     }
 
-    @Override public boolean shouldPause() {
+    @Override
+    public boolean shouldPause() {
         return false;
     }
 

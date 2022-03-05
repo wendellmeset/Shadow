@@ -17,7 +17,8 @@ public class ShulkerDeflector extends Module {
         super("ShulkerDeflector", "Automatically reflects shulker's projectiles", ModuleType.MISC);
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
 
     }
 
@@ -25,7 +26,8 @@ public class ShulkerDeflector extends Module {
         return attacker.getCameraPosVec(1f).distanceTo(target.getPos().add(0, target.getHeight() / 2, 0)) <= Objects.requireNonNull(CoffeeClientMain.client.interactionManager).getReachDistance();
     }
 
-    @Override public void onFastTick() {
+    @Override
+    public void onFastTick() {
         for (Entity entity : Objects.requireNonNull(CoffeeClientMain.client.world).getEntities()) {
             if (entity instanceof ShulkerBulletEntity sbe && inHitRange(Objects.requireNonNull(CoffeeClientMain.client.player), sbe)) {
                 if (checkOwner.getValue() && sbe.getOwner() != null && sbe.getOwner().equals(CoffeeClientMain.client.player)) {
@@ -36,23 +38,28 @@ public class ShulkerDeflector extends Module {
         }
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
 
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
 
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return null;
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
 
     }
 }

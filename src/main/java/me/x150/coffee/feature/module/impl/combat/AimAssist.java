@@ -33,17 +33,17 @@ import java.util.stream.Collectors;
 
 public class AimAssist extends Module {
 
-    final BooleanSetting            attackPlayers      = this.config.create(new BooleanSetting.Builder(true).name("Attack players").description("Whether or not to aim at players").get());
-    final BooleanSetting            attackHostile      = this.config.create(new BooleanSetting.Builder(true).name("Attack hostile").description("Whether or not to aim at hostile entities").get());
-    final BooleanSetting            attackNeutral      = this.config.create(new BooleanSetting.Builder(true).name("Attack neutral").description("Whether or not to aim at neutral entities").get());
-    final BooleanSetting            attackPassive      = this.config.create(new BooleanSetting.Builder(true).name("Attack passive").description("Whether or nott o aim at passive entities").get());
-    final BooleanSetting            attackEverything   = this.config.create(new BooleanSetting.Builder(true).name("Attack everything").description("Whether or not to aim at everything else").get());
-    final BooleanSetting            aimAtCombatPartner = this.config.create(new BooleanSetting.Builder(true).name("Aim at combat").description("Whether or not to only aim at the combat partner")
+    final BooleanSetting attackPlayers = this.config.create(new BooleanSetting.Builder(true).name("Attack players").description("Whether or not to aim at players").get());
+    final BooleanSetting attackHostile = this.config.create(new BooleanSetting.Builder(true).name("Attack hostile").description("Whether or not to aim at hostile entities").get());
+    final BooleanSetting attackNeutral = this.config.create(new BooleanSetting.Builder(true).name("Attack neutral").description("Whether or not to aim at neutral entities").get());
+    final BooleanSetting attackPassive = this.config.create(new BooleanSetting.Builder(true).name("Attack passive").description("Whether or nott o aim at passive entities").get());
+    final BooleanSetting attackEverything = this.config.create(new BooleanSetting.Builder(true).name("Attack everything").description("Whether or not to aim at everything else").get());
+    final BooleanSetting aimAtCombatPartner = this.config.create(new BooleanSetting.Builder(true).name("Aim at combat").description("Whether or not to only aim at the combat partner")
             .get());
-    final EnumSetting<PriorityMode> priority           = this.config.create(new EnumSetting.Builder<>(PriorityMode.Distance).name("Priority").description("What to prioritize when aiminig").get());
-    final DoubleSetting             laziness           = this.config.create(new DoubleSetting.Builder(1).name("Laziness").description("How lazy to get when aiming").min(0.1).max(5).precision(1)
+    final EnumSetting<PriorityMode> priority = this.config.create(new EnumSetting.Builder<>(PriorityMode.Distance).name("Priority").description("What to prioritize when aiminig").get());
+    final DoubleSetting laziness = this.config.create(new DoubleSetting.Builder(1).name("Laziness").description("How lazy to get when aiming").min(0.1).max(5).precision(1)
             .get());
-    final BooleanSetting            aimInstant         = this.config.create(new BooleanSetting.Builder(false).name("Aim instantly").description("Whether or not to aim instantly instead of smoothly")
+    final BooleanSetting aimInstant = this.config.create(new BooleanSetting.Builder(false).name("Aim instantly").description("Whether or not to aim instantly instead of smoothly")
             .get());
     Entity le;
 
@@ -57,7 +57,8 @@ public class AimAssist extends Module {
         laziness.showIf(() -> !aimInstant.getValue());
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
         List<Entity> attacks = new ArrayList<>();
         if (aimAtCombatPartner.getValue()) {
             if (AttackManager.getLastAttackInTimeRange() != null) {
@@ -122,19 +123,23 @@ public class AimAssist extends Module {
 
     }
 
-    @Override public void onFastTick() {
+    @Override
+    public void onFastTick() {
         aimAtTarget();
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
 
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
 
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return null;
     }
 
@@ -148,7 +153,8 @@ public class AimAssist extends Module {
         }
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
         if (le != null) {
             Vec3d origin = le.getPos();
             float h = le.getHeight();
@@ -156,7 +162,8 @@ public class AimAssist extends Module {
         }
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
 
     }
 

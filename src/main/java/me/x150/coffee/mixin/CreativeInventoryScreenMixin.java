@@ -12,13 +12,15 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(CreativeInventoryScreen.class) public class CreativeInventoryScreenMixin extends Screen {
+@Mixin(CreativeInventoryScreen.class)
+public class CreativeInventoryScreenMixin extends Screen {
 
     protected CreativeInventoryScreenMixin(Text title) {
         super(title);
     }
 
-    @Inject(method = "init", at = @At("RETURN")) void postInit(CallbackInfo ci) {
+    @Inject(method = "init", at = @At("RETURN"))
+    void postInit(CallbackInfo ci) {
         RoundButton nbtEdit = new RoundButton(RoundButton.STANDARD, 5, 5, 64, 20, "NBT editor", () -> {
             if (CoffeeClientMain.client.player.getInventory().getMainHandStack().isEmpty()) {
                 Utils.Logging.error("You need to hold an item!");

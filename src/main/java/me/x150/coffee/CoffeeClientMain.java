@@ -27,13 +27,14 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("ResultOfMethodCallIgnored") public class CoffeeClientMain implements ModInitializer {
+@SuppressWarnings("ResultOfMethodCallIgnored")
+public class CoffeeClientMain implements ModInitializer {
 
-    public static final String              MOD_ID           = "sipoverprivate";
-    public static final String              MOD_NAME         = "SipoverPrivate";
-    public static final Logger              LOGGER           = LogManager.getLogger();
-    public static final MinecraftClient     client           = MinecraftClient.getInstance();
-    public static final File                BASE             = new File(MinecraftClient.getInstance().runDirectory, "sip");
+    public static final String MOD_ID = "sipoverprivate";
+    public static final String MOD_NAME = "SipoverPrivate";
+    public static final Logger LOGGER = LogManager.getLogger();
+    public static final MinecraftClient client = MinecraftClient.getInstance();
+    public static final File BASE = new File(MinecraftClient.getInstance().runDirectory, "sip");
     //    public static final List<ResourceEntry> resources = List.of(
     //            new ResourceEntry(new Texture("background.jpg"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/background.jpg"),
     //            new ResourceEntry(new Texture("notif/error.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/error.png"),
@@ -41,13 +42,13 @@ import java.util.List;
     //            new ResourceEntry(new Texture("notif/success.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/success.png"),
     //            new ResourceEntry(new Texture("notif/warning.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/warning.png")
     //    );
-    public static final List<ResourceEntry> resources        = new ArrayList<>();
-    public static       long                lastScreenChange = System.currentTimeMillis();
-    public static       CoffeeClientMain    INSTANCE;
-    public static       Thread              MODULE_FTTICKER;
-    public static       Thread              FAST_TICKER;
-    public static       String              sessionKey       = null;
-    public              boolean             initialized      = false;
+    public static final List<ResourceEntry> resources = new ArrayList<>();
+    public static long lastScreenChange = System.currentTimeMillis();
+    public static CoffeeClientMain INSTANCE;
+    public static Thread MODULE_FTTICKER;
+    public static Thread FAST_TICKER;
+    public static String sessionKey = null;
+    public boolean initialized = false;
 
     public static void log(Level level, String message) {
         LOGGER.log(level, "[" + MOD_NAME + "] " + message);
@@ -65,7 +66,8 @@ import java.util.List;
         return sessionKey;
     }
 
-    @Override public void onInitialize() {
+    @Override
+    public void onInitialize() {
         INSTANCE = this;
         log(Level.INFO, "Initializing");
 

@@ -17,18 +17,23 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Objects;
 
-@Mixin(MinecraftClient.class) public class MinecraftClientMixin {
-    @Shadow private int itemUseCooldown;
+@Mixin(MinecraftClient.class)
+public class MinecraftClientMixin {
+    @Shadow
+    private int itemUseCooldown;
 
-    @Inject(method = "stop", at = @At("HEAD")) void real(CallbackInfo ci) {
+    @Inject(method = "stop", at = @At("HEAD"))
+    void real(CallbackInfo ci) {
         ConfigManager.saveState();
     }
 
-    @Inject(method = "<init>", at = @At("TAIL")) void atomic_postInit(RunArgs args, CallbackInfo ci) {
+    @Inject(method = "<init>", at = @At("TAIL"))
+    void atomic_postInit(RunArgs args, CallbackInfo ci) {
         CoffeeClientMain.INSTANCE.postWindowInit();
     }
 
-    @Inject(method = "setScreen", at = @At("HEAD")) void atomic_preSetScreen(Screen screen, CallbackInfo ci) {
+    @Inject(method = "setScreen", at = @At("HEAD"))
+    void atomic_preSetScreen(Screen screen, CallbackInfo ci) {
         CoffeeClientMain.lastScreenChange = System.currentTimeMillis();
     }
 

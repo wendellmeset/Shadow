@@ -12,7 +12,7 @@ public enum ModuleType {
     EXPLOIT("Exploit", new Texture("icons/exploit")), FUN("Fun", new Texture("icons/fun")), COMBAT("Combat", new Texture("icons/combat"));
 
 
-    final String  name;
+    final String name;
     final Texture tex;
 
     ModuleType(String n, Texture tex) {

@@ -16,13 +16,14 @@ import java.util.Objects;
 
 public class SpeedHud extends HudElement {
     List<Double> speedSaved = new ArrayList<>();
-    Timer        update     = new Timer();
+    Timer update = new Timer();
 
     public SpeedHud() {
         super("Speed", CoffeeClientMain.client.getWindow().getScaledWidth() / 2d - 160 / 2d, CoffeeClientMain.client.getWindow().getScaledHeight() - 40 - 64, 160, 64);
     }
 
-    @Override public void renderIntern(MatrixStack stack) {
+    @Override
+    public void renderIntern(MatrixStack stack) {
         if (ModuleRegistry.getByClass(Hud.class).speed.getValue()) {
             MSAAFramebuffer.use(MSAAFramebuffer.MAX_SAMPLES, () -> {
                 double size = speedSaved.size();
@@ -55,7 +56,8 @@ public class SpeedHud extends HudElement {
         }
     }
 
-    @Override public void fastTick() {
+    @Override
+    public void fastTick() {
         if (update.hasExpired(50)) { // update when velocity gets updated
             double speedCombined = CoffeeClientMain.client.player.getVelocity().length();
             double last = speedSaved.isEmpty() ? speedCombined : speedSaved.get(speedSaved.size() - 1);

@@ -19,9 +19,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(ChatScreen.class) public class AChatScreenMixin extends Screen {
+@Mixin(ChatScreen.class)
+public class AChatScreenMixin extends Screen {
 
-    @Shadow protected TextFieldWidget chatField;
+    @Shadow
+    protected TextFieldWidget chatField;
 
     protected AChatScreenMixin(Text title) {
         super(title);
@@ -41,7 +43,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
         }
     }
 
-    @Inject(method = "render", at = @At("RETURN")) void renderText(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    @Inject(method = "render", at = @At("RETURN"))
+    void renderText(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         String t = chatField.getText();
         if (t.startsWith(".")) {
             String note = "If you need a bigger console, do \".console\"";
@@ -50,7 +53,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
         }
     }
 
-    @Inject(method = "onChatFieldUpdate", at = @At("HEAD")) public void atomic_preChatFieldUpdate(String chatText, CallbackInfo ci) {
+    @Inject(method = "onChatFieldUpdate", at = @At("HEAD"))
+    public void atomic_preChatFieldUpdate(String chatText, CallbackInfo ci) {
         chatField.setMaxLength((ModuleRegistry.getByClass(InfChatLength.class).isEnabled()) ? Integer.MAX_VALUE : 256);
     }
 }

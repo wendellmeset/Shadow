@@ -16,17 +16,17 @@ import me.x150.coffee.helper.util.Transitions;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 public class NotificationRenderer {
 
-    public static final List<Notification> notifications       = new ArrayList<>();
+    public static final List<Notification> notifications = new ArrayList<>();
     public static final List<Notification> topBarNotifications = new ArrayList<>();
-    static              Color              topBg               = new Color(28, 28, 28, 200);
-    static              Color              rightBg             = new Color(28, 28, 28);
+    static Color topBg = new Color(28, 28, 28, 200);
+    static Color rightBg = new Color(28, 28, 28);
 
     public static void render() {
         renderSide();

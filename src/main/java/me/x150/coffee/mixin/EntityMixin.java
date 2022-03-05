@@ -16,7 +16,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(Entity.class) public abstract class EntityMixin {
+@Mixin(Entity.class)
+public abstract class EntityMixin {
 
     @Redirect(
             method = "adjustMovementForCollisions(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/Box;Lnet/minecraft/world/World;Ljava/util/List;)Lnet/minecraft/util/math/Vec3d;",
@@ -25,7 +26,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
         return !ModuleRegistry.getByClass(IgnoreWorldBorder.class).isEnabled() && instance.canCollide(entity, box);
     }
 
-    @Redirect(method = "updateVelocity", at = @At(value = "INVOKE", target = "net/minecraft/entity/Entity.getYaw()F")) float atomic_overwriteFreelookYaw(Entity instance) {
+    @Redirect(method = "updateVelocity", at = @At(value = "INVOKE", target = "net/minecraft/entity/Entity.getYaw()F"))
+    float atomic_overwriteFreelookYaw(Entity instance) {
         return instance.equals(CoffeeClientMain.client.player) && ModuleRegistry.getByClass(FreeLook.class).isEnabled() ? ModuleRegistry.getByClass(FreeLook.class).newyaw : instance.getYaw();
     }
 }

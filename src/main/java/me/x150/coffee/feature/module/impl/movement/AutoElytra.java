@@ -30,7 +30,8 @@ public class AutoElytra extends Module {
         return Objects.requireNonNull(CoffeeClientMain.client.player).getInventory().armor.get(2).getItem() == Items.ELYTRA;
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
         if (Objects.requireNonNull(CoffeeClientMain.client.player).fallDistance > fallDist.getValue()) {
             if (!equippedElytra()) { // do we not have an elytra equipped?
                 for (int i = 0; i < (9 * 4 + 1); i++) { // gotta equip
@@ -44,15 +45,18 @@ public class AutoElytra extends Module {
         }
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
 
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
 
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         float fd = Objects.requireNonNull(CoffeeClientMain.client.player).fallDistance;
         if (fd > fallDist.getMin()) {
             return Utils.Math.roundToDecimal(fd, 1) + " | " + fallDist.getValue();
@@ -60,11 +64,13 @@ public class AutoElytra extends Module {
         return null;
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
 
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
 
     }
 }

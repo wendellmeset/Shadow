@@ -1,18 +1,9 @@
 package me.x150.coffee.feature.gui.clickgui.element.impl;
 
-import me.x150.coffee.feature.config.BooleanSetting;
-import me.x150.coffee.feature.config.DoubleSetting;
-import me.x150.coffee.feature.config.EnumSetting;
-import me.x150.coffee.feature.config.ModuleConfig;
-import me.x150.coffee.feature.config.SettingBase;
-import me.x150.coffee.feature.config.StringSetting;
+import me.x150.coffee.feature.config.*;
 import me.x150.coffee.feature.gui.clickgui.ClickGUI;
 import me.x150.coffee.feature.gui.clickgui.element.Element;
-import me.x150.coffee.feature.gui.clickgui.element.impl.config.BooleanSettingEditor;
-import me.x150.coffee.feature.gui.clickgui.element.impl.config.ConfigBase;
-import me.x150.coffee.feature.gui.clickgui.element.impl.config.DoubleSettingEditor;
-import me.x150.coffee.feature.gui.clickgui.element.impl.config.EnumSettingEditor;
-import me.x150.coffee.feature.gui.clickgui.element.impl.config.StringSettingEditor;
+import me.x150.coffee.feature.gui.clickgui.element.impl.config.*;
 import me.x150.coffee.feature.gui.clickgui.theme.Theme;
 import me.x150.coffee.helper.render.Renderer;
 import me.x150.coffee.helper.util.Utils;
@@ -23,11 +14,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ConfigDisplay extends Element {
-    final List<ConfigBase<?>> bases       = new ArrayList<>();
-    final ModuleConfig        mc;
-    final double              padding     = 4;
-    final double              paddingLeft = 4;
-    long    hoverStart    = System.currentTimeMillis();
+    final List<ConfigBase<?>> bases = new ArrayList<>();
+    final ModuleConfig mc;
+    final double padding = 4;
+    final double paddingLeft = 4;
+    long hoverStart = System.currentTimeMillis();
     boolean hoveredBefore = false;
 
     public ConfigDisplay(double x, double y, ModuleConfig mc) {
@@ -55,7 +46,8 @@ public class ConfigDisplay extends Element {
         return bases.stream().filter(configBase -> configBase.getConfigValue().shouldShow()).collect(Collectors.toList());
     }
 
-    @Override public boolean clicked(double x, double y, int button) {
+    @Override
+    public boolean clicked(double x, double y, int button) {
         for (ConfigBase<?> basis : getBases()) {
             if (basis.getConfigValue().shouldShow() && basis.clicked(x, y, button)) {
                 return true;
@@ -64,7 +56,8 @@ public class ConfigDisplay extends Element {
         return false;
     }
 
-    @Override public boolean dragged(double x, double y, double deltaX, double deltaY, int button) {
+    @Override
+    public boolean dragged(double x, double y, double deltaX, double deltaY, int button) {
         for (ConfigBase<?> basis : getBases()) {
             if (basis.getConfigValue().shouldShow() && basis.dragged(x, y, deltaX, deltaY, button)) {
                 return true;
@@ -73,7 +66,8 @@ public class ConfigDisplay extends Element {
         return false;
     }
 
-    @Override public boolean released() {
+    @Override
+    public boolean released() {
         for (ConfigBase<?> basis : bases) {
             if (basis.getConfigValue().shouldShow()) {
                 basis.released();
@@ -82,7 +76,8 @@ public class ConfigDisplay extends Element {
         return false;
     }
 
-    @Override public boolean keyPressed(int keycode, int modifiers) {
+    @Override
+    public boolean keyPressed(int keycode, int modifiers) {
         for (ConfigBase<?> basis : getBases()) {
             if (basis.getConfigValue().shouldShow() && basis.keyPressed(keycode, modifiers)) {
                 return true;
@@ -91,12 +86,14 @@ public class ConfigDisplay extends Element {
         return false;
     }
 
-    @Override public double getHeight() {
+    @Override
+    public double getHeight() {
         this.height = 4 + getBases().stream().map(Element::getHeight).reduce(Double::sum).orElse(0d);
         return super.getHeight();
     }
 
-    @Override public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
+    @Override
+    public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
         double yOffset = 2;
         Theme theme = ClickGUI.theme;
         double height = getHeight();
@@ -127,14 +124,16 @@ public class ConfigDisplay extends Element {
         }
     }
 
-    @Override public void tickAnim() {
+    @Override
+    public void tickAnim() {
         for (ConfigBase<?> basis : bases) {
             basis.tickAnim();
         }
 
     }
 
-    @Override public boolean charTyped(char c, int mods) {
+    @Override
+    public boolean charTyped(char c, int mods) {
         for (ConfigBase<?> basis : getBases()) {
             if (basis.getConfigValue().shouldShow() && basis.charTyped(c, mods)) {
                 return true;

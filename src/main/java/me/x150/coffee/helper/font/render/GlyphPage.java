@@ -1,11 +1,7 @@
 package me.x150.coffee.helper.font.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormat;
-import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.render.*;
 import net.minecraft.client.texture.AbstractTexture;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.NativeImageBackedTexture;
@@ -14,11 +10,7 @@ import net.minecraft.util.math.Matrix4f;
 import org.lwjgl.BufferUtils;
 
 import javax.imageio.ImageIO;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
@@ -29,15 +21,15 @@ import java.util.HashMap;
 
 public class GlyphPage {
 
-    public final  HashMap<Character, Glyph> glyphCharacterMap = new HashMap<>();
-    private final Font                      font;
-    private final boolean                   antiAliasing;
-    private final boolean                   fractionalMetrics;
+    public final HashMap<Character, Glyph> glyphCharacterMap = new HashMap<>();
+    private final Font font;
+    private final boolean antiAliasing;
+    private final boolean fractionalMetrics;
     FontRenderContext frc;
-    Tessellator       tessellator = Tessellator.getInstance();
-    private int             imgSize;
-    private int             maxFontHeight = -1;
-    private BufferedImage   bufferedImage;
+    Tessellator tessellator = Tessellator.getInstance();
+    private int imgSize;
+    private int maxFontHeight = -1;
+    private BufferedImage bufferedImage;
     private AbstractTexture loadedTexture;
 
     public GlyphPage(Font font, boolean antiAliasing, boolean fractionalMetrics) {

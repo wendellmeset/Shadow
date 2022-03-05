@@ -46,29 +46,34 @@ public class Phase extends Module {
         });
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
     }
 
     public boolean getNoClipState(PlayerEntity pe) {
         return this.isEnabled() && pe.getAbilities().flying;
     }
 
-    @Override public void enable() {
+    @Override
+    public void enable() {
         Objects.requireNonNull(CoffeeClientMain.client.player).setPose(EntityPose.STANDING);
         CoffeeClientMain.client.player.setOnGround(false);
         CoffeeClientMain.client.player.fallDistance = 0;
         CoffeeClientMain.client.player.setVelocity(0, 0, 0);
     }
 
-    @Override public void disable() {
+    @Override
+    public void disable() {
 
     }
 
-    @Override public String getContext() {
+    @Override
+    public String getContext() {
         return getNoClipState(CoffeeClientMain.client.player) ? "Active" : null;
     }
 
-    @Override public void onWorldRender(MatrixStack matrices) {
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
         if (Objects.requireNonNull(CoffeeClientMain.client.player).getAbilities().flying) {
             CoffeeClientMain.client.player.setPose(EntityPose.STANDING);
             CoffeeClientMain.client.player.setOnGround(false);
@@ -77,7 +82,8 @@ public class Phase extends Module {
         }
     }
 
-    @Override public void onHudRender() {
+    @Override
+    public void onHudRender() {
 
     }
 }
