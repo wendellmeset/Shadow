@@ -392,6 +392,8 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
                         int color = getColor(s, i, c);
                         //                        int color = 0xFFFFFF;
                         FontRenderers.getMono().drawString(stack, c + "", x, y, color);
+                    } else if (x > width - 5) {
+                        break;
                     }
                     x += cw;
                 }
@@ -406,7 +408,7 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
         double cx = FontRenderers.getMono().getStringWidth(before) + initX + 0.5;
         double cy = FontRenderers.getMono().getMarginHeight() * editorY + initY;
         //Renderer.R2D.endScissor();
-        ClipStack.globalInstance.popWindow(stack);
+        ClipStack.globalInstance.popWindow();
         Renderer.R2D.renderQuad(stack, Color.WHITE, cx, cy, cx + 1, cy + FontRenderers.getMono().getMarginHeight());
         super.renderInternal(stack, mouseX, mouseY, delta);
     }

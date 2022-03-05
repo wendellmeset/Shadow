@@ -329,7 +329,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
             y += alt.getHeight() + getPadding();
         }
         stack.pop();
-        ClipStack.globalInstance.popWindow(stack);
+        ClipStack.globalInstance.popWindow();
         //Renderer.R2D.endScissor();
 
         double padding = 5;

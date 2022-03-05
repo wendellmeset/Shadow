@@ -249,7 +249,7 @@ public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
             }
         }
 
-        ClipStack.globalInstance.popWindow(stack);
+        ClipStack.globalInstance.popWindow();
         //Renderer.R2D.endScissor();
 
         if (logsHeight > availHeight) {

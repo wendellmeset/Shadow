@@ -77,16 +77,19 @@ public class ClickGUI extends Screen implements FastTickable {
     }
 
     @Override public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
-        scroll -= amount * 10;
-        double bottomMost = 0;
+//        scroll -= amount * 10;
+//        double bottomMost = 0;
+//        for (Element element : elements) {
+//            double y = element.getY() + element.getHeight();
+//            bottomMost = Math.max(bottomMost, y);
+//        }
+//        bottomMost -= height;
+//        bottomMost += 5; // leave 5 space between scroll end and deepest element
+//        bottomMost = Math.max(0, bottomMost);
+//        scroll = MathHelper.clamp(scroll, 0, bottomMost);
         for (Element element : elements) {
-            double y = element.getY() + element.getHeight();
-            bottomMost = Math.max(bottomMost, y);
+            if (element.scroll(mouseX, mouseY, amount)) break;
         }
-        bottomMost -= height;
-        bottomMost += 5; // leave 5 space between scroll end and deepest element
-        bottomMost = Math.max(0, bottomMost);
-        scroll = MathHelper.clamp(scroll, 0, bottomMost);
         return super.mouseScrolled(mouseX, mouseY, amount);
     }
 

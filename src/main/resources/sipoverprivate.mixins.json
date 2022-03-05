@@ -36,6 +36,7 @@
     "KeyboardMixin",
     "LivingEntityMixin",
     "LivingEntityRendererMixin",
+    "MatrixStackAccessor",
     "MinecraftClientMixin",
     "ModelPartCuboidMixin",
     "ModelPartMixin",
