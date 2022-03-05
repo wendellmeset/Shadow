@@ -24,7 +24,7 @@ public class Notification {
     public double animationProgress = 0;
     public double animationGoal = 0;
     public boolean shouldDoAnimation = false;
-    public Type type;
+    public final Type type;
 
     public Notification(long duration, String title, Type type, String... contents) {
         this.duration = duration;
@@ -45,7 +45,7 @@ public class Notification {
      * @param duration How long the notification will stay (special cases are described above
      * @param title    What the title of the notification is (irrelevant when topBar is set)
      * @param topBar   Whether to show this notification at the top of the screen instead of the right
-     * @param type
+     * @param type     The type of notification
      * @param contents What the contents of the notification is
      * @return The newly created notification
      */
@@ -82,8 +82,8 @@ public class Notification {
     public enum Type {
         SUCCESS(new Texture("notif/success.png"), new Color(58, 223, 118)), INFO(new Texture("notif/info.png"), new Color(39, 186, 253)),
         WARNING(new Texture("notif/warning.png"), new Color(255, 189, 17)), ERROR(new Texture("notif/error.png"), new Color(254, 92, 92));
-        Color c;
-        Texture i;
+        final Color c;
+        final Texture i;
 
         Type(Texture icon, Color color) {
             this.i = icon;

@@ -35,13 +35,6 @@ public class CoffeeClientMain implements ModInitializer {
     public static final Logger LOGGER = LogManager.getLogger();
     public static final MinecraftClient client = MinecraftClient.getInstance();
     public static final File BASE = new File(MinecraftClient.getInstance().runDirectory, "sip");
-    //    public static final List<ResourceEntry> resources = List.of(
-    //            new ResourceEntry(new Texture("background.jpg"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/background.jpg"),
-    //            new ResourceEntry(new Texture("notif/error.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/error.png"),
-    //            new ResourceEntry(new Texture("notif/info.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/info.png"),
-    //            new ResourceEntry(new Texture("notif/success.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/success.png"),
-    //            new ResourceEntry(new Texture("notif/warning.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/warning.png")
-    //    );
     public static final List<ResourceEntry> resources = new ArrayList<>();
     public static long lastScreenChange = System.currentTimeMillis();
     public static CoffeeClientMain INSTANCE;

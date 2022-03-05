@@ -28,16 +28,8 @@ import java.util.stream.Collectors;
 public class Nuker extends Module {
 
     final List<BlockPos> renders = new ArrayList<>();
-    //    final SliderValue    range             = (SliderValue) this.config.create("Range", 3, 0, 4, 1).description("The range to nuke by");
-    //    final SliderValue    blocksPerTick     = (SliderValue) this.config.create("Blocks per tick", 1, 1, 20, 0).description("The amount of blocks to destroy per tick");
-    //    final SliderValue    delay             = (SliderValue) this.config.create("Delay", 5, 0, 20, 0).description("The delay before breaking blocks");
-    //    final BooleanValue ignoreXray        = (BooleanValue) this.config.create("Ignore xray", true).description("Whether or not to ignore xray blocks");
-    //    final MultiValue     mode              = (MultiValue) this.config.create("Mode", "Everything", "Everything", "Torches", "Fire", "Wood", "Grass").description("What to nuke");
-    //    final BooleanValue   autoTool          = (BooleanValue) this.config.create("Auto tool", true).description("Automatically picks the best tool from your inventory, for the block being broken");
     final Block[] WOOD = new Block[]{Blocks.ACACIA_LOG, Blocks.BIRCH_LOG, Blocks.DARK_OAK_LOG, Blocks.JUNGLE_LOG, Blocks.OAK_LOG, Blocks.SPRUCE_LOG, Blocks.STRIPPED_ACACIA_LOG,
             Blocks.STRIPPED_BIRCH_LOG, Blocks.STRIPPED_DARK_OAK_LOG, Blocks.STRIPPED_JUNGLE_LOG, Blocks.STRIPPED_OAK_LOG, Blocks.STRIPPED_SPRUCE_LOG};
-    //    final MultiValue     mv                = (MultiValue) this.config.create("Sort", "Out -> In", "Out -> In", "In -> Out", "Strength", "Random").description("How to sort");
-    //    final BooleanValue   ignoreUnbreakable = (BooleanValue) this.config.create("Ignore unbreakable", true).description("Ignore survival unbreakable blocks");
 
     final DoubleSetting range = this.config.create(new DoubleSetting.Builder(4).name("Range").description("How far to break blocks").min(0).max(4).precision(1).get());
     final DoubleSetting blocksPerTick = this.config.create(new DoubleSetting.Builder(1).name("Blocks per tick").description("How many blocks to break per tick").min(1).max(20).precision(0)

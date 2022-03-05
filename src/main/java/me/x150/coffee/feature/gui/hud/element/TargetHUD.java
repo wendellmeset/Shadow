@@ -15,8 +15,6 @@ public class TargetHUD extends HudElement {
 
     @Override
     public void renderIntern(MatrixStack stack) {
-        MSAAFramebuffer.use(MSAAFramebuffer.MAX_SAMPLES, () -> {
-            ModuleRegistry.getByClass(TargetHud.class).draw(stack);
-        });
+        MSAAFramebuffer.use(MSAAFramebuffer.MAX_SAMPLES, () -> ModuleRegistry.getByClass(TargetHud.class).draw(stack));
     }
 }

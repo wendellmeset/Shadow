@@ -11,7 +11,7 @@ import java.util.Stack;
 
 public class ClipStack {
     public static final ClipStack globalInstance = new ClipStack();
-    Stack<TransformationEntry> clipStack = new Stack<>();
+    final Stack<TransformationEntry> clipStack = new Stack<>();
 
     //Rectangle lastStack = null;
     public void addWindow(MatrixStack stack, Rectangle r1) {

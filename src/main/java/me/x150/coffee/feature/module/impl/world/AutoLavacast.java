@@ -24,10 +24,10 @@ import java.awt.*;
 public class AutoLavacast extends Module {
 
     static boolean moveForwards = false;
-    EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.Bypass).name("Mode").description("How to place and move. Bypass is slow but looks legit, fast is VERY speedy").get());
+    final EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.Bypass).name("Mode").description("How to place and move. Bypass is slow but looks legit, fast is VERY speedy").get());
 
     Input original;
-    Timer timer = new Timer();
+    final Timer timer = new Timer();
     Vec3i incr;
     BlockPos start;
 

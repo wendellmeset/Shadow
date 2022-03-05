@@ -14,11 +14,11 @@ import java.awt.*;
 
 public class ProxyManagerScreen extends ClientScreen {
     public static Proxy currentProxy = null;
-    static double widgetWidth = 300;
+    static final double widgetWidth = 300;
     static double widgetHeight = 400;
-    static ClientFontRenderer title = FontRenderers.getCustomSize(40);
+    static final ClientFontRenderer title = FontRenderers.getCustomSize(40);
     static boolean isSocks4 = false;
-    Screen parent;
+    final Screen parent;
     RoundTextFieldWidget ip, port;
     RoundButton reset, apply, type;
 

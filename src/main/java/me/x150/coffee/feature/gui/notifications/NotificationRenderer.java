@@ -25,8 +25,8 @@ public class NotificationRenderer {
 
     public static final List<Notification> notifications = new ArrayList<>();
     public static final List<Notification> topBarNotifications = new ArrayList<>();
-    static Color topBg = new Color(28, 28, 28, 200);
-    static Color rightBg = new Color(28, 28, 28);
+    static final Color topBg = new Color(28, 28, 28, 200);
+    static final Color rightBg = new Color(28, 28, 28);
 
     public static void render() {
         renderSide();
@@ -120,8 +120,6 @@ public class NotificationRenderer {
         int baseY = CoffeeClientMain.client.getWindow().getScaledHeight() - 10;
         long c = System.currentTimeMillis();
         for (Notification notification : new ArrayList<>(notifications)) {
-            //            double timeRemaining = Math.abs(c - notification.creationDate - notification.duration) / (double) notification.duration;
-            //            timeRemaining = MathHelper.clamp(timeRemaining, 0, 1);
             boolean notificationExpired = notification.creationDate + notification.duration < c;
             int notifHeight = (int) (2 + ((notification.contents.length + (notification.title.isEmpty() ? 0 : 1)) * FontRenderers.getRenderer().getFontHeight()));
             notifHeight = Math.max(notifHeight, 32);

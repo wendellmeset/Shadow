@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class SpeedHud extends HudElement {
-    List<Double> speedSaved = new ArrayList<>();
-    Timer update = new Timer();
+    final List<Double> speedSaved = new ArrayList<>();
+    final Timer update = new Timer();
 
     public SpeedHud() {
         super("Speed", CoffeeClientMain.client.getWindow().getScaledWidth() / 2d - 160 / 2d, CoffeeClientMain.client.getWindow().getScaledHeight() - 40 - 64, 160, 64);

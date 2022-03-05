@@ -37,8 +37,8 @@ public class TargetHud extends Module {
 
     public static final int modalWidth = 160;
     public static final int modalHeight = 42;
-    static Color GREEN = new Color(100, 255, 20);
-    static Color RED = new Color(255, 50, 20);
+    static final Color GREEN = new Color(100, 255, 20);
+    static final Color RED = new Color(255, 50, 20);
     final BooleanSetting renderPing = this.config.create(new BooleanSetting.Builder(true).name("Render ping").description("Shows the ping of the enemy").get());
     final BooleanSetting renderHP = this.config.create(new BooleanSetting.Builder(true).name("Render health").description("Shows the HP of the enemy").get());
     double wX = 0;
@@ -80,7 +80,7 @@ public class TargetHud extends Module {
             return;
         }
         List<Entity> entitiesQueue = StreamSupport.stream(Objects.requireNonNull(CoffeeClientMain.client.world).getEntities().spliterator(), false).filter(this::isApplicable)
-                .sorted(Comparator.comparingDouble(value -> value.getPos().distanceTo(Objects.requireNonNull(CoffeeClientMain.client.player).getPos()))).collect(Collectors.toList());
+                .sorted(Comparator.comparingDouble(value -> value.getPos().distanceTo(Objects.requireNonNull(CoffeeClientMain.client.player).getPos()))).toList();
         if (entitiesQueue.size() > 0) {
             e = entitiesQueue.get(0);
         } else {

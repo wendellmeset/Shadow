@@ -27,9 +27,9 @@ import java.util.Comparator;
 import java.util.List;
 
 public class NbtEditorScreen extends ClientScreen implements FastTickable {
-    ItemStack stack;
-    List<String> initial = new ArrayList<>();
-    char[] suffixes = {'b', 's', 'L', 'f', 'd'};
+    final ItemStack stack;
+    final List<String> initial = new ArrayList<>();
+    final char[] suffixes = {'b', 's', 'L', 'f', 'd'};
     int editorX = 0;
     int editorY = 0;
     double scrollX = 0;
@@ -37,7 +37,7 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
     double scroll = 0;
     double smoothScroll = 0;
     RoundTextFieldWidget search;
-    char[][] appendPairs = {{'"', '"'}, {'{', '}'}, {'\'', '\''}, {'[', ']'}};
+    final char[][] appendPairs = {{'"', '"'}, {'{', '}'}, {'\'', '\''}, {'[', ']'}};
     boolean skipAppend = false;
 
     public NbtEditorScreen(ItemStack stack) {
@@ -381,8 +381,6 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
 
     @Override
     public void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
-        //        stack.translate(50,50,0);
-        //        stack.scale(0.7f,0.7f,1f);
         Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 200), 5, 5, width - 5, height - 30, 5, 20);
         ClipStack.globalInstance.addWindow(stack, new Rectangle(5, 5, width - 5, height - 30));
         //Renderer.R2D.beginScissor(stack, 5, 5, width - 5, height - 30);

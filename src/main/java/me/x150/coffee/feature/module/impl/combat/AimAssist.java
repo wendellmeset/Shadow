@@ -109,7 +109,7 @@ public class AimAssist extends Module {
             return;
         }
         if (priority.getValue() == PriorityMode.Distance) {
-            le = attacks.stream().sorted(Comparator.comparingDouble(value -> value.getPos().distanceTo(Objects.requireNonNull(CoffeeClientMain.client.player).getPos()))).collect(Collectors.toList())
+            le = attacks.stream().sorted(Comparator.comparingDouble(value -> value.getPos().distanceTo(Objects.requireNonNull(CoffeeClientMain.client.player).getPos()))).toList()
                     .get(0);
         } else {
             // get entity with the least health if mode is ascending, else get most health
@@ -118,7 +118,7 @@ public class AimAssist extends Module {
                     return e.getHealth() * (priority.getValue() == PriorityMode.Health_ascending ? -1 : 1);
                 }
                 return Integer.MAX_VALUE; // not a living entity, discard
-            })).collect(Collectors.toList()).get(0);
+            })).toList().get(0);
         }
 
     }

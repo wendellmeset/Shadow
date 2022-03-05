@@ -20,8 +20,6 @@ import java.util.Objects;
 public class Zoom extends Module {
 
     static long enabledTime = 0;
-    //    SliderValue  finalFov;
-    //    final BooleanValue hold        = (BooleanValue) this.config.create("Hold", true).description("Whether or not to disable the module when the keybind is unpressed");
     final DoubleSetting finalFov = this.config.create(new DoubleSetting.Builder(30).name("FOV").description("How far to zoom in").min(1).max(180).precision(0).get());
     final BooleanSetting hold = this.config.create(new BooleanSetting.Builder(true).name("Hold").description("Disables the module when you unpress the keybind").get());
 

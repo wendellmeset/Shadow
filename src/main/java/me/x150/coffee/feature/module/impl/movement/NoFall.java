@@ -30,8 +30,6 @@ public class NoFall extends Module {
     public NoFall() {
         super("NoFall", "Prevents fall damage", ModuleType.MOVEMENT);
 
-        //        mode = this.config.create("Mode", "OnGround", "OnGround", "Packet", "BreakFall");
-        //        mode.description("The mode of the module");
         this.fallDist.showIf(() -> mode.getValue() != Mode.OnGround);
         Events.registerEventHandler(EventType.PACKET_SEND, event1 -> {
             if (!this.isEnabled() || !enabled) {
@@ -87,8 +85,6 @@ public class NoFall extends Module {
 
     }
 
-    //    public static MultiValue  mode;
-    //    final         SliderValue fallDist = (SliderValue) this.config.create("Fall distance", 3, 0, 10, 1).description("The distance to fall for to enable the module");
     public enum Mode {
         OnGround, Packet, BreakFall
     }

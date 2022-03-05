@@ -45,9 +45,9 @@ public class CategoryDisplay extends Element {
                 md.add(md1);
             }
         }
-        double modHeight = getModules().stream().map(ModuleDisplay::getHeight).reduce(Double::sum).orElse(0d);
-        modHeight = Math.min(modHeight,200);
-        this.height = headerHeight() + modHeight + 5;
+//        double modHeight = getModules().stream().map(ModuleDisplay::getHeight).reduce(Double::sum).orElse(0d);
+//        modHeight = Math.min(modHeight,200);
+//        this.height = headerHeight() + modHeight + 5;
     }
 
     @Override

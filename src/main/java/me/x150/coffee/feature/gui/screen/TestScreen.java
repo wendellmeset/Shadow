@@ -19,9 +19,9 @@ public class TestScreen extends Screen implements FastTickable {
     DoubleOptionSliderWidget curve;
     double goopyV = 1d;
     double curveV = 1d;
-    double[] data = new double[100];
-    double[] viewerData = new double[data.length];
-    Timer updater = new Timer();
+    final double[] data = new double[100];
+    final double[] viewerData = new double[data.length];
+    final Timer updater = new Timer();
 
     public TestScreen() {
         super(Text.of(""));

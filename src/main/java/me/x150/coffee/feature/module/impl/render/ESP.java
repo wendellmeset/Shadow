@@ -32,7 +32,7 @@ public class ESP extends Module {
     public final BooleanSetting entities = this.config.create(new BooleanSetting.Builder(false).name("Show entities").description("Render entities").get());
     public final BooleanSetting players = this.config.create(new BooleanSetting.Builder(true).name("Show players").description("Render players").get());
     final DoubleSetting range = this.config.create(new DoubleSetting.Builder(64).name("Range").description("How far to render the entities").min(32).max(128).precision(1).get());
-    public List<double[]> vertexDumps = new ArrayList<>();
+    public final List<double[]> vertexDumps = new ArrayList<>();
     public boolean recording = false;
 
     public ESP() {
@@ -90,8 +90,6 @@ public class ESP extends Module {
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
             buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
             for (double[][] vert : verts) {
-                //                            p += 0.005;
-                //                            p %= 1;
 
 
                 for (double[] vertexDump : vert) {

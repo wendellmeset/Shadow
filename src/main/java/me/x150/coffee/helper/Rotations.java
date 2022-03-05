@@ -83,6 +83,7 @@ public class Rotations {
 
         FreeLook fl = ModuleRegistry.getByClass(FreeLook.class);
         double required = Math.toDegrees(Math.atan2(delZ, delX)) - 90, delta, add, speed;
+        double sqrt1 = Math.sqrt(delX * delX + delZ * delZ);
         if (fl.isEnabled()) {
             // setting yaw
 
@@ -95,7 +96,7 @@ public class Rotations {
             fl.newyaw = (fl.newyaw + (float) add);
 
             // setting pitch
-            double sqrt = Math.sqrt(delX * delX + delZ * delZ);
+            double sqrt = sqrt1;
             required = -Math.toDegrees(Math.atan2(delY, sqrt));
             delta = MathHelper.wrapDegrees(required - fl.newpitch);
             speed = Math.abs(delta / laziness);
@@ -115,7 +116,7 @@ public class Rotations {
             CoffeeClientMain.client.player.setYaw(CoffeeClientMain.client.player.getYaw() + (float) add);
 
             // setting pitch
-            double sqrt = Math.sqrt(delX * delX + delZ * delZ);
+            double sqrt = sqrt1;
             required = -Math.toDegrees(Math.atan2(delY, sqrt));
             delta = MathHelper.wrapDegrees(required - CoffeeClientMain.client.player.getPitch());
             speed = Math.abs(delta / laziness);

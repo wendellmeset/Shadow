@@ -100,7 +100,7 @@ public class Taco extends Command {
         frames.clear();
         Frame.frameCounter = 0;
         File[] a = Objects.requireNonNull(gifPath.listFiles()).clone();
-        List<String> framesSorted = Arrays.stream(a).map(File::getName).sorted().collect(Collectors.toList());
+        List<String> framesSorted = Arrays.stream(a).map(File::getName).sorted().toList();
         for (String file : framesSorted) {
             File f = Arrays.stream(a).filter(file1 -> file1.getName().equals(file)).findFirst().orElseThrow();
             BufferedImage bi = ImageIO.read(f);

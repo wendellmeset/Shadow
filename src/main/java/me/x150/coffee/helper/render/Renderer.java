@@ -380,40 +380,9 @@ public class Renderer {
             double translateY = originY * (1 - progress);
             stack.translate(translateX, translateY, 0);
             stack.scale((float) progress, (float) progress, 1);
-            //            Matrix4f matrix = stack.peek().getPositionMatrix();
-            //            RenderSystem.enableBlend();
-            //            double x0 = maskX;
-            //            double y0 = maskY;
-            //            double x1 = maskX+width;
-            //            double y1 = maskY+height;
-            //            double z = 0;
-            ////            RenderSystem.blendFunc(GL40C.GL_SRC_ALPHA, GL40C.GL_SRC_ALPHA);
-            //            RenderSystem.blendFuncSeparate(GL40.GL_ONE,GL40.GL_ONE,GL40C.GL_SRC_ALPHA,GL40C.GL_SRC_ALPHA);
-            //            RenderSystem.blendEquation(GL14.GL_FUNC_ADD);
-            ////            GL11.glAlphaFunc(GL11.GL_GREATER, 0.6f);
-            ////            GL11.glEnable(GL11.GL_ALPHA_TEST);
-            //            RenderSystem.setShader(GameRenderer::getPositionColorShader);
-            //            BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
-            //            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-            //            bufferBuilder.vertex(matrix, (float) x0, (float) y1, (float) z).color(1f,0f,0f,(float) (1f-progress)).next();
-            //            bufferBuilder.vertex(matrix, (float) x1, (float) y1, (float) z).color(0f,1f,0f,(float) (1f-progress)).next();
-            //            bufferBuilder.vertex(matrix, (float) x1, (float) y0, (float) z).color(0f,0f,1f,(float) (1f-progress)).next();
-            //            bufferBuilder.vertex(matrix, (float) x0, (float) y0, (float) z).color(1f,1f,0f,(float) (1f-progress)).next();
-            //            bufferBuilder.end();
-            //            BufferRenderer.draw(bufferBuilder);
-            ////            RenderSystem.blendFunc(GlStateManager.SrcFactor.DST_ALPHA, GlStateManager.DstFactor.SRC_ALPHA);
-            ////            RenderSystem.defaultBlendFunc();
-            //            RenderSystem.blendFuncSeparate(GL40.GL_DST_COLOR,GL40.GL_SRC_COLOR,GL40C.GL_DST_ALPHA,GL40C.GL_SRC_ALPHA);
         }
 
         public static void beginScissor(double x, double y, double endX, double endY) {
-//            Matrix4f matrix = stack.peek().getPositionMatrix();
-//            Vector4f coord = new Vector4f((float) x, (float) y, 0, 1);
-//            Vector4f end = new Vector4f((float) (endX), (float) (endY), 0, 1);
-//            coord.transform(matrix);
-//            end.transform(matrix);
-//            x = coord.getX();
-//            y = coord.getY();
             double width = endX - x;
             double height = endY - y;
             width = Math.max(0, width);

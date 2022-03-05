@@ -20,7 +20,7 @@ import java.util.List;
 
 public class Backtrack extends Module {
     boolean committed = false;
-    List<PositionEntry> entries = new ArrayList<>();
+    final List<PositionEntry> entries = new ArrayList<>();
 
     public Backtrack() {
         super("Backtrack", "Allows you to redo your movement if you messed up", ModuleType.MOVEMENT);
@@ -39,12 +39,11 @@ public class Backtrack extends Module {
         return InputUtil.isKeyPressed(CoffeeClientMain.client.getWindow().getHandle(), GLFW.GLFW_KEY_LEFT_ALT) && CoffeeClientMain.client.currentScreen == null;
     }
 
-    boolean shouldCommit() {
+    void shouldCommit() {
         boolean a = !committed && InputUtil.isKeyPressed(CoffeeClientMain.client.getWindow().getHandle(), GLFW.GLFW_KEY_ENTER) && CoffeeClientMain.client.currentScreen == null;
         if (a) {
             committed = true;
         }
-        return a;
     }
 
     @Override

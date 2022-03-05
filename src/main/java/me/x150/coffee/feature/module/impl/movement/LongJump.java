@@ -14,12 +14,6 @@ import java.util.Objects;
 
 public class LongJump extends Module {
 
-    //    final SliderValue  xz            = (SliderValue) this.config.create("Speed", 5, 0, 20, 2).description("How fast to yeet forwards");
-    //    final MultiValue   focus         = (MultiValue) this.config.create("Focus on", "Direction", "Direction", "Velocity").description("What to look at when applying longjump");
-    //    final BooleanValue glide         = (BooleanValue) this.config.create("Glide", true).description("Whether or not to glide when falling from a jump");
-    //    final SliderValue  glideVelocity = (SliderValue) this.config.create("Glide velocity", 0.05, -0.08, 0.07, 2).description("How much upwards velocity to apply while gliding");
-    //    final BooleanValue keepApplying  = (BooleanValue) this.config.create("Keep applying", true).description("Whether or not to keep applying the effect when falling from a jump");
-    //    final SliderValue  applyStrength = (SliderValue) this.config.create("Apply strength", 0.3, 0.01, 0.3, 3).description("How strong the effect should be when applying in post");
     final DoubleSetting xz = this.config.create(new DoubleSetting.Builder(5).name("Speed").description("How fast to throw you forwards").min(0).max(20).precision(2).get());
     final EnumSetting<FocusType> focus = this.config.create(new EnumSetting.Builder<>(FocusType.Direction).name("Focus on").description("What to focus on when throwing you forwards").get());
     final BooleanSetting glide = this.config.create(new BooleanSetting.Builder(true).name("Glide").description("Whether to glide after the initial jump").get());

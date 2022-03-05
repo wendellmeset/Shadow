@@ -28,10 +28,10 @@ import java.util.stream.Collectors;
 public class ConfigUtils extends Command {
     static final File CONFIG_STORAGE = new File(CoffeeClientMain.BASE, "configs");
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public ConfigUtils() {
         super("ConfigUtils", "Config file management", "configUtils", "cu");
-        if (!CONFIG_STORAGE.exists()) //noinspection ResultOfMethodCallIgnored
-        {
+        if (!CONFIG_STORAGE.exists()) {
             CONFIG_STORAGE.mkdir();
         }
     }
@@ -41,7 +41,7 @@ public class ConfigUtils extends Command {
         if (args.length == 1) {
             return new String[]{"load", "save"};
         } else if (args.length == 2 && args[0].equalsIgnoreCase("load")) {
-            return Arrays.stream(Objects.requireNonNull(CONFIG_STORAGE.listFiles())).map(File::getName).collect(Collectors.toList()).toArray(String[]::new);
+            return Arrays.stream(Objects.requireNonNull(CONFIG_STORAGE.listFiles())).map(File::getName).toList().toArray(String[]::new);
         }
         return super.getSuggestions(fullCommand, args);
     }

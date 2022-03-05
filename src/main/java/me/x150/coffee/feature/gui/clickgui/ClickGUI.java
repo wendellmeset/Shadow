@@ -31,14 +31,14 @@ import java.util.stream.Collectors;
 
 public class ClickGUI extends Screen implements FastTickable {
     public static final Theme theme = new SipoverV1();
-    static Color tooltipColor = new Color(20, 20, 30, 255);
+    static final Color tooltipColor = new Color(20, 20, 30, 255);
     private static ClickGUI instance;
     final List<Element> elements = new ArrayList<>();
     final ParticleRenderer real = new ParticleRenderer(100);
     public String searchTerm = "";
     String desc = null;
     double descX, descY;
-    double scroll = 0;
+    final double scroll = 0;
     double trackedScroll = 0;
     double introAnimation = 0;
     boolean closing = false;
@@ -63,6 +63,7 @@ public class ClickGUI extends Screen implements FastTickable {
 
     @Override
     protected void init() {
+
         closing = false;
         introAnimation = 0;
         //        this.real.particles.clear();
@@ -100,16 +101,11 @@ public class ClickGUI extends Screen implements FastTickable {
                 .sorted(Comparator.comparingLong(value -> -ModuleRegistry.getModules().stream().filter(module -> module.getModuleType() == value).count())).toList()) {
             CategoryDisplay cd = new CategoryDisplay(x, y, value);
             tallestInTheRoom = Math.max(tallestInTheRoom, cd.getHeight());
-//            x += cd.getWidth() + 5;
-//            if (x >= width) {
-//                y += tallestInTheRoom + 5;
-//                tallestInTheRoom = 0;
-//                x = 5;
-//            }
-            y += cd.getHeight()+5;
-            if (y+200 > height) {
-                y = 5;
-                x += cd.getWidth()+5;
+            x += cd.getWidth() + 5;
+            if (x >= width) {
+                y += tallestInTheRoom + 5;
+                tallestInTheRoom = 0;
+                x = 5;
             }
             elements.add(cd);
         }
@@ -162,7 +158,7 @@ public class ClickGUI extends Screen implements FastTickable {
 
             //            double width = FontRenderers.getNormal().getStringWidth(desc);
             double width = 0;
-            List<String> text = Arrays.stream(desc.split("\n")).map(s -> s = s.trim()).collect(Collectors.toList());
+            List<String> text = Arrays.stream(desc.split("\n")).map(s -> s = s.trim()).toList();
             for (String s : text) {
                 width = Math.max(width, FontRenderers.getRenderer().getStringWidth(s));
             }
@@ -213,18 +209,10 @@ public class ClickGUI extends Screen implements FastTickable {
         return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
     }
 
-    @Override
-    public void resize(MinecraftClient client, int width, int height) {
-        super.resize(client, width, height);
-        initElements();
-    }
+
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-//        if (keyCode == GLFW.GLFW_KEY_RIGHT_CONTROL) {
-//            initElements();
-//            return true;
-//        }
         for (Element element : elements) {
             if (element.keyPressed(keyCode, modifiers)) {
                 return true;

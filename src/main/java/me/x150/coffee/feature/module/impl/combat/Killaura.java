@@ -240,8 +240,7 @@ public class Killaura extends Module {
         if (mode.getValue() == SelectMode.Single) {
             Entity tar = null;
             if (prio.getValue() == PriorityMode.Distance) {
-                tar = attacks.stream().sorted(Comparator.comparingDouble(value -> value.getPos().distanceTo(Objects.requireNonNull(CoffeeClientMain.client.player).getPos())))
-                        .collect(Collectors.toList()).get(0);
+                tar = attacks.stream().sorted(Comparator.comparingDouble(value -> value.getPos().distanceTo(Objects.requireNonNull(CoffeeClientMain.client.player).getPos()))).toList().get(0);
             } else if (prio.getValue() == PriorityMode.Health_ascending || prio.getValue() == PriorityMode.Health_descending) { // almost missed this
                 // get entity with the least health if mode is ascending, else get most health
                 tar = attacks.stream().sorted(Comparator.comparingDouble(value -> {
@@ -249,7 +248,7 @@ public class Killaura extends Module {
                         return e.getHealth() * (prio.getValue() == PriorityMode.Health_ascending ? -1 : 1);
                     }
                     return Integer.MAX_VALUE; // not a living entity, discard
-                })).collect(Collectors.toList()).get(0);
+                })).toList().get(0);
             } else if (prio.getValue() == PriorityMode.Angle) {
                 // get entity in front of you (or closest to the front)
                 tar = attacks.stream().sorted(Comparator.comparingDouble(value -> {
@@ -259,7 +258,7 @@ public class Killaura extends Module {
                     float yaw = (float) Math.toDegrees(Math.atan2(offZ, offX)) - 90F;
                     float pitch = (float) -Math.toDegrees(Math.atan2(center.y - CoffeeClientMain.client.player.getEyeY(), Math.sqrt(offX * offX + offZ * offZ)));
                     return Math.abs(MathHelper.wrapDegrees(yaw - CoffeeClientMain.client.player.getYaw())) + Math.abs(MathHelper.wrapDegrees(pitch - CoffeeClientMain.client.player.getPitch()));
-                })).sorted(Comparator.comparingDouble(value -> value.getPos().distanceTo(Objects.requireNonNull(CoffeeClientMain.client.player).getPos()))).collect(Collectors.toList()).get(0);
+                })).sorted(Comparator.comparingDouble(value -> value.getPos().distanceTo(Objects.requireNonNull(CoffeeClientMain.client.player).getPos()))).toList().get(0);
             }
             if (tar == null) {
                 return;

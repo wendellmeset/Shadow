@@ -66,11 +66,6 @@ public class CommandRegistry {
                 c.onExecute(args);
             } catch (Exception e) {
                 Utils.Logging.error("Error while running command " + command);
-                //                StringWriter sw = new StringWriter();
-                //                e.printStackTrace(new PrintWriter(sw));
-                //                for (String s : sw.toString().split("\n")) {
-                //                    CoffeeConsoleScreen.instance().log(s, CoffeeConsoleScreen.BACKGROUND);
-                //                }
             }
         }
     }

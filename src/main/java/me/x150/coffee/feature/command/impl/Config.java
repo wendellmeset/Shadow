@@ -23,9 +23,9 @@ public class Config extends Command {
     @Override
     public String[] getSuggestions(String fullCommand, String[] args) {
         if (args.length == 1) {
-            return ModuleRegistry.getModules().stream().map(Module::getName).collect(Collectors.toList()).toArray(String[]::new);
+            return ModuleRegistry.getModules().stream().map(Module::getName).toList().toArray(String[]::new);
         } else if (args.length == 2 && ModuleRegistry.getByName(args[0]) != null) {
-            return Objects.requireNonNull(ModuleRegistry.getByName(args[0])).config.getSettings().stream().map(SettingBase::getName).collect(Collectors.toList()).toArray(String[]::new);
+            return Objects.requireNonNull(ModuleRegistry.getByName(args[0])).config.getSettings().stream().map(SettingBase::getName).toList().toArray(String[]::new);
         } else if (args.length == 3) {
             return new String[]{"(New value)"};
         }

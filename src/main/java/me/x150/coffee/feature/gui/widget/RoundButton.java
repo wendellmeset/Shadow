@@ -15,7 +15,7 @@ import java.awt.*;
 
 public class RoundButton implements Element, Drawable, Selectable, FastTickable, DoesMSAA {
 
-    public static Color STANDARD = new Color(40, 40, 40);
+    public static final Color STANDARD = new Color(40, 40, 40);
 
     final Runnable onPress;
     final Color color;

@@ -26,13 +26,9 @@ import java.util.List;
 import java.util.Objects;
 
 public class Flattener extends Module {
-    static Color breakCol = new Color(31, 232, 148, 70);
+    static final Color breakCol = new Color(31, 232, 148, 70);
     final List<RenderEntry> renders = new ArrayList<>();
     final double range = 8;
-    //    final BooleanValue makeSame        = (BooleanValue) this.config.create("Make same", false).description("Make the floor the block you're holding, no matter what.");
-    //    final BooleanValue      asyncPlaceBreak = (BooleanValue) this.config.create("Async place / break", true).description("Whether or not to place blocks and break them at the same time");
-    //    final BooleanValue      breakSides      = (BooleanValue) this.config.create("Break sides", true).description("Whether or not to clear the area so you can walk on it");
-    //    final SliderValue       amountPerTick   = (SliderValue) this.config.create("Amount Per Tick", 3, 1, 20, 0).description("How many actions to do / tick");
     final BooleanSetting makeSame = this.config.create(new BooleanSetting.Builder(false).name("Make same").description("Makes the floor the same material you're holding").get());
     final BooleanSetting asyncPlaceBreak = this.config.create(new BooleanSetting.Builder(true).name("Async place / break").description("Does block breaking and placing at the same time").get());
     final BooleanSetting breakSides = this.config.create(new BooleanSetting.Builder(true).name("Break sides").description("Clears the area 3 blocks up so you can walk into it").get());

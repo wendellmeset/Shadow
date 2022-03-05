@@ -3,12 +3,7 @@ package me.x150.coffee.helper;
 import me.x150.coffee.CoffeeClientMain;
 import net.minecraft.client.util.InputUtil;
 
-public class Keybind {
-    final int keycode;
-
-    public Keybind(int keycode) {
-        this.keycode = keycode;
-    }
+public record Keybind(int keycode) {
 
     public boolean isPressed() {
         if (keycode < 0) {

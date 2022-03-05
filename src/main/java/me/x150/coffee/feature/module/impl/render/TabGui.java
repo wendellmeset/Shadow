@@ -35,7 +35,7 @@ public class TabGui extends Module {
     List<GuiEntry> root = new ArrayList<>();
     double scroll = 0;
     double smoothScroll = 0;
-    Timer updater = new Timer();
+    final Timer updater = new Timer();
 
     public TabGui() {
         super("TabGui", "Renders a small module manager top left", ModuleType.RENDER);
@@ -164,9 +164,7 @@ public class TabGui extends Module {
                 if (lastEnabledStackHeight != 0) {
                     double finalLastEnabledStackY = lastEnabledStackY;
                     double finalLastEnabledStackHeight = lastEnabledStackHeight;
-                    renderCalls.add(() -> {
-                        Renderer.R2D.renderRoundedQuad(stack, new Color(40, 40, 40), scrollerWidth * 3, finalLastEnabledStackY, width - scrollerWidth * 3, finalLastEnabledStackY + finalLastEnabledStackHeight, 3, 20);
-                    });
+                    renderCalls.add(() -> Renderer.R2D.renderRoundedQuad(stack, new Color(40, 40, 40), scrollerWidth * 3, finalLastEnabledStackY, width - scrollerWidth * 3, finalLastEnabledStackY + finalLastEnabledStackHeight, 3, 20));
 
                 }
                 lastEnabledStackHeight = 0;
@@ -177,9 +175,7 @@ public class TabGui extends Module {
         double finalLastEnabledStackY = lastEnabledStackY;
         double finalLastEnabledStackHeight = lastEnabledStackHeight;
         if (lastEnabledStackY != 0) {
-            renderCalls.add(() -> {
-                Renderer.R2D.renderRoundedQuad(stack, new Color(40, 40, 40), scrollerWidth * 3, finalLastEnabledStackY, width - scrollerWidth * 3, finalLastEnabledStackY + finalLastEnabledStackHeight, 3, 20);
-            });
+            renderCalls.add(() -> Renderer.R2D.renderRoundedQuad(stack, new Color(40, 40, 40), scrollerWidth * 3, finalLastEnabledStackY, width - scrollerWidth * 3, finalLastEnabledStackY + finalLastEnabledStackHeight, 3, 20));
         }
         for (Runnable renderCall : renderCalls) {
             renderCall.run();
@@ -219,10 +215,12 @@ public class TabGui extends Module {
     static class GuiEntry {
         double animation = 0;
         double animationGoal = 0;
-        Runnable r, back;
-        BooleanSupplier bs;
-        String name;
-        double h, w;
+        final Runnable r;
+        final Runnable back;
+        final BooleanSupplier bs;
+        final String name;
+        final double h;
+        final double w;
 
         public GuiEntry(Runnable r, Runnable back, BooleanSupplier isEnabled, String name, double height, double width) {
             this.r = r;

@@ -64,7 +64,7 @@ public class Tracers extends Module {
             return;
         }
         for (Entity entity : StreamSupport.stream(CoffeeClientMain.client.world.getEntities().spliterator(), false)
-                .sorted(Comparator.comparingDouble(value -> -value.distanceTo(CoffeeClientMain.client.player))).collect(Collectors.toList())) {
+                .sorted(Comparator.comparingDouble(value -> -value.distanceTo(CoffeeClientMain.client.player))).toList()) {
             if (entity.squaredDistanceTo(CoffeeClientMain.client.player) > 4096) {
                 continue;
             }

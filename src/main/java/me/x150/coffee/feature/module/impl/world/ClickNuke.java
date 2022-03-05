@@ -23,10 +23,6 @@ import java.util.Objects;
 
 public class ClickNuke extends Module {
 
-    //    final SliderValue  rangeX  = (SliderValue) this.config.create("Range X", 5, 1, 10, 0).description("How big the affected radius should be in the X dimension");
-    //    final SliderValue  rangeZ  = (SliderValue) this.config.create("Range Z", 5, 1, 10, 0).description("How big the affected radius should be in the Z dimension");
-    //    final SliderValue  rangeY  = (SliderValue) this.config.create("Range Y", 5, 1, 10, 0).description("How big the affected radius should be in the Y dimension");
-    //    final BooleanValue destroy = (BooleanValue) this.config.create("Destroy particles", false).description("Makes particles appear when a block gets destroyed");
     final DoubleSetting rangeX = this.config.create(new DoubleSetting.Builder(5).name("Range X").description("How big of an area to fill in the X direction").min(1).max(10).precision(0).get());
     final DoubleSetting rangeY = this.config.create(new DoubleSetting.Builder(5).name("Range Y").description("How big of an area to fill in the Y direction").min(1).max(10).precision(0).get());
     final DoubleSetting rangeZ = this.config.create(new DoubleSetting.Builder(5).name("Range Z").description("How big of an area to fill in the Z direction").min(1).max(10).precision(0).get());

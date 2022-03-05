@@ -20,7 +20,7 @@ public class Toggle extends Command {
     @Override
     public String[] getSuggestions(String fullCommand, String[] args) {
         if (args.length == 1) {
-            return ModuleRegistry.getModules().stream().map(Module::getName).collect(Collectors.toList()).toArray(String[]::new);
+            return ModuleRegistry.getModules().stream().map(Module::getName).toList().toArray(String[]::new);
         }
         return super.getSuggestions(fullCommand, args);
     }

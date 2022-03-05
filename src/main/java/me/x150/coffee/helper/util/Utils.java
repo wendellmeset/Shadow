@@ -166,7 +166,7 @@ public class Utils {
     public static class Textures {
         static final NativeImageBackedTexture EMPTY = new NativeImageBackedTexture(1, 1, false);
         static final HttpClient downloader = HttpClient.newHttpClient();
-        static Map<UUID, Texture> uCache = new ConcurrentHashMap<>();
+        static final Map<UUID, Texture> uCache = new ConcurrentHashMap<>();
 
         public static Texture getSkinPreviewTexture(UUID uuid) {
             if (uCache.containsKey(uuid)) {
@@ -177,9 +177,7 @@ public class Utils {
             Texture texIdent = new Texture("preview/" + uuid.hashCode() + "");
             uCache.put(uuid, texIdent);
             HttpRequest hr = HttpRequest.newBuilder().uri(URI.create("https://crafatar.com/avatars/" + uuid + "?overlay")).header("User-Agent", "why").build();
-            CoffeeClientMain.client.execute(() -> {
-                CoffeeClientMain.client.getTextureManager().registerTexture(texIdent, EMPTY);
-            });
+            CoffeeClientMain.client.execute(() -> CoffeeClientMain.client.getTextureManager().registerTexture(texIdent, EMPTY));
             downloader.sendAsync(hr, HttpResponse.BodyHandlers.ofByteArray()).thenAccept(httpResponse -> {
                 try {
                     BufferedImage bi = ImageIO.read(new ByteArrayInputStream(httpResponse.body()));
@@ -204,9 +202,7 @@ public class Utils {
                 NativeImage img = NativeImage.read(data);
                 NativeImageBackedTexture texture = new NativeImageBackedTexture(img);
 
-                CoffeeClientMain.client.execute(() -> {
-                    CoffeeClientMain.client.getTextureManager().registerTexture(tex, texture);
-                });
+                CoffeeClientMain.client.execute(() -> CoffeeClientMain.client.getTextureManager().registerTexture(tex, texture));
             } catch (Exception ignored) {
 
             }
@@ -380,8 +376,6 @@ public class Utils {
         }
 
         public static void message0(String n, Color c) {
-            //            CoffeeConsoleScreen.instance().log(n, c);
-            //            messageChat("§#"+f0+f1+f2+n);
             LiteralText t = new LiteralText(n);
             t.setStyle(t.getStyle().withColor(TextColor.fromRgb(c.getRGB())));
             Objects.requireNonNull(CoffeeClientMain.client.player).sendMessage(t, false);

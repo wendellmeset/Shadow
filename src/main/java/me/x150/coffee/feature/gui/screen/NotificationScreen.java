@@ -13,12 +13,12 @@ import net.minecraft.util.math.MathHelper;
 import java.awt.*;
 
 public class NotificationScreen extends ClientScreen implements FastTickable {
-    String t;
-    Notification.Type ty;
-    Screen parent;
+    final String t;
+    final Notification.Type ty;
+    final Screen parent;
     boolean closing = false;
     double anim = 0;
-    Color bg = new Color(20, 20, 20, 100);
+    final Color bg = new Color(20, 20, 20, 100);
 
     public NotificationScreen(Screen parent, String text, Notification.Type type) {
         this.ty = type;

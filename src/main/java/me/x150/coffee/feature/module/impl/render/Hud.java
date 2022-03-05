@@ -44,12 +44,12 @@ public class Hud extends Module {
     final BooleanSetting ping = this.config.create(new BooleanSetting.Builder(true).name("Ping").description("Whether to show current ping").get());
     final BooleanSetting modules = this.config.create(new BooleanSetting.Builder(true).name("Array list").description("Whether to show currently enabled modules").get());
     final List<ModuleEntry> moduleList = new ArrayList<>();
-    public BooleanSetting speed = this.config.create(new BooleanSetting.Builder(true).name("Speed").description("Show your current velocity").get());
+    public final BooleanSetting speed = this.config.create(new BooleanSetting.Builder(true).name("Speed").description("Show your current velocity").get());
     long lastTimePacketReceived;
     double rNoConnectionPosY = -10d;
     Notification serverNotResponding = null;
-    Timer tpsUpdateTimer = new Timer();
-    List<Double> last5SecondTpsAverage = new ArrayList<>();
+    final Timer tpsUpdateTimer = new Timer();
+    final List<Double> last5SecondTpsAverage = new ArrayList<>();
 
     public Hud() {
         super("Hud", "Shows information about the player on screen", ModuleType.RENDER);

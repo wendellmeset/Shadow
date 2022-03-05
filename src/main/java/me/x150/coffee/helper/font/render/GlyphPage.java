@@ -26,7 +26,7 @@ public class GlyphPage {
     private final boolean antiAliasing;
     private final boolean fractionalMetrics;
     FontRenderContext frc;
-    Tessellator tessellator = Tessellator.getInstance();
+    final Tessellator tessellator = Tessellator.getInstance();
     private int imgSize;
     private int maxFontHeight = -1;
     private BufferedImage bufferedImage;

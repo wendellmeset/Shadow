@@ -41,10 +41,8 @@ public class Test extends Module {
 
     @Override
     public void onWorldRender(MatrixStack s) {
-        Vec3d start = Utils.getInterpolatedEntityPosition(CoffeeClientMain.client.player).add(0, 4, 0);
         Camera camera = CoffeeClientMain.client.gameRenderer.getCamera();
         Vec3d camPos = camera.getPos();
-        start = start.subtract(camPos);
         MatrixStack stack = new MatrixStack();
         stack.push();
         //        stack.translate(start.x, start.y, start.z);
@@ -52,9 +50,6 @@ public class Test extends Module {
         stack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(camera.getYaw() + 180.0F));
         stack.translate(-camPos.x, -camPos.y, -camPos.z);
 
-        //        PlayerEntityRenderer ple = ((PlayerEntityRenderer) CoffeeClientMain.client.getEntityRenderDispatcher().getRenderer(CoffeeClientMain.client.player));
-        //        ple.getModel().body.rotate(stack);
-        //        ple.getModel().head.rotate(stack);
         RenderSystem.disableCull();
         RenderSystem.disableDepthTest();
         RenderSystem.defaultBlendFunc();

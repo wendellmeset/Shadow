@@ -62,11 +62,11 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
             // Unless you REALLY KNOW WHAT YOU ARE DOING, DO NOT SEND THIS TO ANYONE
             """;
     static final HttpClient downloader = HttpClient.newHttpClient();
-    static Color bg = new Color(20, 20, 20);
-    static Color pillColor = new Color(40, 40, 40, 100);
-    static Color widgetColor = new Color(40, 40, 40);
-    static Color backgroundOverlay = new Color(0, 0, 0, 130);
-    static Color overlayBackground = new Color(30, 30, 30);
+    static final Color bg = new Color(20, 20, 20);
+    static final Color pillColor = new Color(40, 40, 40, 100);
+    static final Color widgetColor = new Color(40, 40, 40);
+    static final Color backgroundOverlay = new Color(0, 0, 0, 130);
+    static final Color overlayBackground = new Color(30, 30, 30);
     private static AltManagerScreen instance = null;
     final List<AltContainer> alts = new ArrayList<>();
     final double leftWidth = 200;
@@ -631,13 +631,13 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
     }
 
     class TagEditor extends ClientScreen implements FastTickable {
-        List<ThemedButton> tags = new ArrayList<>();
+        final List<ThemedButton> tags = new ArrayList<>();
         RoundTextFieldWidget tagName;
         RoundButton add;
-        double widgetWidth = 300;
+        final double widgetWidth = 300;
         double widgetHeight = 0;
         double widgetStartX, widgetStartY;
-        Screen parent;
+        final Screen parent;
 
         public TagEditor(Screen parent) {
             super(MSAAFramebuffer.MAX_SAMPLES);

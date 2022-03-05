@@ -21,7 +21,7 @@ public class Gamemode extends Command {
     @Override
     public String[] getSuggestions(String fullCommand, String[] args) {
         if (args.length == 1) {
-            return Arrays.stream(GameMode.values()).map(GameMode::getName).collect(Collectors.toList()).toArray(String[]::new);
+            return Arrays.stream(GameMode.values()).map(GameMode::getName).toList().toArray(String[]::new);
         }
         return super.getSuggestions(fullCommand, args);
     }

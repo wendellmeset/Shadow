@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EnumSettingEditor extends ConfigBase<EnumSetting<?>> {
-    static Color idk2 = new Color(0, 0, 20, 60);
+    static final Color idk2 = new Color(0, 0, 20, 60);
     final List<EnumSelectorClickable<?>> values = new ArrayList<>();
 
     public EnumSettingEditor(double x, double y, double width, EnumSetting<?> configValue) {

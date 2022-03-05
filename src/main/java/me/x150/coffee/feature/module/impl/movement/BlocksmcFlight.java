@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BlocksmcFlight extends Module {
-    List<AnimatedCircle> circles = new ArrayList<>();
+    final List<AnimatedCircle> circles = new ArrayList<>();
     int jumpTimeout = 0;
     double yStart = 0;
 
@@ -80,8 +80,8 @@ public class BlocksmcFlight extends Module {
     static class AnimatedCircle {
         double animProg = 0;
         Vec3d spawnPos;
-        Color a = new Color(200, 200, 200);
-        Color b = new Color(200, 200, 200, 0);
+        final Color a = new Color(200, 200, 200);
+        final Color b = new Color(200, 200, 200, 0);
 
         public void render(MatrixStack stack) {
             double progI = animProg * 2;

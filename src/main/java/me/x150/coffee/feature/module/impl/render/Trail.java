@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Trail extends Module {
-    List<Vec3d> positions = new ArrayList<>();
+    final List<Vec3d> positions = new ArrayList<>();
 
     public Trail() {
         super("Trail", "Leaves behind a short trail when you travel", ModuleType.RENDER);

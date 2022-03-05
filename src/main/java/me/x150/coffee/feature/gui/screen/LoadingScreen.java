@@ -32,16 +32,16 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class LoadingScreen extends ClientScreen implements FastTickable {
     static final int atOnce = 3;
     static LoadingScreen INSTANCE = null;
-    static Color GREEN = new Color(100, 255, 20);
-    static Color RED = new Color(255, 50, 20);
-    AtomicBoolean loaded = new AtomicBoolean(false);
-    AtomicBoolean loadInProg = new AtomicBoolean(false);
+    static final Color GREEN = new Color(100, 255, 20);
+    static final Color RED = new Color(255, 50, 20);
+    final AtomicBoolean loaded = new AtomicBoolean(false);
+    final AtomicBoolean loadInProg = new AtomicBoolean(false);
     //    double progress = 0;
-    volatile AtomicDouble progress = new AtomicDouble();
+    final AtomicDouble progress = new AtomicDouble();
     double smoothProgress = 0;
     double opacity = 1;
-    ClientFontRenderer title = FontRenderers.getCustomSize(40);
-    Map<CoffeeClientMain.ResourceEntry, ProgressData> progressMap = new ConcurrentHashMap<>();
+    final ClientFontRenderer title = FontRenderers.getCustomSize(40);
+    final Map<CoffeeClientMain.ResourceEntry, ProgressData> progressMap = new ConcurrentHashMap<>();
 
     String warningIfPresent = "";
 

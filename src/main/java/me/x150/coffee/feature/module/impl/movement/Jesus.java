@@ -17,18 +17,12 @@ import java.util.Objects;
 
 public class Jesus extends Module {
 
-    //    public static MultiValue mode;
-
-    //    final SliderValue velStrength = this.config.create("Velocity strength", 0.1, 0.001, 0.3, 3);
-
     public final EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.Solid).name("Mode").description("How to keep you up").get());
     final DoubleSetting velStrength = this.config.create(new DoubleSetting.Builder(0.1).name("Velocity strength").description("How much velocity to apply").min(0.001).max(0.3).precision(3)
             .get());
 
     public Jesus() {
         super("Jesus", "Allows you to walk on water", ModuleType.MOVEMENT);
-        //        mode = this.config.create("Mode", "solid", "jump", "velocity", "solid", "legit");
-        //        mode.description("The mode of the module");
         velStrength.showIf(() -> mode.getValue() == Mode.Velocity);
     }
 
