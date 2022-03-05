@@ -51,7 +51,7 @@ public class Scaffold extends Module {
     }
 
     @Override public void onWorldRender(MatrixStack matrices) {
-        client.options.keySneak.setPressed(false);
+        client.options.sneakKey.setPressed(false);
     }
 
     @Override public void onHudRender() {
@@ -75,7 +75,7 @@ public class Scaffold extends Module {
             }
         }
         if (client.player.getInventory().getStack(selIndex).getItem() != Items.AIR) {
-            boolean sneaking = new Keybind(client.options.keySneak.getDefaultKey().getCode()).isPressed();
+            boolean sneaking = new Keybind(client.options.sneakKey.getDefaultKey().getCode()).isPressed();
             if (sneaking) {
                 bp = bp.down();
             }

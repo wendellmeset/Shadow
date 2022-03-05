@@ -71,7 +71,7 @@ public class ClickGUI extends Screen implements FastTickable {
         this.real.shouldAdd = true;
     }
 
-    @Override public void onClose() {
+    @Override public void close() {
         closing = true;
         this.real.shouldAdd = false;
     }
@@ -228,7 +228,7 @@ public class ClickGUI extends Screen implements FastTickable {
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
-    @Override public boolean isPauseScreen() {
+    @Override public boolean shouldPause() {
         return false;
     }
 

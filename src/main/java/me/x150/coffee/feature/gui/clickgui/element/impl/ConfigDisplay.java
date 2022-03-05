@@ -26,7 +26,7 @@ public class ConfigDisplay extends Element {
     final List<ConfigBase<?>> bases       = new ArrayList<>();
     final ModuleConfig        mc;
     final double              padding     = 4;
-    final double              paddingLeft = 3;
+    final double              paddingLeft = 4;
     long    hoverStart    = System.currentTimeMillis();
     boolean hoveredBefore = false;
 

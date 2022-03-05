@@ -20,7 +20,7 @@ public class AirJump extends Module {
         if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.getNetworkHandler() == null) {
             return;
         }
-        if (CoffeeClientMain.client.options.keyJump.isPressed()) {
+        if (CoffeeClientMain.client.options.jumpKey.isPressed()) {
             CoffeeClientMain.client.player.setOnGround(true);
             CoffeeClientMain.client.player.fallDistance = 0f;
         }

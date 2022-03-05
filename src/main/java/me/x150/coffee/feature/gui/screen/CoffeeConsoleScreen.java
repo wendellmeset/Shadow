@@ -280,11 +280,11 @@ public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
         return super.mouseScrolled(mouseX, mouseY, amount);
     }
 
-    @Override public void onClose() {
+    @Override public void close() {
         Objects.requireNonNull(client).setScreen(parent);
     }
 
-    @Override public boolean isPauseScreen() {
+    @Override public boolean shouldPause() {
         return false;
     }
 

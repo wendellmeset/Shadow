@@ -99,7 +99,7 @@ public class GodBridge extends Module {
             case NORTH, SOUTH -> toCheck = isolated.x;
             case EAST, WEST -> toCheck = isolated.z;
         }
-        client.options.keySneak.setPressed(toCheck > 0.5 + mOffset || toCheck < 0.5 - mOffset);
+        client.options.sneakKey.setPressed(toCheck > 0.5 + mOffset || toCheck < 0.5 - mOffset);
     }
 
 }

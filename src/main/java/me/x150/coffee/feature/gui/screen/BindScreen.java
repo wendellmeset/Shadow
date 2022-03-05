@@ -58,7 +58,7 @@ public class BindScreen extends Screen {
 
     @Override public void tick() {
         if (closeAt != -1 && closeAt < System.currentTimeMillis()) {
-            onClose();
+            close();
         }
         super.tick();
     }

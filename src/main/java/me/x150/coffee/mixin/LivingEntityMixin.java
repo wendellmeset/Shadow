@@ -12,6 +12,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.FluidState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -40,7 +41,7 @@ import java.util.Objects;
     //        }
     //        return value;
     //    }
-    @Inject(method = "canWalkOnFluid", at = @At("HEAD"), cancellable = true) public void atomic_overwriteCanWalkOnFluid(Fluid fluid, CallbackInfoReturnable<Boolean> cir) {
+    @Inject(method = "canWalkOnFluid", at = @At("HEAD"), cancellable = true) public void atomic_overwriteCanWalkOnFluid(FluidState fluidState, CallbackInfoReturnable<Boolean> cir) {
         if (CoffeeClientMain.client.player == null) {
             return;
         }

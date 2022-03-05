@@ -45,22 +45,22 @@ public class EntityFly extends Module {
         GameOptions go = CoffeeClientMain.client.options;
         float y = Objects.requireNonNull(client.player).getYaw();
         int mx = 0, my = 0, mz = 0;
-        if (go.keyJump.isPressed()) {
+        if (go.jumpKey.isPressed()) {
             my++;
         }
-        if (go.keyBack.isPressed()) {
+        if (go.backKey.isPressed()) {
             mz++;
         }
-        if (go.keyLeft.isPressed()) {
+        if (go.leftKey.isPressed()) {
             mx--;
         }
-        if (go.keyRight.isPressed()) {
+        if (go.rightKey.isPressed()) {
             mx++;
         }
         if (down.isPressed()) {
             my--;
         }
-        if (go.keyForward.isPressed()) {
+        if (go.forwardKey.isPressed()) {
             mz--;
         }
         double ts = 1;

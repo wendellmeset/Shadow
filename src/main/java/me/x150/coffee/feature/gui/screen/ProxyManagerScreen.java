@@ -33,7 +33,7 @@ public class ProxyManagerScreen extends ClientScreen {
 
     @Override protected void init() {
 
-        RoundButton exit = new RoundButton(new Color(40, 40, 40), width - 20 - 5, 5, 20, 20, "X", this::onClose);
+        RoundButton exit = new RoundButton(new Color(40, 40, 40), width - 20 - 5, 5, 20, 20, "X", this::close);
         addDrawableChild(exit);
 
         double wWidth = widgetWidth - padding() * 2d;
@@ -59,9 +59,7 @@ public class ProxyManagerScreen extends ClientScreen {
             ip.set("");
             port.set("");
         });
-        apply = new RoundButton(new Color(40, 40, 40), sourceX + doubleWidth + padding(), yOffset, doubleWidth, 20, "Apply", () -> {
-            currentProxy = new Proxy(ip.get(), Integer.parseInt(port.get()), isSocks4);
-        });
+        apply = new RoundButton(new Color(40, 40, 40), sourceX + doubleWidth + padding(), yOffset, doubleWidth, 20, "Apply", () -> currentProxy = new Proxy(ip.get(), Integer.parseInt(port.get()), isSocks4));
 
         addDrawableChild(ip);
         addDrawableChild(port);
@@ -141,7 +139,7 @@ public class ProxyManagerScreen extends ClientScreen {
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
-    @Override public void onClose() {
+    @Override public void close() {
         client.setScreen(parent);
     }
 

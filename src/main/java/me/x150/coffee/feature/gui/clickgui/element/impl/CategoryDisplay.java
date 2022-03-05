@@ -95,7 +95,8 @@ public class CategoryDisplay extends Element {
     double smoothScroll = 0;
     @Override
     public boolean scroll(double mouseX, double mouseY, double amount) {
-        if (inBounds(mouseX,mouseY)) {
+
+        if (amount == 0 || inBounds(mouseX,mouseY)) {
             scroll += amount*10;
             double contentHeight = getModules().stream().map(ModuleDisplay::getHeight).reduce(Double::sum).orElse(0d);
             double viewerHeight = Math.min(contentHeight,200);
@@ -137,7 +138,7 @@ public class CategoryDisplay extends Element {
         Renderer.R2D.renderTexture(matrices, x + texPad, y + texPad, texDim, texDim, 0, 0, texDim, texDim, texDim, texDim);
         //        cfr.drawCenteredString(matrices,mt.getName(),x+texPad+texDim+texPad,y+headerHeight()/2d-cfr.getFontHeight()/2d,0xFFFFFF);
         cfr.drawCenteredString(matrices, mt.getName(), x + width / 2d, y + headerHeight() / 2d - cfr.getFontHeight() / 2d, 0xFFFFFF);
-        ClipStack.globalInstance.addWindow(matrices, new Rectangle(x, y+headerHeight(), x + width, y + this.height-(modHeight!=0?r:0)));
+        ClipStack.globalInstance.addWindow(matrices, new Rectangle(x, y+headerHeight()-.5, x + width, y + this.height-(modHeight!=0?r:0)));
         double y = headerHeight();
         matrices.push();
         matrices.translate(0,smoothScroll,0);

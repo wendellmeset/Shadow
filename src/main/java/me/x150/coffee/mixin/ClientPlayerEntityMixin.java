@@ -31,8 +31,8 @@ import java.util.Objects;
         }
     }
 
-    @Redirect(method = "updateNausea", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/Screen;isPauseScreen()Z")) public boolean atomic_overwriteIsPauseScreen(Screen screen) {
-        return Objects.requireNonNull(ModuleRegistry.getByClass(PortalGUI.class)).isEnabled() || screen.isPauseScreen();
+    @Redirect(method = "updateNausea", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/Screen;shouldPause()Z")) public boolean atomic_overwriteIsPauseScreen(Screen screen) {
+        return Objects.requireNonNull(ModuleRegistry.getByClass(PortalGUI.class)).isEnabled() || screen.shouldPause();
     }
 
     @Inject(method = "pushOutOfBlocks", at = @At("HEAD"), cancellable = true) public void atomic_preventPushOutFromBlocks(double x, double z, CallbackInfo ci) {

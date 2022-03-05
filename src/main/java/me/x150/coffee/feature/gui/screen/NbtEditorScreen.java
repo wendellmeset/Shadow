@@ -56,7 +56,7 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
         initial.add(current.toString());
     }
 
-    @Override public boolean isPauseScreen() {
+    @Override public boolean shouldPause() {
         return false;
     }
 
@@ -95,7 +95,7 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
         try {
             NbtCompound nc = StringNbtReader.parse(nbtString);
             this.stack.setNbt(nc);
-            this.onClose();
+            this.close();
         } catch (Exception e) {
             client.setScreen(new NotificationScreen(this, "Invalid JSON!", Notification.Type.ERROR));
         }

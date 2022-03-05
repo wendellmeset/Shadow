@@ -38,11 +38,11 @@ public class NotificationScreen extends ClientScreen implements FastTickable {
     @Override protected void init() {
         double height = 5 + 32 + 5 + FontRenderers.getRenderer().getMarginHeight() + 5 + 20 + 5;
         double w = Math.max(120, FontRenderers.getRenderer().getStringWidth(t));
-        RoundButton rb = new RoundButton(RoundButton.STANDARD, width / 2d - w / 2d, this.height / 2d - height / 2d + height - 5 - 20, w, 20, "Close", this::onClose);
+        RoundButton rb = new RoundButton(RoundButton.STANDARD, width / 2d - w / 2d, this.height / 2d - height / 2d + height - 5 - 20, w, 20, "Close", this::close);
         addDrawableChild(rb);
     }
 
-    @Override public void onClose() {
+    @Override public void close() {
         closing = true;
     }
 

@@ -51,7 +51,7 @@ public class LongJump extends Module {
     }
 
     @Override public void tick() {
-        if (!client.options.keyJump.isPressed()) {
+        if (!client.options.jumpKey.isPressed()) {
             jumped = false;
         }
         if (Objects.requireNonNull(client.player).getVelocity().y < 0 && !client.player.isOnGround() && client.player.fallDistance > 0 && jumped) {

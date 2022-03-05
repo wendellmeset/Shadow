@@ -44,12 +44,12 @@ import java.util.Objects;
             return;
         }
         GameOptions go = CoffeeClientMain.client.options;
-        setState(go.keyForward);
-        setState(go.keyRight);
-        setState(go.keyBack);
-        setState(go.keyLeft);
-        setState(go.keyJump);
-        setState(go.keySprint);
+        setState(go.forwardKey);
+        setState(go.rightKey);
+        setState(go.backKey);
+        setState(go.leftKey);
+        setState(go.jumpKey);
+        setState(go.sprintKey);
 
         float yawOffset = 0f;
         float pitchOffset = 0f;

@@ -131,8 +131,8 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
         }
     }
 
-    @Override public void onClose() {
-        super.onClose();
+    @Override public void close() {
+        super.close();
         saveAlts();
     }
 
@@ -191,7 +191,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
         addDrawableChild(search);
         censorMail = new ThemedButton(width - 100 - 5 - 60 - 5 - 20 - getPadding(), 10 + title.getMarginHeight() / 2d - 20 / 2d, 100, 20, "Show email", this::toggleCensor);
         add = new ThemedButton(width - 60 - 5 - 20 - getPadding(), 10 + title.getMarginHeight() / 2d - 20 / 2d, 60, 20, "Add", () -> client.setScreen(new AddScreenOverlay(this)));
-        exit = new ThemedButton(width - 20 - getPadding(), 10 + title.getMarginHeight() / 2d - 20 / 2d, 20, 20, "X", this::onClose);
+        exit = new ThemedButton(width - 20 - getPadding(), 10 + title.getMarginHeight() / 2d - 20 / 2d, 20, 20, "X", this::close);
 
         double padding = 5;
         double widRHeight = 64 + padding * 2;
@@ -667,7 +667,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
         }
 
         @Override protected void init() {
-            RoundButton exit = new RoundButton(RoundButton.STANDARD, width - 20 - 5, 5, 20, 20, "X", this::onClose);
+            RoundButton exit = new RoundButton(RoundButton.STANDARD, width - 20 - 5, 5, 20, 20, "X", this::close);
             addDrawableChild(exit);
             this.tags.clear();
             String tags = selectedAlt.storage.tags;
@@ -720,7 +720,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
             add.setY(add.getY() + widgetStartY);
         }
 
-        @Override public void onClose() {
+        @Override public void close() {
             client.setScreen(parent);
         }
 
