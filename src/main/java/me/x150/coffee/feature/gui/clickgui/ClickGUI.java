@@ -16,6 +16,7 @@ import me.x150.coffee.helper.font.adapter.impl.ClientFontRenderer;
 import me.x150.coffee.helper.render.MSAAFramebuffer;
 import me.x150.coffee.helper.render.Renderer;
 import me.x150.coffee.helper.util.Transitions;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
@@ -30,7 +31,7 @@ import java.util.stream.Collectors;
 
 public class ClickGUI extends Screen implements FastTickable {
     public static final Theme theme = new SipoverV1();
-    static Color idk = new Color(20, 20, 30, 255);
+    static Color tooltipColor = new Color(20, 20, 30, 255);
     private static ClickGUI instance;
     final List<Element> elements = new ArrayList<>();
     final ParticleRenderer real = new ParticleRenderer(100);
@@ -76,16 +77,6 @@ public class ClickGUI extends Screen implements FastTickable {
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
-//        scroll -= amount * 10;
-//        double bottomMost = 0;
-//        for (Element element : elements) {
-//            double y = element.getY() + element.getHeight();
-//            bottomMost = Math.max(bottomMost, y);
-//        }
-//        bottomMost -= height;
-//        bottomMost += 5; // leave 5 space between scroll end and deepest element
-//        bottomMost = Math.max(0, bottomMost);
-//        scroll = MathHelper.clamp(scroll, 0, bottomMost);
         for (Element element : elements) {
             if (element.scroll(mouseX, mouseY, amount)) break;
         }
@@ -99,19 +90,26 @@ public class ClickGUI extends Screen implements FastTickable {
     }
 
     void initElements() {
+        elements.clear();
         double width = CoffeeClientMain.client.getWindow().getScaledWidth();
+        double height = CoffeeClientMain.client.getWindow().getScaledHeight();
         double x = 5;
         double y = 5;
         double tallestInTheRoom = 0;
         for (ModuleType value : Arrays.stream(ModuleType.values())
-                .sorted(Comparator.comparingLong(value -> -ModuleRegistry.getModules().stream().filter(module -> module.getModuleType() == value).count())).collect(Collectors.toList())) {
+                .sorted(Comparator.comparingLong(value -> -ModuleRegistry.getModules().stream().filter(module -> module.getModuleType() == value).count())).toList()) {
             CategoryDisplay cd = new CategoryDisplay(x, y, value);
             tallestInTheRoom = Math.max(tallestInTheRoom, cd.getHeight());
-            x += cd.getWidth() + 5;
-            if (x >= width) {
-                y += tallestInTheRoom + 5;
-                tallestInTheRoom = 0;
-                x = 5;
+//            x += cd.getWidth() + 5;
+//            if (x >= width) {
+//                y += tallestInTheRoom + 5;
+//                tallestInTheRoom = 0;
+//                x = 5;
+//            }
+            y += cd.getHeight()+5;
+            if (y+200 > height) {
+                y = 5;
+                x += cd.getWidth()+5;
             }
             elements.add(cd);
         }
@@ -171,7 +169,7 @@ public class ClickGUI extends Screen implements FastTickable {
             if (descX + width > CoffeeClientMain.client.getWindow().getScaledWidth()) {
                 descX -= (descX + width - CoffeeClientMain.client.getWindow().getScaledWidth()) + 4;
             }
-            Vec2f root = Renderer.R2D.renderTooltip(matrices, descX, descY, width + 4, FontRenderers.getRenderer().getMarginHeight() + 4, idk);
+            Vec2f root = Renderer.R2D.renderTooltip(matrices, descX, descY, width + 4, FontRenderers.getRenderer().getMarginHeight() + 4, tooltipColor);
             float yOffset = 2;
             for (String s : text) {
                 FontRenderers.getRenderer().drawString(matrices, s, root.x + 1, root.y + yOffset, 0xFFFFFF, false);
@@ -216,7 +214,17 @@ public class ClickGUI extends Screen implements FastTickable {
     }
 
     @Override
+    public void resize(MinecraftClient client, int width, int height) {
+        super.resize(client, width, height);
+        initElements();
+    }
+
+    @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+//        if (keyCode == GLFW.GLFW_KEY_RIGHT_CONTROL) {
+//            initElements();
+//            return true;
+//        }
         for (Element element : elements) {
             if (element.keyPressed(keyCode, modifiers)) {
                 return true;

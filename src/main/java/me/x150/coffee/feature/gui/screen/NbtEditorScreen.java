@@ -22,6 +22,7 @@ import org.lwjgl.glfw.GLFW;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -243,6 +244,20 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
                 case GLFW.GLFW_KEY_LEFT -> editorX -= 1;
                 case GLFW.GLFW_KEY_UP -> editorY -= 1;
                 case GLFW.GLFW_KEY_DOWN -> editorY += 1;
+                case GLFW.GLFW_KEY_TAB ->  {
+                    int whitespacesStart = 0;
+                    String index = initial.get(editorY);
+                    for (char c : Arrays.copyOfRange(index.toCharArray(),0,editorX)) {
+                        if (c == ' ') whitespacesStart++;
+                        else break;
+                    }
+                    whitespacesStart %= 2;
+                    int missing = 2-whitespacesStart;
+                    StringBuilder sb = new StringBuilder(index);
+                    sb.insert(editorX," ".repeat(missing));
+                    editorX += 2;
+                    initial.set(editorY, sb.toString());
+                }
                 case GLFW.GLFW_KEY_BACKSPACE -> {
                     if (editorX == 0 && editorY == 0) {
                         break;
