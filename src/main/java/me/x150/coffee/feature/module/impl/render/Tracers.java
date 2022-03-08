@@ -21,7 +21,6 @@ import net.minecraft.util.math.Vec3d;
 
 import java.awt.*;
 import java.util.Comparator;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public class Tracers extends Module {

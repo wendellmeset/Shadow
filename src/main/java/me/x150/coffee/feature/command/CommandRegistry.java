@@ -47,6 +47,7 @@ public class CommandRegistry {
         commands.add(new SkinExploit());
         commands.add(new Test());
         commands.add(new Kickall());
+        commands.add(new ItemExploit());
     }
 
     public static List<Command> getCommands() {
@@ -66,6 +67,7 @@ public class CommandRegistry {
                 c.onExecute(args);
             } catch (Exception e) {
                 Utils.Logging.error("Error while running command " + command);
+                e.printStackTrace();
             }
         }
     }

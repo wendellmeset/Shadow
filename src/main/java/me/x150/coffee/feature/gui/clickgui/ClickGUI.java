@@ -16,7 +16,6 @@ import me.x150.coffee.helper.font.adapter.impl.ClientFontRenderer;
 import me.x150.coffee.helper.render.MSAAFramebuffer;
 import me.x150.coffee.helper.render.Renderer;
 import me.x150.coffee.helper.util.Transitions;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
@@ -27,7 +26,6 @@ import org.lwjgl.glfw.GLFW;
 import java.awt.*;
 import java.util.List;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class ClickGUI extends Screen implements FastTickable {
     public static final Theme theme = new SipoverV1();
@@ -35,10 +33,10 @@ public class ClickGUI extends Screen implements FastTickable {
     private static ClickGUI instance;
     final List<Element> elements = new ArrayList<>();
     final ParticleRenderer real = new ParticleRenderer(100);
+    final double scroll = 0;
     public String searchTerm = "";
     String desc = null;
     double descX, descY;
-    final double scroll = 0;
     double trackedScroll = 0;
     double introAnimation = 0;
     boolean closing = false;
@@ -93,7 +91,6 @@ public class ClickGUI extends Screen implements FastTickable {
     void initElements() {
         elements.clear();
         double width = CoffeeClientMain.client.getWindow().getScaledWidth();
-        double height = CoffeeClientMain.client.getWindow().getScaledHeight();
         double x = 5;
         double y = 5;
         double tallestInTheRoom = 0;
@@ -208,7 +205,6 @@ public class ClickGUI extends Screen implements FastTickable {
         }
         return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
     }
-
 
 
     @Override

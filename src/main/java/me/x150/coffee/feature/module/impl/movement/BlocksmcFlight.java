@@ -78,10 +78,10 @@ public class BlocksmcFlight extends Module {
     }
 
     static class AnimatedCircle {
-        double animProg = 0;
-        Vec3d spawnPos;
         final Color a = new Color(200, 200, 200);
         final Color b = new Color(200, 200, 200, 0);
+        double animProg = 0;
+        Vec3d spawnPos;
 
         public void render(MatrixStack stack) {
             double progI = animProg * 2;

@@ -13,10 +13,10 @@ import net.minecraft.client.util.math.MatrixStack;
 import java.awt.*;
 
 public class ProxyManagerScreen extends ClientScreen {
-    public static Proxy currentProxy = null;
     static final double widgetWidth = 300;
-    static double widgetHeight = 400;
     static final ClientFontRenderer title = FontRenderers.getCustomSize(40);
+    public static Proxy currentProxy = null;
+    static double widgetHeight = 400;
     static boolean isSocks4 = false;
     final Screen parent;
     RoundTextFieldWidget ip, port;

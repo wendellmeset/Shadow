@@ -15,13 +15,13 @@ import org.apache.commons.compress.utils.Lists;
 import java.awt.*;
 
 public class TestScreen extends Screen implements FastTickable {
+    final double[] data = new double[100];
+    final double[] viewerData = new double[data.length];
+    final Timer updater = new Timer();
     DoubleOptionSliderWidget goopy;
     DoubleOptionSliderWidget curve;
     double goopyV = 1d;
     double curveV = 1d;
-    final double[] data = new double[100];
-    final double[] viewerData = new double[data.length];
-    final Timer updater = new Timer();
 
     public TestScreen() {
         super(Text.of(""));

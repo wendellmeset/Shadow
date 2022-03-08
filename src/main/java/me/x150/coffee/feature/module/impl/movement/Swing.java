@@ -21,8 +21,8 @@ import java.awt.*;
 import java.util.Objects;
 
 public class Swing extends Module {
-    static BlockPos swinging;
     static final Color line = new Color(50, 50, 50, 255);
+    static BlockPos swinging;
 
     public Swing() {
         super("Swing", "Swing around like spiderman", ModuleType.MOVEMENT);

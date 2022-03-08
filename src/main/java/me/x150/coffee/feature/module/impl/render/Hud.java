@@ -37,6 +37,7 @@ import java.util.Objects;
 public class Hud extends Module {
     public static double currentTps = 0;
     static ClientFontRenderer titleFr;
+    public final BooleanSetting speed = this.config.create(new BooleanSetting.Builder(true).name("Speed").description("Show your current velocity").get());
     final DateFormat minSec = new SimpleDateFormat("mm:ss");
     final BooleanSetting fps = this.config.create(new BooleanSetting.Builder(true).name("FPS").description("Whether to show FPS").get());
     final BooleanSetting tps = this.config.create(new BooleanSetting.Builder(true).name("TPS").description("Whether to show TPS").get());
@@ -44,12 +45,11 @@ public class Hud extends Module {
     final BooleanSetting ping = this.config.create(new BooleanSetting.Builder(true).name("Ping").description("Whether to show current ping").get());
     final BooleanSetting modules = this.config.create(new BooleanSetting.Builder(true).name("Array list").description("Whether to show currently enabled modules").get());
     final List<ModuleEntry> moduleList = new ArrayList<>();
-    public final BooleanSetting speed = this.config.create(new BooleanSetting.Builder(true).name("Speed").description("Show your current velocity").get());
+    final Timer tpsUpdateTimer = new Timer();
+    final List<Double> last5SecondTpsAverage = new ArrayList<>();
     long lastTimePacketReceived;
     double rNoConnectionPosY = -10d;
     Notification serverNotResponding = null;
-    final Timer tpsUpdateTimer = new Timer();
-    final List<Double> last5SecondTpsAverage = new ArrayList<>();
 
     public Hud() {
         super("Hud", "Shows information about the player on screen", ModuleType.RENDER);

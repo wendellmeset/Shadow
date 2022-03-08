@@ -30,6 +30,7 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
     final ItemStack stack;
     final List<String> initial = new ArrayList<>();
     final char[] suffixes = {'b', 's', 'L', 'f', 'd'};
+    final char[][] appendPairs = {{'"', '"'}, {'{', '}'}, {'\'', '\''}, {'[', ']'}};
     int editorX = 0;
     int editorY = 0;
     double scrollX = 0;
@@ -37,7 +38,6 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
     double scroll = 0;
     double smoothScroll = 0;
     RoundTextFieldWidget search;
-    final char[][] appendPairs = {{'"', '"'}, {'{', '}'}, {'\'', '\''}, {'[', ']'}};
     boolean skipAppend = false;
 
     public NbtEditorScreen(ItemStack stack) {
@@ -244,17 +244,17 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
                 case GLFW.GLFW_KEY_LEFT -> editorX -= 1;
                 case GLFW.GLFW_KEY_UP -> editorY -= 1;
                 case GLFW.GLFW_KEY_DOWN -> editorY += 1;
-                case GLFW.GLFW_KEY_TAB ->  {
+                case GLFW.GLFW_KEY_TAB -> {
                     int whitespacesStart = 0;
                     String index = initial.get(editorY);
-                    for (char c : Arrays.copyOfRange(index.toCharArray(),0,editorX)) {
+                    for (char c : Arrays.copyOfRange(index.toCharArray(), 0, editorX)) {
                         if (c == ' ') whitespacesStart++;
                         else break;
                     }
                     whitespacesStart %= 2;
-                    int missing = 2-whitespacesStart;
+                    int missing = 2 - whitespacesStart;
                     StringBuilder sb = new StringBuilder(index);
-                    sb.insert(editorX," ".repeat(missing));
+                    sb.insert(editorX, " ".repeat(missing));
                     editorX += 2;
                     initial.set(editorY, sb.toString());
                 }

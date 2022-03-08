@@ -24,7 +24,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
 
 public class Taco extends Command {
     public static final File storage = new File(CoffeeClientMain.BASE, "taco.sip");

@@ -12,7 +12,6 @@ import me.x150.coffee.feature.module.ModuleRegistry;
 
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class Config extends Command {
 

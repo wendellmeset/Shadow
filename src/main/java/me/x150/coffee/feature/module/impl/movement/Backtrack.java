@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Backtrack extends Module {
-    boolean committed = false;
     final List<PositionEntry> entries = new ArrayList<>();
+    boolean committed = false;
 
     public Backtrack() {
         super("Backtrack", "Allows you to redo your movement if you messed up", ModuleType.MOVEMENT);

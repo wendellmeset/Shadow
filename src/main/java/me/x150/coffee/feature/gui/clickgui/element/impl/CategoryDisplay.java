@@ -45,9 +45,6 @@ public class CategoryDisplay extends Element {
                 md.add(md1);
             }
         }
-//        double modHeight = getModules().stream().map(ModuleDisplay::getHeight).reduce(Double::sum).orElse(0d);
-//        modHeight = Math.min(modHeight,200);
-//        this.height = headerHeight() + modHeight + 5;
     }
 
     @Override
@@ -145,11 +142,11 @@ public class CategoryDisplay extends Element {
         double modHeight = getModules().stream().map(ModuleDisplay::getHeight).reduce(Double::sum).orElse(0d);
         double modHeightUnclamped = modHeight;
         modHeight = Math.min(modHeight, 200);
-        modHeight = Math.min(modHeight, modHeight*openAnim); // looks weird but works
+        modHeight = Math.min(modHeight, modHeight * openAnim); // looks weird but works
 
         this.height = headerHeight() + modHeight; // pre calc height
         if (modHeight != 0) {
-            height += r*openAnim;
+            height += r * openAnim;
         }
         Renderer.R2D.renderRoundedQuad(matrices, theme.getHeader(), x, y, x + width, y + this.height, r, 20);
 
@@ -161,13 +158,13 @@ public class CategoryDisplay extends Element {
         double ct = 1;
         double cw = 6;
         matrices.push();
-        matrices.translate(x+width-texPad-cw,y+headerHeight()/2d-ct/2d,0);
+        matrices.translate(x + width - texPad - cw, y + headerHeight() / 2d - ct / 2d, 0);
         matrices.push();
-        matrices.multiply(new Quaternion(0f,0f,(float)openAnim*90f,true));
-        Renderer.R2D.renderQuad(matrices,Color.WHITE,-cw/2d,-ct/2d,cw/2d,ct/2d);
+        matrices.multiply(new Quaternion(0f, 0f, (float) openAnim * 90f, true));
+        Renderer.R2D.renderQuad(matrices, Color.WHITE, -cw / 2d, -ct / 2d, cw / 2d, ct / 2d);
         matrices.pop();
-        matrices.multiply(new Quaternion(0f,0f,(float)openAnim*180f,true));
-        Renderer.R2D.renderQuad(matrices,Color.WHITE,-cw/2d,-ct/2d,cw/2d,ct/2d);
+        matrices.multiply(new Quaternion(0f, 0f, (float) openAnim * 180f, true));
+        Renderer.R2D.renderQuad(matrices, Color.WHITE, -cw / 2d, -ct / 2d, cw / 2d, ct / 2d);
         matrices.pop();
         if (openAnim != 0) {
             // rounding the height in the final param makes it more smooth, otherwise scissor will do something with the start y and it will rattle like shit
@@ -210,7 +207,7 @@ public class CategoryDisplay extends Element {
         double oaDelta = 0.02;
         if (!open) oaDelta *= -1;
         openAnim += oaDelta;
-        openAnim = MathHelper.clamp(openAnim,0,1);
+        openAnim = MathHelper.clamp(openAnim, 0, 1);
         for (ModuleDisplay moduleDisplay : getModules()) {
             moduleDisplay.tickAnim();
         }

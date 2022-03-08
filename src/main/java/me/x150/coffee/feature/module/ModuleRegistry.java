@@ -22,6 +22,7 @@ public class ModuleRegistry {
     static boolean initialized = false;
 
     public static void init() {
+        modules.clear();
         initialized = true;
         modules.add(new Flight());
         modules.add(new Sprint());

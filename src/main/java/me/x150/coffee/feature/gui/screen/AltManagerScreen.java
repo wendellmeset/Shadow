@@ -311,7 +311,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
         //Renderer.R2D.beginScissor(stack, getPadding(), getHeaderHeight(), getPadding() + (width - (getPadding() + leftWidth + getPadding() * 2)), height);
         stack.push();
         stack.translate(0, -scrollSmooth, 0);
-        mouseY += scrollSmooth;
+        double mys = mouseY + scrollSmooth;
         double x = getPadding();
         double y = getHeaderHeight();
         double wid = width - (getPadding() + leftWidth + getPadding() * 2);
@@ -325,7 +325,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
             if (alt.renderY == -1) {
                 alt.renderY = alt.y;
             }
-            alt.render(stack, mouseX, mouseY);
+            alt.render(stack, mouseX, mys);
             y += alt.getHeight() + getPadding();
         }
         stack.pop();
@@ -428,6 +428,8 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        Rectangle rBounds = new Rectangle(getPadding(), getHeaderHeight(), getPadding() + (width - (getPadding() + leftWidth + getPadding() * 2)), height);
+
         censorMail.clicked(mouseX, mouseY);
         if (isLoggingIn.get()) {
             return false;
@@ -440,8 +442,11 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
             remove.clicked(mouseX, mouseY);
         }
         session.clicked(mouseX, mouseY);
-        for (AltContainer alt : getAlts()) {
-            alt.clicked(mouseX, mouseY + scrollSmooth);
+
+        if (mouseX >= rBounds.getX() && mouseX <= rBounds.getX1() && mouseY >= rBounds.getY() && mouseY <= rBounds.getY1()) {
+            for (AltContainer alt : getAlts()) {
+                alt.clicked(mouseX, mouseY + scrollSmooth);
+            }
         }
 
         return super.mouseClicked(mouseX, mouseY, button);
@@ -632,12 +637,12 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
 
     class TagEditor extends ClientScreen implements FastTickable {
         final List<ThemedButton> tags = new ArrayList<>();
+        final double widgetWidth = 300;
+        final Screen parent;
         RoundTextFieldWidget tagName;
         RoundButton add;
-        final double widgetWidth = 300;
         double widgetHeight = 0;
         double widgetStartX, widgetStartY;
-        final Screen parent;
 
         public TagEditor(Screen parent) {
             super(MSAAFramebuffer.MAX_SAMPLES);

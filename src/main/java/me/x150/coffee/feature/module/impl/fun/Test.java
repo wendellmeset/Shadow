@@ -4,7 +4,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import me.x150.coffee.CoffeeClientMain;
 import me.x150.coffee.feature.module.Module;
 import me.x150.coffee.feature.module.ModuleType;
-import me.x150.coffee.helper.util.Utils;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Matrix4f;

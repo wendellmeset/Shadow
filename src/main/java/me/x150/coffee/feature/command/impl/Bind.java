@@ -7,8 +7,6 @@ import me.x150.coffee.feature.module.Module;
 import me.x150.coffee.feature.module.ModuleRegistry;
 import me.x150.coffee.helper.util.Utils;
 
-import java.util.stream.Collectors;
-
 public class Bind extends Command {
     public Bind() {
         super("Bind", "Sets the keybind of a module", "bind");

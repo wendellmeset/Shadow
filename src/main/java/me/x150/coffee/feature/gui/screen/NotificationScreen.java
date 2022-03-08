@@ -16,9 +16,9 @@ public class NotificationScreen extends ClientScreen implements FastTickable {
     final String t;
     final Notification.Type ty;
     final Screen parent;
+    final Color bg = new Color(20, 20, 20, 100);
     boolean closing = false;
     double anim = 0;
-    final Color bg = new Color(20, 20, 20, 100);
 
     public NotificationScreen(Screen parent, String text, Notification.Type type) {
         this.ty = type;

@@ -15,6 +15,7 @@ import java.util.List;
 public class Notification {
     public final String title;
     public final long creationDate;
+    public final Type type;
     public String[] contents;
     public long duration;
     public double posX;
@@ -24,7 +25,6 @@ public class Notification {
     public double animationProgress = 0;
     public double animationGoal = 0;
     public boolean shouldDoAnimation = false;
-    public final Type type;
 
     public Notification(long duration, String title, Type type, String... contents) {
         this.duration = duration;

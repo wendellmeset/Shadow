@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class ConfigUtils extends Command {
     static final File CONFIG_STORAGE = new File(CoffeeClientMain.BASE, "configs");

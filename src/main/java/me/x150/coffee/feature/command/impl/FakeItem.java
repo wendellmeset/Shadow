@@ -15,7 +15,6 @@ import net.minecraft.util.registry.Registry;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class FakeItem extends Command {
     public FakeItem() {

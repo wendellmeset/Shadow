@@ -28,6 +28,7 @@ import java.util.function.BooleanSupplier;
 import static me.x150.coffee.feature.module.impl.render.Hud.getTitleFr;
 
 public class TabGui extends Module {
+    final Timer updater = new Timer();
     int scrollerIndex = 0;
     double scrollerRenderY = 0;
     double scrollerY = 0;
@@ -35,7 +36,6 @@ public class TabGui extends Module {
     List<GuiEntry> root = new ArrayList<>();
     double scroll = 0;
     double smoothScroll = 0;
-    final Timer updater = new Timer();
 
     public TabGui() {
         super("TabGui", "Renders a small module manager top left", ModuleType.RENDER);
@@ -213,14 +213,14 @@ public class TabGui extends Module {
     }
 
     static class GuiEntry {
-        double animation = 0;
-        double animationGoal = 0;
         final Runnable r;
         final Runnable back;
         final BooleanSupplier bs;
         final String name;
         final double h;
         final double w;
+        double animation = 0;
+        double animationGoal = 0;
 
         public GuiEntry(Runnable r, Runnable back, BooleanSupplier isEnabled, String name, double height, double width) {
             this.r = r;

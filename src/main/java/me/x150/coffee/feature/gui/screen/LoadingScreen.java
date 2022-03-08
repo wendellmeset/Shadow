@@ -31,18 +31,17 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class LoadingScreen extends ClientScreen implements FastTickable {
     static final int atOnce = 3;
-    static LoadingScreen INSTANCE = null;
     static final Color GREEN = new Color(100, 255, 20);
     static final Color RED = new Color(255, 50, 20);
+    static LoadingScreen INSTANCE = null;
     final AtomicBoolean loaded = new AtomicBoolean(false);
     final AtomicBoolean loadInProg = new AtomicBoolean(false);
     //    double progress = 0;
     final AtomicDouble progress = new AtomicDouble();
-    double smoothProgress = 0;
-    double opacity = 1;
     final ClientFontRenderer title = FontRenderers.getCustomSize(40);
     final Map<CoffeeClientMain.ResourceEntry, ProgressData> progressMap = new ConcurrentHashMap<>();
-
+    double smoothProgress = 0;
+    double opacity = 1;
     String warningIfPresent = "";
 
     private LoadingScreen() {

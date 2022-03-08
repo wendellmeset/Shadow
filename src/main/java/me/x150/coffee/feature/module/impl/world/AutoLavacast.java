@@ -25,9 +25,8 @@ public class AutoLavacast extends Module {
 
     static boolean moveForwards = false;
     final EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.Bypass).name("Mode").description("How to place and move. Bypass is slow but looks legit, fast is VERY speedy").get());
-
-    Input original;
     final Timer timer = new Timer();
+    Input original;
     Vec3i incr;
     BlockPos start;
 

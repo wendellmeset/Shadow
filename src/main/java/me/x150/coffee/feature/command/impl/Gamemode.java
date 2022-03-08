@@ -10,7 +10,6 @@ import me.x150.coffee.feature.command.Command;
 import net.minecraft.world.GameMode;
 
 import java.util.Arrays;
-import java.util.stream.Collectors;
 
 public class Gamemode extends Command {
 

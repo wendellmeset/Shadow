@@ -13,7 +13,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class Invsee extends Command {
 

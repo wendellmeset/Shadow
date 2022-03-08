@@ -22,11 +22,11 @@ import java.util.HashMap;
 public class GlyphPage {
 
     public final HashMap<Character, Glyph> glyphCharacterMap = new HashMap<>();
+    final Tessellator tessellator = Tessellator.getInstance();
     private final Font font;
     private final boolean antiAliasing;
     private final boolean fractionalMetrics;
     FontRenderContext frc;
-    final Tessellator tessellator = Tessellator.getInstance();
     private int imgSize;
     private int maxFontHeight = -1;
     private BufferedImage bufferedImage;

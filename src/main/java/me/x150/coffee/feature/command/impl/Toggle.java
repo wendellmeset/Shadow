@@ -9,8 +9,6 @@ import me.x150.coffee.feature.command.Command;
 import me.x150.coffee.feature.module.Module;
 import me.x150.coffee.feature.module.ModuleRegistry;
 
-import java.util.stream.Collectors;
-
 public class Toggle extends Command {
 
     public Toggle() {
