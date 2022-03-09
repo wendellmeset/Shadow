@@ -15,7 +15,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "me.x150.coffee.CoffeeClientMain"
+      "net.shadow.client.CoffeeClientMain"
     ],
     "client": [],
     "server": []

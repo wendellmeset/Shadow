@@ -1,11 +1,12 @@
 {
   "required": true,
-  "package": "me.x150.coffee.mixin",
+  "package": "net.shadow.client.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "AbstractBlockStateMixin",
     "AbstractClientPlayerEntityMixin",
     "AChatScreenMixin",
+    "AECMixin",
     "AEntityRendererMixin",
     "AGenericContainerScreenMixin",
     "AInGameHudMixin",
@@ -21,6 +22,7 @@
     "EntityMixin",
     "EntityModelMixin",
     "EntityRenderDispatcherMixin",
+    "EntityRendererMixin",
     "GameRendererMixin",
     "IClientPlayerInteractionManagerAccessor",
     "ICustomPayloadC2SPacketAccessor",
