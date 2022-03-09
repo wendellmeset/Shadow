@@ -42,6 +42,10 @@ public abstract class SettingBase<V> {
         suppliers.add(supplier);
     }
 
+    public String getConfigSave() {
+        return getValue().toString();
+    }
+
     public boolean shouldShow() {
         return suppliers.stream().allMatch(BooleanSupplier::getAsBoolean);
     }

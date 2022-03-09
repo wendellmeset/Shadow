@@ -3,6 +3,7 @@ package me.x150.coffee.feature.gui.clickgui.element.impl.config;
 import me.x150.coffee.feature.config.EnumSetting;
 import me.x150.coffee.feature.gui.clickgui.ClickGUI;
 import me.x150.coffee.feature.gui.clickgui.theme.Theme;
+import me.x150.coffee.feature.gui.clickgui.theme.ThemeManager;
 import me.x150.coffee.helper.font.FontRenderers;
 import me.x150.coffee.helper.render.Renderer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -27,7 +28,7 @@ public class EnumSettingEditor extends ConfigBase<EnumSetting<?>> {
     }
 
     <T extends Enum<?>> int getColor(T value) {
-        Theme theme = ClickGUI.theme;
+        Theme theme = ThemeManager.getMainTheme();
         return configValue.getValue().equals(value) ? theme.getActive().getRGB() : theme.getInactive().getRGB();
     }
 

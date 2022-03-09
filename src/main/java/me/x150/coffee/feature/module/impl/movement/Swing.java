@@ -3,6 +3,7 @@ package me.x150.coffee.feature.module.impl.movement;
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.x150.coffee.CoffeeClientMain;
 import me.x150.coffee.feature.gui.clickgui.ClickGUI;
+import me.x150.coffee.feature.gui.clickgui.theme.ThemeManager;
 import me.x150.coffee.feature.module.Module;
 import me.x150.coffee.feature.module.ModuleType;
 import me.x150.coffee.helper.event.EventType;
@@ -88,7 +89,7 @@ public class Swing extends Module {
         Vec3d cringe2 = new Vec3d(swinging.getX() + 0.5, swinging.getY() + 0.5, swinging.getZ() + 0.5);
         Vec3d eSource = Utils.getInterpolatedEntityPosition(CoffeeClientMain.client.player);
         //        Renderer.R3D.renderFilled(cringe, new Vec3d(1, 1, 1), new Color(150, 150, 150, 150), matrices)
-        Renderer.R3D.renderFilled(cringe.add(.5, .5, .5).subtract(.25, .25, .25), new Vec3d(.5, .5, .5), ClickGUI.theme.getInactive(), matrices);
+        Renderer.R3D.renderFilled(cringe.add(.5, .5, .5).subtract(.25, .25, .25), new Vec3d(.5, .5, .5), ThemeManager.getMainTheme().getInactive(), matrices);
         Renderer.R3D.renderLine(eSource, cringe2, line, matrices);
     }
 

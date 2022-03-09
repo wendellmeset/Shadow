@@ -1,11 +1,15 @@
 package me.x150.coffee.helper.nbt;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.nbt.NbtCompound;
 
 import java.util.Arrays;
 
 public class NbtObject extends NbtElement {
     String name;
+    @Getter
+    @Setter
     NbtElement[] children;
 
     public NbtObject(String name, NbtElement... children) {

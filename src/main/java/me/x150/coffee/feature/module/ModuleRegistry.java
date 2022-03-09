@@ -115,6 +115,8 @@ public class ModuleRegistry {
         modules.add(new AutoLavacast());
         modules.add(new Backtrack());
         modules.add(new TabGui());
+        modules.add(new Theme());
+        modules.add(new AntiCrash());
     }
 
     public static List<Module> getModules() {

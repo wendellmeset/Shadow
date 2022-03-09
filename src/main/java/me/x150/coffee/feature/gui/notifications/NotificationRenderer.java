@@ -8,6 +8,7 @@ package me.x150.coffee.feature.gui.notifications;
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.x150.coffee.CoffeeClientMain;
 import me.x150.coffee.feature.gui.clickgui.ClickGUI;
+import me.x150.coffee.feature.gui.clickgui.theme.ThemeManager;
 import me.x150.coffee.helper.font.FontRenderers;
 import me.x150.coffee.helper.render.ClipStack;
 import me.x150.coffee.helper.render.Rectangle;
@@ -100,12 +101,12 @@ public class NotificationRenderer {
             if (notification.duration == -1) {
                 double seedR = (System.currentTimeMillis() % 2000) / 2000d;
                 double seed = Math.abs((Math.sin(Math.toRadians(seedR * 360)) + 1) / 2);
-                Color start = Renderer.Util.lerp(ClickGUI.theme.getActive(), ClickGUI.theme.getAccent(), seed);
-                Color end = Renderer.Util.lerp(ClickGUI.theme.getActive(), ClickGUI.theme.getAccent(), 1 - seed);
+                Color start = Renderer.Util.lerp(ThemeManager.getMainTheme().getActive(), ThemeManager.getMainTheme().getAccent(), seed);
+                Color end = Renderer.Util.lerp(ThemeManager.getMainTheme().getActive(), ThemeManager.getMainTheme().getAccent(), 1 - seed);
                 Renderer.R2D.renderQuadGradient(ms, end, start, notification.renderPosX - width, notification.renderPosY + height - 1, notification.renderPosX + width + 1, notification.renderPosY + height);
             } else {
-                Renderer.R2D.renderQuad(ms, ClickGUI.theme.getActive(), notification.renderPosX - width, notification.renderPosY + height - 1, notification.renderPosX + width + 1, notification.renderPosY + height);
-                Renderer.R2D.renderQuad(ms, ClickGUI.theme.getAccent(), notification.renderPosX - width, notification.renderPosY + height - 1, notification.renderPosX - width + ((width + 1) * 2 * timeRemainingInv), notification.renderPosY + height);
+                Renderer.R2D.renderQuad(ms, ThemeManager.getMainTheme().getActive(), notification.renderPosX - width, notification.renderPosY + height - 1, notification.renderPosX + width + 1, notification.renderPosY + height);
+                Renderer.R2D.renderQuad(ms, ThemeManager.getMainTheme().getAccent(), notification.renderPosX - width, notification.renderPosY + height - 1, notification.renderPosX - width + ((width + 1) * 2 * timeRemainingInv), notification.renderPosY + height);
             }
             ClipStack.globalInstance.popWindow();
             //Renderer.R2D.endScissor();
@@ -121,7 +122,7 @@ public class NotificationRenderer {
         long c = System.currentTimeMillis();
         for (Notification notification : new ArrayList<>(notifications)) {
             boolean notificationExpired = notification.creationDate + notification.duration < c;
-            int notifHeight = (int) (2 + ((notification.contents.length + (notification.title.isEmpty() ? 0 : 1)) * FontRenderers.getRenderer().getFontHeight()));
+            int notifHeight = (int) (2 + ((notification.contents.length + (notification.title.isEmpty() ? 0 : 1)) * FontRenderers.getRenderer().getFontHeight()))+4;
             notifHeight = Math.max(notifHeight, 32);
             double descWidth = 0;
             for (String content : notification.contents) {

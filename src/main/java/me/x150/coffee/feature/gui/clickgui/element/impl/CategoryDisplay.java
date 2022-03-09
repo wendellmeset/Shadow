@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import me.x150.coffee.feature.gui.clickgui.ClickGUI;
 import me.x150.coffee.feature.gui.clickgui.element.Element;
 import me.x150.coffee.feature.gui.clickgui.theme.Theme;
+import me.x150.coffee.feature.gui.clickgui.theme.ThemeManager;
 import me.x150.coffee.feature.module.Module;
 import me.x150.coffee.feature.module.ModuleRegistry;
 import me.x150.coffee.feature.module.ModuleType;
@@ -129,7 +130,7 @@ public class CategoryDisplay extends Element {
     @Override
     public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
         scroll(mouseX, mouseY, 0);
-        Theme theme = ClickGUI.theme;
+        Theme theme = ThemeManager.getMainTheme();
         double openAnim = this.openAnim < 0.5
                 ? (1 - sqrt(1 - pow(2 * this.openAnim, 2))) / 2
                 : (sqrt(1 - pow(-2 * this.openAnim + 2, 2)) + 1) / 2;

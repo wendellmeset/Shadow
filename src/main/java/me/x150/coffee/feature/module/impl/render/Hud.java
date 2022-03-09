@@ -3,6 +3,7 @@ package me.x150.coffee.feature.module.impl.render;
 import me.x150.coffee.CoffeeClientMain;
 import me.x150.coffee.feature.config.BooleanSetting;
 import me.x150.coffee.feature.gui.clickgui.ClickGUI;
+import me.x150.coffee.feature.gui.clickgui.theme.ThemeManager;
 import me.x150.coffee.feature.gui.hud.HudRenderer;
 import me.x150.coffee.feature.gui.notifications.Notification;
 import me.x150.coffee.feature.gui.notifications.NotificationRenderer;
@@ -195,8 +196,8 @@ public class Hud extends Module {
         }
         double height = Math.max(getTitleFr().getMarginHeight(), FontRenderers.getRenderer().getMarginHeight()) + 2;
 
-        Renderer.R2D.renderQuad(ms, ClickGUI.theme.getActive(), rootX, rootY, rootX + 1, rootY + height);
-        Renderer.R2D.renderQuad(ms, ClickGUI.theme.getModule(), rootX + 1, rootY, rootX + width, rootY + height);
+        Renderer.R2D.renderQuad(ms, ThemeManager.getMainTheme().getActive(), rootX, rootY, rootX + 1, rootY + height);
+        Renderer.R2D.renderQuad(ms, ThemeManager.getMainTheme().getModule(), rootX + 1, rootY, rootX + width, rootY + height);
         getTitleFr().drawString(ms, "Coffee", rootX + 2, rootY + height / 2d - getTitleFr().getMarginHeight() / 2d, 0xFFFFFF);
         FontRenderers.getRenderer().drawString(ms, drawStr, rootX + 2 + titleWidth + 5, rootY + height / 2d - FontRenderers.getRenderer().getMarginHeight() / 2d, 0xAAAAAA);
     }
@@ -213,10 +214,10 @@ public class Hud extends Module {
             double slideProg = MathHelper.clamp(prog - 1, 0, 1); // 1-2 as 0-1 from 0-2
             double hei = (FontRenderers.getRenderer().getMarginHeight() + 2);
             double wid = moduleEntry.getRenderWidth() + 3;
-            Renderer.R2D.renderQuad(ms, ClickGUI.theme.getActive(), width - (wid + 1), y, width, y + hei * expandProg);
+            Renderer.R2D.renderQuad(ms, ThemeManager.getMainTheme().getActive(), width - (wid + 1), y, width, y + hei * expandProg);
             ms.push();
             ms.translate((1 - slideProg) * wid, 0, 0);
-            Renderer.R2D.renderQuad(ms, ClickGUI.theme.getModule(), width - wid, y, width, y + hei * expandProg);
+            Renderer.R2D.renderQuad(ms, ThemeManager.getMainTheme().getModule(), width - wid, y, width, y + hei * expandProg);
             double nameW = FontRenderers.getRenderer().getStringWidth(moduleEntry.module.getName());
             FontRenderers.getRenderer().drawString(ms, moduleEntry.module.getName(), width - wid + 1, y + 1, 0xFFFFFF);
             if (moduleEntry.module.getContext() != null && !moduleEntry.module.getContext().isEmpty()) {

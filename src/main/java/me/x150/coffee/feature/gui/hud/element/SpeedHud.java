@@ -2,6 +2,7 @@ package me.x150.coffee.feature.gui.hud.element;
 
 import me.x150.coffee.CoffeeClientMain;
 import me.x150.coffee.feature.gui.clickgui.ClickGUI;
+import me.x150.coffee.feature.gui.clickgui.theme.ThemeManager;
 import me.x150.coffee.feature.module.ModuleRegistry;
 import me.x150.coffee.feature.module.impl.render.Hud;
 import me.x150.coffee.helper.Timer;
@@ -46,7 +47,7 @@ public class SpeedHud extends HudElement {
                     double prog = ((aDouble - min) / max);
                     double y = height - prog * height;
 
-                    Renderer.R2D.renderLine(stack, Renderer.Util.lerp(ClickGUI.theme.getActive(), ClickGUI.theme.getAccent(), ppr), x - incrX, previous, x, y);
+                    Renderer.R2D.renderLine(stack, Renderer.Util.lerp(ThemeManager.getMainTheme().getActive(), ThemeManager.getMainTheme().getAccent(), ppr), x - incrX, previous, x, y);
 
                     x += incrX;
                     previous = y;

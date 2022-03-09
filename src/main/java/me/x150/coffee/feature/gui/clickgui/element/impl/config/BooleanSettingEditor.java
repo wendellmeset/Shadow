@@ -3,6 +3,7 @@ package me.x150.coffee.feature.gui.clickgui.element.impl.config;
 import me.x150.coffee.feature.config.BooleanSetting;
 import me.x150.coffee.feature.gui.clickgui.ClickGUI;
 import me.x150.coffee.feature.gui.clickgui.theme.Theme;
+import me.x150.coffee.feature.gui.clickgui.theme.ThemeManager;
 import me.x150.coffee.helper.font.FontRenderers;
 import me.x150.coffee.helper.render.Renderer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -56,7 +57,7 @@ public class BooleanSettingEditor extends ConfigBase<BooleanSetting> {
 
     @Override
     public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
-        Theme theme = ClickGUI.theme;
+        Theme theme = ThemeManager.getMainTheme();
         double smoothAnimProgress = easeInOutCubic(animProgress);
         Renderer.R2D.renderRoundedQuad(matrices, Renderer.Util.lerp(theme.getActive(), theme.getInactive(), smoothAnimProgress), x, y + height / 2d - rh / 2d, x + rw, y + height / 2d + rh / 2d, rh / 2d, 5);
         double rix = getPreferredX();

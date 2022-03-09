@@ -3,6 +3,7 @@ package me.x150.coffee.feature.gui.clickgui.element.impl;
 import me.x150.coffee.feature.gui.clickgui.ClickGUI;
 import me.x150.coffee.feature.gui.clickgui.element.Element;
 import me.x150.coffee.feature.gui.clickgui.theme.Theme;
+import me.x150.coffee.feature.gui.clickgui.theme.ThemeManager;
 import me.x150.coffee.feature.module.Module;
 import me.x150.coffee.helper.font.FontRenderers;
 import me.x150.coffee.helper.render.ClipStack;
@@ -70,7 +71,7 @@ public class ModuleDisplay extends Element {
     @Override
     public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
 
-        Theme theme = ClickGUI.theme;
+        Theme theme = ThemeManager.getMainTheme();
         boolean hovered = inBounds(mouseX, mouseY);
         if (!hoveredBefore && hovered) {
             hoverStart = System.currentTimeMillis();

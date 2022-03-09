@@ -25,10 +25,6 @@ import java.util.stream.Collectors;
 
 public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
     static final Color BACKGROUND = new Color(60, 60, 60);
-    static Color NORMAL = Color.BLACK;
-    static Color ERROR = new Color(214, 93, 62);
-    static Color SUCCESS = new Color(65, 217, 101);
-    static Color WARNING = Color.YELLOW;
     private static CoffeeConsoleScreen instance;
     final Color background = new Color(0, 0, 0, 120);
     final List<LogEntry> logs = new ArrayList<>();

@@ -42,6 +42,8 @@
     "ModelPartMixin",
     "MouseMixin",
     "MultiplayerScreenMixin",
+    "ParticleManagerMixin",
+    "ParticleS2CAccessor",
     "PlayerEntityMixin",
     "PlayerEntityRendererMixin",
     "PlayerInteractEntityC2SPacketAccessor",

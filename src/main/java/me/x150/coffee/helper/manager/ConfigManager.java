@@ -85,7 +85,7 @@ public class ConfigManager {
             for (SettingBase<?> dynamicValue : module.config.getSettings()) {
                 JsonObject jesus = new JsonObject();
                 jesus.addProperty("key", dynamicValue.getName());
-                jesus.addProperty("value", dynamicValue.getValue() + "");
+                jesus.addProperty("value", dynamicValue.getConfigSave());
                 pairs.add(jesus);
             }
             currentConfig.add("pairs", pairs);

@@ -5,6 +5,7 @@ import me.x150.coffee.feature.gui.clickgui.ClickGUI;
 import me.x150.coffee.feature.gui.clickgui.element.Element;
 import me.x150.coffee.feature.gui.clickgui.element.impl.config.*;
 import me.x150.coffee.feature.gui.clickgui.theme.Theme;
+import me.x150.coffee.feature.gui.clickgui.theme.ThemeManager;
 import me.x150.coffee.helper.render.Renderer;
 import me.x150.coffee.helper.util.Utils;
 import net.minecraft.client.util.math.MatrixStack;
@@ -37,6 +38,9 @@ public class ConfigDisplay extends Element {
             } else if (setting instanceof StringSetting set) {
                 StringSettingEditor sse = new StringSettingEditor(0, 0, width - padding - paddingLeft, set);
                 bases.add(sse);
+            } else if (setting instanceof ColorSetting set) {
+                ColorSettingEditor cse = new ColorSettingEditor(0,0,width-padding-paddingLeft,set);
+                bases.add(cse);
             }
         }
         this.height = bases.stream().map(Element::getHeight).reduce(Double::sum).orElse(0d);
@@ -95,7 +99,7 @@ public class ConfigDisplay extends Element {
     @Override
     public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
         double yOffset = 2;
-        Theme theme = ClickGUI.theme;
+        Theme theme = ThemeManager.getMainTheme();
         double height = getHeight();
         Renderer.R2D.renderQuad(matrices, theme.getConfig(), x, this.y, x + width, this.y + height);
         Renderer.R2D.renderQuad(matrices, theme.getAccent(), x, this.y, x + 1, this.y + height);

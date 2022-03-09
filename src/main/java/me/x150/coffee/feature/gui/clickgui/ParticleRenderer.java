@@ -3,6 +3,7 @@ package me.x150.coffee.feature.gui.clickgui;
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.x150.coffee.CoffeeClientMain;
 import me.x150.coffee.feature.gui.clickgui.theme.Theme;
+import me.x150.coffee.feature.gui.clickgui.theme.ThemeManager;
 import me.x150.coffee.helper.render.Renderer;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
@@ -150,7 +151,7 @@ public class ParticleRenderer {
         }
 
         void render(MatrixStack stack) {
-            Theme theme = ClickGUI.theme;
+            Theme theme = ThemeManager.getMainTheme();
             stack.push();
             stack.translate(x, y, 0);
             stack.multiply(new Quaternion(0, (System.currentTimeMillis() % rotSpeed2) / ((float) rotSpeed2) * 360f * (spinsReverse2 ? -1 : 1), (System.currentTimeMillis() % rotSpeed) / ((float) rotSpeed) * 360f * (spinsReverse ? -1 : 1), true));

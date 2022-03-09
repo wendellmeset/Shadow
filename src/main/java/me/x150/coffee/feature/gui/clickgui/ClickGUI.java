@@ -6,6 +6,7 @@ import me.x150.coffee.feature.gui.FastTickable;
 import me.x150.coffee.feature.gui.clickgui.element.Element;
 import me.x150.coffee.feature.gui.clickgui.element.impl.CategoryDisplay;
 import me.x150.coffee.feature.gui.clickgui.theme.Theme;
+import me.x150.coffee.feature.gui.clickgui.theme.impl.Custom;
 import me.x150.coffee.feature.gui.clickgui.theme.impl.SipoverV1;
 import me.x150.coffee.feature.module.ModuleRegistry;
 import me.x150.coffee.feature.module.ModuleType;
@@ -28,7 +29,8 @@ import java.util.List;
 import java.util.*;
 
 public class ClickGUI extends Screen implements FastTickable {
-    public static final Theme theme = new SipoverV1();
+//    public static final Theme theme = new SipoverV1();
+
     static final Color tooltipColor = new Color(20, 20, 30, 255);
     private static ClickGUI instance;
     final List<Element> elements = new ArrayList<>();

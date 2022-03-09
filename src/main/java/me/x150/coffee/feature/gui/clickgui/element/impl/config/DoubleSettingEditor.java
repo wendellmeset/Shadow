@@ -3,6 +3,7 @@ package me.x150.coffee.feature.gui.clickgui.element.impl.config;
 import me.x150.coffee.feature.config.DoubleSetting;
 import me.x150.coffee.feature.gui.clickgui.ClickGUI;
 import me.x150.coffee.feature.gui.clickgui.theme.Theme;
+import me.x150.coffee.feature.gui.clickgui.theme.ThemeManager;
 import me.x150.coffee.helper.font.FontRenderers;
 import me.x150.coffee.helper.render.Renderer;
 import me.x150.coffee.helper.util.Utils;
@@ -60,7 +61,7 @@ public class DoubleSettingEditor extends ConfigBase<DoubleSetting> {
 
     @Override
     public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
-        Theme theme = ClickGUI.theme;
+        Theme theme = ThemeManager.getMainTheme();
         FontRenderers.getRenderer().drawString(matrices, configValue.name, x, y, 0xFFFFFF);
         String t = configValue.getValue().toString();
         FontRenderers.getRenderer().drawString(matrices, t, x + width - FontRenderers.getRenderer().getStringWidth(t) - 1, y, 0xFFFFFF);

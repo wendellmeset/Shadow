@@ -378,7 +378,7 @@ public class Utils {
         public static void message0(String n, Color c) {
             LiteralText t = new LiteralText(n);
             t.setStyle(t.getStyle().withColor(TextColor.fromRgb(c.getRGB())));
-            Objects.requireNonNull(CoffeeClientMain.client.player).sendMessage(t, false);
+            if (CoffeeClientMain.client.player != null) CoffeeClientMain.client.player.sendMessage(t, false);
             //            if (c.equals(Color.WHITE)) c = Color.BLACK;
             CoffeeConsoleScreen.instance().addLog(new CoffeeConsoleScreen.LogEntry(n, c));
         }

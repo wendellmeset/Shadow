@@ -2,6 +2,7 @@ package me.x150.coffee.feature.module.impl.fun;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.x150.coffee.CoffeeClientMain;
+import me.x150.coffee.feature.config.ColorSetting;
 import me.x150.coffee.feature.module.Module;
 import me.x150.coffee.feature.module.ModuleType;
 import net.minecraft.client.render.*;
@@ -13,7 +14,10 @@ import net.minecraft.util.math.Vec3f;
 import java.awt.*;
 
 public class Test extends Module {
-
+    ColorSetting cs = this.config.create(new ColorSetting.Builder(Color.WHITE)
+            .name("REAL")
+            .description("REAL")
+            .get());
     public Test() {
         super("Test", "Testing stuff with the client, can be ignored", ModuleType.FUN);
     }
@@ -54,7 +58,7 @@ public class Test extends Module {
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShaderColor(1, 1, 1, 1);
 
-        int color = new Color(255, 255, 255, 100).getRGB();
+        int color = cs.getValue().getRGB();
 
 
         Matrix4f matrix = stack.peek().getPositionMatrix();
