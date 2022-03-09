@@ -3,7 +3,7 @@ package net.shadow.client.feature.command.impl;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.StringNbtReader;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 
 import java.util.Arrays;
@@ -32,11 +32,11 @@ public class Inject extends Command {
             error("Syntax: inj [set, clear, add] (nbt)");
             return;
         }
-        if (!CoffeeClientMain.client.interactionManager.hasCreativeInventory()) {
+        if (!ShadowMain.client.interactionManager.hasCreativeInventory()) {
             error("no creative mode? :megamind:");
             return;
         }
-        ItemStack is = CoffeeClientMain.client.player.getInventory().getMainHandStack();
+        ItemStack is = ShadowMain.client.player.getInventory().getMainHandStack();
         if (is.isEmpty()) {
             error("hold and item shithead");
             return;

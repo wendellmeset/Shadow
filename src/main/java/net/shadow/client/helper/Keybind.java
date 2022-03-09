@@ -1,7 +1,7 @@
 package net.shadow.client.helper;
 
 import net.minecraft.client.util.InputUtil;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 
 public record Keybind(int keycode) {
 
@@ -9,7 +9,7 @@ public record Keybind(int keycode) {
         if (keycode < 0) {
             return false;
         }
-        boolean isActuallyPressed = InputUtil.isKeyPressed(CoffeeClientMain.client.getWindow().getHandle(), keycode);
-        return CoffeeClientMain.client.currentScreen == null && isActuallyPressed;
+        boolean isActuallyPressed = InputUtil.isKeyPressed(ShadowMain.client.getWindow().getHandle(), keycode);
+        return ShadowMain.client.currentScreen == null && isActuallyPressed;
     }
 }

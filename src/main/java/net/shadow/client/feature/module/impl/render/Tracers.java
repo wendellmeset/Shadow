@@ -12,7 +12,7 @@ import net.minecraft.entity.mob.EndermanEntity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Vec3d;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.config.BooleanSetting;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
@@ -49,27 +49,27 @@ public class Tracers extends Module {
 
     @Override
     public String getContext() {
-        if (CoffeeClientMain.client.world == null || CoffeeClientMain.client.player == null) {
+        if (ShadowMain.client.world == null || ShadowMain.client.player == null) {
             return null;
         }
-        return StreamSupport.stream(CoffeeClientMain.client.world.getEntities().spliterator(), false)
-                .filter(entity -> entity.squaredDistanceTo(CoffeeClientMain.client.player) < 4096 && entity.getUuid() != CoffeeClientMain.client.player.getUuid() && isEntityApplicable(entity))
+        return StreamSupport.stream(ShadowMain.client.world.getEntities().spliterator(), false)
+                .filter(entity -> entity.squaredDistanceTo(ShadowMain.client.player) < 4096 && entity.getUuid() != ShadowMain.client.player.getUuid() && isEntityApplicable(entity))
                 .count() + "";
     }
 
     @Override
     public void onWorldRender(MatrixStack matrices) {
-        if (CoffeeClientMain.client.world == null || CoffeeClientMain.client.player == null) {
+        if (ShadowMain.client.world == null || ShadowMain.client.player == null) {
             return;
         }
-        for (Entity entity : StreamSupport.stream(CoffeeClientMain.client.world.getEntities().spliterator(), false)
-                .sorted(Comparator.comparingDouble(value -> -value.distanceTo(CoffeeClientMain.client.player))).toList()) {
-            if (entity.squaredDistanceTo(CoffeeClientMain.client.player) > 4096) {
+        for (Entity entity : StreamSupport.stream(ShadowMain.client.world.getEntities().spliterator(), false)
+                .sorted(Comparator.comparingDouble(value -> -value.distanceTo(ShadowMain.client.player))).toList()) {
+            if (entity.squaredDistanceTo(ShadowMain.client.player) > 4096) {
                 continue;
             }
-            double dc = entity.squaredDistanceTo(CoffeeClientMain.client.player) / 4096;
+            double dc = entity.squaredDistanceTo(ShadowMain.client.player) / 4096;
             dc = Math.abs(1 - dc);
-            if (entity.getUuid().equals(CoffeeClientMain.client.player.getUuid())) {
+            if (entity.getUuid().equals(ShadowMain.client.player.getUuid())) {
                 continue;
             }
             Color c;

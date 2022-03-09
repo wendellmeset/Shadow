@@ -6,7 +6,7 @@
 package net.shadow.client.feature.module.impl.movement;
 
 import net.minecraft.client.util.math.MatrixStack;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 
@@ -18,12 +18,12 @@ public class AirJump extends Module {
 
     @Override
     public void tick() {
-        if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.getNetworkHandler() == null) {
+        if (ShadowMain.client.player == null || ShadowMain.client.getNetworkHandler() == null) {
             return;
         }
-        if (CoffeeClientMain.client.options.jumpKey.isPressed()) {
-            CoffeeClientMain.client.player.setOnGround(true);
-            CoffeeClientMain.client.player.fallDistance = 0f;
+        if (ShadowMain.client.options.jumpKey.isPressed()) {
+            ShadowMain.client.player.setOnGround(true);
+            ShadowMain.client.player.fallDistance = 0f;
         }
     }
 

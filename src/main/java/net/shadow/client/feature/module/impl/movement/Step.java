@@ -6,7 +6,7 @@
 package net.shadow.client.feature.module.impl.movement;
 
 import net.minecraft.client.util.math.MatrixStack;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
@@ -24,10 +24,10 @@ public class Step extends Module {
 
     @Override
     public void tick() {
-        if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.getNetworkHandler() == null) {
+        if (ShadowMain.client.player == null || ShadowMain.client.getNetworkHandler() == null) {
             return;
         }
-        CoffeeClientMain.client.player.stepHeight = (float) (height.getValue() + 0);
+        ShadowMain.client.player.stepHeight = (float) (height.getValue() + 0);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class Step extends Module {
 
     @Override
     public void disable() {
-        if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.getNetworkHandler() == null) {
+        if (ShadowMain.client.player == null || ShadowMain.client.getNetworkHandler() == null) {
             return;
         }
         Objects.requireNonNull(client.player).stepHeight = 0.6f;

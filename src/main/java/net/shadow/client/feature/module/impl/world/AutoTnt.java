@@ -10,7 +10,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.gui.notifications.Notification;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
@@ -32,7 +32,7 @@ public class AutoTnt extends Module {
     public void tick() {
         int tntSlot = -1;
         for (int i = 0; i < 9; i++) {
-            ItemStack is = Objects.requireNonNull(CoffeeClientMain.client.player).getInventory().getStack(i);
+            ItemStack is = Objects.requireNonNull(ShadowMain.client.player).getInventory().getStack(i);
             if (is.getItem() == Items.TNT) {
                 tntSlot = i;
                 break;
@@ -48,42 +48,42 @@ public class AutoTnt extends Module {
             missingTntAck = false;
         }
 
-        Vec3d ppos = CoffeeClientMain.client.player.getPos();
+        Vec3d ppos = ShadowMain.client.player.getPos();
         for (double x = -10; x < 11; x++) {
             for (double z = -10; z < 11; z++) {
                 List<Map.Entry<BlockPos, Double>> airs = new ArrayList<>();
 
-                for (int y = Objects.requireNonNull(CoffeeClientMain.client.world).getTopY(); y > CoffeeClientMain.client.world.getBottomY(); y--) {
+                for (int y = Objects.requireNonNull(ShadowMain.client.world).getTopY(); y > ShadowMain.client.world.getBottomY(); y--) {
                     Vec3d currentOffset = new Vec3d(x, y, z);
                     BlockPos bp = new BlockPos(new Vec3d(ppos.x + currentOffset.x, y, ppos.z + currentOffset.z));
-                    BlockState bs = CoffeeClientMain.client.world.getBlockState(bp);
+                    BlockState bs = ShadowMain.client.world.getBlockState(bp);
                     double dist = Vec3d.of(bp).distanceTo(ppos);
                     if (bs.getMaterial().isReplaceable()) {
                         airs.add(new AbstractMap.SimpleEntry<>(bp, dist));
                     }
                 }
-                airs = airs.stream().filter(blockPosDoubleEntry -> CoffeeClientMain.client.world.getBlockState(blockPosDoubleEntry.getKey().down()).getMaterial().blocksMovement())
+                airs = airs.stream().filter(blockPosDoubleEntry -> ShadowMain.client.world.getBlockState(blockPosDoubleEntry.getKey().down()).getMaterial().blocksMovement())
                         .collect(Collectors.toList());
                 Map.Entry<BlockPos, Double> best1 = airs.stream().min(Comparator.comparingDouble(Map.Entry::getValue)).orElse(null);
                 if (best1 == null) {
                     continue; // just void here, cancel
                 }
                 BlockPos best = best1.getKey();
-                if (CoffeeClientMain.client.world.getBlockState(best.down()).getBlock() == Blocks.TNT) {
+                if (ShadowMain.client.world.getBlockState(best.down()).getBlock() == Blocks.TNT) {
                     continue; // already placed tnt, cancel
                 }
                 Vec3d lmao = Vec3d.of(best);
-                if (lmao.add(.5, .5, .5).distanceTo(CoffeeClientMain.client.player.getCameraPosVec(1)) >= 5) {
+                if (lmao.add(.5, .5, .5).distanceTo(ShadowMain.client.player.getCameraPosVec(1)) >= 5) {
                     continue;
                 }
                 if (shouldPlace(best)) {
                     int finalTntSlot = tntSlot;
-                    CoffeeClientMain.client.execute(() -> {
-                        int sel = CoffeeClientMain.client.player.getInventory().selectedSlot;
-                        CoffeeClientMain.client.player.getInventory().selectedSlot = finalTntSlot;
+                    ShadowMain.client.execute(() -> {
+                        int sel = ShadowMain.client.player.getInventory().selectedSlot;
+                        ShadowMain.client.player.getInventory().selectedSlot = finalTntSlot;
                         BlockHitResult bhr = new BlockHitResult(lmao, Direction.DOWN, best, false);
-                        Objects.requireNonNull(CoffeeClientMain.client.interactionManager).interactBlock(CoffeeClientMain.client.player, CoffeeClientMain.client.world, Hand.MAIN_HAND, bhr);
-                        CoffeeClientMain.client.player.getInventory().selectedSlot = sel;
+                        Objects.requireNonNull(ShadowMain.client.interactionManager).interactBlock(ShadowMain.client.player, ShadowMain.client.world, Hand.MAIN_HAND, bhr);
+                        ShadowMain.client.player.getInventory().selectedSlot = sel;
                     });
                 }
             }
@@ -110,29 +110,29 @@ public class AutoTnt extends Module {
 
     @Override
     public void onWorldRender(MatrixStack matrices) {
-        Vec3d ppos = Objects.requireNonNull(CoffeeClientMain.client.player).getPos();
+        Vec3d ppos = Objects.requireNonNull(ShadowMain.client.player).getPos();
 
         for (double x = -10; x < 11; x++) {
             for (double z = -10; z < 11; z++) {
                 List<Map.Entry<BlockPos, Double>> airs = new ArrayList<>();
 
-                for (int y = Objects.requireNonNull(CoffeeClientMain.client.world).getTopY(); y > CoffeeClientMain.client.world.getBottomY(); y--) {
+                for (int y = Objects.requireNonNull(ShadowMain.client.world).getTopY(); y > ShadowMain.client.world.getBottomY(); y--) {
                     Vec3d currentOffset = new Vec3d(x, y, z);
                     BlockPos bp = new BlockPos(new Vec3d(ppos.x + currentOffset.x, y, ppos.z + currentOffset.z));
-                    BlockState bs = CoffeeClientMain.client.world.getBlockState(bp);
+                    BlockState bs = ShadowMain.client.world.getBlockState(bp);
                     double dist = Vec3d.of(bp).distanceTo(ppos);
                     if (bs.getMaterial().isReplaceable()) {
                         airs.add(new AbstractMap.SimpleEntry<>(bp, dist));
                     }
                 }
-                airs = airs.stream().filter(blockPosDoubleEntry -> CoffeeClientMain.client.world.getBlockState(blockPosDoubleEntry.getKey().down()).getMaterial().blocksMovement())
+                airs = airs.stream().filter(blockPosDoubleEntry -> ShadowMain.client.world.getBlockState(blockPosDoubleEntry.getKey().down()).getMaterial().blocksMovement())
                         .collect(Collectors.toList());
                 Map.Entry<BlockPos, Double> best1 = airs.stream().min(Comparator.comparingDouble(Map.Entry::getValue)).orElse(null);
                 if (best1 == null) {
                     continue; // just void here, cancel
                 }
                 BlockPos best = best1.getKey();
-                if (CoffeeClientMain.client.world.getBlockState(best.down()).getBlock() == Blocks.TNT) {
+                if (ShadowMain.client.world.getBlockState(best.down()).getBlock() == Blocks.TNT) {
                     continue; // already placed tnt, cancel
                 }
                 Vec3d lmao = Vec3d.of(best);

@@ -15,7 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3d;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.config.BooleanSetting;
 import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.config.SettingsGroup;
@@ -107,7 +107,7 @@ public class CaveMapper extends Module {
             for (BlockPos pos : new BlockPos[]{right, left, fw, bw, up, down}) {
                 boolean hadObstacle = false;
                 int y = pos.getY();
-                while (!Objects.requireNonNull(CoffeeClientMain.client.world).isOutOfHeightLimit(y)) {
+                while (!Objects.requireNonNull(ShadowMain.client.world).isOutOfHeightLimit(y)) {
                     BlockPos current = new BlockPos(pos.getX(), y, pos.getZ());
                     if (!bs(current).isAir()) {
                         hadObstacle = true;
@@ -120,7 +120,7 @@ public class CaveMapper extends Module {
                         toScan.add(pos);
                         scannedBlocks.add(pos);
                     }
-                } else if (bs(pos).isFullCube(CoffeeClientMain.client.world, pos) && circ.stream().noneMatch(blockPosListEntry -> blockPosListEntry.getKey().equals(pos))) {
+                } else if (bs(pos).isFullCube(ShadowMain.client.world, pos) && circ.stream().noneMatch(blockPosListEntry -> blockPosListEntry.getKey().equals(pos))) {
                     Vec3d renderR = new Vec3d(pos.getX(), pos.getY(), pos.getZ());
                     Vec3d end = renderR.add(new Vec3d(1, 1, 1));
                     float x1 = (float) renderR.x;
@@ -237,7 +237,7 @@ public class CaveMapper extends Module {
     }
 
     BlockState bs(BlockPos bp) {
-        return Objects.requireNonNull(CoffeeClientMain.client.world).getBlockState(bp);
+        return Objects.requireNonNull(ShadowMain.client.world).getBlockState(bp);
     }
 
     @Override
@@ -250,7 +250,7 @@ public class CaveMapper extends Module {
         toScan.clear();
         ores.clear();
         circ.clear();
-        start = Objects.requireNonNull(CoffeeClientMain.client.player).getBlockPos();
+        start = Objects.requireNonNull(ShadowMain.client.player).getBlockPos();
         toScan.add(start);
         scanned = false;
     }
@@ -258,9 +258,9 @@ public class CaveMapper extends Module {
     @Override
     public String getContext() {
         return scannedBlocks.size() + "S|" + new ArrayList<>(this.ores).stream()
-                .filter(blockPos -> shouldRenderOre(Objects.requireNonNull(CoffeeClientMain.client.world).getBlockState(blockPos).getBlock()))
+                .filter(blockPos -> shouldRenderOre(Objects.requireNonNull(ShadowMain.client.world).getBlockState(blockPos).getBlock()))
                 .count() + "F|" + Utils.Math.roundToDecimal((double) new ArrayList<>(this.ores).stream()
-                .filter(blockPos -> shouldRenderOre(Objects.requireNonNull(CoffeeClientMain.client.world).getBlockState(blockPos).getBlock())).count() / scannedBlocks.size() * 100, 2) + "%D";
+                .filter(blockPos -> shouldRenderOre(Objects.requireNonNull(ShadowMain.client.world).getBlockState(blockPos).getBlock())).count() / scannedBlocks.size() * 100, 2) + "%D";
     }
 
     @Override
@@ -277,7 +277,7 @@ public class CaveMapper extends Module {
         }
         List<Map.Entry<BlockPos, List<Vec3d>>> real = new ArrayList<>(circ);
 
-        Camera cam = CoffeeClientMain.client.gameRenderer.getCamera();
+        Camera cam = ShadowMain.client.gameRenderer.getCamera();
         BufferBuilder buffer = Tessellator.getInstance().getBuffer();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         GL11.glDepthFunc(GL11.GL_ALWAYS);
@@ -297,7 +297,7 @@ public class CaveMapper extends Module {
                 if (ores.contains(entry.getKey())) {
                     continue;
                 }
-                double dist = new Vec3d(entry.getKey().getX(), entry.getKey().getY(), entry.getKey().getZ()).distanceTo(Objects.requireNonNull(CoffeeClientMain.client.player).getPos());
+                double dist = new Vec3d(entry.getKey().getX(), entry.getKey().getY(), entry.getKey().getZ()).distanceTo(Objects.requireNonNull(ShadowMain.client.player).getPos());
                 dist = (1 - MathHelper.clamp(dist, 0, 15) / 15d) * 3d;
                 dist = Math.round(dist);
                 dist /= 3;
@@ -333,15 +333,15 @@ public class CaveMapper extends Module {
             if (ore == null) {
                 continue;
             }
-            Block t = Objects.requireNonNull(CoffeeClientMain.client.world).getBlockState(ore).getBlock();
+            Block t = Objects.requireNonNull(ShadowMain.client.world).getBlockState(ore).getBlock();
             if (!shouldRenderOre(t)) {
                 continue;
             }
             Vec3d p = new Vec3d(ore.getX(), ore.getY(), ore.getZ());
-            double dist = p.distanceTo(Objects.requireNonNull(CoffeeClientMain.client.player).getPos());
+            double dist = p.distanceTo(Objects.requireNonNull(ShadowMain.client.player).getPos());
             dist = MathHelper.clamp(dist, 0, 30);
-            Renderer.R3D.renderFilled(p, new Vec3d(1, 1, 1), Renderer.Util.modify(oreColors.containsKey(t) ? oreColors.get(t) : new Color(CoffeeClientMain.client.world.getBlockState(ore)
-                    .getMapColor(CoffeeClientMain.client.world, ore).color), -1, -1, -1, (int) ((dist / 30d) * 200)), matrices);
+            Renderer.R3D.renderFilled(p, new Vec3d(1, 1, 1), Renderer.Util.modify(oreColors.containsKey(t) ? oreColors.get(t) : new Color(ShadowMain.client.world.getBlockState(ore)
+                    .getMapColor(ShadowMain.client.world, ore).color), -1, -1, -1, (int) ((dist / 30d) * 200)), matrices);
         }
     }
 

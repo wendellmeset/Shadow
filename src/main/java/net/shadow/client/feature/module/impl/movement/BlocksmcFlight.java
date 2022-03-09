@@ -3,7 +3,7 @@ package net.shadow.client.feature.module.impl.movement;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 import net.shadow.client.helper.render.Renderer;
@@ -28,10 +28,10 @@ public class BlocksmcFlight extends Module {
         if (jumpTimeout < 0) {
             jumpTimeout = 0;
         }
-        if (CoffeeClientMain.client.player.getPos().y < yStart && jumpTimeout == 0) {
-            CoffeeClientMain.client.player.jump();
+        if (ShadowMain.client.player.getPos().y < yStart && jumpTimeout == 0) {
+            ShadowMain.client.player.jump();
             AnimatedCircle ac = new AnimatedCircle();
-            ac.spawnPos = CoffeeClientMain.client.player.getPos();
+            ac.spawnPos = ShadowMain.client.player.getPos();
             circles.add(ac);
             jumpTimeout = 5;
         }
@@ -39,7 +39,7 @@ public class BlocksmcFlight extends Module {
 
     @Override
     public void enable() {
-        yStart = CoffeeClientMain.client.player.getPos().y;
+        yStart = ShadowMain.client.player.getPos().y;
     }
 
     @Override
@@ -55,7 +55,7 @@ public class BlocksmcFlight extends Module {
     @Override
     public void onWorldRender(MatrixStack matrices) {
 
-        Vec3d ppos = Utils.getInterpolatedEntityPosition(CoffeeClientMain.client.player);
+        Vec3d ppos = Utils.getInterpolatedEntityPosition(ShadowMain.client.player);
         Vec3d renderPos = new Vec3d(ppos.x, yStart, ppos.z);
         Renderer.R3D.renderOutline(renderPos.subtract(1, 0, 1), new Vec3d(2, 0, 2), Color.RED, matrices);
         circles.removeIf(animatedCircle -> animatedCircle.animProg > 1);

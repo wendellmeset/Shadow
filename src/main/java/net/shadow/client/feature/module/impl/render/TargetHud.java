@@ -14,7 +14,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.MathHelper;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.config.BooleanSetting;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
@@ -52,10 +52,10 @@ public class TargetHud extends Module {
     }
 
     boolean isApplicable(Entity check) {
-        if (check == CoffeeClientMain.client.player) {
+        if (check == ShadowMain.client.player) {
             return false;
         }
-        if (check.distanceTo(CoffeeClientMain.client.player) > 64) {
+        if (check.distanceTo(ShadowMain.client.player) > 64) {
             return false;
         }
         int l = check.getEntityName().length();
@@ -66,7 +66,7 @@ public class TargetHud extends Module {
         if (!isValidEntityName) {
             return false;
         }
-        if (check == CoffeeClientMain.client.player) {
+        if (check == ShadowMain.client.player) {
             return false;
         }
         return check.getType() == EntityType.PLAYER && check instanceof PlayerEntity;
@@ -78,8 +78,8 @@ public class TargetHud extends Module {
             e = AttackManager.getLastAttackInTimeRange();
             return;
         }
-        List<Entity> entitiesQueue = StreamSupport.stream(Objects.requireNonNull(CoffeeClientMain.client.world).getEntities().spliterator(), false).filter(this::isApplicable)
-                .sorted(Comparator.comparingDouble(value -> value.getPos().distanceTo(Objects.requireNonNull(CoffeeClientMain.client.player).getPos()))).toList();
+        List<Entity> entitiesQueue = StreamSupport.stream(Objects.requireNonNull(ShadowMain.client.world).getEntities().spliterator(), false).filter(this::isApplicable)
+                .sorted(Comparator.comparingDouble(value -> value.getPos().distanceTo(Objects.requireNonNull(ShadowMain.client.player).getPos()))).toList();
         if (entitiesQueue.size() > 0) {
             e = entitiesQueue.get(0);
         } else {
@@ -168,7 +168,7 @@ public class TargetHud extends Module {
 
             FontRenderers.getRenderer().drawString(stack, entity.getEntityName(), textLeftAlign, yOffset, 0xFFFFFF);
             yOffset += FontRenderers.getRenderer().getFontHeight();
-            PlayerListEntry ple = Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).getPlayerListEntry(entity.getUuid());
+            PlayerListEntry ple = Objects.requireNonNull(ShadowMain.client.getNetworkHandler()).getPlayerListEntry(entity.getUuid());
             if (ple != null && renderPing.getValue()) {
                 int ping = ple.getLatency();
                 String v = ping + " ms";

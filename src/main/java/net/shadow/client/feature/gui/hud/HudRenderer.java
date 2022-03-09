@@ -5,7 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.minecraft.client.gui.screen.ChatScreen;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.gui.hud.element.HudElement;
 import net.shadow.client.feature.gui.hud.element.SpeedHud;
 import net.shadow.client.feature.gui.hud.element.Taco;
@@ -24,15 +24,15 @@ import java.util.List;
 
 public class HudRenderer {
 
-    static final File CONFIG = new File(CoffeeClientMain.BASE, "hud.sip");
+    static final File CONFIG = new File(ShadowMain.BASE, "hud.sip");
     private static HudRenderer INSTANCE;
     final List<HudElement> elements = register();
     boolean isEditing = false;
     boolean mouseHeldDown = false;
     double prevX = Utils.Mouse.getMouseX();
     double prevY = Utils.Mouse.getMouseY();
-    double prevWX = CoffeeClientMain.client.getWindow().getScaledWidth();
-    double prevWY = CoffeeClientMain.client.getWindow().getScaledHeight();
+    double prevWX = ShadowMain.client.getWindow().getScaledWidth();
+    double prevWY = ShadowMain.client.getWindow().getScaledHeight();
 
     private HudRenderer() {
         Events.registerEventHandler(EventType.MOUSE_EVENT, event -> {
@@ -76,7 +76,7 @@ public class HudRenderer {
     }
 
     void saveConfig() {
-        CoffeeClientMain.log(Level.INFO, "Saving hud");
+        ShadowMain.log(Level.INFO, "Saving hud");
         JsonArray root = new JsonArray();
         for (HudElement element : elements) {
             JsonObject current = new JsonObject();
@@ -88,18 +88,18 @@ public class HudRenderer {
         try {
             FileUtils.write(CONFIG, root.toString(), StandardCharsets.UTF_8);
         } catch (Exception ignored) {
-            CoffeeClientMain.log(Level.ERROR, "Failed to write hud file");
+            ShadowMain.log(Level.ERROR, "Failed to write hud file");
         }
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     void loadConfig() {
-        CoffeeClientMain.log(Level.INFO, "Loading hud");
+        ShadowMain.log(Level.INFO, "Loading hud");
         if (!CONFIG.isFile()) {
             CONFIG.delete();
         }
         if (!CONFIG.exists()) {
-            CoffeeClientMain.log(Level.INFO, "Skipping hud loading because file doesn't exist");
+            ShadowMain.log(Level.INFO, "Skipping hud loading because file doesn't exist");
             return;
         }
         try {
@@ -118,14 +118,14 @@ public class HudRenderer {
                 }
             }
         } catch (Exception ignored) {
-            CoffeeClientMain.log(Level.ERROR, "Failed to read hud file - corrupted?");
+            ShadowMain.log(Level.ERROR, "Failed to read hud file - corrupted?");
         }
-        CoffeeClientMain.log(Level.INFO, "Loaded hud");
+        ShadowMain.log(Level.INFO, "Loaded hud");
     }
 
     public void fastTick() {
-        double currentWX = CoffeeClientMain.client.getWindow().getScaledWidth();
-        double currentWY = CoffeeClientMain.client.getWindow().getScaledHeight();
+        double currentWX = ShadowMain.client.getWindow().getScaledWidth();
+        double currentWY = ShadowMain.client.getWindow().getScaledHeight();
         if (currentWX != prevWX) {
             for (HudElement element : elements) {
                 double px = element.getPosX();
@@ -142,7 +142,7 @@ public class HudRenderer {
             }
             prevWY = currentWY;
         }
-        isEditing = CoffeeClientMain.client.currentScreen instanceof ChatScreen;
+        isEditing = ShadowMain.client.currentScreen instanceof ChatScreen;
         if (mouseHeldDown) {
             for (HudElement element : elements) {
                 element.mouseDragged(Utils.Mouse.getMouseX() - prevX, Utils.Mouse.getMouseY() - prevY);

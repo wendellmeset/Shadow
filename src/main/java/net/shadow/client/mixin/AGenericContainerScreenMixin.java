@@ -9,7 +9,7 @@ import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.feature.module.impl.movement.InventoryWalk;
 import org.lwjgl.glfw.GLFW;
@@ -35,7 +35,7 @@ public abstract class AGenericContainerScreenMixin {
     protected int y;
 
     boolean keyPressed(KeyBinding bind) {
-        return InputUtil.isKeyPressed(CoffeeClientMain.client.getWindow().getHandle(), bind.getDefaultKey().getCode());
+        return InputUtil.isKeyPressed(ShadowMain.client.getWindow().getHandle(), bind.getDefaultKey().getCode());
     }
 
     void setState(KeyBinding bind) {
@@ -47,7 +47,7 @@ public abstract class AGenericContainerScreenMixin {
         if (!ModuleRegistry.getByClass(InventoryWalk.class).isEnabled()) {
             return;
         }
-        GameOptions go = CoffeeClientMain.client.options;
+        GameOptions go = ShadowMain.client.options;
         setState(go.forwardKey);
         setState(go.rightKey);
         setState(go.backKey);
@@ -69,8 +69,8 @@ public abstract class AGenericContainerScreenMixin {
         if (keyPressed(arrowDown)) {
             pitchOffset += 5f;
         }
-        Objects.requireNonNull(CoffeeClientMain.client.player).setYaw(CoffeeClientMain.client.player.getYaw() + yawOffset);
-        CoffeeClientMain.client.player.setPitch(CoffeeClientMain.client.player.getPitch() + pitchOffset);
+        Objects.requireNonNull(ShadowMain.client.player).setYaw(ShadowMain.client.player.getYaw() + yawOffset);
+        ShadowMain.client.player.setPitch(ShadowMain.client.player.getPitch() + pitchOffset);
     }
 
 }

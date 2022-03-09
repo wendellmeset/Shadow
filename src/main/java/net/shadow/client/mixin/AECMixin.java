@@ -1,8 +1,7 @@
 package net.shadow.client.mixin;
 
 import net.minecraft.entity.AreaEffectCloudEntity;
-import net.shadow.client.CoffeeClientMain;
-import net.shadow.client.feature.module.ModuleRegistry;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.impl.misc.AntiCrash;
 import net.shadow.client.mixinUtil.ParticleManagerDuck;
 import org.spongepowered.asm.mixin.Debug;
@@ -17,7 +16,7 @@ public class AECMixin {
     int re(int value) {
         AntiCrash ac = AntiCrash.instance();
         if (ac.isEnabled() && ac.getCapParticles().getValue()) {
-            int partTotal = ((ParticleManagerDuck) CoffeeClientMain.client.particleManager).getTotalParticles();
+            int partTotal = ((ParticleManagerDuck) ShadowMain.client.particleManager).getTotalParticles();
             int newCount = partTotal + value;
             if (newCount >= ac.getParticleMax().getValue()) {
                 int space = (int) Math.floor(ac.getParticleMax().getValue() - partTotal);

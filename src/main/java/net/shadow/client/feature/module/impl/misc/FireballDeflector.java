@@ -6,7 +6,7 @@ import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.config.BooleanSetting;
 import net.shadow.client.feature.config.EnumSetting;
 import net.shadow.client.feature.module.Module;
@@ -40,27 +40,27 @@ public class FireballDeflector extends Module {
         Entity owner = fe.getOwner();
         if (owner != null) {
             // we are the owner of this fireball = we shot it = dont hit it again
-            if (owner.equals(CoffeeClientMain.client.player)) {
+            if (owner.equals(ShadowMain.client.player)) {
                 return;
             }
             if (mode.getValue() == Mode.ReflectBack) {
                 Vec2f pitchYaw = Rotations.getPitchYawFromOtherEntity(fe.getPos().add(0, fe.getHeight() / 2, 0), owner.getPos().add(0, owner.getHeight() / 2, 0));
-                PlayerMoveC2SPacket p = new PlayerMoveC2SPacket.LookAndOnGround(pitchYaw.y, pitchYaw.x, CoffeeClientMain.client.player.isOnGround());
-                Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).sendPacket(p);
+                PlayerMoveC2SPacket p = new PlayerMoveC2SPacket.LookAndOnGround(pitchYaw.y, pitchYaw.x, ShadowMain.client.player.isOnGround());
+                Objects.requireNonNull(ShadowMain.client.getNetworkHandler()).sendPacket(p);
             }
         }
-        Objects.requireNonNull(CoffeeClientMain.client.interactionManager).attackEntity(CoffeeClientMain.client.player, fe);
+        Objects.requireNonNull(ShadowMain.client.interactionManager).attackEntity(ShadowMain.client.player, fe);
     }
 
     boolean inHitRange(Entity attacker, Entity target) {
-        return attacker.getCameraPosVec(1f).distanceTo(target.getPos().add(0, target.getHeight() / 2, 0)) <= Objects.requireNonNull(CoffeeClientMain.client.interactionManager).getReachDistance();
+        return attacker.getCameraPosVec(1f).distanceTo(target.getPos().add(0, target.getHeight() / 2, 0)) <= Objects.requireNonNull(ShadowMain.client.interactionManager).getReachDistance();
     }
 
     @Override
     public void onFastTick() {
-        for (Entity entity : Objects.requireNonNull(CoffeeClientMain.client.world).getEntities()) {
+        for (Entity entity : Objects.requireNonNull(ShadowMain.client.world).getEntities()) {
             if (entity instanceof FireballEntity fe) {
-                if (inHitRange(Objects.requireNonNull(CoffeeClientMain.client.player), fe) && isApproaching(CoffeeClientMain.client.player.getPos(), fe.getPos(), fe.getVelocity())) {
+                if (inHitRange(Objects.requireNonNull(ShadowMain.client.player), fe) && isApproaching(ShadowMain.client.player.getPos(), fe.getPos(), fe.getVelocity())) {
                     hit(fe);
                 }
             }
@@ -90,16 +90,16 @@ public class FireballDeflector extends Module {
     @Override
     public void onWorldRender(MatrixStack matrices) {
         if (isDebuggerEnabled()) {
-            for (Entity entity : Objects.requireNonNull(CoffeeClientMain.client.world).getEntities()) {
+            for (Entity entity : Objects.requireNonNull(ShadowMain.client.world).getEntities()) {
                 if (entity instanceof FireballEntity fe) {
                     if (fe.getOwner() != null) {
                         Entity owner = fe.getOwner();
                         Renderer.R3D.renderLine(Utils.getInterpolatedEntityPosition(owner).add(0, owner.getHeight() / 2, 0), Utils.getInterpolatedEntityPosition(fe)
                                 .add(0, fe.getHeight() / 2, 0), Color.MAGENTA, matrices);
                     }
-                    if (inHitRange(Objects.requireNonNull(CoffeeClientMain.client.player), fe)) {
-                        Renderer.R3D.renderLine(Utils.getInterpolatedEntityPosition(CoffeeClientMain.client.player)
-                                .add(0, CoffeeClientMain.client.player.getHeight() / 2, 0), Utils.getInterpolatedEntityPosition(fe).add(0, fe.getHeight() / 2, 0), Color.RED, matrices);
+                    if (inHitRange(Objects.requireNonNull(ShadowMain.client.player), fe)) {
+                        Renderer.R3D.renderLine(Utils.getInterpolatedEntityPosition(ShadowMain.client.player)
+                                .add(0, ShadowMain.client.player.getHeight() / 2, 0), Utils.getInterpolatedEntityPosition(fe).add(0, fe.getHeight() / 2, 0), Color.RED, matrices);
                     }
                 }
             }

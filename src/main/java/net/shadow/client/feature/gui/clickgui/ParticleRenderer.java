@@ -7,7 +7,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Quaternion;
 import net.minecraft.util.math.Vec3d;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.gui.clickgui.theme.Theme;
 import net.shadow.client.feature.gui.clickgui.theme.ThemeManager;
 import net.shadow.client.helper.render.Renderer;
@@ -36,7 +36,7 @@ public class ParticleRenderer {
             return;
         }
         Particle n = new Particle();
-        n.x = Math.random() * CoffeeClientMain.client.getWindow().getScaledWidth();
+        n.x = Math.random() * ShadowMain.client.getWindow().getScaledWidth();
         n.y = -10;
         n.velY = (Math.random() + 1);
         n.decline = MathHelper.lerp(Math.random(), 0.05, 0.2);

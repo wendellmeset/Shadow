@@ -2,7 +2,7 @@ package net.shadow.client.feature.module.impl.render;
 
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 import net.shadow.client.helper.util.Transitions;
@@ -22,17 +22,17 @@ public class Fullbright extends Module {
 
     @Override
     public void enable() {
-        og = MathHelper.clamp(CoffeeClientMain.client.options.gamma, 0, 1);
+        og = MathHelper.clamp(ShadowMain.client.options.gamma, 0, 1);
     }
 
     @Override
     public void disable() {
-        CoffeeClientMain.client.options.gamma = og;
+        ShadowMain.client.options.gamma = og;
     }
 
     @Override
     public void onFastTick() {
-        CoffeeClientMain.client.options.gamma = Transitions.transition(CoffeeClientMain.client.options.gamma, 10, 300);
+        ShadowMain.client.options.gamma = Transitions.transition(ShadowMain.client.options.gamma, 10, 300);
     }
 
     @Override

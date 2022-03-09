@@ -6,7 +6,7 @@
 package net.shadow.client.feature.module.impl.movement;
 
 import net.minecraft.client.util.math.MatrixStack;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.config.EnumSetting;
 import net.shadow.client.feature.module.Module;
@@ -28,10 +28,10 @@ public class Jesus extends Module {
 
     @Override
     public void tick() {
-        if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.getNetworkHandler() == null) {
+        if (ShadowMain.client.player == null || ShadowMain.client.getNetworkHandler() == null) {
             return;
         }
-        if (CoffeeClientMain.client.player.isWet()) {
+        if (ShadowMain.client.player.isWet()) {
             switch (mode.getValue()) {
                 case Jump -> Objects.requireNonNull(client.player).jump();
                 case Velocity -> Objects.requireNonNull(client.player).setVelocity(client.player.getVelocity().x, velStrength.getValue(), client.player.getVelocity().z);

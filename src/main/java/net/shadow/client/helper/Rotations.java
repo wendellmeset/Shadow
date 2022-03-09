@@ -9,7 +9,7 @@ import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.feature.module.impl.render.FreeLook;
 import net.shadow.client.helper.event.EventType;
@@ -77,9 +77,9 @@ public class Rotations {
     }
 
     public static void lookAtPositionSmooth(Vec3d target, double laziness) {
-        double delX = target.x - Objects.requireNonNull(CoffeeClientMain.client.player).getX();
-        double delZ = target.z - CoffeeClientMain.client.player.getZ();
-        double delY = target.y - (CoffeeClientMain.client.player.getY() + CoffeeClientMain.client.player.getEyeHeight(CoffeeClientMain.client.player.getPose()));
+        double delX = target.x - Objects.requireNonNull(ShadowMain.client.player).getX();
+        double delZ = target.z - ShadowMain.client.player.getZ();
+        double delY = target.y - (ShadowMain.client.player.getY() + ShadowMain.client.player.getEyeHeight(ShadowMain.client.player.getPose()));
 
         FreeLook fl = ModuleRegistry.getByClass(FreeLook.class);
         double required = Math.toDegrees(Math.atan2(delZ, delX)) - 90, delta, add, speed;
@@ -107,30 +107,30 @@ public class Rotations {
             fl.newpitch = (fl.newpitch + (float) add);
         } else {
             // setting yaw
-            delta = MathHelper.wrapDegrees(required - CoffeeClientMain.client.player.getYaw());
+            delta = MathHelper.wrapDegrees(required - ShadowMain.client.player.getYaw());
             speed = Math.abs(delta / laziness);
             add = speed * (delta >= 0 ? 1 : -1);
             if ((add >= 0 && add > delta) || (add < 0 && add < delta)) {
                 add = delta;
             }
-            CoffeeClientMain.client.player.setYaw(CoffeeClientMain.client.player.getYaw() + (float) add);
+            ShadowMain.client.player.setYaw(ShadowMain.client.player.getYaw() + (float) add);
 
             // setting pitch
             double sqrt = sqrt1;
             required = -Math.toDegrees(Math.atan2(delY, sqrt));
-            delta = MathHelper.wrapDegrees(required - CoffeeClientMain.client.player.getPitch());
+            delta = MathHelper.wrapDegrees(required - ShadowMain.client.player.getPitch());
             speed = Math.abs(delta / laziness);
             add = speed * (delta >= 0 ? 1 : -1);
             if ((add >= 0 && add > delta) || (add < 0 && add < delta)) {
                 add = delta;
             }
-            CoffeeClientMain.client.player.setPitch(CoffeeClientMain.client.player.getPitch() + (float) add);
+            ShadowMain.client.player.setPitch(ShadowMain.client.player.getPitch() + (float) add);
         }
 
     }
 
     public static Vec2f getPitchYaw(Vec3d targetV3) {
-        return getPitchYawFromOtherEntity(Objects.requireNonNull(CoffeeClientMain.client.player).getEyePos(), targetV3);
+        return getPitchYawFromOtherEntity(Objects.requireNonNull(ShadowMain.client.player).getEyePos(), targetV3);
     }
 
     public static Vec2f getPitchYawFromOtherEntity(Vec3d eyePos, Vec3d targetV3) {

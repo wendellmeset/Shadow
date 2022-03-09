@@ -5,7 +5,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.CommandRegistry;
 import net.shadow.client.feature.gui.screen.CoffeeConsoleScreen;
@@ -43,9 +43,9 @@ public class AChatScreenMixin extends Screen {
     @Redirect(method = "keyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ChatScreen;sendMessage(Ljava/lang/String;)V"))
     void atomic_interceptChatMessage(ChatScreen instance, String s) {
         if (s.startsWith(".")) { // filter all messages starting with .
-            CoffeeClientMain.client.inGameHud.getChatHud().addToMessageHistory(s);
+            ShadowMain.client.inGameHud.getChatHud().addToMessageHistory(s);
             if (s.equalsIgnoreCase(".console")) {
-                Utils.TickManager.runInNTicks(2, () -> CoffeeClientMain.client.setScreen(CoffeeConsoleScreen.instance()));
+                Utils.TickManager.runInNTicks(2, () -> ShadowMain.client.setScreen(CoffeeConsoleScreen.instance()));
             } else {
                 CommandRegistry.execute(s.substring(1)); // cut off prefix
             }
@@ -94,7 +94,7 @@ public class AChatScreenMixin extends Screen {
         if (cmd.isEmpty()) {
             return;
         }
-        float cmdTWidth = CoffeeClientMain.client.textRenderer.getWidth(cmd);
+        float cmdTWidth = ShadowMain.client.textRenderer.getWidth(cmd);
         double cmdXS = chatField.x + 5 + cmdTWidth;
 
         List<String> suggestions = getSuggestions(cmd);

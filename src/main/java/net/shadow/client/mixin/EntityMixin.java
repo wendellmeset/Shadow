@@ -8,7 +8,7 @@ package net.shadow.client.mixin;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.border.WorldBorder;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.feature.module.impl.movement.IgnoreWorldBorder;
 import net.shadow.client.feature.module.impl.render.FreeLook;
@@ -28,6 +28,6 @@ public abstract class EntityMixin {
 
     @Redirect(method = "updateVelocity", at = @At(value = "INVOKE", target = "net/minecraft/entity/Entity.getYaw()F"))
     float atomic_overwriteFreelookYaw(Entity instance) {
-        return instance.equals(CoffeeClientMain.client.player) && ModuleRegistry.getByClass(FreeLook.class).isEnabled() ? ModuleRegistry.getByClass(FreeLook.class).newyaw : instance.getYaw();
+        return instance.equals(ShadowMain.client.player) && ModuleRegistry.getByClass(FreeLook.class).isEnabled() ? ModuleRegistry.getByClass(FreeLook.class).newyaw : instance.getYaw();
     }
 }

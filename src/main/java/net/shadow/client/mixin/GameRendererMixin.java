@@ -9,7 +9,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.gui.DoesMSAA;
 import net.shadow.client.feature.gui.screen.ClientScreen;
 import net.shadow.client.feature.module.Module;
@@ -36,7 +36,7 @@ public class GameRendererMixin {
     @Inject(at = @At(value = "FIELD", target = "Lnet/minecraft/client/render/GameRenderer;renderHand:Z", opcode = Opcodes.GETFIELD, ordinal = 0), method = "renderWorld")
     void atomic_dispatchWorldRender(float tickDelta, long limitTime, MatrixStack matrix, CallbackInfo ci) {
         if (vb) {
-            CoffeeClientMain.client.options.bobView = true;
+            ShadowMain.client.options.bobView = true;
             vb = false;
         }
         MSAAFramebuffer.use(MSAAFramebuffer.MAX_SAMPLES, () -> {
@@ -76,9 +76,9 @@ public class GameRendererMixin {
 
     @Inject(at = @At("HEAD"), method = "bobView", cancellable = true)
     private void atomic_stopCursorBob(MatrixStack matrices, float f, CallbackInfo ci) {
-        if (CoffeeClientMain.client.options.bobView && dis) {
+        if (ShadowMain.client.options.bobView && dis) {
             vb = true;
-            CoffeeClientMain.client.options.bobView = false;
+            ShadowMain.client.options.bobView = false;
             dis = false;
             ci.cancel();
         }

@@ -8,7 +8,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.helper.math.Matrix4x4;
 import net.shadow.client.helper.math.Vector3D;
 import org.lwjgl.opengl.GL11;
@@ -23,7 +23,7 @@ public class Renderer {
 
         public static void renderCircleOutline(MatrixStack stack, Color c, Vec3d start, double rad, double width, double segments) {
             RenderSystem.disableCull();
-            Camera camera = CoffeeClientMain.client.gameRenderer.getCamera();
+            Camera camera = ShadowMain.client.gameRenderer.getCamera();
             Vec3d camPos = camera.getPos();
             start = start.subtract(camPos);
             stack.push();
@@ -61,7 +61,7 @@ public class Renderer {
         }
 
         public static void renderOutlineIntern(Vec3d start, Vec3d dimensions, MatrixStack stack, BufferBuilder buffer) {
-            Camera c = CoffeeClientMain.client.gameRenderer.getCamera();
+            Camera c = ShadowMain.client.gameRenderer.getCamera();
             Vec3d camPos = c.getPos();
             start = start.subtract(camPos);
             Vec3d end = start.add(dimensions);
@@ -146,7 +146,7 @@ public class Renderer {
             float green = color.getGreen() / 255f;
             float blue = color.getBlue() / 255f;
             float alpha = color.getAlpha() / 255f;
-            Camera c = CoffeeClientMain.client.gameRenderer.getCamera();
+            Camera c = ShadowMain.client.gameRenderer.getCamera();
             Vec3d camPos = c.getPos();
             start = start.subtract(camPos);
             Vec3d end = start.add(dimensions);
@@ -208,7 +208,7 @@ public class Renderer {
             float green = color.getGreen() / 255f;
             float blue = color.getBlue() / 255f;
             float alpha = color.getAlpha() / 255f;
-            Camera c = CoffeeClientMain.client.gameRenderer.getCamera();
+            Camera c = ShadowMain.client.gameRenderer.getCamera();
             Vec3d camPos = c.getPos();
             start = start.subtract(camPos);
             Matrix4f matrix = matrices.peek().getPositionMatrix();
@@ -240,7 +240,7 @@ public class Renderer {
             float green = color.getGreen() / 255f;
             float blue = color.getBlue() / 255f;
             float alpha = color.getAlpha() / 255f;
-            Camera c = CoffeeClientMain.client.gameRenderer.getCamera();
+            Camera c = ShadowMain.client.gameRenderer.getCamera();
             Vec3d camPos = c.getPos();
             start = start.subtract(camPos);
             end = end.subtract(camPos);
@@ -271,7 +271,7 @@ public class Renderer {
 
         public static Vec3d getCrosshairVector() {
 
-            Camera camera = CoffeeClientMain.client.gameRenderer.getCamera();
+            Camera camera = ShadowMain.client.gameRenderer.getCamera();
 
             float vec = 0.017453292F;
             float pi = (float) Math.PI;
@@ -304,8 +304,8 @@ public class Renderer {
          * @return the start position (0,0) of the tooltip content, after considering where to place it
          */
         public static Vec2f renderTooltip(MatrixStack stack, double arrowX, double arrowY, double width, double height, Color color, boolean renderUpsideDown) {
-            double centerX = CoffeeClientMain.client.getWindow().getScaledWidth() / 2d;
-            double centerY = CoffeeClientMain.client.getWindow().getScaledHeight() / 2d;
+            double centerX = ShadowMain.client.getWindow().getScaledWidth() / 2d;
+            double centerY = ShadowMain.client.getWindow().getScaledHeight() / 2d;
             /*
             left:
             *           /\
@@ -387,8 +387,8 @@ public class Renderer {
             double height = endY - y;
             width = Math.max(0, width);
             height = Math.max(0, height);
-            float d = (float) CoffeeClientMain.client.getWindow().getScaleFactor();
-            int ay = (int) ((CoffeeClientMain.client.getWindow().getScaledHeight() - (y + height)) * d);
+            float d = (float) ShadowMain.client.getWindow().getScaleFactor();
+            int ay = (int) ((ShadowMain.client.getWindow().getScaledHeight() - (y + height)) * d);
             RenderSystem.enableScissor((int) (x * d), ay, (int) (width * d), (int) (height * d));
         }
 
@@ -575,21 +575,21 @@ public class Renderer {
         }
 
         public static Vec3d getScreenSpaceCoordinate(Vec3d pos, MatrixStack stack) {
-            Camera camera = CoffeeClientMain.client.getEntityRenderDispatcher().camera;
+            Camera camera = ShadowMain.client.getEntityRenderDispatcher().camera;
             Matrix4f matrix = stack.peek().getPositionMatrix();
             double x = pos.x - camera.getPos().x;
             double y = pos.y - camera.getPos().y;
             double z = pos.z - camera.getPos().z;
             Vector4f vector4f = new Vector4f((float) x, (float) y, (float) z, 1.f);
             vector4f.transform(matrix);
-            int displayHeight = CoffeeClientMain.client.getWindow().getHeight();
+            int displayHeight = ShadowMain.client.getWindow().getHeight();
             Vector3D screenCoords = new Vector3D();
             int[] viewport = new int[4];
             GL11.glGetIntegerv(GL11.GL_VIEWPORT, viewport);
             Matrix4x4 matrix4x4Proj = Matrix4x4.copyFromColumnMajor(RenderSystem.getProjectionMatrix());//no more joml :)
             Matrix4x4 matrix4x4Model = Matrix4x4.copyFromColumnMajor(RenderSystem.getModelViewMatrix());//but I do the math myself now :( (heck math)
             matrix4x4Proj.mul(matrix4x4Model).project(vector4f.getX(), vector4f.getY(), vector4f.getZ(), viewport, screenCoords);
-            return new Vec3d(screenCoords.x / CoffeeClientMain.client.getWindow().getScaleFactor(), (displayHeight - screenCoords.y) / CoffeeClientMain.client.getWindow()
+            return new Vec3d(screenCoords.x / ShadowMain.client.getWindow().getScaleFactor(), (displayHeight - screenCoords.y) / ShadowMain.client.getWindow()
                     .getScaleFactor(), screenCoords.z);
         }
 

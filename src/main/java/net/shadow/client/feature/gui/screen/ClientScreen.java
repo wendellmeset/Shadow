@@ -3,7 +3,7 @@ package net.shadow.client.feature.gui.screen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.helper.render.MSAAFramebuffer;
 
 public class ClientScreen extends Screen {
@@ -24,7 +24,7 @@ public class ClientScreen extends Screen {
 
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        CoffeeClientMain.client.keyboard.setRepeatEvents(true);
+        ShadowMain.client.keyboard.setRepeatEvents(true);
         if (samples != -1) {
             if (!MSAAFramebuffer.framebufferInUse()) {
                 MSAAFramebuffer.use(samples, () -> renderInternal(matrices, mouseX, mouseY, delta));

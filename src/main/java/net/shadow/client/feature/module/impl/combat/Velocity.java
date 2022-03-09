@@ -7,7 +7,7 @@ package net.shadow.client.feature.module.impl.combat;
 
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.config.EnumSetting;
 import net.shadow.client.feature.module.Module;
@@ -30,11 +30,11 @@ public class Velocity extends Module {
         multiplierX.showIf(() -> mode.getValue() == Mode.Modify);
         multiplierY.showIf(() -> mode.getValue() == Mode.Modify);
         Events.registerEventHandler(EventType.PACKET_RECEIVE, event -> {
-            if (!this.isEnabled() || CoffeeClientMain.client.player == null) {
+            if (!this.isEnabled() || ShadowMain.client.player == null) {
                 return;
             }
             PacketEvent pe = (PacketEvent) event;
-            if (pe.getPacket() instanceof EntityVelocityUpdateS2CPacket packet && packet.getId() == CoffeeClientMain.client.player.getId()) {
+            if (pe.getPacket() instanceof EntityVelocityUpdateS2CPacket packet && packet.getId() == ShadowMain.client.player.getId()) {
                 if (mode.getValue() == Mode.Modify) {
                     double velX = packet.getVelocityX() / 8000d; // don't ask me why they did this
                     double velY = packet.getVelocityY() / 8000d;

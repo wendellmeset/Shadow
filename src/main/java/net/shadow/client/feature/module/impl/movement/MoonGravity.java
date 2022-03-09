@@ -6,7 +6,7 @@
 package net.shadow.client.feature.module.impl.movement;
 
 import net.minecraft.client.util.math.MatrixStack;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 
@@ -18,10 +18,10 @@ public class MoonGravity extends Module {
 
     @Override
     public void tick() {
-        if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.getNetworkHandler() == null) {
+        if (ShadowMain.client.player == null || ShadowMain.client.getNetworkHandler() == null) {
             return;
         }
-        CoffeeClientMain.client.player.addVelocity(0, 0.0568000030517578, 0);
+        ShadowMain.client.player.addVelocity(0, 0.0568000030517578, 0);
         // yea that's literally it
     }
 

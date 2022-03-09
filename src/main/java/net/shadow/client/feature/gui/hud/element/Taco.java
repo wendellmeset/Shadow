@@ -4,13 +4,13 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.helper.Texture;
 import net.shadow.client.helper.font.FontRenderers;
 
 public class Taco extends HudElement {
     public Taco() {
-        super("Taco", 0, CoffeeClientMain.client.getWindow().getScaledHeight(), 100, 100);
+        super("Taco", 0, ShadowMain.client.getWindow().getScaledHeight(), 100, 100);
     }
 
     @Override

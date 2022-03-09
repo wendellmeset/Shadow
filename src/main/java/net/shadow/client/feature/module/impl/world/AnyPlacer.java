@@ -14,7 +14,7 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 import net.shadow.client.helper.event.EventType;
@@ -33,19 +33,19 @@ public class AnyPlacer extends Module {
             if (!this.isEnabled()) {
                 return;
             }
-            if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.world == null) {
+            if (ShadowMain.client.player == null || ShadowMain.client.world == null) {
                 return;
             }
-            if (CoffeeClientMain.client.currentScreen != null) {
+            if (ShadowMain.client.currentScreen != null) {
                 return;
             }
             //            PacketEvent pe = (PacketEvent) event;
             MouseEvent me = (MouseEvent) event;
             if ((me.getAction() == 1 || me.getAction() == 2) && me.getButton() == 1) {
-                ItemStack sex = CoffeeClientMain.client.player.getMainHandStack();
+                ItemStack sex = ShadowMain.client.player.getMainHandStack();
                 if (sex.getItem() instanceof SpawnEggItem) {
                     event.setCancelled(true);
-                    HitResult hr = CoffeeClientMain.client.player.raycast(500, 0, true);
+                    HitResult hr = ShadowMain.client.player.raycast(500, 0, true);
                     Vec3d spawnPos = hr.getPos();
                     NbtCompound entityTag = sex.getOrCreateSubNbt("EntityTag");
                     NbtList nl = new NbtList();
@@ -53,11 +53,11 @@ public class AnyPlacer extends Module {
                     nl.add(NbtDouble.of(spawnPos.y));
                     nl.add(NbtDouble.of(spawnPos.z));
                     entityTag.put("Pos", nl);
-                    CreativeInventoryActionC2SPacket a = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(CoffeeClientMain.client.player.getInventory().selectedSlot), sex);
-                    Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).sendPacket(a);
-                    BlockHitResult bhr = new BlockHitResult(CoffeeClientMain.client.player.getPos(), Direction.DOWN, new BlockPos(CoffeeClientMain.client.player.getPos()), false);
+                    CreativeInventoryActionC2SPacket a = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(ShadowMain.client.player.getInventory().selectedSlot), sex);
+                    Objects.requireNonNull(ShadowMain.client.getNetworkHandler()).sendPacket(a);
+                    BlockHitResult bhr = new BlockHitResult(ShadowMain.client.player.getPos(), Direction.DOWN, new BlockPos(ShadowMain.client.player.getPos()), false);
                     PlayerInteractBlockC2SPacket ib = new PlayerInteractBlockC2SPacket(Hand.MAIN_HAND, bhr);
-                    CoffeeClientMain.client.getNetworkHandler().sendPacket(ib);
+                    ShadowMain.client.getNetworkHandler().sendPacket(ib);
                 }
             }
         });
@@ -85,7 +85,7 @@ public class AnyPlacer extends Module {
     @Override
     public void onWorldRender(MatrixStack matrices) {
         if (isDebuggerEnabled()) {
-            HitResult hr = Objects.requireNonNull(CoffeeClientMain.client.player).raycast(500, 0, true);
+            HitResult hr = Objects.requireNonNull(ShadowMain.client.player).raycast(500, 0, true);
             Vec3d spawnPos = hr.getPos();
             Renderer.R3D.renderFilled(spawnPos.subtract(.3, 0, .3), new Vec3d(.6, 0.001, .6), Color.WHITE, matrices);
         }

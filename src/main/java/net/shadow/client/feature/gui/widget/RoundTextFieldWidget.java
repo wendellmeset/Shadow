@@ -7,7 +7,7 @@ import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.gui.DoesMSAA;
 import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.render.ClipStack;
@@ -64,12 +64,12 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
 
         if (control && key == GLFW.GLFW_KEY_C) {
             if (cursor != selectionStart || cursor != selectionEnd) {
-                CoffeeClientMain.client.keyboard.setClipboard(text.substring(selectionStart, selectionEnd));
+                ShadowMain.client.keyboard.setClipboard(text.substring(selectionStart, selectionEnd));
             }
             return true;
         } else if (control && key == GLFW.GLFW_KEY_X) {
             if (cursor != selectionStart || cursor != selectionEnd) {
-                CoffeeClientMain.client.keyboard.setClipboard(text.substring(selectionStart, selectionEnd));
+                ShadowMain.client.keyboard.setClipboard(text.substring(selectionStart, selectionEnd));
                 clearSelection();
             }
 
@@ -103,7 +103,7 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
             clearSelection();
 
             String preText = text;
-            String clipboard = CoffeeClientMain.client.keyboard.getClipboard();
+            String clipboard = ShadowMain.client.keyboard.getClipboard();
             int addedChars = 0;
 
             StringBuilder sb = new StringBuilder(text.length() + clipboard.length());

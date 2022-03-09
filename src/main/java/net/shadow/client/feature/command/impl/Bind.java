@@ -1,6 +1,6 @@
 package net.shadow.client.feature.command.impl;
 
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.gui.screen.BindScreen;
 import net.shadow.client.feature.module.Module;
@@ -33,6 +33,6 @@ public class Bind extends Command {
             return;
         }
         BindScreen bs = new BindScreen(module);
-        Utils.TickManager.runInNTicks(5, () -> CoffeeClientMain.client.setScreen(bs));
+        Utils.TickManager.runInNTicks(5, () -> ShadowMain.client.setScreen(bs));
     }
 }

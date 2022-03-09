@@ -6,7 +6,7 @@
 package net.shadow.client.feature.command.impl;
 
 import net.minecraft.client.network.PlayerListEntry;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.helper.util.Utils;
 
@@ -47,12 +47,12 @@ public class ForEach extends Command {
             return;
         }
         message("Sending the message for every person in the player list, with " + delay + "ms delay");
-        for (PlayerListEntry playerListEntry : Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).getPlayerList()) {
+        for (PlayerListEntry playerListEntry : Objects.requireNonNull(ShadowMain.client.getNetworkHandler()).getPlayerList()) {
             if (Utils.Players.isPlayerNameValid(playerListEntry.getProfile().getName()) && !playerListEntry.getProfile().getId()
-                    .equals(Objects.requireNonNull(CoffeeClientMain.client.player).getUuid())) {
+                    .equals(Objects.requireNonNull(ShadowMain.client.player).getUuid())) {
                 runner.execute(() -> {
                     try {
-                        CoffeeClientMain.client.player.sendChatMessage(String.join(" ", Arrays.copyOfRange(args, 1, args.length)).replaceAll("%s", playerListEntry.getProfile().getName()));
+                        ShadowMain.client.player.sendChatMessage(String.join(" ", Arrays.copyOfRange(args, 1, args.length)).replaceAll("%s", playerListEntry.getProfile().getName()));
                         Thread.sleep(delay);
                     } catch (Exception ignored) {
                     }

@@ -13,7 +13,7 @@ import net.minecraft.network.packet.s2c.play.OpenWrittenBookS2CPacket;
 import net.minecraft.network.packet.s2c.play.ScreenHandlerSlotUpdateS2CPacket;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.Vec3d;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
@@ -40,8 +40,8 @@ public class Find extends Command {
         });
         Events.registerEventHandler(EventType.NOCLIP_QUERY, event -> { // this also functions as a tick thing so eh
             if (pendingBook && bookSlot != -1) {
-                assert CoffeeClientMain.client.player != null;
-                CoffeeClientMain.client.player.getInventory().selectedSlot = bookSlot;
+                assert ShadowMain.client.player != null;
+                ShadowMain.client.player.getInventory().selectedSlot = bookSlot;
             }
         });
     }
@@ -53,8 +53,8 @@ public class Find extends Command {
                 sent2nd = true;
                 return;
             }
-            assert CoffeeClientMain.client.player != null;
-            ItemStack current = CoffeeClientMain.client.player.getInventory().getMainHandStack();
+            assert ShadowMain.client.player != null;
+            ItemStack current = ShadowMain.client.player.getInventory().getMainHandStack();
             NbtCompound c = current.getOrCreateNbt();
             if (c.contains("pages", NbtCompound.LIST_TYPE)) {
                 NbtList l = c.getList("pages", NbtCompound.STRING_TYPE);
@@ -64,7 +64,7 @@ public class Find extends Command {
                 if (root.get("text") == null || root.get("text").getAsString().isEmpty()) {
                     error("Couldn't find player, is the dude online?");
                     CreativeInventoryActionC2SPacket pack3 = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(bookSlot), new ItemStack(Items.AIR));
-                    Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).sendPacket(pack3);
+                    Objects.requireNonNull(ShadowMain.client.getNetworkHandler()).sendPacket(pack3);
                     pendingBook = sent2nd = false;
                     bookSlot = -1;
                     pe.setCancelled(true);
@@ -80,14 +80,14 @@ public class Find extends Command {
             } else {
                 error("Couldn't find player, is the dude online?");
                 CreativeInventoryActionC2SPacket pack3 = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(bookSlot), new ItemStack(Items.AIR));
-                Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).sendPacket(pack3);
+                Objects.requireNonNull(ShadowMain.client.getNetworkHandler()).sendPacket(pack3);
                 pendingBook = sent2nd = false;
                 bookSlot = -1;
             }
             pe.setCancelled(true);
         } else if (pe.getPacket() instanceof ScreenHandlerSlotUpdateS2CPacket packet) {
             if (packet.getItemStack().getItem() == Items.WRITTEN_BOOK) {
-                Utils.TickManager.runInNTicks(5, () -> Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).sendPacket(new PlayerInteractItemC2SPacket(Hand.MAIN_HAND)));
+                Utils.TickManager.runInNTicks(5, () -> Objects.requireNonNull(ShadowMain.client.getNetworkHandler()).sendPacket(new PlayerInteractItemC2SPacket(Hand.MAIN_HAND)));
             }
         }
     }
@@ -102,7 +102,7 @@ public class Find extends Command {
 
     @Override
     public void onExecute(String[] args) {
-        if (!Objects.requireNonNull(CoffeeClientMain.client.interactionManager).hasCreativeInventory()) {
+        if (!Objects.requireNonNull(ShadowMain.client.interactionManager).hasCreativeInventory()) {
             error("Cant find the player, need GMC");
             return;
         }
@@ -112,13 +112,13 @@ public class Find extends Command {
             return;
         }
         try {
-            assert CoffeeClientMain.client.player != null;
-            String n = "{pages:[\"{\\\"nbt\\\":\\\"Pos\\\",\\\"entity\\\":\\\"" + u + "\\\"}\"],title:\"0\",author:\"" + CoffeeClientMain.client.player.getGameProfile().getName() + "\"}";
+            assert ShadowMain.client.player != null;
+            String n = "{pages:[\"{\\\"nbt\\\":\\\"Pos\\\",\\\"entity\\\":\\\"" + u + "\\\"}\"],title:\"0\",author:\"" + ShadowMain.client.player.getGameProfile().getName() + "\"}";
             ItemStack s = Utils.generateItemStackWithMeta(n, Items.WRITTEN_BOOK);
             pendingBook = true;
-            bookSlot = CoffeeClientMain.client.player.getInventory().selectedSlot;
-            CreativeInventoryActionC2SPacket a = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(CoffeeClientMain.client.player.getInventory().selectedSlot), s);
-            Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).sendPacket(a);
+            bookSlot = ShadowMain.client.player.getInventory().selectedSlot;
+            CreativeInventoryActionC2SPacket a = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(ShadowMain.client.player.getInventory().selectedSlot), s);
+            Objects.requireNonNull(ShadowMain.client.getNetworkHandler()).sendPacket(a);
             message("Finding player coords...");
         } catch (Exception ignored) {
             error("UUID invalid");

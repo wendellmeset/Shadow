@@ -2,7 +2,7 @@ package net.shadow.client.mixin;
 
 import net.minecraft.client.Keyboard;
 import net.minecraft.client.MinecraftClient;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.KeyboardEvent;
@@ -26,8 +26,8 @@ public class KeyboardMixin {
     @Inject(method = "onKey", at = @At("RETURN"))
     void atomic_postKeyPressed(long window, int key, int scancode, int action, int modifiers, CallbackInfo ci) {
         if (window == this.client.getWindow()
-                .getHandle() && CoffeeClientMain.client.currentScreen == null && System.currentTimeMillis() - CoffeeClientMain.lastScreenChange > 10) { // make sure we are in game and the screen has been there for at least 10 ms
-            if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.world == null) {
+                .getHandle() && ShadowMain.client.currentScreen == null && System.currentTimeMillis() - ShadowMain.lastScreenChange > 10) { // make sure we are in game and the screen has been there for at least 10 ms
+            if (ShadowMain.client.player == null || ShadowMain.client.world == null) {
                 return; // again, make sure we are in game and exist
             }
             KeybindingManager.updateSingle(key, action);

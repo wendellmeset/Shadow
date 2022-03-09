@@ -6,7 +6,7 @@
 package net.shadow.client.feature.command.impl;
 
 import net.minecraft.text.Text;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 
 import java.util.Objects;
@@ -32,10 +32,10 @@ public class Rename extends Command {
             error("example: rename &c&lthe &afunny");
             return;
         }
-        if (Objects.requireNonNull(CoffeeClientMain.client.player).getInventory().getMainHandStack().isEmpty()) {
+        if (Objects.requireNonNull(ShadowMain.client.player).getInventory().getMainHandStack().isEmpty()) {
             error("idk if you're holding anything");
             return;
         }
-        CoffeeClientMain.client.player.getInventory().getMainHandStack().setCustomName(Text.of("§r" + String.join(" ", args).replaceAll("&", "§")));
+        ShadowMain.client.player.getInventory().getMainHandStack().setCustomName(Text.of("§r" + String.join(" ", args).replaceAll("&", "§")));
     }
 }

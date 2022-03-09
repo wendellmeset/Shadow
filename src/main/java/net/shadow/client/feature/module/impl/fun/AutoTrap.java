@@ -11,7 +11,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 import net.shadow.client.helper.render.Renderer;
@@ -56,7 +56,7 @@ public class AutoTrap extends Module {
 
         boolean smallMatches = Arrays.stream(buildOffsetsSmall).allMatch(ints -> {
             BlockPos a = bp.add(ints[0], ints[1], ints[2]);
-            return Objects.requireNonNull(CoffeeClientMain.client.world).getBlockState(a).getMaterial().blocksMovement();
+            return Objects.requireNonNull(ShadowMain.client.world).getBlockState(a).getMaterial().blocksMovement();
         });
         if (smallMatches) {
             return true;
@@ -67,7 +67,7 @@ public class AutoTrap extends Module {
             Vec3d potentialHome = entityPos.add(ints[0], ints[1], ints[2]);
             boolean matches = Arrays.stream(buildOffsetsBig).allMatch(ints1 -> {
                 BlockPos a = new BlockPos(potentialHome.add(ints1[0], ints1[1], ints1[2]));
-                return CoffeeClientMain.client.world.getBlockState(a).getMaterial().blocksMovement();
+                return ShadowMain.client.world.getBlockState(a).getMaterial().blocksMovement();
             });
             if (matches) {
                 return true;
@@ -77,13 +77,13 @@ public class AutoTrap extends Module {
     }
 
     boolean inHitRange(Entity attacker, Vec3d pos) {
-        return attacker.getCameraPosVec(1f).distanceTo(pos) <= Objects.requireNonNull(CoffeeClientMain.client.interactionManager).getReachDistance() + .5;
+        return attacker.getCameraPosVec(1f).distanceTo(pos) <= Objects.requireNonNull(ShadowMain.client.interactionManager).getReachDistance() + .5;
     }
 
     @Override
     public void onFastTick() {
-        for (Entity player : Objects.requireNonNull(CoffeeClientMain.client.world).getPlayers()) {
-            if (player.equals(CoffeeClientMain.client.player)) {
+        for (Entity player : Objects.requireNonNull(ShadowMain.client.world).getPlayers()) {
+            if (player.equals(ShadowMain.client.player)) {
                 continue;
             }
             if (isTrappedAlready(player)) {
@@ -103,14 +103,14 @@ public class AutoTrap extends Module {
 
             double[][] filteredPlan = Arrays.stream(planToUse).filter(ints -> {
                 Vec3d v = player.getPos().add(new Vec3d(ints[0], ints[1], ints[2]));
-                return inHitRange(CoffeeClientMain.client.player, v.add(.5, .5, .5));
+                return inHitRange(ShadowMain.client.player, v.add(.5, .5, .5));
             }).toList().toArray(double[][]::new);
 
             int slot = -1;
             for (int i = 0; i < 9; i++) {
-                ItemStack real = CoffeeClientMain.client.player.getInventory().getStack(i);
+                ItemStack real = ShadowMain.client.player.getInventory().getStack(i);
                 if (real.getItem() instanceof BlockItem bi && Block.isShapeFullCube(bi.getBlock()
-                        .getOutlineShape(bi.getBlock().getDefaultState(), CoffeeClientMain.client.world, new BlockPos(0, 0, 0), ShapeContext.absent()))) {
+                        .getOutlineShape(bi.getBlock().getDefaultState(), ShadowMain.client.world, new BlockPos(0, 0, 0), ShapeContext.absent()))) {
                     slot = i;
                 }
             }
@@ -120,19 +120,19 @@ public class AutoTrap extends Module {
 
             int finalSlot = slot;
             // make sure we're in sync
-            CoffeeClientMain.client.execute(() -> {
-                int selSlot = CoffeeClientMain.client.player.getInventory().selectedSlot;
-                CoffeeClientMain.client.player.getInventory().selectedSlot = finalSlot;
+            ShadowMain.client.execute(() -> {
+                int selSlot = ShadowMain.client.player.getInventory().selectedSlot;
+                ShadowMain.client.player.getInventory().selectedSlot = finalSlot;
                 for (double[] ints : filteredPlan) {
                     BlockPos current = new BlockPos(pos.add(ints[0], ints[1], ints[2]));
-                    if (!CoffeeClientMain.client.world.getBlockState(current).isAir()) {
+                    if (!ShadowMain.client.world.getBlockState(current).isAir()) {
                         continue;
                     }
                     BlockHitResult bhr = new BlockHitResult(Vec3d.of(current), Direction.DOWN, current, false);
 
-                    Objects.requireNonNull(CoffeeClientMain.client.interactionManager).interactBlock(CoffeeClientMain.client.player, CoffeeClientMain.client.world, Hand.MAIN_HAND, bhr);
+                    Objects.requireNonNull(ShadowMain.client.interactionManager).interactBlock(ShadowMain.client.player, ShadowMain.client.world, Hand.MAIN_HAND, bhr);
                 }
-                CoffeeClientMain.client.player.getInventory().selectedSlot = selSlot;
+                ShadowMain.client.player.getInventory().selectedSlot = selSlot;
             });
         }
     }
@@ -160,8 +160,8 @@ public class AutoTrap extends Module {
     @Override
     public void onWorldRender(MatrixStack matrices) {
         if (isDebuggerEnabled()) {
-            for (Entity player : Objects.requireNonNull(CoffeeClientMain.client.world).getPlayers()) {
-                if (player.equals(CoffeeClientMain.client.player)) {
+            for (Entity player : Objects.requireNonNull(ShadowMain.client.world).getPlayers()) {
+                if (player.equals(ShadowMain.client.player)) {
                     continue;
                 }
                 if (isTrappedAlready(player)) {
@@ -182,11 +182,11 @@ public class AutoTrap extends Module {
                 for (double[] ints : planToUse) {
                     BlockPos current = new BlockPos(pos.add(ints[0], ints[1], ints[2]));
                     Vec3d v3 = Vec3d.of(current);
-                    if (!inHitRange(CoffeeClientMain.client.player, v3.add(.5, .5, .5))) {
+                    if (!inHitRange(ShadowMain.client.player, v3.add(.5, .5, .5))) {
                         Renderer.R3D.renderOutline(v3, new Vec3d(1, 1, 1), Color.RED, matrices);
                         continue;
                     }
-                    if (!CoffeeClientMain.client.world.getBlockState(current).isAir()) {
+                    if (!ShadowMain.client.world.getBlockState(current).isAir()) {
                         Renderer.R3D.renderOutline(v3, new Vec3d(1, 1, 1), Color.BLUE, matrices);
                         continue;
                     }

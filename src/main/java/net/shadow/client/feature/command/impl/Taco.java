@@ -3,7 +3,7 @@ package net.shadow.client.feature.command.impl;
 import com.google.gson.Gson;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.NativeImageBackedTexture;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.helper.Texture;
 import net.shadow.client.helper.event.EventType;
@@ -26,10 +26,10 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Taco extends Command {
-    public static final File storage = new File(CoffeeClientMain.BASE, "taco.sip");
+    public static final File storage = new File(ShadowMain.BASE, "taco.sip");
     public static final List<Frame> frames = new ArrayList<>();
     public static final AtomicBoolean init = new AtomicBoolean(false);
-    static final File gifPath = new File(CoffeeClientMain.BASE, "tacoFrames");
+    static final File gifPath = new File(ShadowMain.BASE, "tacoFrames");
     public static TacoConfig config = new TacoConfig();
     public static long currentFrame = 0;
     static final Thread ticker = new Thread(() -> {
@@ -71,7 +71,7 @@ public class Taco extends Command {
             if (!storage.exists()) {
                 //noinspection ResultOfMethodCallIgnored
                 storage.createNewFile();
-                CoffeeClientMain.log(Level.INFO, "Skipping taco config file because it doesnt exist");
+                ShadowMain.log(Level.INFO, "Skipping taco config file because it doesnt exist");
                 return;
             }
             String a = FileUtils.readFileToString(storage, StandardCharsets.UTF_8);
@@ -82,7 +82,7 @@ public class Taco extends Command {
             }
             initFrames();
         } catch (Exception e) {
-            CoffeeClientMain.log(Level.ERROR, "Failed to read taco config");
+            ShadowMain.log(Level.ERROR, "Failed to read taco config");
             e.printStackTrace();
             if (storage.exists()) {
                 //noinspection ResultOfMethodCallIgnored
@@ -94,7 +94,7 @@ public class Taco extends Command {
     static void initFrames() throws Exception {
         checkGifPath();
         for (Frame frame : frames) {
-            CoffeeClientMain.client.getTextureManager().destroyTexture(frame.getI());
+            ShadowMain.client.getTextureManager().destroyTexture(frame.getI());
         }
         frames.clear();
         Frame.frameCounter = 0;
@@ -124,7 +124,7 @@ public class Taco extends Command {
         try {
             FileUtils.writeStringToFile(storage, json, StandardCharsets.UTF_8);
         } catch (Exception e) {
-            CoffeeClientMain.log(Level.ERROR, "Failed to write taco config");
+            ShadowMain.log(Level.ERROR, "Failed to write taco config");
             e.printStackTrace();
         }
     }
@@ -250,7 +250,7 @@ public class Taco extends Command {
                 //                i = new Identifier("atomic", "tacoframe_" + frameCounter);
                 i = new Texture("taco/frame_" + frameCounter);
                 frameCounter++;
-                CoffeeClientMain.client.execute(() -> CoffeeClientMain.client.getTextureManager().registerTexture(i, tex));
+                ShadowMain.client.execute(() -> ShadowMain.client.getTextureManager().registerTexture(i, tex));
             } catch (Exception e) {
                 Utils.Logging.error("failed to register frame " + frameCounter);
                 e.printStackTrace();

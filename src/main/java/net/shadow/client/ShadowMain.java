@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
-public class CoffeeClientMain implements ModInitializer {
+public class ShadowMain implements ModInitializer {
 
     public static final String MOD_ID = "sipoverprivate";
     public static final String MOD_NAME = "SipoverPrivate";
@@ -37,7 +37,7 @@ public class CoffeeClientMain implements ModInitializer {
     public static final File BASE = new File(MinecraftClient.getInstance().runDirectory, "sip");
     public static final List<ResourceEntry> resources = new ArrayList<>();
     public static long lastScreenChange = System.currentTimeMillis();
-    public static CoffeeClientMain INSTANCE;
+    public static ShadowMain INSTANCE;
     public static Thread MODULE_FTTICKER;
     public static Thread FAST_TICKER;
     public static String sessionKey = null;

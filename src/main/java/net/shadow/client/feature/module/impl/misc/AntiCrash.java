@@ -5,7 +5,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.minecraft.network.packet.s2c.play.OpenScreenS2CPacket;
 import net.minecraft.network.packet.s2c.play.ParticleS2CPacket;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.config.BooleanSetting;
 import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.gui.notifications.Notification;
@@ -107,7 +107,7 @@ public class AntiCrash extends Module {
             }
         }
         if (pe.getPacket() instanceof ParticleS2CPacket p && capParticles.getValue()) {
-            int partTotal = ((ParticleManagerDuck) CoffeeClientMain.client.particleManager).getTotalParticles();
+            int partTotal = ((ParticleManagerDuck) ShadowMain.client.particleManager).getTotalParticles();
             int newCount = partTotal + p.getCount();
             if (newCount >= particleMax.getValue()) {
                 int space = (int) Math.floor(particleMax.getValue() - partTotal);

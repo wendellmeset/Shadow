@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "id": "coffeeclient",
+  "id": "shadow",
   "version": "${version}",
-  "name": "Coffee client",
-  "description": "YOOOOO 2500 KROMER WE GETTIN RICH BOYYS",
+  "name": "Shadow client",
+  "description": "incredibly real",
   "authors": [
     "0x150",
-    "Kopamed"
+    "Saturn5VFive"
   ],
   "contributors": [],
   "contact": {},
@@ -15,13 +15,13 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.shadow.client.CoffeeClientMain"
+      "net.shadow.client.ShadowMain"
     ],
     "client": [],
     "server": []
   },
   "mixins": [
-    "sipoverprivate.mixins.json"
+    "shadow.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.12.12"

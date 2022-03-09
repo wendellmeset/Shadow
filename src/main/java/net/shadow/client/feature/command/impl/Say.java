@@ -5,7 +5,7 @@
 
 package net.shadow.client.feature.command.impl;
 
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 
 import java.util.Objects;
@@ -30,6 +30,6 @@ public class Say extends Command {
             error("not sure if i can say nothing");
             return;
         }
-        Objects.requireNonNull(CoffeeClientMain.client.player).sendChatMessage(String.join(" ", args));
+        Objects.requireNonNull(ShadowMain.client.player).sendChatMessage(String.join(" ", args));
     }
 }

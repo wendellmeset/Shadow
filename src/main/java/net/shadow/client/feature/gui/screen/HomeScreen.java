@@ -12,7 +12,7 @@ import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.minecraft.client.util.DefaultSkinHelper;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.gui.FastTickable;
 import net.shadow.client.feature.gui.widget.RoundButton;
 import net.shadow.client.helper.Texture;
@@ -100,14 +100,14 @@ public class HomeScreen extends ClientScreen implements FastTickable {
         double centerWidgetsY = height - padding - 25;
         double rightPad = width - padding;
         Color bg = new Color(30, 30, 30);
-        RoundButton single = new RoundButton(bg, rightPad - (padding + 60), centerWidgetsY, 60, 20, "Singleplayer", () -> CoffeeClientMain.client.setScreen(new SelectWorldScreen(this)));
-        RoundButton multi = new RoundButton(bg, rightPad - (padding + 60) * 2, centerWidgetsY, 60, 20, "Multiplayer", () -> CoffeeClientMain.client.setScreen(new MultiplayerScreen(this)));
-        RoundButton realms = new RoundButton(bg, rightPad - (padding + 60) * 3, centerWidgetsY, 60, 20, "Realms", () -> CoffeeClientMain.client.setScreen(new RealmsMainScreen(this)));
-        RoundButton alts = new RoundButton(bg, rightPad - (padding + 60) * 4, centerWidgetsY, 60, 20, "Alts", () -> CoffeeClientMain.client.setScreen(AltManagerScreen.instance()
+        RoundButton single = new RoundButton(bg, rightPad - (padding + 60), centerWidgetsY, 60, 20, "Singleplayer", () -> ShadowMain.client.setScreen(new SelectWorldScreen(this)));
+        RoundButton multi = new RoundButton(bg, rightPad - (padding + 60) * 2, centerWidgetsY, 60, 20, "Multiplayer", () -> ShadowMain.client.setScreen(new MultiplayerScreen(this)));
+        RoundButton realms = new RoundButton(bg, rightPad - (padding + 60) * 3, centerWidgetsY, 60, 20, "Realms", () -> ShadowMain.client.setScreen(new RealmsMainScreen(this)));
+        RoundButton alts = new RoundButton(bg, rightPad - (padding + 60) * 4, centerWidgetsY, 60, 20, "Alts", () -> ShadowMain.client.setScreen(AltManagerScreen.instance()
                 //                new TestScreen()
         ));
-        RoundButton settings = new RoundButton(bg, rightPad - (padding + 60) * 5, centerWidgetsY, 60, 20, "Options", () -> CoffeeClientMain.client.setScreen(new OptionsScreen(this, CoffeeClientMain.client.options)));
-        RoundButton quit = new RoundButton(bg, rightPad - (padding + 60) * 5 - padding - 20, centerWidgetsY, 20, 20, "X", CoffeeClientMain.client::scheduleStop);
+        RoundButton settings = new RoundButton(bg, rightPad - (padding + 60) * 5, centerWidgetsY, 60, 20, "Options", () -> ShadowMain.client.setScreen(new OptionsScreen(this, ShadowMain.client.options)));
+        RoundButton quit = new RoundButton(bg, rightPad - (padding + 60) * 5 - padding - 20, centerWidgetsY, 20, 20, "X", ShadowMain.client::scheduleStop);
         addDrawableChild(single);
         addDrawableChild(multi);
         addDrawableChild(settings);
@@ -132,7 +132,7 @@ public class HomeScreen extends ClientScreen implements FastTickable {
     }
 
     void updateCurrentAccount(Runnable callback) {
-        UUID uid = CoffeeClientMain.client.getSession().getProfile().getId();
+        UUID uid = ShadowMain.client.getSession().getProfile().getId();
         if (previousChecked != null && previousChecked.equals(uid)) {
             callback.run();
             return;
@@ -152,8 +152,8 @@ public class HomeScreen extends ClientScreen implements FastTickable {
                 System.out.println(img);
                 NativeImageBackedTexture texture = new NativeImageBackedTexture(img);
 
-                CoffeeClientMain.client.execute(() -> {
-                    CoffeeClientMain.client.getTextureManager().registerTexture(currentAccountTexture, texture);
+                ShadowMain.client.execute(() -> {
+                    ShadowMain.client.getTextureManager().registerTexture(currentAccountTexture, texture);
                     currentAccountTextureLoaded = true;
                     callback.run();
                 });
@@ -221,7 +221,7 @@ public class HomeScreen extends ClientScreen implements FastTickable {
             Renderer.R2D.renderTexture(stack, fromX + padding, fromY + padding, texDim, texDim, 8, 8, 8, 8, 64, 64);
         }
         RenderSystem.defaultBlendFunc();
-        String uuid = CoffeeClientMain.client.getSession().getUuid();
+        String uuid = ShadowMain.client.getSession().getUuid();
         double uuidWid = FontRenderers.getRenderer().getStringWidth(uuid);
         double maxWid = 200 - texDim - padding * 3;
         if (uuidWid > maxWid) {
@@ -230,7 +230,7 @@ public class HomeScreen extends ClientScreen implements FastTickable {
             uuid += "...";
         }
         AltManagerScreen.AltContainer.PropEntry[] props = new AltManagerScreen.AltContainer.PropEntry[]{
-                new AltManagerScreen.AltContainer.PropEntry(CoffeeClientMain.client.getSession().getUsername(), FontRenderers.getCustomSize(22), 0xFFFFFF),
+                new AltManagerScreen.AltContainer.PropEntry(ShadowMain.client.getSession().getUsername(), FontRenderers.getCustomSize(22), 0xFFFFFF),
                 new AltManagerScreen.AltContainer.PropEntry(uuid, FontRenderers.getRenderer(), 0xAAAAAA)};
         float propsOffset = (float) (fromY + padding);
         for (AltManagerScreen.AltContainer.PropEntry prop : props) {
@@ -261,7 +261,7 @@ public class HomeScreen extends ClientScreen implements FastTickable {
 
     @Override
     public void onFastTick() {
-        if (CoffeeClientMain.client.getOverlay() == null && CoffeeClientMain.client.currentScreen == this && System.currentTimeMillis() - initTime > 1000 && !loaded) {
+        if (ShadowMain.client.getOverlay() == null && ShadowMain.client.currentScreen == this && System.currentTimeMillis() - initTime > 1000 && !loaded) {
             load();
         }
         double delta = 10 / 600d;

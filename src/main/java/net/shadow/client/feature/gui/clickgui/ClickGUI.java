@@ -6,7 +6,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec2f;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.gui.FastTickable;
 import net.shadow.client.feature.gui.clickgui.element.Element;
 import net.shadow.client.feature.gui.clickgui.element.impl.CategoryDisplay;
@@ -89,7 +89,7 @@ public class ClickGUI extends Screen implements FastTickable {
 
     void initElements() {
         elements.clear();
-        double width = CoffeeClientMain.client.getWindow().getScaledWidth();
+        double width = ShadowMain.client.getWindow().getScaledWidth();
         double x = 5;
         double y = 5;
         double tallestInTheRoom = 0;
@@ -158,8 +158,8 @@ public class ClickGUI extends Screen implements FastTickable {
             for (String s : text) {
                 width = Math.max(width, FontRenderers.getRenderer().getStringWidth(s));
             }
-            if (descX + width > CoffeeClientMain.client.getWindow().getScaledWidth()) {
-                descX -= (descX + width - CoffeeClientMain.client.getWindow().getScaledWidth()) + 4;
+            if (descX + width > ShadowMain.client.getWindow().getScaledWidth()) {
+                descX -= (descX + width - ShadowMain.client.getWindow().getScaledWidth()) + 4;
             }
             Vec2f root = Renderer.R2D.renderTooltip(matrices, descX, descY, width + 4, FontRenderers.getRenderer().getMarginHeight() + 4, tooltipColor);
             float yOffset = 2;

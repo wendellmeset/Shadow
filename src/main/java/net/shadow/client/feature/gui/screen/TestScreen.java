@@ -5,7 +5,7 @@ import net.minecraft.client.gui.widget.DoubleOptionSliderWidget;
 import net.minecraft.client.option.DoubleOption;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.gui.FastTickable;
 import net.shadow.client.helper.Timer;
 import net.shadow.client.helper.render.Renderer;
@@ -31,9 +31,9 @@ public class TestScreen extends Screen implements FastTickable {
     @Override
     protected void init() {
         DoubleOption dop = new DoubleOption("bruh", 1, 10, 0.01f, gameOptions -> 1d, (gameOptions, aDouble) -> goopyV = aDouble, (gameOptions, doubleOption) -> Text.of("goopy"));
-        goopy = new DoubleOptionSliderWidget(CoffeeClientMain.client.options, 5, height - 30, 100, 20, dop, Lists.newArrayList());
+        goopy = new DoubleOptionSliderWidget(ShadowMain.client.options, 5, height - 30, 100, 20, dop, Lists.newArrayList());
         DoubleOption curve = new DoubleOption("curve", 1, 10, 0.01f, gameOptions -> 1d, (gameOptions, aDouble) -> curveV = aDouble, (gameOptions, doubleOption) -> Text.of("real"));
-        this.curve = new DoubleOptionSliderWidget(CoffeeClientMain.client.options, 110, height - 30, 100, 20, curve, Lists.newArrayList());
+        this.curve = new DoubleOptionSliderWidget(ShadowMain.client.options, 110, height - 30, 100, 20, curve, Lists.newArrayList());
         addDrawableChild(goopy);
         addDrawableChild(this.curve);
         super.init();

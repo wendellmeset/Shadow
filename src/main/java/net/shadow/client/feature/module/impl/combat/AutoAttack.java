@@ -3,7 +3,7 @@ package net.shadow.client.feature.module.impl.combat;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.EntityHitResult;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 
@@ -18,11 +18,11 @@ public class AutoAttack extends Module {
 
     @Override
     public void tick() {
-        if (!(CoffeeClientMain.client.crosshairTarget instanceof EntityHitResult) || Objects.requireNonNull(CoffeeClientMain.client.player).getAttackCooldownProgress(0) < 1) {
+        if (!(ShadowMain.client.crosshairTarget instanceof EntityHitResult) || Objects.requireNonNull(ShadowMain.client.player).getAttackCooldownProgress(0) < 1) {
             return;
         }
-        Objects.requireNonNull(CoffeeClientMain.client.interactionManager).attackEntity(CoffeeClientMain.client.player, ((EntityHitResult) CoffeeClientMain.client.crosshairTarget).getEntity());
-        CoffeeClientMain.client.player.swingHand(Hand.MAIN_HAND);
+        Objects.requireNonNull(ShadowMain.client.interactionManager).attackEntity(ShadowMain.client.player, ((EntityHitResult) ShadowMain.client.crosshairTarget).getEntity());
+        ShadowMain.client.player.swingHand(Hand.MAIN_HAND);
     }
 
     @Override

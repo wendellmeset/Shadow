@@ -3,7 +3,7 @@ package net.shadow.client.feature.module.impl.movement;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.config.BooleanSetting;
 import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.config.EnumSetting;
@@ -30,11 +30,11 @@ public class LongJump extends Module {
     }
 
     Vec3d getVel() {
-        float f = Objects.requireNonNull(CoffeeClientMain.client.player).getYaw() * 0.017453292F;
+        float f = Objects.requireNonNull(ShadowMain.client.player).getYaw() * 0.017453292F;
         double scaled = xz.getValue() / 5;
         return switch (focus.getValue()) {
             case Direction -> new Vec3d(-MathHelper.sin(f) * scaled, 0.0D, MathHelper.cos(f) * scaled);
-            case Velocity -> new Vec3d(CoffeeClientMain.client.player.getVelocity().normalize().x * scaled, 0.0D, CoffeeClientMain.client.player.getVelocity().normalize().z * scaled);
+            case Velocity -> new Vec3d(ShadowMain.client.player.getVelocity().normalize().x * scaled, 0.0D, ShadowMain.client.player.getVelocity().normalize().z * scaled);
         };
     }
 

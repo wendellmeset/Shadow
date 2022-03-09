@@ -11,7 +11,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 
@@ -25,10 +25,10 @@ public class EdgeSneak extends Module {
 
     @Override
     public void tick() {
-        if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.world == null) {
+        if (ShadowMain.client.player == null || ShadowMain.client.world == null) {
             return;
         }
-        Box bounding = CoffeeClientMain.client.player.getBoundingBox();
+        Box bounding = ShadowMain.client.player.getBoundingBox();
         bounding = bounding.offset(0, -1, 0);
         bounding = bounding.expand(0.3);
         boolean sneak = false;
@@ -36,8 +36,8 @@ public class EdgeSneak extends Module {
             for (int z = -1; z < 2; z++) {
                 double xScale = x / 3d + .5;
                 double zScale = z / 3d + .5;
-                BlockPos current = CoffeeClientMain.client.player.getBlockPos().add(x, -1, z);
-                BlockState bs = CoffeeClientMain.client.world.getBlockState(current);
+                BlockPos current = ShadowMain.client.player.getBlockPos().add(x, -1, z);
+                BlockState bs = ShadowMain.client.world.getBlockState(current);
                 if (bs.isAir() && bounding.contains(new Vec3d(current.getX() + xScale, current.getY() + 1, current.getZ() + zScale))) {
                     sneak = true;
                     break;
@@ -45,7 +45,7 @@ public class EdgeSneak extends Module {
             }
         }
         //STL.notifyUser(sneak+"");
-        boolean previousState = InputUtil.isKeyPressed(CoffeeClientMain.client.getWindow().getHandle(), client.options.sneakKey.getDefaultKey().getCode());
+        boolean previousState = InputUtil.isKeyPressed(ShadowMain.client.getWindow().getHandle(), client.options.sneakKey.getDefaultKey().getCode());
         if (Objects.requireNonNull(client.player).isOnGround()) {
             client.options.sneakKey.setPressed(sneak || previousState);
         }

@@ -10,7 +10,7 @@ import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.math.Box;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 import net.shadow.client.helper.event.EventType;
@@ -25,16 +25,16 @@ public class Phase extends Module {
     public Phase() {
         super("Phase", "Go through walls when flying (works best with creative)", ModuleType.MOVEMENT);
         Events.registerEventHandler(EventType.PACKET_SEND, event -> {
-            if (!this.isEnabled() || CoffeeClientMain.client.player == null || !CoffeeClientMain.client.player.getAbilities().flying) {
+            if (!this.isEnabled() || ShadowMain.client.player == null || !ShadowMain.client.player.getAbilities().flying) {
                 return;
             }
             PacketEvent pe = (PacketEvent) event;
-            Box p = CoffeeClientMain.client.player.getBoundingBox(CoffeeClientMain.client.player.getPose()).offset(0, 0.27, 0).expand(0.25);
+            Box p = ShadowMain.client.player.getBoundingBox(ShadowMain.client.player.getPose()).offset(0, 0.27, 0).expand(0.25);
             if (p.getYLength() < 2) {
                 p = p.expand(0, 1, 0);
             }
-            p = p.offset(CoffeeClientMain.client.player.getPos());
-            if (pe.getPacket() instanceof PlayerMoveC2SPacket && !Objects.requireNonNull(CoffeeClientMain.client.world).isSpaceEmpty(CoffeeClientMain.client.player, p)) {
+            p = p.offset(ShadowMain.client.player.getPos());
+            if (pe.getPacket() instanceof PlayerMoveC2SPacket && !Objects.requireNonNull(ShadowMain.client.world).isSpaceEmpty(ShadowMain.client.player, p)) {
                 event.setCancelled(true);
             }
         });
@@ -56,10 +56,10 @@ public class Phase extends Module {
 
     @Override
     public void enable() {
-        Objects.requireNonNull(CoffeeClientMain.client.player).setPose(EntityPose.STANDING);
-        CoffeeClientMain.client.player.setOnGround(false);
-        CoffeeClientMain.client.player.fallDistance = 0;
-        CoffeeClientMain.client.player.setVelocity(0, 0, 0);
+        Objects.requireNonNull(ShadowMain.client.player).setPose(EntityPose.STANDING);
+        ShadowMain.client.player.setOnGround(false);
+        ShadowMain.client.player.fallDistance = 0;
+        ShadowMain.client.player.setVelocity(0, 0, 0);
     }
 
     @Override
@@ -69,15 +69,15 @@ public class Phase extends Module {
 
     @Override
     public String getContext() {
-        return getNoClipState(CoffeeClientMain.client.player) ? "Active" : null;
+        return getNoClipState(ShadowMain.client.player) ? "Active" : null;
     }
 
     @Override
     public void onWorldRender(MatrixStack matrices) {
-        if (Objects.requireNonNull(CoffeeClientMain.client.player).getAbilities().flying) {
-            CoffeeClientMain.client.player.setPose(EntityPose.STANDING);
-            CoffeeClientMain.client.player.setOnGround(false);
-            CoffeeClientMain.client.player.fallDistance = 0;
+        if (Objects.requireNonNull(ShadowMain.client.player).getAbilities().flying) {
+            ShadowMain.client.player.setPose(EntityPose.STANDING);
+            ShadowMain.client.player.setOnGround(false);
+            ShadowMain.client.player.fallDistance = 0;
             //SipoverPrivate.client.player.setVelocity(0,0,0);
         }
     }

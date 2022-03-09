@@ -5,7 +5,7 @@
 
 package net.shadow.client.feature.command.impl;
 
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleRegistry;
@@ -51,7 +51,7 @@ public class Panic extends Command {
                     module.setEnabled(false);
                 }
             }
-            CoffeeClientMain.client.inGameHud.getChatHud().clear(true);
+            ShadowMain.client.inGameHud.getChatHud().clear(true);
         } else if (args[0].equalsIgnoreCase("restore")) {
             if (stored.size() == 0) {
                 error("The stored module list is empty");

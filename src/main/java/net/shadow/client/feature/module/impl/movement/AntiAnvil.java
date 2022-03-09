@@ -8,7 +8,7 @@ import net.minecraft.entity.FallingBlockEntity;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 
@@ -24,9 +24,9 @@ public class AntiAnvil extends Module {
     @Override
     public void tick() {
         //        Vec3d currentPos = CoffeeClientMain.client.player.getPos();
-        BlockPos currentPos = Objects.requireNonNull(CoffeeClientMain.client.player).getBlockPos();
-        Vec3d ppos = CoffeeClientMain.client.player.getPos();
-        List<Entity> anvils = StreamSupport.stream(Objects.requireNonNull(CoffeeClientMain.client.world).getEntities().spliterator(), false).filter(entity -> {
+        BlockPos currentPos = Objects.requireNonNull(ShadowMain.client.player).getBlockPos();
+        Vec3d ppos = ShadowMain.client.player.getPos();
+        List<Entity> anvils = StreamSupport.stream(Objects.requireNonNull(ShadowMain.client.world).getEntities().spliterator(), false).filter(entity -> {
             if (entity instanceof FallingBlockEntity e) {
                 Block bs = e.getBlockState().getBlock();
                 return bs == Blocks.ANVIL || bs == Blocks.CHIPPED_ANVIL || bs == Blocks.DAMAGED_ANVIL;
@@ -40,7 +40,7 @@ public class AntiAnvil extends Module {
                 double yDist = anvilPos.y - ppos.y;
                 if (yDist > 0 && yDist < -anvil.getVelocity().y * 2) { // anvil is 0-1 blocks above our feet
                     PlayerMoveC2SPacket p = new PlayerMoveC2SPacket.PositionAndOnGround(ppos.x, ppos.y + 1, ppos.z, false);
-                    Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).sendPacket(p);
+                    Objects.requireNonNull(ShadowMain.client.getNetworkHandler()).sendPacket(p);
                     //                    CoffeeClientMain.client.player.updatePosition(ppos.x,ppos.y+1,ppos.z);
                 }
             }

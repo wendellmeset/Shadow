@@ -8,7 +8,7 @@ package net.shadow.client.feature.command.impl;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.helper.util.Utils;
 
@@ -23,7 +23,7 @@ public class Invsee extends Command {
     @Override
     public String[] getSuggestions(String fullCommand, String[] args) {
         if (args.length == 1) {
-            return Objects.requireNonNull(CoffeeClientMain.client.world).getPlayers().stream().map(abstractClientPlayerEntity -> abstractClientPlayerEntity.getGameProfile().getName()).toList().toArray(String[]::new);
+            return Objects.requireNonNull(ShadowMain.client.world).getPlayers().stream().map(abstractClientPlayerEntity -> abstractClientPlayerEntity.getGameProfile().getName()).toList().toArray(String[]::new);
         }
         return super.getSuggestions(fullCommand, args);
     }
@@ -35,7 +35,7 @@ public class Invsee extends Command {
             return;
         }
         PlayerEntity t = null;
-        for (Entity player : Objects.requireNonNull(CoffeeClientMain.client.world).getEntities()) {
+        for (Entity player : Objects.requireNonNull(ShadowMain.client.world).getEntities()) {
             if (player instanceof PlayerEntity player1) {
                 if (player1.getGameProfile().getName().equalsIgnoreCase(args[0])) {
                     t = player1;
@@ -48,6 +48,6 @@ public class Invsee extends Command {
             return;
         }
         PlayerEntity finalT = t;
-        Utils.TickManager.runOnNextRender(() -> CoffeeClientMain.client.setScreen(new InventoryScreen(finalT)));
+        Utils.TickManager.runOnNextRender(() -> ShadowMain.client.setScreen(new InventoryScreen(finalT)));
     }
 }

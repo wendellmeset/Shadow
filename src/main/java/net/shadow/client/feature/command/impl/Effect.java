@@ -7,7 +7,7 @@ package net.shadow.client.feature.command.impl;
 
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.helper.util.Utils;
 
@@ -33,7 +33,7 @@ public class Effect extends Command {
 
     @Override
     public void onExecute(String[] args) {
-        if (CoffeeClientMain.client.player == null) {
+        if (ShadowMain.client.player == null) {
             return;
         }
         if (args.length == 0) {
@@ -59,11 +59,11 @@ public class Effect extends Command {
                     return;
                 }
                 StatusEffectInstance inst = new StatusEffectInstance(effect, duration, strength);
-                CoffeeClientMain.client.player.addStatusEffect(inst);
+                ShadowMain.client.player.addStatusEffect(inst);
             }
             case "clear" -> {
-                for (StatusEffectInstance statusEffect : CoffeeClientMain.client.player.getStatusEffects().toArray(new StatusEffectInstance[0])) {
-                    CoffeeClientMain.client.player.removeStatusEffect(statusEffect.getEffectType());
+                for (StatusEffectInstance statusEffect : ShadowMain.client.player.getStatusEffects().toArray(new StatusEffectInstance[0])) {
+                    ShadowMain.client.player.removeStatusEffect(statusEffect.getEffectType());
                 }
             }
             default -> error("\"give\" and \"clear\" only pls");

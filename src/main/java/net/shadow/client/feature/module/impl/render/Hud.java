@@ -5,7 +5,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.config.BooleanSetting;
 import net.shadow.client.feature.gui.clickgui.theme.ThemeManager;
 import net.shadow.client.feature.gui.hud.HudRenderer;
@@ -114,18 +114,18 @@ public class Hud extends Module {
 
     @Override
     public void onHudRenderNoMSAA() {
-        if (CoffeeClientMain.client.getNetworkHandler() == null) {
+        if (ShadowMain.client.getNetworkHandler() == null) {
             return;
         }
-        if (CoffeeClientMain.client.player == null) {
+        if (ShadowMain.client.player == null) {
             return;
         }
         MatrixStack ms = Renderer.R3D.getEmptyMatrixStack();
         double heightOffsetLeft = 0, heightOffsetRight = 0;
-        if (CoffeeClientMain.client.options.debugEnabled) {
+        if (ShadowMain.client.options.debugEnabled) {
             double heightAccordingToMc = 9;
-            List<String> lt = ((IDebugHudAccessor) ((IInGameHudAccessor) CoffeeClientMain.client.inGameHud).getDebugHud()).callGetLeftText();
-            List<String> rt = ((IDebugHudAccessor) ((IInGameHudAccessor) CoffeeClientMain.client.inGameHud).getDebugHud()).callGetRightText();
+            List<String> lt = ((IDebugHudAccessor) ((IInGameHudAccessor) ShadowMain.client.inGameHud).getDebugHud()).callGetLeftText();
+            List<String> rt = ((IDebugHudAccessor) ((IInGameHudAccessor) ShadowMain.client.inGameHud).getDebugHud()).callGetRightText();
             heightOffsetLeft = 2 + heightAccordingToMc * (lt.size() + 3);
             heightOffsetRight = 2 + heightAccordingToMc * rt.size() + 5;
         }
@@ -167,7 +167,7 @@ public class Hud extends Module {
         double rootY = 6;
         List<String> values = new ArrayList<>();
         if (this.fps.getValue()) {
-            values.add(((IMinecraftClientAccessor) CoffeeClientMain.client).getCurrentFps() + " fps");
+            values.add(((IMinecraftClientAccessor) ShadowMain.client).getCurrentFps() + " fps");
         }
 
         if (this.tps.getValue()) {
@@ -180,11 +180,11 @@ public class Hud extends Module {
             values.add(tpsString + " tps");
         }
         if (this.ping.getValue()) {
-            PlayerListEntry ple = Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).getPlayerListEntry(Objects.requireNonNull(CoffeeClientMain.client.player).getUuid());
+            PlayerListEntry ple = Objects.requireNonNull(ShadowMain.client.getNetworkHandler()).getPlayerListEntry(Objects.requireNonNull(ShadowMain.client.player).getUuid());
             values.add((ple == null || ple.getLatency() == 0 ? "?" : ple.getLatency() + "") + " ms");
         }
         if (this.coords.getValue()) {
-            BlockPos bp = Objects.requireNonNull(CoffeeClientMain.client.player).getBlockPos();
+            BlockPos bp = Objects.requireNonNull(ShadowMain.client.player).getBlockPos();
             values.add(bp.getX() + " " + bp.getY() + " " + bp.getZ());
         }
         String drawStr = String.join(" | ", values);
@@ -202,7 +202,7 @@ public class Hud extends Module {
     }
 
     void drawModuleList(MatrixStack ms) {
-        double width = CoffeeClientMain.client.getWindow().getScaledWidth();
+        double width = ShadowMain.client.getWindow().getScaledWidth();
         double y = 0;
         for (ModuleEntry moduleEntry : moduleList.stream().sorted(Comparator.comparingDouble(value -> -value.getRenderWidth())).toList()) {
             double prog = moduleEntry.getAnimProg() * 2;

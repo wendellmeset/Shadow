@@ -17,7 +17,7 @@ import net.minecraft.client.util.DefaultSkinHelper;
 import net.minecraft.client.util.Session;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.gui.FastTickable;
 import net.shadow.client.feature.gui.widget.RoundButton;
 import net.shadow.client.feature.gui.widget.RoundTextFieldWidget;
@@ -55,7 +55,7 @@ import java.util.stream.Collectors;
 
 public class AltManagerScreen extends ClientScreen implements FastTickable {
     public static final Map<UUID, Texture> texCache = new HashMap<>();
-    static final File ALTS_FILE = new File(CoffeeClientMain.BASE, "alts.sip");
+    static final File ALTS_FILE = new File(ShadowMain.BASE, "alts.sip");
     static final String TOP_NOTE = """
             // DO NOT SHARE THIS FILE
             // This file contains sensitive information about your accounts
@@ -102,7 +102,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
     }
 
     void saveAlts() {
-        CoffeeClientMain.log(Level.INFO, "Saving alts");
+        ShadowMain.log(Level.INFO, "Saving alts");
         JsonArray root = new JsonArray();
         for (AltContainer alt1 : alts) {
             AltStorage alt = alt1.storage;
@@ -121,7 +121,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
         try {
             FileUtils.write(ALTS_FILE, TOP_NOTE + "\n" + root, StandardCharsets.UTF_8);
         } catch (Exception ignored) {
-            CoffeeClientMain.log(Level.ERROR, "Failed to write alts file");
+            ShadowMain.log(Level.ERROR, "Failed to write alts file");
         }
     }
 
@@ -133,13 +133,13 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     void loadAlts() {
-        CoffeeClientMain.log(Level.INFO, "Loading alts");
+        ShadowMain.log(Level.INFO, "Loading alts");
 
         if (!ALTS_FILE.isFile()) {
             ALTS_FILE.delete();
         }
         if (!ALTS_FILE.exists()) {
-            CoffeeClientMain.log(Level.INFO, "Skipping alt loading because file doesn't exist");
+            ShadowMain.log(Level.INFO, "Skipping alt loading because file doesn't exist");
             return;
         }
         try {
@@ -160,7 +160,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
 
             }
         } catch (Exception ignored) {
-            CoffeeClientMain.log(Level.ERROR, "Failed to read alts file - corrupted?");
+            ShadowMain.log(Level.ERROR, "Failed to read alts file - corrupted?");
         }
     }
 
@@ -205,7 +205,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
         toY = height - getPadding();
         buttonWidth = toX - fromX - padding * 3 - texDim;
         session = new ThemedButton(fromX + texDim + padding * 2, toY - 20 - padding, buttonWidth, 20, "Session", () -> {
-            Objects.requireNonNull(client).setScreen(new SessionEditor(this, CoffeeClientMain.client.getSession())); // this is not a session stealer
+            Objects.requireNonNull(client).setScreen(new SessionEditor(this, ShadowMain.client.getSession())); // this is not a session stealer
         });
     }
 
@@ -214,7 +214,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
     }
 
     void updateCurrentAccount() {
-        UUID uid = CoffeeClientMain.client.getSession().getProfile().getId();
+        UUID uid = ShadowMain.client.getSession().getProfile().getId();
 
         if (texCache.containsKey(uid)) {
             this.currentAccountTexture = texCache.get(uid);
@@ -234,8 +234,8 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
                 NativeImage img = NativeImage.read(data);
                 NativeImageBackedTexture texture = new NativeImageBackedTexture(img);
 
-                CoffeeClientMain.client.execute(() -> {
-                    CoffeeClientMain.client.getTextureManager().registerTexture(currentAccountTexture, texture);
+                ShadowMain.client.execute(() -> {
+                    ShadowMain.client.getTextureManager().registerTexture(currentAccountTexture, texture);
                     currentAccountTextureLoaded = true;
                 });
             } catch (Exception e) {
@@ -256,7 +256,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
                 return;
             }
             Session newSession = new Session(selectedAlt.storage.cachedName, selectedAlt.storage.cachedUuid.toString(), selectedAlt.storage.accessToken, Optional.empty(), Optional.empty(), Session.AccountType.MOJANG);
-            ((IMinecraftClientAccessor) CoffeeClientMain.client).setSession(newSession);
+            ((IMinecraftClientAccessor) ShadowMain.client).setSession(newSession);
             updateCurrentAccount();
         }).start();
     }
@@ -406,7 +406,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
             Renderer.R2D.renderTexture(stack, fromX + padding, fromY + padding, texDim, texDim, 8, 8, 8, 8, 64, 64);
         }
         RenderSystem.defaultBlendFunc();
-        String uuid = CoffeeClientMain.client.getSession().getUuid();
+        String uuid = ShadowMain.client.getSession().getUuid();
         double uuidWid = FontRenderers.getRenderer().getStringWidth(uuid);
         double maxWid = leftWidth - texDim - padding * 3;
         if (uuidWid > maxWid) {
@@ -414,7 +414,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
             uuid = FontRenderers.getRenderer().trimStringToWidth(uuid, maxWid - 1 - threeDotWidth);
             uuid += "...";
         }
-        AltContainer.PropEntry[] props = new AltContainer.PropEntry[]{new AltContainer.PropEntry(CoffeeClientMain.client.getSession().getUsername(), FontRenderers.getCustomSize(22), 0xFFFFFF),
+        AltContainer.PropEntry[] props = new AltContainer.PropEntry[]{new AltContainer.PropEntry(ShadowMain.client.getSession().getUsername(), FontRenderers.getCustomSize(22), 0xFFFFFF),
                 new AltContainer.PropEntry(uuid, FontRenderers.getRenderer(), 0xAAAAAA)};
         float propsOffset = (float) (fromY + padding);
         for (AltContainer.PropEntry prop : props) {
@@ -929,9 +929,9 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
                     NativeImage img = NativeImage.read(data);
                     NativeImageBackedTexture texture = new NativeImageBackedTexture(img);
 
-                    CoffeeClientMain.client.execute(() -> {
+                    ShadowMain.client.execute(() -> {
                         this.tex = new Texture(("dynamic/tex_" + this.storage.cachedUuid.hashCode() + "_" + (Math.random() + "").split("\\.")[1]).toLowerCase());
-                        CoffeeClientMain.client.getTextureManager().registerTexture(this.tex, texture);
+                        ShadowMain.client.getTextureManager().registerTexture(this.tex, texture);
                         texCache.put(this.storage.cachedUuid, this.tex);
                         texLoaded = true;
                     });

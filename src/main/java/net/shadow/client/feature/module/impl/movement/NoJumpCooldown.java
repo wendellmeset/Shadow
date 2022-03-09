@@ -6,7 +6,7 @@
 package net.shadow.client.feature.module.impl.movement;
 
 import net.minecraft.client.util.math.MatrixStack;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 import net.shadow.client.mixin.ILivingEntityAccessor;
@@ -19,10 +19,10 @@ public class NoJumpCooldown extends Module {
 
     @Override
     public void tick() {
-        if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.getNetworkHandler() == null) {
+        if (ShadowMain.client.player == null || ShadowMain.client.getNetworkHandler() == null) {
             return;
         }
-        ((ILivingEntityAccessor) CoffeeClientMain.client.player).setJumpingCooldown(0);
+        ((ILivingEntityAccessor) ShadowMain.client.player).setJumpingCooldown(0);
     }
 
     @Override

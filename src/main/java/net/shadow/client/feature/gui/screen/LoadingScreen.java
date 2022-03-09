@@ -4,7 +4,7 @@ import com.google.common.util.concurrent.AtomicDouble;
 import lombok.Data;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.gui.FastTickable;
 import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.font.adapter.impl.ClientFontRenderer;
@@ -39,7 +39,7 @@ public class LoadingScreen extends ClientScreen implements FastTickable {
     //    double progress = 0;
     final AtomicDouble progress = new AtomicDouble();
     final ClientFontRenderer title = FontRenderers.getCustomSize(40);
-    final Map<CoffeeClientMain.ResourceEntry, ProgressData> progressMap = new ConcurrentHashMap<>();
+    final Map<ShadowMain.ResourceEntry, ProgressData> progressMap = new ConcurrentHashMap<>();
     double smoothProgress = 0;
     double opacity = 1;
     String warningIfPresent = "";
@@ -69,11 +69,11 @@ public class LoadingScreen extends ClientScreen implements FastTickable {
     public void onFastTick() {
 
         //System.out.println(progressMap.values().stream().map(AtomicDouble::get).reduce(Double::sum)+"-"+CoffeeClientMain.resources.size());
-        progress.set(progressMap.values().stream().map(progressData -> progressData.getProgress().get()).reduce(Double::sum).orElse(0d) / CoffeeClientMain.resources.size());
+        progress.set(progressMap.values().stream().map(progressData -> progressData.getProgress().get()).reduce(Double::sum).orElse(0d) / ShadowMain.resources.size());
 
         smoothProgress = Transitions.transition(smoothProgress, progress.get(), 10, 0.0001);
         //        smoothProgress = progress.get();
-        if (CoffeeClientMain.client.getOverlay() == null) {
+        if (ShadowMain.client.getOverlay() == null) {
             if (!loadInProg.get()) {
                 load();
             }
@@ -91,10 +91,10 @@ public class LoadingScreen extends ClientScreen implements FastTickable {
         ExecutorService es = Executors.newFixedThreadPool(atOnce);
 
 
-        for (CoffeeClientMain.ResourceEntry resource : CoffeeClientMain.resources) {
+        for (ShadowMain.ResourceEntry resource : ShadowMain.resources) {
             progressMap.put(resource, new ProgressData());
             es.execute(() -> {
-                CoffeeClientMain.log(Level.INFO, "Downloading " + resource.url());
+                ShadowMain.log(Level.INFO, "Downloading " + resource.url());
                 progressMap.get(resource).getWorkingOnIt().set(true);
                 try {
 
@@ -122,9 +122,9 @@ public class LoadingScreen extends ClientScreen implements FastTickable {
                     byte[] imageBuffer = bout.toByteArray();
                     BufferedImage bi = ImageIO.read(new ByteArrayInputStream(imageBuffer));
                     Utils.registerBufferedImageTexture(resource.tex(), bi);
-                    CoffeeClientMain.log(Level.INFO, "Downloaded " + resource.url());
+                    ShadowMain.log(Level.INFO, "Downloaded " + resource.url());
                 } catch (Exception e) {
-                    CoffeeClientMain.log(Level.ERROR, "Failed to download " + resource.url() + ": " + e.getMessage());
+                    ShadowMain.log(Level.ERROR, "Failed to download " + resource.url() + ": " + e.getMessage());
                     BufferedImage empty = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
                     empty.setRGB(0, 0, 0xFF000000);
                     Utils.registerBufferedImageTexture(resource.tex(), empty);

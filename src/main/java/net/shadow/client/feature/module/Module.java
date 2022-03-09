@@ -7,7 +7,7 @@ package net.shadow.client.feature.module;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.config.BooleanSetting;
 import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.config.ModuleConfig;
@@ -15,7 +15,7 @@ import net.shadow.client.feature.gui.notifications.Notification;
 
 public abstract class Module {
 
-    protected static final MinecraftClient client = CoffeeClientMain.client;
+    protected static final MinecraftClient client = ShadowMain.client;
     public final ModuleConfig config;
     public final DoubleSetting keybind;
     private final BooleanSetting debuggerEnabled;

@@ -9,7 +9,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.packet.s2c.play.SubtitleS2CPacket;
 import net.minecraft.network.packet.s2c.play.TitleFadeS2CPacket;
 import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.gui.notifications.Notification;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
@@ -41,7 +41,7 @@ public class NoTitles extends Module {
                 event.setCancelled(true);
             } else if (pe.getPacket() instanceof SubtitleS2CPacket || pe.getPacket() instanceof TitleFadeS2CPacket) {
                 event.setCancelled(true);
-                CoffeeClientMain.client.inGameHud.setDefaultTitleFade();
+                ShadowMain.client.inGameHud.setDefaultTitleFade();
             }
         });
     }

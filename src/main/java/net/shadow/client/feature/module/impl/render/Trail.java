@@ -2,7 +2,7 @@ package net.shadow.client.feature.module.impl.render;
 
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Vec3d;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 import net.shadow.client.helper.render.Renderer;
@@ -26,7 +26,7 @@ public class Trail extends Module {
 
     @Override
     public void onFastTick() {
-        positions.add(Utils.getInterpolatedEntityPosition(CoffeeClientMain.client.player));
+        positions.add(Utils.getInterpolatedEntityPosition(ShadowMain.client.player));
         while (positions.size() > 1000) {
             positions.remove(0);
         }

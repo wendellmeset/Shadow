@@ -6,7 +6,7 @@ import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.Vec3d;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.config.BooleanSetting;
 import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.config.EnumSetting;
@@ -46,7 +46,7 @@ public class Flight extends Module {
 
     @Override
     public void tick() {
-        if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.world == null || CoffeeClientMain.client.getNetworkHandler() == null) {
+        if (ShadowMain.client.player == null || ShadowMain.client.world == null || ShadowMain.client.getNetworkHandler() == null) {
             return;
         }
         double speed = this.speed.getValue();
@@ -54,19 +54,19 @@ public class Flight extends Module {
             bypassTimer++;
             if (bypassTimer > 10) {
                 bypassTimer = 0;
-                Vec3d p = CoffeeClientMain.client.player.getPos();
-                CoffeeClientMain.client.getNetworkHandler().sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(p.x, p.y - 0.2, p.z, false));
-                CoffeeClientMain.client.getNetworkHandler().sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(p.x, p.y + 0.2, p.z, false));
+                Vec3d p = ShadowMain.client.player.getPos();
+                ShadowMain.client.getNetworkHandler().sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(p.x, p.y - 0.2, p.z, false));
+                ShadowMain.client.getNetworkHandler().sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(p.x, p.y + 0.2, p.z, false));
             }
         }
         switch (mode.getValue()) {
             case Vanilla:
-                CoffeeClientMain.client.player.getAbilities().setFlySpeed((float) (this.speed.getValue() + 0f) / 20f);
-                CoffeeClientMain.client.player.getAbilities().flying = true;
+                ShadowMain.client.player.getAbilities().setFlySpeed((float) (this.speed.getValue() + 0f) / 20f);
+                ShadowMain.client.player.getAbilities().flying = true;
                 break;
             case Static:
-                GameOptions go = CoffeeClientMain.client.options;
-                float y = CoffeeClientMain.client.player.getYaw();
+                GameOptions go = ShadowMain.client.options;
+                float y = ShadowMain.client.player.getYaw();
                 int mx = 0, my = 0, mz = 0;
 
                 if (go.jumpKey.isPressed()) {
@@ -96,22 +96,22 @@ public class Flight extends Module {
                 nx += ts * mx * -c;
                 nz += ts * mx * -s;
                 Vec3d nv3 = new Vec3d(nx, ny, nz);
-                CoffeeClientMain.client.player.setVelocity(nv3);
+                ShadowMain.client.player.setVelocity(nv3);
                 break;
             case Jetpack:
-                if (CoffeeClientMain.client.options.jumpKey.isPressed()) {
-                    assert CoffeeClientMain.client.player != null;
-                    CoffeeClientMain.client.player.addVelocity(0, speed / 30, 0);
-                    Vec3d vp = CoffeeClientMain.client.player.getPos();
+                if (ShadowMain.client.options.jumpKey.isPressed()) {
+                    assert ShadowMain.client.player != null;
+                    ShadowMain.client.player.addVelocity(0, speed / 30, 0);
+                    Vec3d vp = ShadowMain.client.player.getPos();
                     Random r = new Random();
                     for (int i = 0; i < 10; i++) {
-                        CoffeeClientMain.client.world.addImportantParticle(ParticleTypes.SOUL_FIRE_FLAME, true, vp.x, vp.y, vp.z, (r.nextDouble() * 0.25) - .125, (r.nextDouble() * 0.25) - .125, (r.nextDouble() * 0.25) - .125);
+                        ShadowMain.client.world.addImportantParticle(ParticleTypes.SOUL_FIRE_FLAME, true, vp.x, vp.y, vp.z, (r.nextDouble() * 0.25) - .125, (r.nextDouble() * 0.25) - .125, (r.nextDouble() * 0.25) - .125);
                     }
                 }
                 break;
             case ThreeD:
-                CoffeeClientMain.client.player.setVelocity(CoffeeClientMain.client.player.getRotationVector().multiply(speed)
-                        .multiply(CoffeeClientMain.client.player.input.pressingForward ? 1 : (CoffeeClientMain.client.player.input.pressingBack ? -1 : 0)));
+                ShadowMain.client.player.setVelocity(ShadowMain.client.player.getRotationVector().multiply(speed)
+                        .multiply(ShadowMain.client.player.input.pressingForward ? 1 : (ShadowMain.client.player.input.pressingBack ? -1 : 0)));
                 break;
         }
     }
@@ -119,15 +119,15 @@ public class Flight extends Module {
     @Override
     public void enable() {
         bypassTimer = 0;
-        flewBefore = Objects.requireNonNull(CoffeeClientMain.client.player).getAbilities().flying;
-        CoffeeClientMain.client.player.setOnGround(false);
-        Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).sendPacket(new ClientCommandC2SPacket(CoffeeClientMain.client.player, ClientCommandC2SPacket.Mode.RELEASE_SHIFT_KEY));
+        flewBefore = Objects.requireNonNull(ShadowMain.client.player).getAbilities().flying;
+        ShadowMain.client.player.setOnGround(false);
+        Objects.requireNonNull(ShadowMain.client.getNetworkHandler()).sendPacket(new ClientCommandC2SPacket(ShadowMain.client.player, ClientCommandC2SPacket.Mode.RELEASE_SHIFT_KEY));
     }
 
     @Override
     public void disable() {
-        Objects.requireNonNull(CoffeeClientMain.client.player).getAbilities().flying = flewBefore;
-        CoffeeClientMain.client.player.getAbilities().setFlySpeed(0.05f);
+        Objects.requireNonNull(ShadowMain.client.player).getAbilities().flying = flewBefore;
+        ShadowMain.client.player.getAbilities().setFlySpeed(0.05f);
     }
 
     @Override
@@ -138,8 +138,8 @@ public class Flight extends Module {
     @Override
     public void onWorldRender(MatrixStack matrices) {
         if (isDebuggerEnabled()) {
-            Vec3d a = Utils.getInterpolatedEntityPosition(Objects.requireNonNull(CoffeeClientMain.client.player));
-            Vec3d b = a.add(CoffeeClientMain.client.player.getVelocity());
+            Vec3d a = Utils.getInterpolatedEntityPosition(Objects.requireNonNull(ShadowMain.client.player));
+            Vec3d b = a.add(ShadowMain.client.player.getVelocity());
             Renderer.R3D.renderLine(a, b, Color.CYAN, matrices);
         }
     }

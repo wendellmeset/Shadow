@@ -2,7 +2,7 @@ package net.shadow.client.feature.module.impl.render;
 
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.feature.module.ModuleType;
@@ -97,9 +97,9 @@ public class TabGui extends Module {
     public void onHudRender() {
         double innerPad = 5;
         double heightOffsetLeft = 6 + Math.max(Hud.getTitleFr().getMarginHeight(), FontRenderers.getRenderer().getMarginHeight()) + 2 + innerPad;
-        if (CoffeeClientMain.client.options.debugEnabled) {
+        if (ShadowMain.client.options.debugEnabled) {
             double heightAccordingToMc = 9;
-            List<String> lt = ((IDebugHudAccessor) ((IInGameHudAccessor) CoffeeClientMain.client.inGameHud).getDebugHud()).callGetLeftText();
+            List<String> lt = ((IDebugHudAccessor) ((IInGameHudAccessor) ShadowMain.client.inGameHud).getDebugHud()).callGetLeftText();
             heightOffsetLeft += 2 + heightAccordingToMc * (lt.size() + 3);
         }
         MatrixStack ms = Renderer.R3D.getEmptyMatrixStack();

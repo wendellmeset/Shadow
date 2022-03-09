@@ -8,7 +8,7 @@ package net.shadow.client.feature.command.impl;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.*;
 import net.minecraft.text.Text;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 
 import java.util.Objects;
@@ -60,11 +60,11 @@ public class ViewNbt extends Command {
                 }
             }
         }
-        if (Objects.requireNonNull(CoffeeClientMain.client.player).getInventory().getMainHandStack().isEmpty()) {
+        if (Objects.requireNonNull(ShadowMain.client.player).getInventory().getMainHandStack().isEmpty()) {
             error("you're not holding anything");
             return;
         }
-        ItemStack stack = CoffeeClientMain.client.player.getInventory().getMainHandStack();
+        ItemStack stack = ShadowMain.client.player.getInventory().getMainHandStack();
         NbtCompound c = stack.getNbt();
         if (!stack.hasNbt() || c == null) {
             error("stack has no data");
@@ -75,13 +75,13 @@ public class ViewNbt extends Command {
         } else {
             // I've to use .sendMessage because of monkey minecraft api
             if (noColor) {
-                CoffeeClientMain.client.player.sendMessage(Text.of(c.asString()), false);
+                ShadowMain.client.player.sendMessage(Text.of(c.asString()), false);
             } else {
-                CoffeeClientMain.client.player.sendMessage(NbtHelper.toPrettyPrintedText(c), false);
+                ShadowMain.client.player.sendMessage(NbtHelper.toPrettyPrintedText(c), false);
             }
         }
         if (copy) {
-            CoffeeClientMain.client.keyboard.setClipboard(c.asString());
+            ShadowMain.client.keyboard.setClipboard(c.asString());
             success("Copied nbt!");
         }
     }

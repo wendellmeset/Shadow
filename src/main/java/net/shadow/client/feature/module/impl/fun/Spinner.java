@@ -9,7 +9,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.packet.c2s.play.PlayerInteractItemC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.Hand;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
@@ -61,9 +61,9 @@ public class Spinner extends Module {
         Rotations.setClientPitch((float) ((Math.random() * 60) - 30));
         Rotations.setClientYaw((float) (Math.random() * 360));
         PlayerInteractItemC2SPacket p = new PlayerInteractItemC2SPacket(Hand.MAIN_HAND);
-        Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).sendPacket(p);
-        PlayerMoveC2SPacket p1 = new PlayerMoveC2SPacket.LookAndOnGround((float) r, Rotations.getClientPitch(), Objects.requireNonNull(CoffeeClientMain.client.player).isOnGround());
-        CoffeeClientMain.client.getNetworkHandler().sendPacket(p1);
+        Objects.requireNonNull(ShadowMain.client.getNetworkHandler()).sendPacket(p);
+        PlayerMoveC2SPacket p1 = new PlayerMoveC2SPacket.LookAndOnGround((float) r, Rotations.getClientPitch(), Objects.requireNonNull(ShadowMain.client.player).isOnGround());
+        ShadowMain.client.getNetworkHandler().sendPacket(p1);
     }
 
     @Override

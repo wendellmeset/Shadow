@@ -8,7 +8,7 @@ package net.shadow.client.feature.module.impl.movement;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
@@ -27,15 +27,15 @@ public class AutoElytra extends Module {
     }
 
     boolean equippedElytra() {
-        return Objects.requireNonNull(CoffeeClientMain.client.player).getInventory().armor.get(2).getItem() == Items.ELYTRA;
+        return Objects.requireNonNull(ShadowMain.client.player).getInventory().armor.get(2).getItem() == Items.ELYTRA;
     }
 
     @Override
     public void tick() {
-        if (Objects.requireNonNull(CoffeeClientMain.client.player).fallDistance > fallDist.getValue()) {
+        if (Objects.requireNonNull(ShadowMain.client.player).fallDistance > fallDist.getValue()) {
             if (!equippedElytra()) { // do we not have an elytra equipped?
                 for (int i = 0; i < (9 * 4 + 1); i++) { // gotta equip
-                    ItemStack stack = CoffeeClientMain.client.player.getInventory().getStack(i); // is it an elytra?
+                    ItemStack stack = ShadowMain.client.player.getInventory().getStack(i); // is it an elytra?
                     if (stack.getItem() == Items.ELYTRA) {
                         Utils.Inventory.moveStackToOther(Utils.Inventory.slotIndexToId(i), 6); // equip
                         break; // we found the item, cancel the loop
@@ -57,7 +57,7 @@ public class AutoElytra extends Module {
 
     @Override
     public String getContext() {
-        float fd = Objects.requireNonNull(CoffeeClientMain.client.player).fallDistance;
+        float fd = Objects.requireNonNull(ShadowMain.client.player).fallDistance;
         if (fd > fallDist.getMin()) {
             return Utils.Math.roundToDecimal(fd, 1) + " | " + fallDist.getValue();
         }

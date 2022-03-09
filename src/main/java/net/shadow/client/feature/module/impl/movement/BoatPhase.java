@@ -7,7 +7,7 @@ package net.shadow.client.feature.module.impl.movement;
 
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.vehicle.BoatEntity;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.gui.notifications.Notification;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
@@ -41,17 +41,17 @@ public class BoatPhase extends Module {
 
     @Override
     public void onWorldRender(MatrixStack matrices) {
-        if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.getNetworkHandler() == null) {
+        if (ShadowMain.client.player == null || ShadowMain.client.getNetworkHandler() == null) {
             return;
         }
-        if (!(CoffeeClientMain.client.player.getVehicle() instanceof BoatEntity)) {
+        if (!(ShadowMain.client.player.getVehicle() instanceof BoatEntity)) {
             Notification.create(5000, "Boat phase", true, Notification.Type.INFO, "sir you need a boat");
             setEnabled(false);
             return;
         }
-        CoffeeClientMain.client.player.getVehicle().noClip = true;
-        CoffeeClientMain.client.player.getVehicle().setNoGravity(true);
-        CoffeeClientMain.client.player.noClip = true;
+        ShadowMain.client.player.getVehicle().noClip = true;
+        ShadowMain.client.player.getVehicle().setNoGravity(true);
+        ShadowMain.client.player.noClip = true;
     }
 
     @Override

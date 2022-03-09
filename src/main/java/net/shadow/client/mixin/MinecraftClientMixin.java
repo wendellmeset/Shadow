@@ -3,7 +3,7 @@ package net.shadow.client.mixin;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
 import net.minecraft.client.gui.screen.Screen;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.feature.module.impl.world.FastUse;
 import net.shadow.client.helper.manager.ConfigManager;
@@ -29,12 +29,12 @@ public class MinecraftClientMixin {
 
     @Inject(method = "<init>", at = @At("TAIL"))
     void atomic_postInit(RunArgs args, CallbackInfo ci) {
-        CoffeeClientMain.INSTANCE.postWindowInit();
+        ShadowMain.INSTANCE.postWindowInit();
     }
 
     @Inject(method = "setScreen", at = @At("HEAD"))
     void atomic_preSetScreen(Screen screen, CallbackInfo ci) {
-        CoffeeClientMain.lastScreenChange = System.currentTimeMillis();
+        ShadowMain.lastScreenChange = System.currentTimeMillis();
     }
 
     @Redirect(method = "handleInputEvents", at = @At(value = "FIELD", opcode = Opcodes.GETFIELD, target = "Lnet/minecraft/client/MinecraftClient;itemUseCooldown:I"))

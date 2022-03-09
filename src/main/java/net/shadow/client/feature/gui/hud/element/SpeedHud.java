@@ -1,7 +1,7 @@
 package net.shadow.client.feature.gui.hud.element;
 
 import net.minecraft.client.util.math.MatrixStack;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.gui.clickgui.theme.ThemeManager;
 import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.feature.module.impl.render.Hud;
@@ -19,7 +19,7 @@ public class SpeedHud extends HudElement {
     final Timer update = new Timer();
 
     public SpeedHud() {
-        super("Speed", CoffeeClientMain.client.getWindow().getScaledWidth() / 2d - 160 / 2d, CoffeeClientMain.client.getWindow().getScaledHeight() - 40 - 64, 160, 64);
+        super("Speed", ShadowMain.client.getWindow().getScaledWidth() / 2d - 160 / 2d, ShadowMain.client.getWindow().getScaledHeight() - 40 - 64, 160, 64);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class SpeedHud extends HudElement {
     @Override
     public void fastTick() {
         if (update.hasExpired(50)) { // update when velocity gets updated
-            double speedCombined = CoffeeClientMain.client.player.getVelocity().length();
+            double speedCombined = ShadowMain.client.player.getVelocity().length();
             double last = speedSaved.isEmpty() ? speedCombined : speedSaved.get(speedSaved.size() - 1);
             speedSaved.add((speedCombined + last) / 2d);
             while (speedSaved.size() > 50) {

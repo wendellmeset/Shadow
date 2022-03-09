@@ -3,7 +3,7 @@ package net.shadow.client.feature.module.impl.misc;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.ShulkerBulletEntity;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.config.BooleanSetting;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
@@ -23,17 +23,17 @@ public class ShulkerDeflector extends Module {
     }
 
     boolean inHitRange(Entity attacker, Entity target) {
-        return attacker.getCameraPosVec(1f).distanceTo(target.getPos().add(0, target.getHeight() / 2, 0)) <= Objects.requireNonNull(CoffeeClientMain.client.interactionManager).getReachDistance();
+        return attacker.getCameraPosVec(1f).distanceTo(target.getPos().add(0, target.getHeight() / 2, 0)) <= Objects.requireNonNull(ShadowMain.client.interactionManager).getReachDistance();
     }
 
     @Override
     public void onFastTick() {
-        for (Entity entity : Objects.requireNonNull(CoffeeClientMain.client.world).getEntities()) {
-            if (entity instanceof ShulkerBulletEntity sbe && inHitRange(Objects.requireNonNull(CoffeeClientMain.client.player), sbe)) {
-                if (checkOwner.getValue() && sbe.getOwner() != null && sbe.getOwner().equals(CoffeeClientMain.client.player)) {
+        for (Entity entity : Objects.requireNonNull(ShadowMain.client.world).getEntities()) {
+            if (entity instanceof ShulkerBulletEntity sbe && inHitRange(Objects.requireNonNull(ShadowMain.client.player), sbe)) {
+                if (checkOwner.getValue() && sbe.getOwner() != null && sbe.getOwner().equals(ShadowMain.client.player)) {
                     continue;
                 }
-                Objects.requireNonNull(CoffeeClientMain.client.interactionManager).attackEntity(CoffeeClientMain.client.player, sbe);
+                Objects.requireNonNull(ShadowMain.client.interactionManager).attackEntity(ShadowMain.client.player, sbe);
             }
         }
     }

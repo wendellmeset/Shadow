@@ -24,7 +24,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.gui.screen.CoffeeConsoleScreen;
 import net.shadow.client.helper.Texture;
 import net.shadow.client.helper.font.adapter.FontAdapter;
@@ -61,7 +61,7 @@ public class Utils {
     }
 
     public static void setClientTps(float tps) {
-        IRenderTickCounterAccessor accessor = ((IRenderTickCounterAccessor) ((IMinecraftClientAccessor) CoffeeClientMain.client).getRenderTickCounter());
+        IRenderTickCounterAccessor accessor = ((IRenderTickCounterAccessor) ((IMinecraftClientAccessor) ShadowMain.client).getRenderTickCounter());
         accessor.setTickTime(1000f / tps);
     }
 
@@ -72,7 +72,7 @@ public class Utils {
     public static Vec3d getInterpolatedEntityPosition(Entity entity) {
         Vec3d a = entity.getPos();
         Vec3d b = new Vec3d(entity.prevX, entity.prevY, entity.prevZ);
-        float p = CoffeeClientMain.client.getTickDelta();
+        float p = ShadowMain.client.getTickDelta();
         return new Vec3d(MathHelper.lerp(p, b.x, a.x), MathHelper.lerp(p, b.y, a.y), MathHelper.lerp(p, b.z, a.z));
     }
 
@@ -85,7 +85,7 @@ public class Utils {
             ByteBuffer data = BufferUtils.createByteBuffer(bytes.length).put(bytes);
             data.flip();
             NativeImageBackedTexture tex = new NativeImageBackedTexture(NativeImage.read(data));
-            CoffeeClientMain.client.execute(() -> CoffeeClientMain.client.getTextureManager().registerTexture(i, tex));
+            ShadowMain.client.execute(() -> ShadowMain.client.getTextureManager().registerTexture(i, tex));
         } catch (Exception e) {
             System.out.println("failed to register");
             e.printStackTrace();
@@ -177,7 +177,7 @@ public class Utils {
             Texture texIdent = new Texture("preview/" + uuid.hashCode() + "");
             uCache.put(uuid, texIdent);
             HttpRequest hr = HttpRequest.newBuilder().uri(URI.create("https://crafatar.com/avatars/" + uuid + "?overlay")).header("User-Agent", "why").build();
-            CoffeeClientMain.client.execute(() -> CoffeeClientMain.client.getTextureManager().registerTexture(texIdent, EMPTY));
+            ShadowMain.client.execute(() -> ShadowMain.client.getTextureManager().registerTexture(texIdent, EMPTY));
             downloader.sendAsync(hr, HttpResponse.BodyHandlers.ofByteArray()).thenAccept(httpResponse -> {
                 try {
                     BufferedImage bi = ImageIO.read(new ByteArrayInputStream(httpResponse.body()));
@@ -202,7 +202,7 @@ public class Utils {
                 NativeImage img = NativeImage.read(data);
                 NativeImageBackedTexture texture = new NativeImageBackedTexture(img);
 
-                CoffeeClientMain.client.execute(() -> CoffeeClientMain.client.getTextureManager().registerTexture(tex, texture));
+                ShadowMain.client.execute(() -> ShadowMain.client.getTextureManager().registerTexture(tex, texture));
             } catch (Exception ignored) {
 
             }
@@ -223,14 +223,14 @@ public class Utils {
 
         public static void drop(int index) {
             int translatedSlotId = slotIndexToId(index);
-            Objects.requireNonNull(CoffeeClientMain.client.interactionManager)
-                    .clickSlot(Objects.requireNonNull(CoffeeClientMain.client.player).currentScreenHandler.syncId, translatedSlotId, 1, SlotActionType.THROW, CoffeeClientMain.client.player);
+            Objects.requireNonNull(ShadowMain.client.interactionManager)
+                    .clickSlot(Objects.requireNonNull(ShadowMain.client.player).currentScreenHandler.syncId, translatedSlotId, 1, SlotActionType.THROW, ShadowMain.client.player);
         }
 
         public static void moveStackToOther(int slotIdFrom, int slotIdTo) {
-            Objects.requireNonNull(CoffeeClientMain.client.interactionManager).clickSlot(0, slotIdFrom, 0, SlotActionType.PICKUP, CoffeeClientMain.client.player); // pick up item from stack
-            CoffeeClientMain.client.interactionManager.clickSlot(0, slotIdTo, 0, SlotActionType.PICKUP, CoffeeClientMain.client.player); // put item to target
-            CoffeeClientMain.client.interactionManager.clickSlot(0, slotIdFrom, 0, SlotActionType.PICKUP, CoffeeClientMain.client.player); // (in case target slot had item) put item from target back to from
+            Objects.requireNonNull(ShadowMain.client.interactionManager).clickSlot(0, slotIdFrom, 0, SlotActionType.PICKUP, ShadowMain.client.player); // pick up item from stack
+            ShadowMain.client.interactionManager.clickSlot(0, slotIdTo, 0, SlotActionType.PICKUP, ShadowMain.client.player); // put item to target
+            ShadowMain.client.interactionManager.clickSlot(0, slotIdFrom, 0, SlotActionType.PICKUP, ShadowMain.client.player); // (in case target slot had item) put item from target back to from
         }
     }
 
@@ -281,11 +281,11 @@ public class Utils {
     public static class Mouse {
 
         public static double getMouseX() {
-            return CoffeeClientMain.client.mouse.getX() / CoffeeClientMain.client.getWindow().getScaleFactor();
+            return ShadowMain.client.mouse.getX() / ShadowMain.client.getWindow().getScaleFactor();
         }
 
         public static double getMouseY() {
-            return CoffeeClientMain.client.mouse.getY() / CoffeeClientMain.client.getWindow().getScaleFactor();
+            return ShadowMain.client.mouse.getY() / ShadowMain.client.getWindow().getScaleFactor();
         }
     }
 
@@ -378,7 +378,7 @@ public class Utils {
         public static void message0(String n, Color c) {
             LiteralText t = new LiteralText(n);
             t.setStyle(t.getStyle().withColor(TextColor.fromRgb(c.getRGB())));
-            if (CoffeeClientMain.client.player != null) CoffeeClientMain.client.player.sendMessage(t, false);
+            if (ShadowMain.client.player != null) ShadowMain.client.player.sendMessage(t, false);
             //            if (c.equals(Color.WHITE)) c = Color.BLACK;
             CoffeeConsoleScreen.instance().addLog(new CoffeeConsoleScreen.LogEntry(n, c));
         }

@@ -4,7 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.config.SettingBase;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleRegistry;
@@ -29,7 +29,7 @@ public class ConfigManager {
     public static boolean enabled = false;
 
     static {
-        CONFIG_FILE = new File(CoffeeClientMain.BASE, "config.sip");
+        CONFIG_FILE = new File(ShadowMain.BASE, "config.sip");
     }
 
     /**

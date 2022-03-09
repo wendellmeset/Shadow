@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 
 import java.util.Arrays;
@@ -24,7 +24,7 @@ public class FakeItem extends Command {
     @Override
     public String[] getSuggestions(String fullCommand, String[] args) {
         if (args.length == 1) {
-            return Objects.requireNonNull(CoffeeClientMain.client.world).getPlayers().stream().map(abstractClientPlayerEntity -> abstractClientPlayerEntity.getGameProfile().getName()).toList().toArray(String[]::new);
+            return Objects.requireNonNull(ShadowMain.client.world).getPlayers().stream().map(abstractClientPlayerEntity -> abstractClientPlayerEntity.getGameProfile().getName()).toList().toArray(String[]::new);
         } else if (args.length == 2) {
             return new String[]{"hand", "custom:(item id) [item nbt]"};
         } else if (args.length == 3 && args[1].toLowerCase().startsWith("custom:")) {
@@ -51,7 +51,7 @@ public class FakeItem extends Command {
             nameTarget = args[0];
         }
         PlayerEntity le = null;
-        for (Entity entity : Objects.requireNonNull(CoffeeClientMain.client.world).getEntities()) {
+        for (Entity entity : Objects.requireNonNull(ShadowMain.client.world).getEntities()) {
             if (entity instanceof PlayerEntity le1) {
                 if (u != null && entity.getUuid().equals(u)) {
                     le = le1;
@@ -65,7 +65,7 @@ public class FakeItem extends Command {
             return;
         }
         if (args[1].equalsIgnoreCase("hand")) {
-            ItemStack main = Objects.requireNonNull(CoffeeClientMain.client.player).getMainHandStack().copy();
+            ItemStack main = Objects.requireNonNull(ShadowMain.client.player).getMainHandStack().copy();
             if (main.isEmpty()) {
                 error("You're not holding anything");
                 return;

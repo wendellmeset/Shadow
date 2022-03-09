@@ -8,7 +8,7 @@ import net.minecraft.network.packet.c2s.handshake.HandshakeC2SPacket;
 import net.minecraft.network.packet.c2s.login.LoginHelloC2SPacket;
 import net.minecraft.network.packet.s2c.login.*;
 import net.minecraft.text.Text;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 
 import java.net.InetSocketAddress;
@@ -20,12 +20,12 @@ public class Kickall extends Command {
 
     @Override
     public void onExecute(String[] args) {
-        InetSocketAddress sa = (InetSocketAddress) CoffeeClientMain.client.getNetworkHandler().getConnection().getAddress();
-        for (PlayerListEntry playerListEntry : CoffeeClientMain.client.getNetworkHandler().getPlayerList()) {
-            if (playerListEntry.getProfile().equals(CoffeeClientMain.client.player.getGameProfile())) {
+        InetSocketAddress sa = (InetSocketAddress) ShadowMain.client.getNetworkHandler().getConnection().getAddress();
+        for (PlayerListEntry playerListEntry : ShadowMain.client.getNetworkHandler().getPlayerList()) {
+            if (playerListEntry.getProfile().equals(ShadowMain.client.player.getGameProfile())) {
                 continue;
             }
-            ClientConnection conn = ClientConnection.connect(sa, CoffeeClientMain.client.options.shouldUseNativeTransport());
+            ClientConnection conn = ClientConnection.connect(sa, ShadowMain.client.options.shouldUseNativeTransport());
             conn.setPacketListener(new ClientLoginPacketListener() {
                 @Override
                 public void onHello(LoginHelloS2CPacket packet) {

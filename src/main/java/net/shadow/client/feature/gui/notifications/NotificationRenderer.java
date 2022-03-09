@@ -8,7 +8,7 @@ package net.shadow.client.feature.gui.notifications;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.gui.clickgui.theme.ThemeManager;
 import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.render.ClipStack;
@@ -50,7 +50,7 @@ public class NotificationRenderer {
 
     public static void renderTop() {
         MatrixStack ms = Renderer.R3D.getEmptyMatrixStack();
-        int baseX = CoffeeClientMain.client.getWindow().getScaledWidth() / 2;
+        int baseX = ShadowMain.client.getWindow().getScaledWidth() / 2;
         int height = 16;
         int baseY = -height - 5;
         int currentYOffset = 5;
@@ -116,8 +116,8 @@ public class NotificationRenderer {
     public static void renderSide() {
         MatrixStack ms = Renderer.R3D.getEmptyMatrixStack();
         int currentYOffset = 0;
-        int baseX = CoffeeClientMain.client.getWindow().getScaledWidth();
-        int baseY = CoffeeClientMain.client.getWindow().getScaledHeight() - 10;
+        int baseX = ShadowMain.client.getWindow().getScaledWidth();
+        int baseY = ShadowMain.client.getWindow().getScaledHeight() - 10;
         long c = System.currentTimeMillis();
         for (Notification notification : new ArrayList<>(notifications)) {
             boolean notificationExpired = notification.creationDate + notification.duration < c;

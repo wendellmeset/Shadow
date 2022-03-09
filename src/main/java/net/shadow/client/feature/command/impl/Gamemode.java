@@ -6,7 +6,7 @@
 package net.shadow.client.feature.command.impl;
 
 import net.minecraft.world.GameMode;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 
 import java.util.Arrays;
@@ -27,14 +27,14 @@ public class Gamemode extends Command {
 
     @Override
     public void onExecute(String[] args) {
-        if (CoffeeClientMain.client.interactionManager == null) {
+        if (ShadowMain.client.interactionManager == null) {
             return;
         }
         if (args.length == 0) {
             message("gamemode pls");
         } else {
             GameMode gm = GameMode.byName(args[0]);
-            CoffeeClientMain.client.interactionManager.setGameMode(gm);
+            ShadowMain.client.interactionManager.setGameMode(gm);
         }
     }
 }

@@ -4,7 +4,7 @@ import net.minecraft.client.util.InputUtil;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.math.Vec3d;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 import net.shadow.client.helper.event.EventType;
@@ -36,11 +36,11 @@ public class Backtrack extends Module {
     }
 
     boolean shouldBacktrack() {
-        return InputUtil.isKeyPressed(CoffeeClientMain.client.getWindow().getHandle(), GLFW.GLFW_KEY_LEFT_ALT) && CoffeeClientMain.client.currentScreen == null;
+        return InputUtil.isKeyPressed(ShadowMain.client.getWindow().getHandle(), GLFW.GLFW_KEY_LEFT_ALT) && ShadowMain.client.currentScreen == null;
     }
 
     void shouldCommit() {
-        boolean a = !committed && InputUtil.isKeyPressed(CoffeeClientMain.client.getWindow().getHandle(), GLFW.GLFW_KEY_ENTER) && CoffeeClientMain.client.currentScreen == null;
+        boolean a = !committed && InputUtil.isKeyPressed(ShadowMain.client.getWindow().getHandle(), GLFW.GLFW_KEY_ENTER) && ShadowMain.client.currentScreen == null;
         if (a) {
             committed = true;
         }
@@ -52,10 +52,10 @@ public class Backtrack extends Module {
     }
 
     void moveTo(PositionEntry e) {
-        CoffeeClientMain.client.player.updatePosition(e.pos.x, e.pos.y, e.pos.z);
-        CoffeeClientMain.client.player.setPitch((float) e.pitch);
-        CoffeeClientMain.client.player.setYaw((float) e.yaw);
-        CoffeeClientMain.client.player.setVelocity(e.vel);
+        ShadowMain.client.player.updatePosition(e.pos.x, e.pos.y, e.pos.z);
+        ShadowMain.client.player.setPitch((float) e.pitch);
+        ShadowMain.client.player.setYaw((float) e.yaw);
+        ShadowMain.client.player.setVelocity(e.vel);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class Backtrack extends Module {
     public void disable() {
         entries.clear();
         committed = false;
-        CoffeeClientMain.client.player.setNoGravity(false);
+        ShadowMain.client.player.setNoGravity(false);
     }
 
     @Override
@@ -82,9 +82,9 @@ public class Backtrack extends Module {
         shouldCommit();
 
         if (!shouldBacktrack() && !committed) {
-            entries.add(new PositionEntry(Utils.getInterpolatedEntityPosition(CoffeeClientMain.client.player), CoffeeClientMain.client.player.getVelocity(), CoffeeClientMain.client.player.getPitch(), CoffeeClientMain.client.player.getYaw()));
+            entries.add(new PositionEntry(Utils.getInterpolatedEntityPosition(ShadowMain.client.player), ShadowMain.client.player.getVelocity(), ShadowMain.client.player.getPitch(), ShadowMain.client.player.getYaw()));
         } else if (committed) {
-            CoffeeClientMain.client.player.setNoGravity(true);
+            ShadowMain.client.player.setNoGravity(true);
             moveTo(entries.get(0));
             entries.remove(0);
             if (entries.isEmpty()) {

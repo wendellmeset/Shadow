@@ -11,7 +11,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.minecraft.text.*;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.config.SettingBase;
 import net.shadow.client.feature.module.Module;
@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class ConfigUtils extends Command {
-    static final File CONFIG_STORAGE = new File(CoffeeClientMain.BASE, "configs");
+    static final File CONFIG_STORAGE = new File(ShadowMain.BASE, "configs");
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public ConfigUtils() {
@@ -164,7 +164,7 @@ public class ConfigUtils extends Command {
                     Style s = Style.EMPTY.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.of("Click to open")))
                             .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, out.getAbsolutePath()));
                     t.setStyle(s);
-                    Objects.requireNonNull(CoffeeClientMain.client.player).sendMessage(t, false);
+                    Objects.requireNonNull(ShadowMain.client.player).sendMessage(t, false);
                 } catch (Exception e) {
                     error("Couldn't save config: " + e.getLocalizedMessage());
                 }

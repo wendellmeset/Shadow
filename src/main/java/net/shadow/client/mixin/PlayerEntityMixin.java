@@ -1,7 +1,7 @@
 package net.shadow.client.mixin;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.feature.module.impl.movement.Hyperspeed;
 import net.shadow.client.feature.module.impl.movement.LongJump;
@@ -28,7 +28,7 @@ public class PlayerEntityMixin {
     @Inject(method = "getMovementSpeed", at = @At("RETURN"), cancellable = true)
     void a(CallbackInfoReturnable<Float> cir) {
         Hyperspeed hs = ModuleRegistry.getByClass(Hyperspeed.class);
-        if (!hs.isEnabled() || !equals(CoffeeClientMain.client.player)) {
+        if (!hs.isEnabled() || !equals(ShadowMain.client.player)) {
             return;
         }
         cir.setReturnValue((float) (cir.getReturnValue() * hs.speed.getValue()));
@@ -36,7 +36,7 @@ public class PlayerEntityMixin {
 
     @Inject(method = "jump", at = @At("RETURN"))
     void atomic_applyLongJump(CallbackInfo ci) {
-        if (!this.equals(CoffeeClientMain.client.player)) {
+        if (!this.equals(ShadowMain.client.player)) {
             return;
         }
         if (ModuleRegistry.getByClass(LongJump.class).isEnabled()) {

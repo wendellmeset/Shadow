@@ -14,7 +14,7 @@ import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.config.BooleanSetting;
 import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.config.EnumSetting;
@@ -64,17 +64,17 @@ public class AimAssist extends Module {
                 attacks.add(AttackManager.getLastAttackInTimeRange());
             }
         } else {
-            for (Entity entity : Objects.requireNonNull(CoffeeClientMain.client.world).getEntities()) {
+            for (Entity entity : Objects.requireNonNull(ShadowMain.client.world).getEntities()) {
                 if (!entity.isAttackable()) {
                     continue;
                 }
-                if (entity.equals(CoffeeClientMain.client.player)) {
+                if (entity.equals(ShadowMain.client.player)) {
                     continue;
                 }
                 if (!entity.isAlive()) {
                     continue;
                 }
-                if (entity.getPos().distanceTo(CoffeeClientMain.client.player.getPos()) > Objects.requireNonNull(CoffeeClientMain.client.interactionManager).getReachDistance()) {
+                if (entity.getPos().distanceTo(ShadowMain.client.player.getPos()) > Objects.requireNonNull(ShadowMain.client.interactionManager).getReachDistance()) {
                     continue;
                 }
                 boolean checked = false;
@@ -108,7 +108,7 @@ public class AimAssist extends Module {
             return;
         }
         if (priority.getValue() == PriorityMode.Distance) {
-            le = attacks.stream().sorted(Comparator.comparingDouble(value -> value.getPos().distanceTo(Objects.requireNonNull(CoffeeClientMain.client.player).getPos()))).toList()
+            le = attacks.stream().sorted(Comparator.comparingDouble(value -> value.getPos().distanceTo(Objects.requireNonNull(ShadowMain.client.player).getPos()))).toList()
                     .get(0);
         } else {
             // get entity with the least health if mode is ascending, else get most health
@@ -147,8 +147,8 @@ public class AimAssist extends Module {
             Rotations.lookAtPositionSmooth(le.getPos().add(0, le.getHeight() / 2d, 0), laziness.getValue());
         } else {
             Vec2f py = Rotations.getPitchYaw(le.getPos().add(0, le.getHeight() / 2d, 0));
-            Objects.requireNonNull(CoffeeClientMain.client.player).setPitch(py.x);
-            CoffeeClientMain.client.player.setYaw(py.y);
+            Objects.requireNonNull(ShadowMain.client.player).setPitch(py.x);
+            ShadowMain.client.player.setYaw(py.y);
         }
     }
 

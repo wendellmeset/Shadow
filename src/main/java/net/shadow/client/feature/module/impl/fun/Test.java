@@ -6,7 +6,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3f;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.config.ColorSetting;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
@@ -45,7 +45,7 @@ public class Test extends Module {
 
     @Override
     public void onWorldRender(MatrixStack s) {
-        Camera camera = CoffeeClientMain.client.gameRenderer.getCamera();
+        Camera camera = ShadowMain.client.gameRenderer.getCamera();
         Vec3d camPos = camera.getPos();
         MatrixStack stack = new MatrixStack();
         stack.push();

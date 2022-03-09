@@ -3,7 +3,7 @@ package net.shadow.client.mixin;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.text.Text;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.gui.screen.ProxyManagerScreen;
 import net.shadow.client.feature.gui.widget.RoundButton;
 import org.spongepowered.asm.mixin.Mixin;
@@ -22,7 +22,7 @@ public class MultiplayerScreenMixin extends Screen {
     @Inject(method = "init", at = @At("RETURN"))
     void init(CallbackInfo ci) {
         double sourceY = 32 / 2d - 20 / 2d;
-        RoundButton proxies = new RoundButton(new Color(40, 40, 40), 5, sourceY, 60, 20, "Proxies", () -> CoffeeClientMain.client.setScreen(new ProxyManagerScreen(this)));
+        RoundButton proxies = new RoundButton(new Color(40, 40, 40), 5, sourceY, 60, 20, "Proxies", () -> ShadowMain.client.setScreen(new ProxyManagerScreen(this)));
         addDrawableChild(proxies);
     }
 }

@@ -9,7 +9,7 @@ import com.mojang.brigadier.suggestion.Suggestion;
 import com.mojang.brigadier.suggestion.Suggestions;
 import net.minecraft.network.packet.c2s.play.RequestCommandCompletionsC2SPacket;
 import net.minecraft.network.packet.s2c.play.CommandSuggestionsS2CPacket;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
@@ -25,7 +25,7 @@ public class Plugins extends Command {
 
     public Plugins() {
         super("Plugins", "Finds server plugins via command suggestions", "pl", "plugins");
-        if (CoffeeClientMain.client.getNetworkHandler() != null) {
+        if (ShadowMain.client.getNetworkHandler() != null) {
             Events.registerEventHandler(EventType.PACKET_RECEIVE, event -> {
                 if (!pendingCmdTree) {
                     return;
@@ -59,8 +59,8 @@ public class Plugins extends Command {
 
     @Override
     public void onExecute(String[] args) {
-        if (CoffeeClientMain.client.getNetworkHandler() != null) {
-            CoffeeClientMain.client.getNetworkHandler().sendPacket(new RequestCommandCompletionsC2SPacket(0, "/"));
+        if (ShadowMain.client.getNetworkHandler() != null) {
+            ShadowMain.client.getNetworkHandler().sendPacket(new RequestCommandCompletionsC2SPacket(0, "/"));
             pendingCmdTree = true;
         }
     }

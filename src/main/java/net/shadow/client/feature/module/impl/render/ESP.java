@@ -13,7 +13,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3d;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.config.BooleanSetting;
 import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.config.EnumSetting;
@@ -108,16 +108,16 @@ public class ESP extends Module {
             GL11.glDepthFunc(GL11.GL_LEQUAL);
             RenderSystem.disableBlend();
         }
-        if (CoffeeClientMain.client.world == null || CoffeeClientMain.client.player == null) {
+        if (ShadowMain.client.world == null || ShadowMain.client.player == null) {
             return;
         }
 
 
-        for (Entity entity : CoffeeClientMain.client.world.getEntities()) {
-            if (entity.squaredDistanceTo(CoffeeClientMain.client.player) > Math.pow(range.getValue(), 2)) {
+        for (Entity entity : ShadowMain.client.world.getEntities()) {
+            if (entity.squaredDistanceTo(ShadowMain.client.player) > Math.pow(range.getValue(), 2)) {
                 continue;
             }
-            if (entity.getUuid().equals(CoffeeClientMain.client.player.getUuid())) {
+            if (entity.getUuid().equals(ShadowMain.client.player.getUuid())) {
                 continue;
             }
             if (shouldRenderEntity(entity)) {
@@ -138,12 +138,12 @@ public class ESP extends Module {
     }
 
     void renderOutline(Entity e, Color color, MatrixStack stack) {
-        Vec3d eSource = new Vec3d(MathHelper.lerp(CoffeeClientMain.client.getTickDelta(), e.prevX, e.getX()), MathHelper.lerp(CoffeeClientMain.client.getTickDelta(), e.prevY, e.getY()), MathHelper.lerp(CoffeeClientMain.client.getTickDelta(), e.prevZ, e.getZ()));
+        Vec3d eSource = new Vec3d(MathHelper.lerp(ShadowMain.client.getTickDelta(), e.prevX, e.getX()), MathHelper.lerp(ShadowMain.client.getTickDelta(), e.prevY, e.getY()), MathHelper.lerp(ShadowMain.client.getTickDelta(), e.prevZ, e.getZ()));
         float red = color.getRed() / 255f;
         float green = color.getGreen() / 255f;
         float blue = color.getBlue() / 255f;
         float alpha = color.getAlpha() / 255f;
-        Camera c = CoffeeClientMain.client.gameRenderer.getCamera();
+        Camera c = ShadowMain.client.gameRenderer.getCamera();
         Vec3d camPos = c.getPos();
         Vec3d start = eSource.subtract(camPos);
         float x = (float) start.x;

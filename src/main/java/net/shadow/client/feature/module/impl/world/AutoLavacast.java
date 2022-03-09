@@ -11,7 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.config.EnumSetting;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
@@ -37,10 +37,10 @@ public class AutoLavacast extends Module {
 
     BlockPos getNextPosition() {
         int y = 0;
-        while ((y + start.getY()) < CoffeeClientMain.client.world.getTopY()) {
+        while ((y + start.getY()) < ShadowMain.client.world.getTopY()) {
             Vec3i ie = incr.multiply(y + 1);
             BlockPos next = start.add(ie).add(0, y, 0);
-            if (CoffeeClientMain.client.world.getBlockState(next).getMaterial().isReplaceable()) {
+            if (ShadowMain.client.world.getBlockState(next).getMaterial().isReplaceable()) {
                 return next;
             }
             y++;
@@ -62,29 +62,29 @@ public class AutoLavacast extends Module {
         Vec3d placeCenter = Vec3d.of(next).add(.5, .5, .5);
         if (mode.getValue() == Mode.Bypass) {
             Rotations.lookAtPositionSmooth(placeCenter, 6);
-            if (((CoffeeClientMain.client.player.horizontalCollision && moveForwards) || CoffeeClientMain.client.player.getBoundingBox()
-                    .intersects(Vec3d.of(next), Vec3d.of(next).add(1, 1, 1))) && CoffeeClientMain.client.player.isOnGround()) {
-                CoffeeClientMain.client.player.jump();
-                CoffeeClientMain.client.player.setOnGround(false);
+            if (((ShadowMain.client.player.horizontalCollision && moveForwards) || ShadowMain.client.player.getBoundingBox()
+                    .intersects(Vec3d.of(next), Vec3d.of(next).add(1, 1, 1))) && ShadowMain.client.player.isOnGround()) {
+                ShadowMain.client.player.jump();
+                ShadowMain.client.player.setOnGround(false);
             }
         }
 
-        if (placeCenter.distanceTo(CoffeeClientMain.client.player.getCameraPosVec(1)) < CoffeeClientMain.client.interactionManager.getReachDistance()) {
+        if (placeCenter.distanceTo(ShadowMain.client.player.getCameraPosVec(1)) < ShadowMain.client.interactionManager.getReachDistance()) {
             moveForwards = false;
 
-            ItemStack is = CoffeeClientMain.client.player.getInventory().getMainHandStack();
+            ItemStack is = ShadowMain.client.player.getInventory().getMainHandStack();
             if (is.isEmpty()) {
                 return;
             }
             if (is.getItem() instanceof BlockItem bi) {
                 Block p = bi.getBlock();
-                if (p.getDefaultState().canPlaceAt(CoffeeClientMain.client.world, next)) {
-                    CoffeeClientMain.client.execute(() -> {
+                if (p.getDefaultState().canPlaceAt(ShadowMain.client.world, next)) {
+                    ShadowMain.client.execute(() -> {
                         BlockHitResult bhr = new BlockHitResult(placeCenter, Direction.DOWN, next, false);
-                        CoffeeClientMain.client.interactionManager.interactBlock(CoffeeClientMain.client.player, CoffeeClientMain.client.world, Hand.MAIN_HAND, bhr);
+                        ShadowMain.client.interactionManager.interactBlock(ShadowMain.client.player, ShadowMain.client.world, Hand.MAIN_HAND, bhr);
                         if (mode.getValue() == Mode.Fast) {
                             Vec3d goP = Vec3d.of(next).add(0.5, 1.05, 0.5);
-                            CoffeeClientMain.client.player.updatePosition(goP.x, goP.y, goP.z);
+                            ShadowMain.client.player.updatePosition(goP.x, goP.y, goP.z);
                         }
                     });
                 }
@@ -103,18 +103,18 @@ public class AutoLavacast extends Module {
     @Override
     public void enable() {
         if (original == null) {
-            original = CoffeeClientMain.client.player.input;
+            original = ShadowMain.client.player.input;
         }
         if (mode.getValue() == Mode.Bypass) {
-            CoffeeClientMain.client.player.input = new ListenInput();
+            ShadowMain.client.player.input = new ListenInput();
         }
-        incr = CoffeeClientMain.client.player.getMovementDirection().getVector();
-        start = CoffeeClientMain.client.player.getBlockPos();
+        incr = ShadowMain.client.player.getMovementDirection().getVector();
+        start = ShadowMain.client.player.getBlockPos();
     }
 
     @Override
     public void disable() {
-        CoffeeClientMain.client.player.input = original;
+        ShadowMain.client.player.input = original;
     }
 
     @Override

@@ -11,7 +11,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.gui.notifications.Notification;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
@@ -32,7 +32,7 @@ public class LetThereBeLight extends Module {
     public void tick() {
         int torchSlot = -1;
         for (int i = 0; i < 9; i++) {
-            ItemStack is = Objects.requireNonNull(CoffeeClientMain.client.player).getInventory().getStack(i);
+            ItemStack is = Objects.requireNonNull(ShadowMain.client.player).getInventory().getStack(i);
             if (is.getItem() == Items.TORCH || is.getItem() == Items.SOUL_TORCH) {
                 torchSlot = i;
                 break;
@@ -46,16 +46,16 @@ public class LetThereBeLight extends Module {
         } else {
             noBlocksAck = false;
         }
-        Vec3d ppos = CoffeeClientMain.client.player.getPos();
-        Vec3d camPos = CoffeeClientMain.client.player.getCameraPosVec(1);
+        Vec3d ppos = ShadowMain.client.player.getPos();
+        Vec3d camPos = ShadowMain.client.player.getCameraPosVec(1);
         a:
         for (int x = -3; x < 4; x++) {
             for (int z = -3; z < 4; z++) {
                 List<Vec3d> blocksWithShit = new ArrayList<>();
-                for (int y = Objects.requireNonNull(CoffeeClientMain.client.world).getTopY(); y > CoffeeClientMain.client.world.getBottomY(); y--) {
+                for (int y = Objects.requireNonNull(ShadowMain.client.world).getTopY(); y > ShadowMain.client.world.getBottomY(); y--) {
                     BlockPos bp = new BlockPos(ppos).add(x, y, z);
-                    BlockState bs = CoffeeClientMain.client.world.getBlockState(bp);
-                    if (bs.getMaterial().isReplaceable() && Blocks.TORCH.getDefaultState().canPlaceAt(CoffeeClientMain.client.world, bp)) {
+                    BlockState bs = ShadowMain.client.world.getBlockState(bp);
+                    if (bs.getMaterial().isReplaceable() && Blocks.TORCH.getDefaultState().canPlaceAt(ShadowMain.client.world, bp)) {
                         blocksWithShit.add(Vec3d.of(bp));
                     }
                 }
@@ -64,7 +64,7 @@ public class LetThereBeLight extends Module {
                     continue; // nowhere to place
                 }
                 BlockHitResult bhr = new BlockHitResult(real.get(), Direction.DOWN, new BlockPos(real.get()), false);
-                Objects.requireNonNull(CoffeeClientMain.client.interactionManager).interactBlock(CoffeeClientMain.client.player, CoffeeClientMain.client.world, Hand.MAIN_HAND, bhr);
+                Objects.requireNonNull(ShadowMain.client.interactionManager).interactBlock(ShadowMain.client.player, ShadowMain.client.world, Hand.MAIN_HAND, bhr);
                 break a;
             }
         }
@@ -87,15 +87,15 @@ public class LetThereBeLight extends Module {
 
     @Override
     public void onWorldRender(MatrixStack matrices) {
-        Vec3d ppos = Objects.requireNonNull(CoffeeClientMain.client.player).getPos();
-        Vec3d camPos = CoffeeClientMain.client.player.getCameraPosVec(1);
+        Vec3d ppos = Objects.requireNonNull(ShadowMain.client.player).getPos();
+        Vec3d camPos = ShadowMain.client.player.getCameraPosVec(1);
         for (int x = -3; x < 4; x++) {
             for (int z = -3; z < 4; z++) {
                 List<Vec3d> blocksWithShit = new ArrayList<>();
-                for (int y = Objects.requireNonNull(CoffeeClientMain.client.world).getTopY(); y > CoffeeClientMain.client.world.getBottomY(); y--) {
+                for (int y = Objects.requireNonNull(ShadowMain.client.world).getTopY(); y > ShadowMain.client.world.getBottomY(); y--) {
                     BlockPos bp = new BlockPos(ppos).add(x, y, z);
-                    BlockState bs = CoffeeClientMain.client.world.getBlockState(bp);
-                    if (bs.getMaterial().isReplaceable() && Blocks.TORCH.getDefaultState().canPlaceAt(CoffeeClientMain.client.world, bp)) {
+                    BlockState bs = ShadowMain.client.world.getBlockState(bp);
+                    if (bs.getMaterial().isReplaceable() && Blocks.TORCH.getDefaultState().canPlaceAt(ShadowMain.client.world, bp)) {
                         blocksWithShit.add(Vec3d.of(bp));
                     }
                 }
@@ -104,7 +104,7 @@ public class LetThereBeLight extends Module {
                     continue; // nowhere to place
                 }
                 Vec3d pos = real.get();
-                Renderer.R3D.renderShape(pos, Blocks.TORCH.getDefaultState().getOutlineShape(CoffeeClientMain.client.world, new BlockPos(real.get()), ShapeContext.absent()), matrices, Color.WHITE);
+                Renderer.R3D.renderShape(pos, Blocks.TORCH.getDefaultState().getOutlineShape(ShadowMain.client.world, new BlockPos(real.get()), ShapeContext.absent()), matrices, Color.WHITE);
                 //                Renderer.R3D.renderOutline(real.get(),new Vec3d(1,1,1), Color.WHITE, matrices);
             }
         }

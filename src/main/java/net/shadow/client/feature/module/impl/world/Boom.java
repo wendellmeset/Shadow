@@ -19,7 +19,7 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.config.EnumSetting;
 import net.shadow.client.feature.gui.notifications.Notification;
@@ -43,7 +43,7 @@ public class Boom extends Module {
     public Boom() {
         super("Boom", "Spawns fireballs wherever you click", ModuleType.WORLD);
         Events.registerEventHandler(EventType.MOUSE_EVENT, event -> {
-            if (!this.isEnabled() || CoffeeClientMain.client.currentScreen != null) {
+            if (!this.isEnabled() || ShadowMain.client.currentScreen != null) {
                 return;
             }
             MouseEvent me = (MouseEvent) event;
@@ -66,7 +66,7 @@ public class Boom extends Module {
             PacketEvent pe = (PacketEvent) event;
             if (pe.getPacket() instanceof PlayerInteractEntityC2SPacket e) {
                 PlayerInteractEntityC2SPacketAccessor a = (PlayerInteractEntityC2SPacketAccessor) e;
-                Entity entity = Objects.requireNonNull(CoffeeClientMain.client.world).getEntityById(a.getEntityId());
+                Entity entity = Objects.requireNonNull(ShadowMain.client.world).getEntityById(a.getEntityId());
                 if (entity != null && entity.getType() == EntityType.FIREBALL && System.currentTimeMillis() - lastFired < 1000) {
                     event.setCancelled(true);
                 }
@@ -75,49 +75,49 @@ public class Boom extends Module {
     }
 
     void fbInstant() {
-        if (!Objects.requireNonNull(CoffeeClientMain.client.interactionManager).hasCreativeInventory()) {
+        if (!Objects.requireNonNull(ShadowMain.client.interactionManager).hasCreativeInventory()) {
             return;
         }
-        HitResult hr = Objects.requireNonNull(CoffeeClientMain.client.player).raycast(200, 0, false);
+        HitResult hr = Objects.requireNonNull(ShadowMain.client.player).raycast(200, 0, false);
         Vec3d n = hr.getPos();
         String nbt = String.format("{EntityTag:{id:\"minecraft:fireball\",ExplosionPower:%db,Motion:[%sd,%sd,%sd],Pos:[%s,%s,%s],Item:{id:\"minecraft:egg\",Count:1b}}}", ((int) Math.floor(power.getValue())), 0, -2, 0, n.getX(), n.getY(), n.getZ());
         ItemStack stack = Utils.generateItemStackWithMeta(nbt, Items.BAT_SPAWN_EGG);
-        ItemStack air = CoffeeClientMain.client.player.getInventory().getMainHandStack().copy();
-        Vec3d a = CoffeeClientMain.client.player.getEyePos();
+        ItemStack air = ShadowMain.client.player.getInventory().getMainHandStack().copy();
+        Vec3d a = ShadowMain.client.player.getEyePos();
         BlockHitResult bhr = new BlockHitResult(a, Direction.DOWN, new BlockPos(a), false);
-        CreativeInventoryActionC2SPacket u1 = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(CoffeeClientMain.client.player.getInventory().selectedSlot), stack);
-        CreativeInventoryActionC2SPacket u2 = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(CoffeeClientMain.client.player.getInventory().selectedSlot), air);
+        CreativeInventoryActionC2SPacket u1 = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(ShadowMain.client.player.getInventory().selectedSlot), stack);
+        CreativeInventoryActionC2SPacket u2 = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(ShadowMain.client.player.getInventory().selectedSlot), air);
         PlayerInteractBlockC2SPacket p1 = new PlayerInteractBlockC2SPacket(Hand.MAIN_HAND, bhr);
-        Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).sendPacket(u1);
-        CoffeeClientMain.client.getNetworkHandler().sendPacket(p1);
-        CoffeeClientMain.client.getNetworkHandler().sendPacket(u2);
+        Objects.requireNonNull(ShadowMain.client.getNetworkHandler()).sendPacket(u1);
+        ShadowMain.client.getNetworkHandler().sendPacket(p1);
+        ShadowMain.client.getNetworkHandler().sendPacket(u2);
         lastFired = System.currentTimeMillis();
     }
 
     void fbGhast() {
-        if (!Objects.requireNonNull(CoffeeClientMain.client.interactionManager).hasCreativeInventory()) {
+        if (!Objects.requireNonNull(ShadowMain.client.interactionManager).hasCreativeInventory()) {
             return;
         }
-        Vec3d v = Objects.requireNonNull(CoffeeClientMain.client.player).getRotationVector();
+        Vec3d v = Objects.requireNonNull(ShadowMain.client.player).getRotationVector();
         v = v.multiply(speed.getValue() / 10d);
         // ((int) Math.floor(power.getValue()))
         String nbt = String.format("{EntityTag:{id:\"minecraft:fireball\",ExplosionPower:%db,power:[%s,%s,%s],Item:{id:\"minecraft:egg\",Count:1b}}}", ((int) Math.floor(power.getValue())), v.x, v.y, v.z);
         ItemStack stack = Utils.generateItemStackWithMeta(nbt, Items.BAT_SPAWN_EGG);
-        ItemStack air = CoffeeClientMain.client.player.getInventory().getMainHandStack().copy();
-        Vec3d a = CoffeeClientMain.client.player.getEyePos();
+        ItemStack air = ShadowMain.client.player.getInventory().getMainHandStack().copy();
+        Vec3d a = ShadowMain.client.player.getEyePos();
         BlockHitResult bhr = new BlockHitResult(a, Direction.DOWN, new BlockPos(a), false);
-        CreativeInventoryActionC2SPacket u1 = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(CoffeeClientMain.client.player.getInventory().selectedSlot), stack);
-        CreativeInventoryActionC2SPacket u2 = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(CoffeeClientMain.client.player.getInventory().selectedSlot), air);
+        CreativeInventoryActionC2SPacket u1 = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(ShadowMain.client.player.getInventory().selectedSlot), stack);
+        CreativeInventoryActionC2SPacket u2 = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(ShadowMain.client.player.getInventory().selectedSlot), air);
         PlayerInteractBlockC2SPacket p1 = new PlayerInteractBlockC2SPacket(Hand.MAIN_HAND, bhr);
-        Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).sendPacket(u1);
-        CoffeeClientMain.client.getNetworkHandler().sendPacket(p1);
-        CoffeeClientMain.client.getNetworkHandler().sendPacket(u2);
+        Objects.requireNonNull(ShadowMain.client.getNetworkHandler()).sendPacket(u1);
+        ShadowMain.client.getNetworkHandler().sendPacket(p1);
+        ShadowMain.client.getNetworkHandler().sendPacket(u2);
         lastFired = System.currentTimeMillis();
     }
 
     @Override
     public void tick() {
-        if (!Objects.requireNonNull(CoffeeClientMain.client.interactionManager).hasCreativeInventory()) {
+        if (!Objects.requireNonNull(ShadowMain.client.interactionManager).hasCreativeInventory()) {
             Notification.create(6000, "", true, Notification.Type.INFO, "You need to be in creative");
             setEnabled(false);
         }

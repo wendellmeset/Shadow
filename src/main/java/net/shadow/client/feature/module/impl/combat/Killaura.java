@@ -21,7 +21,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.config.BooleanSetting;
 import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.config.EnumSetting;
@@ -86,21 +86,21 @@ public class Killaura extends Module {
     }
 
     int getDelay() {
-        if (CoffeeClientMain.client.player == null) {
+        if (ShadowMain.client.player == null) {
             return 0;
         }
         if (!automaticDelay.getValue()) {
             return (int) (delay.getValue() + 0);
         } else {
-            ItemStack hand = CoffeeClientMain.client.player.getMainHandStack();
+            ItemStack hand = ShadowMain.client.player.getMainHandStack();
             if (hand == null) {
-                hand = CoffeeClientMain.client.player.getOffHandStack();
+                hand = ShadowMain.client.player.getOffHandStack();
             }
             if (hand == null) {
                 return 10;
             }
-            hand.getTooltip(CoffeeClientMain.client.player, TooltipContext.Default.ADVANCED);
-            AtomicDouble speed = new AtomicDouble(CoffeeClientMain.client.player.getAttributeBaseValue(EntityAttributes.GENERIC_ATTACK_SPEED));
+            hand.getTooltip(ShadowMain.client.player, TooltipContext.Default.ADVANCED);
+            AtomicDouble speed = new AtomicDouble(ShadowMain.client.player.getAttributeBaseValue(EntityAttributes.GENERIC_ATTACK_SPEED));
             hand.getAttributeModifiers(EquipmentSlot.MAINHAND).forEach((entityAttribute, entityAttributeModifier) -> {
                 if (entityAttribute == EntityAttributes.GENERIC_ATTACK_SPEED) {
                     speed.addAndGet(entityAttributeModifier.getValue());
@@ -111,18 +111,18 @@ public class Killaura extends Module {
     }
 
     double getRange() {
-        if (CoffeeClientMain.client.interactionManager == null) {
+        if (ShadowMain.client.interactionManager == null) {
             return 0;
         }
         if (capRangeAtMax.getValue()) {
-            return CoffeeClientMain.client.interactionManager.getReachDistance();
+            return ShadowMain.client.interactionManager.getReachDistance();
         } else {
             return range.getValue();
         }
     }
 
     void doConfuse(Entity e) { // This also contains a range check
-        Vec3d updatePos = Objects.requireNonNull(CoffeeClientMain.client.player).getPos();
+        Vec3d updatePos = Objects.requireNonNull(ShadowMain.client.player).getPos();
         switch (confuseMode.getValue()) {
             case Behind -> {
                 Vec3d p = e.getRotationVecClient();
@@ -139,17 +139,17 @@ public class Killaura extends Module {
                 updatePos = new Vec3d(e.getX() + sin, e.getY(), e.getZ() + cos);
             }
         }
-        if (!confuseAllowClip.getValue() && Objects.requireNonNull(CoffeeClientMain.client.world).getBlockState(new BlockPos(updatePos)).getMaterial().blocksMovement()) {
+        if (!confuseAllowClip.getValue() && Objects.requireNonNull(ShadowMain.client.world).getBlockState(new BlockPos(updatePos)).getMaterial().blocksMovement()) {
             return;
         }
         if (e.getPos().distanceTo(updatePos) <= getRange()) {
-            CoffeeClientMain.client.player.updatePosition(updatePos.x, updatePos.y, updatePos.z);
+            ShadowMain.client.player.updatePosition(updatePos.x, updatePos.y, updatePos.z);
         }
     }
 
     @Override
     public void tick() {
-        if (CoffeeClientMain.client.world == null || CoffeeClientMain.client.player == null || CoffeeClientMain.client.interactionManager == null) {
+        if (ShadowMain.client.world == null || ShadowMain.client.player == null || ShadowMain.client.interactionManager == null) {
             return;
         }
         boolean delayHasPassed = this.delayExec.hasExpired(getDelay() * 50L);
@@ -165,7 +165,7 @@ public class Killaura extends Module {
             if (!combatPartner.isAttackable()) {
                 return;
             }
-            if (combatPartner.equals(CoffeeClientMain.client.player)) {
+            if (combatPartner.equals(ShadowMain.client.player)) {
                 return;
             }
             if (!combatPartner.isAlive()) {
@@ -174,33 +174,33 @@ public class Killaura extends Module {
             if (enableConfuse.getValue()) {
                 doConfuse(combatPartner);
             }
-            if (combatPartner.getPos().distanceTo(CoffeeClientMain.client.player.getPos()) > getRange()) {
+            if (combatPartner.getPos().distanceTo(ShadowMain.client.player.getPos()) > getRange()) {
                 return;
             }
             Packets.sendServerSideLook(combatPartner.getEyePos());
             Rotations.lookAtV3(combatPartner.getPos().add(0, combatPartner.getHeight() / 2, 0));
             if (delayHasPassed) {
-                CoffeeClientMain.client.interactionManager.attackEntity(CoffeeClientMain.client.player, combatPartner);
-                CoffeeClientMain.client.player.swingHand(Hand.MAIN_HAND);
+                ShadowMain.client.interactionManager.attackEntity(ShadowMain.client.player, combatPartner);
+                ShadowMain.client.player.swingHand(Hand.MAIN_HAND);
                 delayExec.reset();
             }
             return;
         }
         attacks.clear();
-        for (Entity entity : Objects.requireNonNull(CoffeeClientMain.client.world).getEntities()) {
+        for (Entity entity : Objects.requireNonNull(ShadowMain.client.world).getEntities()) {
             if (attacks.size() > multiLimit.getValue()) {
                 break;
             }
             if (!entity.isAttackable()) {
                 continue;
             }
-            if (entity.equals(CoffeeClientMain.client.player)) {
+            if (entity.equals(ShadowMain.client.player)) {
                 continue;
             }
             if (!entity.isAlive()) {
                 continue;
             }
-            if (entity.getPos().distanceTo(CoffeeClientMain.client.player.getPos()) > getRange()) {
+            if (entity.getPos().distanceTo(ShadowMain.client.player.getPos()) > getRange()) {
                 continue;
             }
 
@@ -208,7 +208,7 @@ public class Killaura extends Module {
                 attacks.add(entity);
             } else {
                 if (entity instanceof Angerable) {
-                    if (((Angerable) entity).getAngryAt() == CoffeeClientMain.client.player.getUuid()) {
+                    if (((Angerable) entity).getAngryAt() == ShadowMain.client.player.getUuid()) {
                         if (attackHostile.getValue()) {
                             attacks.add(entity);
                         } else if (attackNeutral.getValue()) {
@@ -239,7 +239,7 @@ public class Killaura extends Module {
         if (mode.getValue() == SelectMode.Single) {
             Entity tar = null;
             if (prio.getValue() == PriorityMode.Distance) {
-                tar = attacks.stream().sorted(Comparator.comparingDouble(value -> value.getPos().distanceTo(Objects.requireNonNull(CoffeeClientMain.client.player).getPos()))).toList().get(0);
+                tar = attacks.stream().sorted(Comparator.comparingDouble(value -> value.getPos().distanceTo(Objects.requireNonNull(ShadowMain.client.player).getPos()))).toList().get(0);
             } else if (prio.getValue() == PriorityMode.Health_ascending || prio.getValue() == PriorityMode.Health_descending) { // almost missed this
                 // get entity with the least health if mode is ascending, else get most health
                 tar = attacks.stream().sorted(Comparator.comparingDouble(value -> {
@@ -252,12 +252,12 @@ public class Killaura extends Module {
                 // get entity in front of you (or closest to the front)
                 tar = attacks.stream().sorted(Comparator.comparingDouble(value -> {
                     Vec3d center = value.getBoundingBox().getCenter();
-                    double offX = center.x - CoffeeClientMain.client.player.getX();
-                    double offZ = center.z - CoffeeClientMain.client.player.getZ();
+                    double offX = center.x - ShadowMain.client.player.getX();
+                    double offZ = center.z - ShadowMain.client.player.getZ();
                     float yaw = (float) Math.toDegrees(Math.atan2(offZ, offX)) - 90F;
-                    float pitch = (float) -Math.toDegrees(Math.atan2(center.y - CoffeeClientMain.client.player.getEyeY(), Math.sqrt(offX * offX + offZ * offZ)));
-                    return Math.abs(MathHelper.wrapDegrees(yaw - CoffeeClientMain.client.player.getYaw())) + Math.abs(MathHelper.wrapDegrees(pitch - CoffeeClientMain.client.player.getPitch()));
-                })).sorted(Comparator.comparingDouble(value -> value.getPos().distanceTo(Objects.requireNonNull(CoffeeClientMain.client.player).getPos()))).toList().get(0);
+                    float pitch = (float) -Math.toDegrees(Math.atan2(center.y - ShadowMain.client.player.getEyeY(), Math.sqrt(offX * offX + offZ * offZ)));
+                    return Math.abs(MathHelper.wrapDegrees(yaw - ShadowMain.client.player.getYaw())) + Math.abs(MathHelper.wrapDegrees(pitch - ShadowMain.client.player.getPitch()));
+                })).sorted(Comparator.comparingDouble(value -> value.getPos().distanceTo(Objects.requireNonNull(ShadowMain.client.player).getPos()))).toList().get(0);
             }
             if (tar == null) {
                 return;
@@ -265,14 +265,14 @@ public class Killaura extends Module {
             if (enableConfuse.getValue()) {
                 doConfuse(tar);
             }
-            if (tar.getPos().distanceTo(CoffeeClientMain.client.player.getPos()) > getRange()) {
+            if (tar.getPos().distanceTo(ShadowMain.client.player.getPos()) > getRange()) {
                 return;
             }
             Packets.sendServerSideLook(tar.getEyePos());
             Rotations.lookAtV3(tar.getPos().add(0, tar.getHeight() / 2, 0));
             if (delayHasPassed) {
-                CoffeeClientMain.client.interactionManager.attackEntity(CoffeeClientMain.client.player, tar);
-                CoffeeClientMain.client.player.swingHand(Hand.MAIN_HAND);
+                ShadowMain.client.interactionManager.attackEntity(ShadowMain.client.player, tar);
+                ShadowMain.client.player.swingHand(Hand.MAIN_HAND);
                 delayExec.reset();
             }
             return;
@@ -281,8 +281,8 @@ public class Killaura extends Module {
             Packets.sendServerSideLook(attack.getEyePos());
             Rotations.lookAtV3(attack.getPos().add(0, attack.getHeight() / 2, 0));
             if (delayHasPassed) {
-                CoffeeClientMain.client.interactionManager.attackEntity(CoffeeClientMain.client.player, attack);
-                CoffeeClientMain.client.player.swingHand(Hand.MAIN_HAND);
+                ShadowMain.client.interactionManager.attackEntity(ShadowMain.client.player, attack);
+                ShadowMain.client.player.swingHand(Hand.MAIN_HAND);
                 delayExec.reset();
             }
         }

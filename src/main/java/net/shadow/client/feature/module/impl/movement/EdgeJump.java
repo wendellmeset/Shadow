@@ -7,7 +7,7 @@ package net.shadow.client.feature.module.impl.movement;
 
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Box;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 
@@ -21,17 +21,17 @@ public class EdgeJump extends Module {
 
     @Override
     public void tick() {
-        if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.world == null) {
+        if (ShadowMain.client.player == null || ShadowMain.client.world == null) {
             return;
         }
-        if (!CoffeeClientMain.client.player.isOnGround() || CoffeeClientMain.client.player.isSneaking()) {
+        if (!ShadowMain.client.player.isOnGround() || ShadowMain.client.player.isSneaking()) {
             return;
         }
 
-        Box bounding = CoffeeClientMain.client.player.getBoundingBox();
+        Box bounding = ShadowMain.client.player.getBoundingBox();
         bounding = bounding.offset(0, -0.5, 0);
         bounding = bounding.expand(-0.001, 0, -0.001);
-        if (!CoffeeClientMain.client.world.getBlockCollisions(client.player, bounding).iterator().hasNext()) {
+        if (!ShadowMain.client.world.getBlockCollisions(client.player, bounding).iterator().hasNext()) {
             Objects.requireNonNull(client.player).jump();
         }
     }

@@ -2,7 +2,7 @@ package net.shadow.client.feature.gui.hud.element;
 
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.render.Renderer;
 
@@ -94,8 +94,8 @@ public abstract class HudElement {
         if (selected) {
             this.posX += deltaX;
             this.posY += deltaY;
-            this.posX = MathHelper.clamp(this.posX, 0, CoffeeClientMain.client.getWindow().getScaledWidth() - this.width);
-            this.posY = MathHelper.clamp(this.posY, 0, CoffeeClientMain.client.getWindow().getScaledHeight() - this.height);
+            this.posX = MathHelper.clamp(this.posX, 0, ShadowMain.client.getWindow().getScaledWidth() - this.width);
+            this.posY = MathHelper.clamp(this.posY, 0, ShadowMain.client.getWindow().getScaledHeight() - this.height);
         }
     }
 
@@ -104,7 +104,7 @@ public abstract class HudElement {
     }
 
     public void fastTick() {
-        this.posX = MathHelper.clamp(this.posX, 0, CoffeeClientMain.client.getWindow().getScaledWidth() - this.width);
-        this.posY = MathHelper.clamp(this.posY, 0, CoffeeClientMain.client.getWindow().getScaledHeight() - this.height);
+        this.posX = MathHelper.clamp(this.posX, 0, ShadowMain.client.getWindow().getScaledWidth() - this.width);
+        this.posY = MathHelper.clamp(this.posY, 0, ShadowMain.client.getWindow().getScaledHeight() - this.height);
     }
 }

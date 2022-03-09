@@ -7,7 +7,7 @@ package net.shadow.client.feature.module.impl.movement;
 
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Vec3d;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.config.EnumSetting;
 import net.shadow.client.feature.module.Module;
@@ -29,15 +29,15 @@ public class Boost extends Module {
 
     @Override
     public void enable() {
-        if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.getNetworkHandler() == null) {
+        if (ShadowMain.client.player == null || ShadowMain.client.getNetworkHandler() == null) {
             return;
         }
         setEnabled(false);
-        Vec3d newVelocity = CoffeeClientMain.client.player.getRotationVector().multiply(strength.getValue());
+        Vec3d newVelocity = ShadowMain.client.player.getRotationVector().multiply(strength.getValue());
         if (this.mode.getValue() == Mode.Add) {
-            CoffeeClientMain.client.player.addVelocity(newVelocity.x, newVelocity.y, newVelocity.z);
+            ShadowMain.client.player.addVelocity(newVelocity.x, newVelocity.y, newVelocity.z);
         } else {
-            CoffeeClientMain.client.player.setVelocity(newVelocity);
+            ShadowMain.client.player.setVelocity(newVelocity);
         }
     }
 

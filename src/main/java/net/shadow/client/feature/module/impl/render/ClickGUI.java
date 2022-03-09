@@ -1,7 +1,7 @@
 package net.shadow.client.feature.module.impl.render;
 
 import net.minecraft.client.util.math.MatrixStack;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
@@ -18,7 +18,7 @@ public class ClickGUI extends Module {
     public void tick() {
         t--;
         if (t == 0) {
-            CoffeeClientMain.client.setScreen(net.shadow.client.feature.gui.clickgui.ClickGUI.instance());
+            ShadowMain.client.setScreen(net.shadow.client.feature.gui.clickgui.ClickGUI.instance());
             setEnabled(false);
         }
     }

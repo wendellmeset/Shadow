@@ -12,7 +12,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.network.packet.c2s.play.VehicleMoveC2SPacket;
 import net.minecraft.util.math.Vec3d;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 import net.shadow.client.helper.util.Utils;
@@ -31,10 +31,10 @@ public class EntityFly extends Module {
 
     @Override
     public void tick() {
-        if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.getNetworkHandler() == null) {
+        if (ShadowMain.client.player == null || ShadowMain.client.getNetworkHandler() == null) {
             return;
         }
-        Entity vehicle = CoffeeClientMain.client.player.getVehicle();
+        Entity vehicle = ShadowMain.client.player.getVehicle();
         if (vehicle == null) {
             return;
         }
@@ -43,7 +43,7 @@ public class EntityFly extends Module {
         if (vehicle instanceof MobEntity) {
             ((MobEntity) vehicle).setAiDisabled(true);
         }
-        GameOptions go = CoffeeClientMain.client.options;
+        GameOptions go = ShadowMain.client.options;
         float y = Objects.requireNonNull(client.player).getYaw();
         int mx = 0, my = 0, mz = 0;
         if (go.jumpKey.isPressed()) {

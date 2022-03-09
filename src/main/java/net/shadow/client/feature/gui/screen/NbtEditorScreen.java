@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.util.math.MathHelper;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.gui.FastTickable;
 import net.shadow.client.feature.gui.notifications.Notification;
 import net.shadow.client.feature.gui.widget.RoundButton;
@@ -207,7 +207,7 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
         double entitledScroll = contentHeight - windowHeight;
         entitledScroll = Math.max(0, entitledScroll);
 
-        if (InputUtil.isKeyPressed(CoffeeClientMain.client.getWindow().getHandle(), GLFW.GLFW_KEY_LEFT_SHIFT)) {
+        if (InputUtil.isKeyPressed(ShadowMain.client.getWindow().getHandle(), GLFW.GLFW_KEY_LEFT_SHIFT)) {
             scrollX -= amount * 10;
         } else {
             scroll -= amount * 10;
@@ -228,7 +228,7 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
             return true;
         }
         if (isPaste(keyCode)) {
-            String clip = CoffeeClientMain.client.keyboard.getClipboard();
+            String clip = ShadowMain.client.keyboard.getClipboard();
             skipAppend = true;
             for (char c : clip.toCharArray()) {
                 if (c == '\n') {

@@ -9,7 +9,7 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.config.EnumSetting;
 import net.shadow.client.feature.gui.notifications.Notification;
 import net.shadow.client.feature.module.Module;
@@ -41,10 +41,10 @@ public class TpRange extends Module {
             if (!this.isEnabled()) {
                 return;
             }
-            if (CoffeeClientMain.client.player == null || CoffeeClientMain.client.world == null) {
+            if (ShadowMain.client.player == null || ShadowMain.client.world == null) {
                 return;
             }
-            if (CoffeeClientMain.client.currentScreen != null) {
+            if (ShadowMain.client.currentScreen != null) {
                 return;
             }
             MouseEvent me = (MouseEvent) event;
@@ -68,28 +68,28 @@ public class TpRange extends Module {
     }
 
     void doIt() {
-        Vec3d goal = Objects.requireNonNull(CoffeeClientMain.client.player).getRotationVec(1f).multiply(200);
-        Box b = CoffeeClientMain.client.player.getBoundingBox().stretch(goal).expand(1, 1, 1);
-        EntityHitResult ehr = ProjectileUtil.raycast(CoffeeClientMain.client.player, CoffeeClientMain.client.player.getCameraPosVec(0), CoffeeClientMain.client.player.getCameraPosVec(0)
+        Vec3d goal = Objects.requireNonNull(ShadowMain.client.player).getRotationVec(1f).multiply(200);
+        Box b = ShadowMain.client.player.getBoundingBox().stretch(goal).expand(1, 1, 1);
+        EntityHitResult ehr = ProjectileUtil.raycast(ShadowMain.client.player, ShadowMain.client.player.getCameraPosVec(0), ShadowMain.client.player.getCameraPosVec(0)
                 .add(goal), b, Entity::isAttackable, 200 * 200);
         if (ehr == null) {
             return;
         }
         Vec3d pos = ehr.getPos();
-        Vec3d orig = CoffeeClientMain.client.player.getPos();
+        Vec3d orig = ShadowMain.client.player.getPos();
 
         if (mode.getValue() == Mode.PaperBypass) {
             teleportTo(orig, pos);
-            Objects.requireNonNull(CoffeeClientMain.client.interactionManager).attackEntity(CoffeeClientMain.client.player, ehr.getEntity());
+            Objects.requireNonNull(ShadowMain.client.interactionManager).attackEntity(ShadowMain.client.player, ehr.getEntity());
             Utils.sleep(100);
             teleportTo(pos, orig);
-            CoffeeClientMain.client.player.updatePosition(orig.x, orig.y, orig.z);
+            ShadowMain.client.player.updatePosition(orig.x, orig.y, orig.z);
         } else {
             PlayerMoveC2SPacket tpToEntity = new PlayerMoveC2SPacket.PositionAndOnGround(pos.x, pos.y, pos.z, false);
             PlayerMoveC2SPacket tpBack = new PlayerMoveC2SPacket.PositionAndOnGround(orig.x, orig.y, orig.z, true);
-            Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).sendPacket(tpToEntity);
-            Objects.requireNonNull(CoffeeClientMain.client.interactionManager).attackEntity(CoffeeClientMain.client.player, ehr.getEntity());
-            CoffeeClientMain.client.getNetworkHandler().sendPacket(tpBack);
+            Objects.requireNonNull(ShadowMain.client.getNetworkHandler()).sendPacket(tpToEntity);
+            Objects.requireNonNull(ShadowMain.client.interactionManager).attackEntity(ShadowMain.client.player, ehr.getEntity());
+            ShadowMain.client.getNetworkHandler().sendPacket(tpBack);
         }
     }
 
@@ -107,13 +107,13 @@ public class TpRange extends Module {
             double newY = MathHelper.lerp(prog, from.y, pos.y);
             double newZ = MathHelper.lerp(prog, from.z, pos.z);
             PlayerMoveC2SPacket p = new PlayerMoveC2SPacket.PositionAndOnGround(newX, newY, newZ, true);
-            Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).sendPacket(p);
+            Objects.requireNonNull(ShadowMain.client.getNetworkHandler()).sendPacket(p);
             previousSpoofedPos = spoofedPos;
             spoofedPos = new Vec3d(newX, newY, newZ);
             Utils.sleep(10);
         }
         PlayerMoveC2SPacket p = new PlayerMoveC2SPacket.PositionAndOnGround(pos.x, pos.y, pos.z, true);
-        Objects.requireNonNull(CoffeeClientMain.client.getNetworkHandler()).sendPacket(p);
+        Objects.requireNonNull(ShadowMain.client.getNetworkHandler()).sendPacket(p);
         previousSpoofedPos = null;
         spoofedPos = null;
     }

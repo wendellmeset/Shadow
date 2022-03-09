@@ -8,7 +8,7 @@ package net.shadow.client.feature.command.impl;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.shadow.client.CoffeeClientMain;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.helper.manager.HologramManager;
 
@@ -66,8 +66,8 @@ public class Hologram extends Command {
             }
         }
         String text = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
-        Vec3d pos = Objects.requireNonNull(CoffeeClientMain.client.player).getPos();
-        BlockPos displayable = CoffeeClientMain.client.player.getBlockPos();
+        Vec3d pos = Objects.requireNonNull(ShadowMain.client.player).getPos();
+        BlockPos displayable = ShadowMain.client.player.getBlockPos();
         message("Armor stand config:");
         message("  Text: " + text);
         message("  Is baby: " + (generateAsBaby ? "Yes" : "No"));
@@ -79,6 +79,6 @@ public class Hologram extends Command {
         HologramManager.Hologram h = HologramManager.generateDefault(text, pos).isEgg(generateAsEgg).isSmall(generateAsBaby).hasGravity(makeGravity).isVisible(makeVisible).isMarker(marker);
         ItemStack stack = h.generate();
         message("Dont forget to open your inventory before placing");
-        CoffeeClientMain.client.player.getInventory().addPickBlock(stack);
+        ShadowMain.client.player.getInventory().addPickBlock(stack);
     }
 }
