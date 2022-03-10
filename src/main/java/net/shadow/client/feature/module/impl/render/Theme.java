@@ -2,6 +2,8 @@ package net.shadow.client.feature.module.impl.render;
 
 import net.minecraft.client.util.math.MatrixStack;
 import net.shadow.client.feature.config.ColorSetting;
+import net.shadow.client.feature.config.EnumSetting;
+import net.shadow.client.feature.config.SettingBase;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 
@@ -33,9 +35,21 @@ public class Theme extends Module {
             .description("The inactive color")
             .get());
 
-    public Theme() {
-        super("CustomTheme", "Allows you to edit the client's appearance (enable to apply)", ModuleType.RENDER);
+    public enum Mode {
+        Custom, Shadow, Coffee
+    }
+    public EnumSetting<Mode> modeSetting = this.config.create(new EnumSetting.Builder<>(Mode.Shadow)
+        .name("Theme")
+        .description("Which preset theme to use")
+        .get());
 
+    public Theme() {
+        super("Theme", "Allows you to edit the client's appearance", ModuleType.RENDER);
+        for (SettingBase<?> settingBase : new SettingBase<?>[] {
+                accent, header, module, configC, active, inactive
+        }) {
+            settingBase.showIf(() -> modeSetting.getValue() == Mode.Custom);
+        }
     }
 
     @Override

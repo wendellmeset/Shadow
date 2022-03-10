@@ -137,6 +137,14 @@ public class ConfigDisplay extends Element {
     }
 
     @Override
+    public boolean scroll(double mouseX, double mouseY, double amount) {
+        for (ConfigBase<?> basis : bases) {
+            if (basis.scroll(mouseX, mouseY, amount)) return true;
+        }
+        return super.scroll(mouseX, mouseY, amount);
+    }
+
+    @Override
     public boolean charTyped(char c, int mods) {
         for (ConfigBase<?> basis : getBases()) {
             if (basis.getConfigValue().shouldShow() && basis.charTyped(c, mods)) {

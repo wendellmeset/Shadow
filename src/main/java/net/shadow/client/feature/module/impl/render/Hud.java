@@ -188,7 +188,7 @@ public class Hud extends Module {
             values.add(bp.getX() + " " + bp.getY() + " " + bp.getZ());
         }
         String drawStr = String.join(" | ", values);
-        double titleWidth = getTitleFr().getStringWidth("Coffee");
+        double titleWidth = getTitleFr().getStringWidth("Shadow");
         double width = titleWidth + 5 + FontRenderers.getRenderer().getStringWidth(drawStr) + 5;
         if (values.isEmpty()) {
             width = titleWidth + 5;
@@ -197,7 +197,7 @@ public class Hud extends Module {
 
         Renderer.R2D.renderQuad(ms, ThemeManager.getMainTheme().getActive(), rootX, rootY, rootX + 1, rootY + height);
         Renderer.R2D.renderQuad(ms, ThemeManager.getMainTheme().getModule(), rootX + 1, rootY, rootX + width, rootY + height);
-        getTitleFr().drawString(ms, "Coffee", rootX + 2, rootY + height / 2d - getTitleFr().getMarginHeight() / 2d, 0xFFFFFF);
+        getTitleFr().drawString(ms, "Shadow", rootX + 2, rootY + height / 2d - getTitleFr().getMarginHeight() / 2d, 0xFFFFFF);
         FontRenderers.getRenderer().drawString(ms, drawStr, rootX + 2 + titleWidth + 5, rootY + height / 2d - FontRenderers.getRenderer().getMarginHeight() / 2d, 0xAAAAAA);
     }
 

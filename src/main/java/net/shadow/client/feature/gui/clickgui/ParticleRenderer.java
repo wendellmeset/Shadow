@@ -36,10 +36,10 @@ public class ParticleRenderer {
             return;
         }
         Particle n = new Particle();
-        n.x = Math.random() * ShadowMain.client.getWindow().getScaledWidth();
-        n.y = -10;
-        n.velY = (Math.random() + 1);
-        n.decline = MathHelper.lerp(Math.random(), 0.05, 0.2);
+        n.x = ShadowMain.client.getWindow().getScaledWidth()*Math.random();
+        n.y = ShadowMain.client.getWindow().getScaledHeight()*Math.random();
+        n.velY = (Math.random()-.5)/4;
+        n.velX = (Math.random()-.5)/4;
         particles.add(n);
     }
 
@@ -61,18 +61,15 @@ public class ParticleRenderer {
             addParticle();
         }
         for (Particle particle : particles) {
-            particle.render(stack);
+            particle.render(particles, stack);
         }
         RenderSystem.setShaderColor(1, 1, 1, 1);
     }
 
     static class Particle {
-        final long rotSpeed = (long) MathHelper.lerp(Math.random(), 3000, 10000);
-        final long rotSpeed2 = (long) MathHelper.lerp(Math.random(), 3000, 10000);
-        final double velX = 0;
-        final boolean spinsReverse = Math.random() > .5;
-        final boolean spinsReverse2 = Math.random() > .5;
-        double x = 0, y = 0, size = 10, decline = 0.1;
+        double velX = 0;
+        double x = 0;
+        double y = 0;
         double velY = 0;
 
         public static BufferBuilder renderPrepare(Color color) {
@@ -142,26 +139,60 @@ public class ParticleRenderer {
             buffer.vertex(matrix, x1, y1, z2).next();
             buffer.vertex(matrix, x1, y2, z2).next();
         }
-
+        long origLife = (long) (20*MathHelper.lerp(Math.random(),4,6));
+        long life = origLife;
         void move() {
-            size -= decline;
-            size = Math.max(0, size);
+            life--;
+            life = Math.max(0, life);
+//            size -= decline;
+//            size = Math.max(0, size);
             x += velX;
             y += velY;
+            double h = ShadowMain.client.getWindow().getScaledHeight();
+            double w = ShadowMain.client.getWindow().getScaledWidth();
+            if (x > w || x < 0) {
+                velX *= -1;
+            }
+            if (y > h || y < 0) {
+                velY *= -1;
+            }
+            x = MathHelper.clamp(x,0,w);
+            y = MathHelper.clamp(y,0,h);
         }
 
-        void render(MatrixStack stack) {
+        void render(List<Particle> others, MatrixStack stack) {
+            long fadeTime = 40;
+            long startDelta = Math.min(origLife-life,fadeTime);
+            long endDelta = Math.min(life,fadeTime);
+            long deltaOverall = Math.min(startDelta,endDelta);
+            double pk = (deltaOverall/(double)fadeTime);
+//            ShadowMain.client.textRenderer.draw(stack,pk+"",(float)x,(float)y,0xFFFFFF);
             Theme theme = ThemeManager.getMainTheme();
             stack.push();
-            stack.translate(x, y, 0);
-            stack.multiply(new Quaternion(0, (System.currentTimeMillis() % rotSpeed2) / ((float) rotSpeed2) * 360f * (spinsReverse2 ? -1 : 1), (System.currentTimeMillis() % rotSpeed) / ((float) rotSpeed) * 360f * (spinsReverse ? -1 : 1), true));
-            //            Renderer.R2D.fill(stack, Renderer.Util.lerp(theme.getAccent(), DYING, size / 10d), -size, -size, size, size);
-            renderOutline(new Vec3d(-size, -size, -size), new Vec3d(size, size, size).multiply(2), Renderer.Util.lerp(theme.getAccent(), DYING, size / 10d), stack);
+//            stack.translate(x, y, 0);
+//            stack.multiply(new Quaternion(0, (System.currentTimeMillis() % rotSpeed2) / ((float) rotSpeed2) * 360f * (spinsReverse2 ? -1 : 1), (System.currentTimeMillis() % rotSpeed) / ((float) rotSpeed) * 360f * (spinsReverse ? -1 : 1), true));
+//            //            Renderer.R2D.fill(stack, Renderer.Util.lerp(theme.getAccent(), DYING, size / 10d), -size, -size, size, size);
+//            renderOutline(new Vec3d(-size, -size, -size), new Vec3d(size, size, size).multiply(2), Renderer.Util.lerp(theme.getAccent(), DYING, size / 10d), stack);
+            double maxDist = 100;
+            for (Particle particle : others.stream().filter(particle -> particle != this).toList()) {
+                double px = particle.x;
+                double py = particle.y;
+                double dist = Math.sqrt(Math.pow((px-this.x), 2)+Math.pow((py-this.y),2));
+                if (dist < maxDist) {
+                    long sd1 = Math.min(particle.origLife-particle.life,fadeTime);
+                    long ed1 = Math.min(particle.life,fadeTime);
+                    long do1 = Math.min(sd1,ed1);
+                    double pk1 = (do1/(double)fadeTime);
+                    double p = 1-(dist/maxDist);
+                    p = Math.min(p, Math.min(pk1, pk));
+                    Renderer.R2D.renderLine(stack,Renderer.Util.lerp(theme.getAccent(),DYING,p),this.x,this.y,px,py);
+                }
+            }
             stack.pop();
         }
 
         boolean isDead() {
-            return size <= 0;
+            return life == 0;
         }
     }
 }

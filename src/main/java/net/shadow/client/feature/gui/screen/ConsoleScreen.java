@@ -23,9 +23,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
+public class ConsoleScreen extends ClientScreen implements FastTickable {
     static final Color BACKGROUND = new Color(60, 60, 60);
-    private static CoffeeConsoleScreen instance;
+    private static ConsoleScreen instance;
     final Color background = new Color(0, 0, 0, 120);
     final List<LogEntry> logs = new ArrayList<>();
     ClientScreen parent = null;
@@ -34,21 +34,21 @@ public class CoffeeConsoleScreen extends ClientScreen implements FastTickable {
     double smoothScroll = 0;
     double lastLogsHeight = 0;
 
-    private CoffeeConsoleScreen() {
+    private ConsoleScreen() {
         super(MSAAFramebuffer.MAX_SAMPLES);
     }
 
-    public static CoffeeConsoleScreen instance(ClientScreen parent) {
+    public static ConsoleScreen instance(ClientScreen parent) {
         if (instance == null) {
-            instance = new CoffeeConsoleScreen();
+            instance = new ConsoleScreen();
         }
         instance.parent = parent;
         return instance;
     }
 
-    public static CoffeeConsoleScreen instance() {
+    public static ConsoleScreen instance() {
         if (instance == null) {
-            instance = new CoffeeConsoleScreen();
+            instance = new ConsoleScreen();
         }
         return instance;
     }

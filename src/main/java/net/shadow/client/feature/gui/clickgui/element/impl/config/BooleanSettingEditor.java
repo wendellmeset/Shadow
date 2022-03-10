@@ -9,8 +9,8 @@ import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.render.Renderer;
 
 public class BooleanSettingEditor extends ConfigBase<BooleanSetting> {
-    final double rw = 14;
-    final double rh = 5;
+    final double rw = 12;
+    final double rh = 2;
     final double rid = 4;
     final double margin = .5;
     double animProgress = 0;
@@ -42,7 +42,7 @@ public class BooleanSettingEditor extends ConfigBase<BooleanSetting> {
 
     double getPreferredX() {
         double smoothAnimProgress = easeInOutCubic(animProgress);
-        return MathHelper.lerp(smoothAnimProgress, x + margin, x + rw - rid - margin);
+        return MathHelper.lerp(smoothAnimProgress, x, x + rw - rid);
         //        return configValue.getValue() ? x + rw - rid - margin : x + margin;
     }
 

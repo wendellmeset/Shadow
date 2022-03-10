@@ -25,7 +25,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import net.shadow.client.ShadowMain;
-import net.shadow.client.feature.gui.screen.CoffeeConsoleScreen;
+import net.shadow.client.feature.gui.screen.ConsoleScreen;
 import net.shadow.client.helper.Texture;
 import net.shadow.client.helper.font.adapter.FontAdapter;
 import net.shadow.client.mixin.IMinecraftClientAccessor;
@@ -380,7 +380,7 @@ public class Utils {
             t.setStyle(t.getStyle().withColor(TextColor.fromRgb(c.getRGB())));
             if (ShadowMain.client.player != null) ShadowMain.client.player.sendMessage(t, false);
             //            if (c.equals(Color.WHITE)) c = Color.BLACK;
-            CoffeeConsoleScreen.instance().addLog(new CoffeeConsoleScreen.LogEntry(n, c));
+            ConsoleScreen.instance().addLog(new ConsoleScreen.LogEntry(n, c));
         }
 
     }

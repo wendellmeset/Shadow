@@ -77,6 +77,17 @@ public class DoubleSettingEditor extends ConfigBase<DoubleSetting> {
     }
 
     @Override
+    public boolean scroll(double mouseX, double mouseY, double amount) {
+        if (inBounds(mouseX, mouseY)) {
+            double delta = 1/(double) (configValue.getPrecision()+1);
+            delta *= amount;
+            configValue.setValue(MathHelper.clamp(Utils.Math.roundToDecimal(configValue.getValue()+delta, configValue.getPrecision()),configValue.getMin(),configValue.getMax()));
+            return true;
+        }
+        return super.scroll(mouseX, mouseY, amount);
+    }
+
+    @Override
     public boolean charTyped(char c, int mods) {
         return false;
     }

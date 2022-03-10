@@ -8,7 +8,7 @@ import net.minecraft.text.Text;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.CommandRegistry;
-import net.shadow.client.feature.gui.screen.CoffeeConsoleScreen;
+import net.shadow.client.feature.gui.screen.ConsoleScreen;
 import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.feature.module.impl.misc.InfChatLength;
 import net.shadow.client.helper.font.FontRenderers;
@@ -45,7 +45,7 @@ public class AChatScreenMixin extends Screen {
         if (s.startsWith(".")) { // filter all messages starting with .
             ShadowMain.client.inGameHud.getChatHud().addToMessageHistory(s);
             if (s.equalsIgnoreCase(".console")) {
-                Utils.TickManager.runInNTicks(2, () -> ShadowMain.client.setScreen(CoffeeConsoleScreen.instance()));
+                Utils.TickManager.runInNTicks(2, () -> ShadowMain.client.setScreen(ConsoleScreen.instance()));
             } else {
                 CommandRegistry.execute(s.substring(1)); // cut off prefix
             }

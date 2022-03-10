@@ -244,8 +244,8 @@ public class HomeScreen extends ClientScreen implements FastTickable {
         double totalHeight = 30;
         stack.translate(0, (totalHeight + padding) * heiProg, 0);
         Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 170), padding, height - padding - totalHeight, width - padding, height - padding, 10, 14);
-        title.drawString(stack, "Coffee", 10f, (float) (height - padding - totalHeight / 2f - title.getMarginHeight() / 2f), 0xFFFFFF, false);
-        double fw = title.getStringWidth("Coffee") + 5;
+        title.drawString(stack, "Shadow", 10f, (float) (height - padding - totalHeight / 2f - title.getMarginHeight() / 2f), 0xFFFFFF, false);
+        double fw = title.getStringWidth("Shadow") + 5;
         smaller.drawString(stack, "v" + version + (isDev ? "-dev" : ""), (float) (10f + fw), (float) (height - padding - totalHeight / 2f - title.getMarginHeight() / 2f) + title.getMarginHeight() - smaller.getMarginHeight() - 1, 0xFFFFFF, false);
         super.renderInternal(stack, mouseX, mouseY, delta); // render bottom row widgets
         stack.pop();

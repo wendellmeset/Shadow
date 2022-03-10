@@ -109,11 +109,14 @@ public class CategoryDisplay extends Element {
 
     @Override
     public boolean scroll(double mouseX, double mouseY, double amount) {
-
+        // not needed for now
+//        for (ModuleDisplay module : getModules()) {
+//            if (module.scroll(mouseX, mouseY, amount)) return true;
+//        }
         if (amount == 0 || inBounds(mouseX, mouseY)) {
             scroll += amount * 10;
             double contentHeight = getModules().stream().map(ModuleDisplay::getHeight).reduce(Double::sum).orElse(0d);
-            double viewerHeight = Math.min(contentHeight, 200);
+            double viewerHeight = Math.min(contentHeight, 350);
             double elScroll = contentHeight - viewerHeight;
             scroll = MathHelper.clamp(scroll, -elScroll, 0);
             smoothScroll = MathHelper.clamp(smoothScroll, -elScroll, 0);
@@ -142,7 +145,7 @@ public class CategoryDisplay extends Element {
 
         double modHeight = getModules().stream().map(ModuleDisplay::getHeight).reduce(Double::sum).orElse(0d);
         double modHeightUnclamped = modHeight;
-        modHeight = Math.min(modHeight, 200);
+        modHeight = Math.min(modHeight, 350);
         modHeight = Math.min(modHeight, modHeight * openAnim); // looks weird but works
 
         this.height = headerHeight() + modHeight; // pre calc height
@@ -187,7 +190,7 @@ public class CategoryDisplay extends Element {
             }
             matrices.pop();
             ClipStack.globalInstance.popWindow();
-            if (modHeightUnclamped > 200) {
+            if (modHeightUnclamped > 350) {
                 double elScroll = modHeightUnclamped - modHeight;
                 double scrollIndex = (smoothScroll * -1) / elScroll;
 

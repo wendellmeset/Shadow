@@ -164,7 +164,7 @@ public class LoadingScreen extends ClientScreen implements FastTickable {
             }
         }
         Renderer.R2D.renderQuad(stack, new Color(0, 0, 0, (float) opacity), 0, 0, width, height);
-        String coffee = "Loading Coffee..";
+        String coffee = "Loading Shadow...";
         double pad = 5;
         double textWidth = title.getStringWidth(coffee) + 1;
         double textHeight = title.getMarginHeight();
