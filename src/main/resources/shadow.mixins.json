@@ -18,7 +18,6 @@
     "ClientPlayerEntityMixin",
     "ClientPlayerInteractionManagerMixin",
     "CreativeInventoryScreenMixin",
-    "Deadmau5FeatureRendererMixin",
     "EntityMixin",
     "EntityModelMixin",
     "EntityRenderDispatcherMixin",
