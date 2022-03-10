@@ -1,7 +1,4 @@
-/*
- * This file is part of the atomic client distribution.
- * Copyright (c) 2021-2021 0x150.
- */
+
 
 package net.shadow.client.helper.event;
 
