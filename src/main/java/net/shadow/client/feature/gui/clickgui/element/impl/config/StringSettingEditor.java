@@ -4,6 +4,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.shadow.client.feature.config.StringSetting;
 import net.shadow.client.feature.gui.widget.RoundTextFieldWidget;
 import net.shadow.client.helper.font.FontRenderers;
+import org.lwjgl.glfw.GLFW;
 
 public class StringSettingEditor extends ConfigBase<StringSetting> {
     final RoundTextFieldWidget input;
@@ -34,6 +35,10 @@ public class StringSettingEditor extends ConfigBase<StringSetting> {
 
     @Override
     public boolean keyPressed(int keycode, int modifiers) {
+        if (keycode == GLFW.GLFW_KEY_ESCAPE && input.isFocused()) {
+            input.setFocused(false);
+            return true;
+        }
         return input.keyPressed(keycode, 0, modifiers);
     }
 

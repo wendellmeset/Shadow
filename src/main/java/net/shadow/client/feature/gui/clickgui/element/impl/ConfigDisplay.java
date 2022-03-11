@@ -52,8 +52,15 @@ public class ConfigDisplay extends Element {
 
     @Override
     public boolean clicked(double x, double y, int button) {
+        boolean returnTrue = false;
+        for (ConfigBase<?> basis : getBases()) { // notify every string setting to optionally deselect the thing
+            if (basis instanceof StringSettingEditor && basis.getConfigValue().shouldShow()) {
+                if (basis.clicked(x, y, button)) returnTrue = true;
+            }
+        }
+        if (returnTrue) return true;
         for (ConfigBase<?> basis : getBases()) {
-            if (basis.getConfigValue().shouldShow() && basis.clicked(x, y, button)) {
+            if (!(basis instanceof StringSettingEditor) && basis.getConfigValue().shouldShow() && basis.clicked(x, y, button)) {
                 return true;
             }
         }
