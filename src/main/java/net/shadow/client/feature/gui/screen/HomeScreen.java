@@ -14,12 +14,15 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.gui.FastTickable;
+import net.shadow.client.feature.gui.clickgui.ParticleRenderer;
 import net.shadow.client.feature.gui.widget.RoundButton;
 import net.shadow.client.helper.Texture;
 import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.font.adapter.impl.ClientFontRenderer;
 import net.shadow.client.helper.render.MSAAFramebuffer;
 import net.shadow.client.helper.render.Renderer;
+import net.shadow.client.helper.util.Utils;
+
 import org.apache.commons.io.IOUtils;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL40C;
@@ -46,6 +49,7 @@ public class HomeScreen extends ClientScreen implements FastTickable {
     static boolean isDev = false;
     static String version = "unknown";
     static String changelog = "";
+    final ParticleRenderer prend = new ParticleRenderer(100);
     private static HomeScreen instance;
     final ClientFontRenderer title = FontRenderers.getCustomSize(40);
     final ClientFontRenderer smaller = FontRenderers.getCustomSize(30);
@@ -64,9 +68,11 @@ public class HomeScreen extends ClientScreen implements FastTickable {
     }
 
     public static HomeScreen instance() {
-        if (instance == null) {
+        /*if (instance == null) {
             instance = new HomeScreen();
-        }
+        }*/
+        //DEVELOPMENT CODE HERE
+        instance = new HomeScreen();
         return instance;
     }
 
@@ -97,7 +103,7 @@ public class HomeScreen extends ClientScreen implements FastTickable {
     }
 
     void initWidgets() {
-        double centerWidgetsY = height - padding - 25;
+        /*double centerWidgetsY = height - padding - 25;
         double rightPad = width - padding;
         Color bg = new Color(30, 30, 30);
         RoundButton single = new RoundButton(bg, rightPad - (padding + 60), centerWidgetsY, 60, 20, "Singleplayer", () -> ShadowMain.client.setScreen(new SelectWorldScreen(this)));
@@ -107,13 +113,36 @@ public class HomeScreen extends ClientScreen implements FastTickable {
                 //                new TestScreen()
         ));
         RoundButton settings = new RoundButton(bg, rightPad - (padding + 60) * 5, centerWidgetsY, 60, 20, "Options", () -> ShadowMain.client.setScreen(new OptionsScreen(this, ShadowMain.client.options)));
-        RoundButton quit = new RoundButton(bg, rightPad - (padding + 60) * 5 - padding - 20, centerWidgetsY, 20, 20, "X", ShadowMain.client::scheduleStop);
+        //RoundButton quit = new RoundButton(bg, rightPad - (padding + 60) * 5 - padding - 20, centerWidgetsY, 20, 20, "X", ShadowMain.client::scheduleStop); people can learn to use the x button at the top of the frame, plus it looks ugly having this first
         addDrawableChild(single);
         addDrawableChild(multi);
         addDrawableChild(settings);
         addDrawableChild(alts);
         addDrawableChild(realms);
-        addDrawableChild(quit);
+        //addDrawableChild(quit);*/
+
+        //TEST GUI - REVERT / CHANGE IF WANTED 
+
+        //double centerWidgetsY = height - padding - 25;
+        double centerWidgetsX = Utils.halfWidth() - 65;
+        double widgets = Utils.halfHeight() + 120 + padding;
+        double widgetheight = 40;
+        //double rightPad = width - padding;
+        Color bg = new Color(30, 30, 30);
+        RoundButton single = new RoundButton(bg, centerWidgetsX, widgets - (widgetheight * 6), 130, 30, "Singleplayer", () -> ShadowMain.client.setScreen(new SelectWorldScreen(this)));
+        RoundButton multi = new RoundButton(bg, centerWidgetsX, widgets - (widgetheight * 5), 130, 30, "Multiplayer", () -> ShadowMain.client.setScreen(new MultiplayerScreen(this)));
+        RoundButton realms = new RoundButton(bg, centerWidgetsX, widgets - (widgetheight * 4), 130, 30, "ClickGUI", () -> ShadowMain.client.setScreen(new RealmsMainScreen(this)));
+        RoundButton alts = new RoundButton(bg, centerWidgetsX, widgets - (widgetheight * 3), 130, 30, "Alts", () -> ShadowMain.client.setScreen(AltManagerScreen.instance()
+                //                new TestScreen()
+        ));
+        RoundButton settings = new RoundButton(bg, centerWidgetsX, widgets - (widgetheight * 2), 130, 30, "Options", () -> ShadowMain.client.setScreen(new OptionsScreen(this, ShadowMain.client.options)));
+        RoundButton molenheimer = new RoundButton(bg, centerWidgetsX, widgets - (widgetheight * 1), 130, 30, "Molenheimer", () -> {});
+        addDrawableChild(single);
+        addDrawableChild(multi);
+        addDrawableChild(settings);
+        addDrawableChild(alts);
+        addDrawableChild(realms);
+        addDrawableChild(molenheimer);
     }
 
     @Override
@@ -166,6 +195,8 @@ public class HomeScreen extends ClientScreen implements FastTickable {
 
     @Override
     public void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
+
+        //may want to put this on a fasttickable
         double initProg = this.initProg * 2;
 
         Renderer.R2D.renderQuad(stack, new Color(20, 20, 20), 0, 0, width, height);
@@ -173,7 +204,7 @@ public class HomeScreen extends ClientScreen implements FastTickable {
         RenderSystem.setShaderTexture(0, background);
         Renderer.R2D.renderTexture(stack, 0, 0, width, height, 0, 0, width, height, width, height);
         RenderSystem.defaultBlendFunc();
-
+        prend.render(stack);
         stack.push();
         double ap = 1 - easeOutBack(MathHelper.clamp(initProg, .5, 1.5) - .5);
         double h = padding + propFr.getMarginHeight() + 2 + changelog.split("\n").length * FontRenderers.getRenderer().getMarginHeight() + padding;
@@ -238,15 +269,16 @@ public class HomeScreen extends ClientScreen implements FastTickable {
             propsOffset += prop.cfr().getMarginHeight();
         }
         stack.pop();
-
+        double fw = title.getStringWidth("Shadow") + 5;
         stack.push();
         double heiProg = 1 - easeOutBack(MathHelper.clamp(initProg, 0, 1));
         double totalHeight = 30;
+        String verstring = "v" + version + (isDev ? "-dev" : "");
         stack.translate(0, (totalHeight + padding) * heiProg, 0);
-        Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 170), padding, height - padding - totalHeight, width - padding, height - padding, 10, 14);
+        Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 170), padding, height - padding - totalHeight, fw + FontRenderers.getRenderer().getStringWidth(verstring) + padding * 8, height - padding, 10, 14);
+        Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 170), Utils.halfWidth() - 75, Utils.halfHeight() - 125, Utils.halfWidth() + 75, Utils.halfHeight() + 125, 10, 14);
         title.drawString(stack, "Shadow", 10f, (float) (height - padding - totalHeight / 2f - title.getMarginHeight() / 2f), 0xFFFFFF, false);
-        double fw = title.getStringWidth("Shadow") + 5;
-        smaller.drawString(stack, "v" + version + (isDev ? "-dev" : ""), (float) (10f + fw), (float) (height - padding - totalHeight / 2f - title.getMarginHeight() / 2f) + title.getMarginHeight() - smaller.getMarginHeight() - 1, 0xFFFFFF, false);
+        smaller.drawString(stack, verstring, (float) (10f + fw), (float) (height - padding - totalHeight / 2f - title.getMarginHeight() / 2f) + title.getMarginHeight() - smaller.getMarginHeight() - 1, 0xFFFFFF, false);
         super.renderInternal(stack, mouseX, mouseY, delta); // render bottom row widgets
         stack.pop();
 

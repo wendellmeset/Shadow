@@ -57,6 +57,14 @@ public class Utils {
         }
     }
 
+    public static int halfHeight(){
+        return ShadowMain.client.getWindow().getScaledHeight() / 2;
+    }
+
+    public static int halfWidth(){
+        return ShadowMain.client.getWindow().getScaledWidth() / 2;
+    }
+
     public static void setClientTps(float tps) {
         IRenderTickCounterAccessor accessor = ((IRenderTickCounterAccessor) ((IMinecraftClientAccessor) ShadowMain.client).getRenderTickCounter());
         accessor.setTickTime(1000f / tps);
