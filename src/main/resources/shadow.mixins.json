@@ -46,6 +46,7 @@
     "ParticleManagerMixin",
     "ParticleS2CAccessor",
     "PlayerEntityMixin",
+    "ButtonWidgetMixin",
     "PlayerEntityRendererMixin",
     "PlayerInteractEntityC2SPacketAccessor",
     "SessionAccessor",

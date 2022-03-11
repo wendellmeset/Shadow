@@ -11,7 +11,7 @@
   "contributors": [],
   "contact": {},
   "license": "All-Rights-Reserved",
-  "icon": "assets/coffeeclient/icon.png",
+  "icon": "assets/shadow/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
