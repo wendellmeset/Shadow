@@ -195,7 +195,7 @@ public class Hud extends Module {
         double height = FontRenderers.getRenderer().getMarginHeight()+2;
         int i = (int) Math.round(48/1.3d);
         int j = (int) Math.round(194/1.3d);
-        Renderer.R2D.renderRoundedQuad(ms, ThemeManager.getMainTheme().getModule(), rootX - 5, -5, rootX + width + 5, rootY + height + i + 3 + 5, 7, 14);
+        Renderer.R2D.renderRoundedQuad(ms, Renderer.Util.modify(ThemeManager.getMainTheme().getModule(), -1, -1, -1, 200), rootX - 5, -5, rootX + width + 5, rootY + height + i + 3 + 5, 7, 14);
         Renderer.R2D.renderRoundedQuad(ms, ThemeManager.getMainTheme().getInactive(), rootX + 1, rootY + i + 3, rootX + width, rootY + height + i + 3, 5, 11);
         RenderSystem.defaultBlendFunc();
         RenderSystem.enableBlend();
