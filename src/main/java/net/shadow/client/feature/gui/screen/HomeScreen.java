@@ -39,8 +39,8 @@ import java.net.http.HttpResponse;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
+import java.util.List;
 
 public class HomeScreen extends ClientScreen implements FastTickable {
     static final double padding = 5;
@@ -68,11 +68,10 @@ public class HomeScreen extends ClientScreen implements FastTickable {
     }
 
     public static HomeScreen instance() {
-        /*if (instance == null) {
+        if (instance == null) {
             instance = new HomeScreen();
-        }*/
-        //DEVELOPMENT CODE HERE
-        instance = new HomeScreen();
+        }
+
         return instance;
     }
 
@@ -101,48 +100,37 @@ public class HomeScreen extends ClientScreen implements FastTickable {
         clearChildren();
         initWidgets();
     }
-
+    double widgetsHeight = 0;
+    double widgetsWidth = 130;
     void initWidgets() {
-        /*double centerWidgetsY = height - padding - 25;
-        double rightPad = width - padding;
-        Color bg = new Color(30, 30, 30);
-        RoundButton single = new RoundButton(bg, rightPad - (padding + 60), centerWidgetsY, 60, 20, "Singleplayer", () -> ShadowMain.client.setScreen(new SelectWorldScreen(this)));
-        RoundButton multi = new RoundButton(bg, rightPad - (padding + 60) * 2, centerWidgetsY, 60, 20, "Multiplayer", () -> ShadowMain.client.setScreen(new MultiplayerScreen(this)));
-        RoundButton realms = new RoundButton(bg, rightPad - (padding + 60) * 3, centerWidgetsY, 60, 20, "Realms", () -> ShadowMain.client.setScreen(new RealmsMainScreen(this)));
-        RoundButton alts = new RoundButton(bg, rightPad - (padding + 60) * 4, centerWidgetsY, 60, 20, "Alts", () -> ShadowMain.client.setScreen(AltManagerScreen.instance()
-                //                new TestScreen()
-        ));
-        RoundButton settings = new RoundButton(bg, rightPad - (padding + 60) * 5, centerWidgetsY, 60, 20, "Options", () -> ShadowMain.client.setScreen(new OptionsScreen(this, ShadowMain.client.options)));
-        //RoundButton quit = new RoundButton(bg, rightPad - (padding + 60) * 5 - padding - 20, centerWidgetsY, 20, 20, "X", ShadowMain.client::scheduleStop); people can learn to use the x button at the top of the frame, plus it looks ugly having this first
-        addDrawableChild(single);
-        addDrawableChild(multi);
-        addDrawableChild(settings);
-        addDrawableChild(alts);
-        addDrawableChild(realms);
-        //addDrawableChild(quit);*/
 
         //TEST GUI - REVERT / CHANGE IF WANTED 
 
         //double centerWidgetsY = height - padding - 25;
-        double centerWidgetsX = Utils.halfWidth() - 65;
-        double widgets = Utils.halfHeight() + 120 + padding;
-        double widgetheight = 40;
-        //double rightPad = width - padding;
-        Color bg = new Color(30, 30, 30);
-        RoundButton single = new RoundButton(bg, centerWidgetsX, widgets - (widgetheight * 6), 130, 30, "Singleplayer", () -> ShadowMain.client.setScreen(new SelectWorldScreen(this)));
-        RoundButton multi = new RoundButton(bg, centerWidgetsX, widgets - (widgetheight * 5), 130, 30, "Multiplayer", () -> ShadowMain.client.setScreen(new MultiplayerScreen(this)));
-        RoundButton realms = new RoundButton(bg, centerWidgetsX, widgets - (widgetheight * 4), 130, 30, "ClickGUI", () -> ShadowMain.client.setScreen(new RealmsMainScreen(this)));
-        RoundButton alts = new RoundButton(bg, centerWidgetsX, widgets - (widgetheight * 3), 130, 30, "Alts", () -> ShadowMain.client.setScreen(AltManagerScreen.instance()
+        double widPad = 6;
+
+        double centerWidgetsX = Utils.halfWidth() - widgetsWidth/2d;
+        double widgetHeight = 30;
+
+        List<Map.Entry<String, Runnable>> buttonsMap = new ArrayList<>();
+        buttonsMap.add(new AbstractMap.SimpleEntry<>("Singleplayer", () -> ShadowMain.client.setScreen(new SelectWorldScreen(this))));
+        buttonsMap.add(new AbstractMap.SimpleEntry<>("Multiplayer", () -> ShadowMain.client.setScreen(new MultiplayerScreen(this))));
+        buttonsMap.add(new AbstractMap.SimpleEntry<>("Realms", () -> ShadowMain.client.setScreen(new RealmsMainScreen(this))));
+        buttonsMap.add(new AbstractMap.SimpleEntry<>("Alts", () -> ShadowMain.client.setScreen(AltManagerScreen.instance()
                 //                new TestScreen()
-        ));
-        RoundButton settings = new RoundButton(bg, centerWidgetsX, widgets - (widgetheight * 2), 130, 30, "Options", () -> ShadowMain.client.setScreen(new OptionsScreen(this, ShadowMain.client.options)));
-        RoundButton molenheimer = new RoundButton(bg, centerWidgetsX, widgets - (widgetheight * 1), 130, 30, "Molenheimer", () -> {});
-        addDrawableChild(single);
-        addDrawableChild(multi);
-        addDrawableChild(settings);
-        addDrawableChild(alts);
-        addDrawableChild(realms);
-        addDrawableChild(molenheimer);
+        )));
+        buttonsMap.add(new AbstractMap.SimpleEntry<>("Settings", () -> ShadowMain.client.setScreen(new OptionsScreen(this, ShadowMain.client.options))));
+        double totalHeight = buttonsMap.size()*(widgetHeight+widPad)-widPad;
+        widgetsHeight = totalHeight;
+        double yOffset = 0;
+        Color bg = new Color(30, 30, 30);
+        for (Map.Entry<String, Runnable> stringRunnableEntry : buttonsMap) {
+            RoundButton rb = new RoundButton(bg,centerWidgetsX,Utils.halfHeight()-totalHeight/2d+yOffset,widgetsWidth,widgetHeight,stringRunnableEntry.getKey(),stringRunnableEntry.getValue());
+            yOffset += rb.getHeight() + widPad;
+            addDrawableChild(rb);
+        }
+
+
     }
 
     @Override
@@ -276,9 +264,14 @@ public class HomeScreen extends ClientScreen implements FastTickable {
         String verstring = "v" + version + (isDev ? "-dev" : "");
         stack.translate(0, (totalHeight + padding) * heiProg, 0);
         Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 170), padding, height - padding - totalHeight, fw + FontRenderers.getRenderer().getStringWidth(verstring) + padding * 8, height - padding, 10, 14);
-        Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 170), Utils.halfWidth() - 75, Utils.halfHeight() - 125, Utils.halfWidth() + 75, Utils.halfHeight() + 125, 10, 14);
+
         title.drawString(stack, "Shadow", 10f, (float) (height - padding - totalHeight / 2f - title.getMarginHeight() / 2f), 0xFFFFFF, false);
         smaller.drawString(stack, verstring, (float) (10f + fw), (float) (height - padding - totalHeight / 2f - title.getMarginHeight() / 2f) + title.getMarginHeight() - smaller.getMarginHeight() - 1, 0xFFFFFF, false);
+        stack.pop();
+        stack.push();
+        stack.translate(0, (height-(Utils.halfHeight() - 125)) * heiProg, 0);
+        double pad = 6;
+        Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 170), Utils.halfWidth() - widgetsWidth/2d - pad, Utils.halfHeight() - widgetsHeight/2d-pad, Utils.halfWidth() + widgetsWidth/2d + pad, Utils.halfHeight() + widgetsHeight/2d+pad, 5, 20);
         super.renderInternal(stack, mouseX, mouseY, delta); // render bottom row widgets
         stack.pop();
 

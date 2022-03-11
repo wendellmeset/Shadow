@@ -38,9 +38,9 @@ public abstract class ButtonWidgetMixin {
     @Inject(method = "renderButton", at = @At("HEAD"), cancellable = true)
     public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         //if (!UnloadModule.loaded) return;
-        Renderer.R2D.renderRoundedQuad(matrices, this.isHovered() ? selectedColor : unselectedColor, x, y, x + width, y + height, 5, 7);
-        FontRenderers.getRenderer().drawCenteredString(matrices, this.getMessage().getString(), this.x + this.width / 2f, this.y + (this.height - 9) / 2f, 0xFFFFFF);
-        ci.cancel();
+//        Renderer.R2D.renderRoundedQuad(matrices, this.isHovered() ? selectedColor : unselectedColor, x, y, x + width, y + height, 5, 7);
+//        FontRenderers.getRenderer().drawCenteredString(matrices, this.getMessage().getString(), this.x + this.width / 2f, this.y + (this.height - 9) / 2f, 0xFFFFFF);
+//        ci.cancel();
     }
 
 

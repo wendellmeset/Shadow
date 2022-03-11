@@ -163,9 +163,10 @@ public class Hud extends Module {
 
     void drawTopLeft(MatrixStack ms) {
         RenderSystem.setShaderTexture(0, LOGO);
-        int i = (int) Math.round(48 * (4 / 4));
-        int j = (int) Math.round(194 * (4 / 4));
-        DrawableHelper.drawTexture(ms, 3, 3, 0, 0, j, i, j, i);
+        int i = (int) Math.round(48/1.5d);
+        int j = (int) Math.round(194/1.5d);
+//        DrawableHelper.drawTexture(ms, 3, 3, 0, 0, j, i, j, i);
+        Renderer.R2D.renderTexture(ms,3,3,j,i,0,0,j,i,j,i);
         double rootX = 0;
         double rootY = 6;
         List<String> values = new ArrayList<>();
@@ -193,13 +194,13 @@ public class Hud extends Module {
         String drawStr = String.join(" | ", values);
         double width = FontRenderers.getRenderer().getStringWidth(drawStr) + 5;
         if (values.isEmpty()) {
-            width = 0;
+            return;
         }
-        double height = FontRenderers.getRenderer().getMarginHeight();
+        double height = FontRenderers.getRenderer().getMarginHeight()+2;
 
-        Renderer.R2D.renderQuad(ms, ThemeManager.getMainTheme().getActive(), rootX , rootY + i + 5, rootX + 1, rootY + height + i + 5);
-        Renderer.R2D.renderQuad(ms, ThemeManager.getMainTheme().getModule(), rootX + 1, rootY + i + 5, rootX + width, rootY + height + i + 5);
-        FontRenderers.getRenderer().drawString(ms, drawStr, rootX + 2, rootY + height / 2d - FontRenderers.getRenderer().getMarginHeight() / 2d + i + 5, 0xAAAAAA);
+        Renderer.R2D.renderQuad(ms, ThemeManager.getMainTheme().getActive(), rootX , rootY + i + 3, rootX + 1, rootY + height + i + 3);
+        Renderer.R2D.renderQuad(ms, ThemeManager.getMainTheme().getModule(), rootX + 1, rootY + i + 3, rootX + width, rootY + height + i + 3);
+        FontRenderers.getRenderer().drawString(ms, drawStr, rootX + 2, rootY + height / 2d - FontRenderers.getRenderer().getMarginHeight() / 2d + i + 3, 0xAAAAAA);
     }
 
     void drawModuleList(MatrixStack ms) {

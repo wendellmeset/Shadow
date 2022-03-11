@@ -6,10 +6,10 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 
-public class Deadmau5 extends Module {
+public class MouseEars extends Module {
 
-    public Deadmau5() {
-        super("Deadmau5", "Shows the Deadmau5 skin ears for every player", ModuleType.FUN);
+    public MouseEars() {
+        super("MouseEars", "Shows the Deadmau5 skin ears for every player", ModuleType.FUN);
     }
 
     @Override

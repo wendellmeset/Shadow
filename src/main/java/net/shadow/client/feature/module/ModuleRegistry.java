@@ -65,7 +65,7 @@ public class ModuleRegistry {
         modules.add(new AntiAntiXray());
         modules.add(new PingSpoof());
         modules.add(new AutoAttack());
-        //modules.add(new Deadmau5());
+        modules.add(new MouseEars());
         modules.add(new Spinner());
         modules.add(new AllowFormatCodes());
         modules.add(new InfChatLength());
