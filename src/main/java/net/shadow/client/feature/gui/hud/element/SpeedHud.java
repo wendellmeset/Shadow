@@ -37,8 +37,12 @@ public class SpeedHud extends HudElement {
                 double max = Math.max(0.7, speeds.stream().max(dc).orElse(1d));
                 double min = 0;
 
-
-                double previous = height - ((speeds.get(0) - min) / max) * height;
+                double previous = 0;
+                if(speeds.size() > 0){
+                    previous = height - ((speeds.get(0) - min) / max) * height;
+                }else{
+                    previous = 0;
+                }
                 for (int i = 1; i < speeds.size(); i++) {
                     double ppr = Math.sin(Math.toRadians(((double) i / speeds.size() + (System.currentTimeMillis() % 3000) / -3000d) * 360 * 3)) + 1;
                     ppr /= 2d;
