@@ -162,11 +162,7 @@ public class Hud extends Module {
     }
 
     void drawTopLeft(MatrixStack ms) {
-        RenderSystem.setShaderTexture(0, LOGO);
-        int i = (int) Math.round(48/1.5d);
-        int j = (int) Math.round(194/1.5d);
 //        DrawableHelper.drawTexture(ms, 3, 3, 0, 0, j, i, j, i);
-        Renderer.R2D.renderTexture(ms,3,3,j,i,0,0,j,i,j,i);
         double rootX = 0;
         double rootY = 6;
         List<String> values = new ArrayList<>();
@@ -197,9 +193,15 @@ public class Hud extends Module {
             return;
         }
         double height = FontRenderers.getRenderer().getMarginHeight()+2;
-
-        Renderer.R2D.renderQuad(ms, ThemeManager.getMainTheme().getActive(), rootX , rootY + i + 3, rootX + 1, rootY + height + i + 3);
-        Renderer.R2D.renderQuad(ms, ThemeManager.getMainTheme().getModule(), rootX + 1, rootY + i + 3, rootX + width, rootY + height + i + 3);
+        int i = (int) Math.round(48/1.3d);
+        int j = (int) Math.round(194/1.3d);
+        Renderer.R2D.renderRoundedQuad(ms, ThemeManager.getMainTheme().getModule(), rootX - 5, -5, rootX + width + 5, rootY + height + i + 3 + 5, 7, 14);
+        Renderer.R2D.renderRoundedQuad(ms, ThemeManager.getMainTheme().getInactive(), rootX + 1, rootY + i + 3, rootX + width, rootY + height + i + 3, 5, 11);
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.enableBlend();
+        RenderSystem.setShaderTexture(0, LOGO);
+        Renderer.R2D.renderTexture(ms,(rootX + width + 5) - j + 12,5,j,i,0,0,j,i,j,i);
+        //Renderer.R2D.renderQuad(ms, ThemeManager.getMainTheme().getActive(), rootX , rootY + i + 3, rootX + 1, rootY + height + i + 3);
         FontRenderers.getRenderer().drawString(ms, drawStr, rootX + 2, rootY + height / 2d - FontRenderers.getRenderer().getMarginHeight() / 2d + i + 3, 0xAAAAAA);
     }
 
