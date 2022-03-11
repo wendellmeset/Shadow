@@ -42,9 +42,9 @@ public class AChatScreenMixin extends Screen {
 
     @Redirect(method = "keyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ChatScreen;sendMessage(Ljava/lang/String;)V"))
     void atomic_interceptChatMessage(ChatScreen instance, String s) {
-        if (s.startsWith(".")) { // filter all messages starting with .
+        if (s.startsWith(">")) { // filter all messages starting with .
             ShadowMain.client.inGameHud.getChatHud().addToMessageHistory(s);
-            if (s.equalsIgnoreCase(".console")) {
+            if (s.equalsIgnoreCase(">console")) {
                 Utils.TickManager.runInNTicks(2, () -> ShadowMain.client.setScreen(ConsoleScreen.instance()));
             } else {
                 CommandRegistry.execute(s.substring(1)); // cut off prefix
@@ -132,15 +132,15 @@ public class AChatScreenMixin extends Screen {
             cmdSplit = cmdSplitNew;
         }
         cmdSplit[cmdSplit.length - 1] = suggestions.get(0);
-        chatField.setText("." + String.join(" ", cmdSplit) + " ");
+        chatField.setText(">" + String.join(" ", cmdSplit) + " ");
         chatField.setCursorToEnd();
     }
 
     @Inject(method = "render", at = @At("RETURN"))
     void renderText(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         String t = chatField.getText();
-        if (t.startsWith(".")) {
-            String note = "If you need a bigger console, do \".console\"";
+        if (t.startsWith(">")) {
+            String note = "If you need a bigger console, do \">console\"";
             double len = FontRenderers.getRenderer().getStringWidth(note) + 1;
             FontRenderers.getRenderer().drawString(matrices, note, width - len - 2, height - 15 - FontRenderers.getRenderer().getMarginHeight(), 0xFFFFFF);
             MSAAFramebuffer.use(MSAAFramebuffer.MAX_SAMPLES, () -> {
@@ -151,7 +151,7 @@ public class AChatScreenMixin extends Screen {
 
     @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true)
     void pressed(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> cir) {
-        if (keyCode == GLFW.GLFW_KEY_TAB && chatField.getText().startsWith(".")) {
+        if (keyCode == GLFW.GLFW_KEY_TAB && chatField.getText().startsWith(">")) {
             autocomplete();
             cir.setReturnValue(true);
         }
