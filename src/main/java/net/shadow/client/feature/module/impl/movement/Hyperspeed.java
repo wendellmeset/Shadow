@@ -15,7 +15,6 @@ public class Hyperspeed extends Module {
 
     @Override
     public void tick() {
-        //        CoffeeClientMain.client.player.tickMovement();
     }
 
     @Override

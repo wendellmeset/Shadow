@@ -41,7 +41,6 @@ public class AntiAnvil extends Module {
                 if (yDist > 0 && yDist < -anvil.getVelocity().y * 2) { // anvil is 0-1 blocks above our feet
                     PlayerMoveC2SPacket p = new PlayerMoveC2SPacket.PositionAndOnGround(ppos.x, ppos.y + 1, ppos.z, false);
                     Objects.requireNonNull(ShadowMain.client.getNetworkHandler()).sendPacket(p);
-                    //                    CoffeeClientMain.client.player.updatePosition(ppos.x,ppos.y+1,ppos.z);
                 }
             }
         }

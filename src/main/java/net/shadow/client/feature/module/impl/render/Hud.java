@@ -1,8 +1,10 @@
 package net.shadow.client.feature.module.impl.render;
 
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.shadow.client.ShadowMain;
@@ -14,6 +16,7 @@ import net.shadow.client.feature.gui.notifications.NotificationRenderer;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.feature.module.ModuleType;
+import net.shadow.client.helper.Texture;
 import net.shadow.client.helper.Timer;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
@@ -34,9 +37,12 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+
 public class Hud extends Module {
     public static double currentTps = 0;
     static ClientFontRenderer titleFr;
+    final Identifier LOGO = new Texture("logo.png");
     public final BooleanSetting speed = this.config.create(new BooleanSetting.Builder(true).name("Speed").description("Show your current velocity").get());
     final DateFormat minSec = new SimpleDateFormat("mm:ss");
     final BooleanSetting fps = this.config.create(new BooleanSetting.Builder(true).name("FPS").description("Whether to show FPS").get());
@@ -58,17 +64,9 @@ public class Hud extends Module {
         Events.registerEventHandler(EventType.PACKET_RECEIVE, event1 -> {
             PacketEvent event = (PacketEvent) event1;
             if (event.getPacket() instanceof WorldTimeUpdateS2CPacket) {
-                //                currentTps = Utils.Math.roundToDecimal(calcTps(System.currentTimeMillis() - lastTimePacketReceived), 2);
                 lastTimePacketReceived = System.currentTimeMillis();
             }
         });
-    }
-
-    static ClientFontRenderer getTitleFr() {
-        if (titleFr == null) {
-            titleFr = FontRenderers.getCustomSize(20);
-        }
-        return titleFr;
     }
 
     double calcTps(double n) {
@@ -152,7 +150,6 @@ public class Hud extends Module {
         }
         ms.push();
         ms.translate(0, heightOffsetLeft, 0);
-        drawTopLeft(ms);
         ms.pop();
 
         HudRenderer.getInstance().render();
@@ -160,9 +157,15 @@ public class Hud extends Module {
 
     @Override
     public void onHudRender() {
+        MatrixStack ms = Renderer.R3D.getEmptyMatrixStack();
+        drawTopLeft(ms);
     }
 
     void drawTopLeft(MatrixStack ms) {
+        RenderSystem.setShaderTexture(0, LOGO);
+        int i = (int) Math.round(48 * (4 / 4));
+        int j = (int) Math.round(194 * (4 / 4));
+        DrawableHelper.drawTexture(ms, 3, 3, 0, 0, j, i, j, i);
         double rootX = 0;
         double rootY = 6;
         List<String> values = new ArrayList<>();
@@ -188,17 +191,15 @@ public class Hud extends Module {
             values.add(bp.getX() + " " + bp.getY() + " " + bp.getZ());
         }
         String drawStr = String.join(" | ", values);
-        double titleWidth = getTitleFr().getStringWidth("Shadow");
-        double width = titleWidth + 5 + FontRenderers.getRenderer().getStringWidth(drawStr) + 5;
+        double width = FontRenderers.getRenderer().getStringWidth(drawStr) + 5;
         if (values.isEmpty()) {
-            width = titleWidth + 5;
+            width = 0;
         }
-        double height = Math.max(getTitleFr().getMarginHeight(), FontRenderers.getRenderer().getMarginHeight()) + 2;
+        double height = FontRenderers.getRenderer().getMarginHeight();
 
-        Renderer.R2D.renderQuad(ms, ThemeManager.getMainTheme().getActive(), rootX, rootY, rootX + 1, rootY + height);
-        Renderer.R2D.renderQuad(ms, ThemeManager.getMainTheme().getModule(), rootX + 1, rootY, rootX + width, rootY + height);
-        getTitleFr().drawString(ms, "Shadow", rootX + 2, rootY + height / 2d - getTitleFr().getMarginHeight() / 2d, 0xFFFFFF);
-        FontRenderers.getRenderer().drawString(ms, drawStr, rootX + 2 + titleWidth + 5, rootY + height / 2d - FontRenderers.getRenderer().getMarginHeight() / 2d, 0xAAAAAA);
+        Renderer.R2D.renderQuad(ms, ThemeManager.getMainTheme().getActive(), rootX , rootY + i + 5, rootX + 1, rootY + height + i + 5);
+        Renderer.R2D.renderQuad(ms, ThemeManager.getMainTheme().getModule(), rootX + 1, rootY + i + 5, rootX + width, rootY + height + i + 5);
+        FontRenderers.getRenderer().drawString(ms, drawStr, rootX + 2, rootY + height / 2d - FontRenderers.getRenderer().getMarginHeight() / 2d + i + 5, 0xAAAAAA);
     }
 
     void drawModuleList(MatrixStack ms) {

@@ -961,7 +961,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
                     storage.valid = true;
                     storage.cachedUuid = UUID.randomUUID();
                     storage.cachedName = storage.email;
-                    storage.accessToken = "coffee";
+                    storage.accessToken = "shadow";
                     return;
                 }
                 if (token == null) {

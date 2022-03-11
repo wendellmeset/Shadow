@@ -96,7 +96,7 @@ public class TabGui extends Module {
     @Override
     public void onHudRender() {
         double innerPad = 5;
-        double heightOffsetLeft = 6 + Math.max(Hud.getTitleFr().getMarginHeight(), FontRenderers.getRenderer().getMarginHeight()) + 2 + innerPad;
+        double heightOffsetLeft = 6 + Math.max(16, FontRenderers.getRenderer().getMarginHeight()) + 2 + innerPad;
         if (ShadowMain.client.options.debugEnabled) {
             double heightAccordingToMc = 9;
             List<String> lt = ((IDebugHudAccessor) ((IInGameHudAccessor) ShadowMain.client.inGameHud).getDebugHud()).callGetLeftText();

@@ -65,6 +65,7 @@ public class ShadowMain implements ModInitializer {
         log(Level.INFO, "Initializing");
 
         registerTexture(new ResourceEntry(new Texture("background.jpg"), "https://github.com/Saturn5Vfive/shadow-fs/blob/main/bgfull.png?raw=true"));
+        registerTexture(new ResourceEntry(new Texture("logo.png"), "https://raw.githubusercontent.com/Saturn5Vfive/shadow-fs/main/shadowhud.png"));
         registerTexture(new ResourceEntry(new Texture("notif/error.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/error.png"));
         registerTexture(new ResourceEntry(new Texture("notif/info.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/info.png"));
         registerTexture(new ResourceEntry(new Texture("notif/success.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/success.png"));

@@ -164,13 +164,13 @@ public class LoadingScreen extends ClientScreen implements FastTickable {
             }
         }
         Renderer.R2D.renderQuad(stack, new Color(0, 0, 0, (float) opacity), 0, 0, width, height);
-        String coffee = "Loading Shadow...";
+        String shadow = "Loading Shadow...";
         double pad = 5;
-        double textWidth = title.getStringWidth(coffee) + 1;
+        double textWidth = title.getStringWidth(shadow) + 1;
         double textHeight = title.getMarginHeight();
         double centerY1 = height / 2d;
         double centerX = width / 2d;
-        title.drawString(stack, coffee, centerX - textWidth / 2f, centerY1 - textHeight / 2d, new Color(1f, 1f, 1f, (float) opacity).getRGB());
+        title.drawString(stack, shadow, centerX - textWidth / 2f, centerY1 - textHeight / 2d, new Color(1f, 1f, 1f, (float) opacity).getRGB());
         double maxWidth = 200;
         double rWidth = smoothProgress * maxWidth;
         double barHeight = 3;

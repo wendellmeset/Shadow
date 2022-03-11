@@ -4,7 +4,7 @@ import net.minecraft.util.Identifier;
 
 public class Texture extends Identifier {
     public Texture(String path) {
-        super("coffee", validatePath(path));
+        super("shadow", validatePath(path));
     }
 
     public Texture(Identifier i) {
