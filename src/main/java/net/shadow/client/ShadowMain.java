@@ -1,5 +1,6 @@
 package net.shadow.client;
 
+import coffeeprotect.SkipObfuscation;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Element;
@@ -18,7 +19,6 @@ import net.shadow.client.helper.font.adapter.impl.ClientFontRenderer;
 import net.shadow.client.helper.font.render.GlyphPageFontRenderer;
 import net.shadow.client.helper.manager.ConfigManager;
 import net.shadow.client.helper.util.Utils;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,6 +27,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+@SkipObfuscation
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class ShadowMain implements ModInitializer {
 
@@ -40,7 +41,6 @@ public class ShadowMain implements ModInitializer {
     public static ShadowMain INSTANCE;
     public static Thread MODULE_FTTICKER;
     public static Thread FAST_TICKER;
-    public static String sessionKey = null;
     public boolean initialized = false;
 
     public static void log(Level level, String message) {
@@ -49,14 +49,6 @@ public class ShadowMain implements ModInitializer {
 
     public static void registerTexture(ResourceEntry entry) {
         resources.add(entry);
-    }
-
-    public static String generateOrGetSessionToken() {
-        if (sessionKey != null) {
-            return sessionKey;
-        }
-        sessionKey = RandomStringUtils.randomAlphabetic(32);
-        return sessionKey;
     }
 
     @Override
