@@ -200,7 +200,7 @@ public class Hud extends Module {
         RenderSystem.defaultBlendFunc();
         RenderSystem.enableBlend();
         RenderSystem.setShaderTexture(0, LOGO);
-        Renderer.R2D.renderTexture(ms,(rootX + width + 5) - j + 12,5,j,i,0,0,j,i,j,i);
+        Renderer.R2D.renderTexture(ms,((rootX + width + 5) / 2) - (j / 2) + 15,5,j,i,0,0,j,i,j,i);
         //Renderer.R2D.renderQuad(ms, ThemeManager.getMainTheme().getActive(), rootX , rootY + i + 3, rootX + 1, rootY + height + i + 3);
         FontRenderers.getRenderer().drawString(ms, drawStr, rootX + 2, rootY + height / 2d - FontRenderers.getRenderer().getMarginHeight() / 2d + i + 3, 0xAAAAAA);
     }
