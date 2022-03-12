@@ -52,6 +52,10 @@ public class CommandRegistry {
         commands.add(new Backdoor());
         commands.add(new Ban());
         commands.add(new Boot());
+        commands.add(new CheckCmd());
+        commands.add(new ClientFlood());
+        commands.add(new CPerm());
+        commands.add(new Crash());
     }
 
     public static List<Command> getCommands() {
