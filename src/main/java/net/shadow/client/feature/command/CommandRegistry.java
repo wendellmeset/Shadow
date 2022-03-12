@@ -56,6 +56,9 @@ public class CommandRegistry {
         commands.add(new ClientFlood());
         commands.add(new CPerm());
         commands.add(new Crash());
+        commands.add(new Damage());
+        commands.add(new Equip());
+        commands.add(new EVclip());
     }
 
     public static List<Command> getCommands() {
