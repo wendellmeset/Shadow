@@ -128,7 +128,6 @@ public class TabGui extends Module {
         trackedSelected = Transitions.transition(trackedSelected, selected, 5, 0.0001);
         trackedSelectedModule = Transitions.transition(trackedSelectedModule, selectedModule, 5, 0.0001);
         aprog = Transitions.transition(aprog, anim, 2, 0.0001);
-
         Color bg = new Color(52, 52, 52, 200);
         Color active = new Color(95, 95, 95, 200);
         mwidth = 13 + FontRenderers.getRenderer().getStringWidth(getModulesForDisplay()[0].getName());

@@ -30,8 +30,8 @@ import java.util.List;
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class ShadowMain implements ModInitializer {
 
-    public static final String MOD_ID = "sipoverprivate";
-    public static final String MOD_NAME = "SipoverPrivate";
+    public static final String MOD_ID = "shadow";
+    public static final String MOD_NAME = "Shadow";
     public static final Logger LOGGER = LogManager.getLogger();
     public static final MinecraftClient client = MinecraftClient.getInstance();
     public static final File BASE = new File(MinecraftClient.getInstance().runDirectory, "sip");
