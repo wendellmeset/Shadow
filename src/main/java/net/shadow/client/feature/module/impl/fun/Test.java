@@ -24,7 +24,7 @@ public class Test extends Module {
             .get());
 
     public Test() {
-        super("Test", "Testing stuff with the client, can be ignored", ModuleType.FUN);
+        super("Test", "Testing stuff with the client, can be ignored", ModuleType.MISC);
     }
 
     @Override

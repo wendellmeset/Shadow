@@ -36,7 +36,7 @@ public class TpRange extends Module {
     Vec3d previousSpoofedPos = null;
 
     public TpRange() {
-        super("TpRange", "Hits someone from VERY far away", ModuleType.FUN);
+        super("TpRange", "Hits someone from VERY far away", ModuleType.COMBAT);
         Events.registerEventHandler(EventType.MOUSE_EVENT, event -> {
             if (!this.isEnabled()) {
                 return;

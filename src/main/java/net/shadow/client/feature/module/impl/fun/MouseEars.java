@@ -9,7 +9,7 @@ import net.shadow.client.feature.module.ModuleType;
 public class MouseEars extends Module {
 
     public MouseEars() {
-        super("MouseEars", "Shows the Deadmau5 skin ears for every player", ModuleType.FUN);
+        super("MouseEars", "Shows the Deadmau5 skin ears for every player", ModuleType.RENDER);
     }
 
     @Override

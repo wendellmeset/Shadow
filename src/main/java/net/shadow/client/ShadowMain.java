@@ -64,11 +64,13 @@ public class ShadowMain implements ModInitializer {
         registerTexture(new ResourceEntry(new Texture("notif/warning.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/warning.png"));
 
         registerTexture(new ResourceEntry(new Texture("icons/render"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/render.png"));
+        registerTexture(new ResourceEntry(new Texture("icons/crash"), "https://github.com/Saturn5Vfive/shadow-fs/blob/main/crash.png?raw=true"));
+        registerTexture(new ResourceEntry(new Texture("icons/grief"), "https://github.com/Saturn5Vfive/shadow-fs/blob/main/grief.png?raw=true"));
+        registerTexture(new ResourceEntry(new Texture("icons/item"), "https://github.com/Saturn5Vfive/shadow-fs/blob/main/items.png?raw=true"));
         registerTexture(new ResourceEntry(new Texture("icons/move"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/movement.png"));
         registerTexture(new ResourceEntry(new Texture("icons/misc"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/misc.png"));
         registerTexture(new ResourceEntry(new Texture("icons/world"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/world.png"));
         registerTexture(new ResourceEntry(new Texture("icons/exploit"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/exploit.png"));
-        registerTexture(new ResourceEntry(new Texture("icons/fun"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/fun.png"));
         registerTexture(new ResourceEntry(new Texture("icons/combat"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/combat.png"));
 
         Runtime.getRuntime().addShutdownHook(new Thread(ConfigManager::saveState));

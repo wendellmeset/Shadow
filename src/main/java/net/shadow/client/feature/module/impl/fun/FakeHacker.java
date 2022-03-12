@@ -25,7 +25,7 @@ public class FakeHacker extends Module {
     PlayerEntity target = null;
 
     public FakeHacker() {
-        super("FakeHacker", "Makes it seem like another user is hacking", ModuleType.FUN);
+        super("FakeHacker", "Makes it seem like another user is hacking", ModuleType.RENDER);
         Events.registerEventHandler(EventType.MOUSE_EVENT, event -> {
             if (!this.isEnabled()) {
                 return;

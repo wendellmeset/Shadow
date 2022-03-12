@@ -1,12 +1,17 @@
-
-
 package net.shadow.client.feature.module;
 
 import net.shadow.client.helper.Texture;
 
 public enum ModuleType {
-    RENDER("Render", new Texture("icons/render")), MOVEMENT("Movement", new Texture("icons/move")), MISC("Miscellaneous", new Texture("icons/misc")), WORLD("World", new Texture("icons/world")),
-    EXPLOIT("Exploit", new Texture("icons/exploit")), FUN("Fun", new Texture("icons/fun")), COMBAT("Combat", new Texture("icons/combat"));
+    RENDER("Render", new Texture("icons/render")), 
+    MOVEMENT("Movement", new Texture("icons/move")), 
+    MISC("Miscellaneous", new Texture("icons/misc")), 
+    WORLD("World", new Texture("icons/world")),
+    EXPLOIT("Exploit", new Texture("icons/exploit")), 
+    CRASH("Crash", new Texture("icons/crash")),
+    ITEM("Items", new Texture("icons/item")),
+    GRIEF("Grief", new Texture("icons/grief")),
+    COMBAT("Combat", new Texture("icons/combat"));
 
 
     final String name;

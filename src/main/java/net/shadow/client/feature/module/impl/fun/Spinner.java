@@ -22,7 +22,7 @@ public class Spinner extends Module {
     int timeout = 0;
 
     public Spinner() {
-        super("Spinner", "Spins around like a maniac and throws whatever you have", ModuleType.FUN);
+        super("Spinner", "Spins around like a maniac and throws whatever you have", ModuleType.MISC);
     }
 
     @Override

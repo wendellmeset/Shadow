@@ -47,7 +47,7 @@ public class AutoTrap extends Module {
 
 
     public AutoTrap() {
-        super("AutoTrap", "Automatically traps everyone around you in a cage", ModuleType.FUN);
+        super("AutoTrap", "Automatically traps everyone around you in a cage", ModuleType.COMBAT);
     }
 
     boolean isTrappedAlready(Entity entity) {
