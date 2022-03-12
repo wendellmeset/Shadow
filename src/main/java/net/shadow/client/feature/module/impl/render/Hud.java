@@ -41,7 +41,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 public class Hud extends Module {
     public static double currentTps = 0;
-    public static double real = 0;
     static ClientFontRenderer titleFr;
     final Identifier LOGO = new Texture("logo.png");
     public final BooleanSetting speed = this.config.create(new BooleanSetting.Builder(true).name("Speed").description("Show your current velocity").get());
@@ -199,7 +198,6 @@ public class Hud extends Module {
         Renderer.R2D.renderRoundedQuad(ms, Renderer.Util.modify(ThemeManager.getMainTheme().getModule(), -1, -1, -1, 200), rootX - 5, -5, rootX + width + 5, rootY + height + i + 3 + 5, 7, 14);
         Renderer.R2D.renderRoundedQuad(ms, ThemeManager.getMainTheme().getInactive(), rootX + 1, rootY + i + 3, rootX + width, rootY + height + i + 3, 5, 11);
         RenderSystem.defaultBlendFunc();
-        real = height + i + 3 + 5;
         RenderSystem.enableBlend();
         RenderSystem.setShaderTexture(0, LOGO);
         Renderer.R2D.renderTexture(ms,((rootX + width + 5) / 2) - (j / 2) + 15,5,j,i,0,0,j,i,j,i);

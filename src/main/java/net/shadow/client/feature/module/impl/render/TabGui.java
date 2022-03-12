@@ -21,27 +21,19 @@ import org.lwjgl.glfw.GLFW;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 
 public class TabGui extends Module {
-    final double mheight = 12;
-    final double x = 5;
-    final HashMap<Module, Double> anims = new HashMap<>();
-    final HashMap<ModuleType, Double> animz = new HashMap<>();
-    double y = 5;
-    boolean expanded = false;
-    int selectedModule = 0;
-    double trackedSelectedModule = 0;
-    int fixedSelected = 0;
-    double aprog = 0;
-    double anim = 0;
-    double mwidth = 60;
-    int selected = 0;
-    double trackedSelected = 0;
+    final Timer updater = new Timer();
+    int scrollerIndex = 0;
+    double scrollerRenderY = 0;
+    double scrollerY = 0;
+    List<GuiEntry> entries = new ArrayList<>();
+    List<GuiEntry> root = new ArrayList<>();
+    double scroll = 0;
+    double smoothScroll = 0;
 
     public TabGui() {
         super("TabGui", "Renders a small module manager top left", ModuleType.RENDER);
@@ -50,44 +42,30 @@ public class TabGui extends Module {
                 return;
             }
             KeyboardEvent ke = (KeyboardEvent) event;
-            int key = ke.getKeycode();
-            int action = ke.getType();
-            if (action != 1) return;
-            if (!expanded) {
-                if (key == GLFW.GLFW_KEY_DOWN) {
-                    selected++;
-                } else if (key == GLFW.GLFW_KEY_UP) {
-                    selected--;
-                } else if (key == GLFW.GLFW_KEY_RIGHT && aprog == 0) {
-                    fixedSelected = selected;
-                    expanded = true;
-                }
-            } else {
-                if (key == GLFW.GLFW_KEY_DOWN) {
-                    selectedModule++;
-                } else if (key == GLFW.GLFW_KEY_UP) {
-                    selectedModule--;
-                } else if (key == GLFW.GLFW_KEY_LEFT) {
-                    expanded = false;
-                } else if (key == GLFW.GLFW_KEY_RIGHT || key == GLFW.GLFW_KEY_ENTER) {
-                    ModuleType t = getModulesForDisplay()[fixedSelected];
-                    List<Module> v = new ArrayList<>();
-                    for (Module module : ModuleRegistry.getModules()) {
-                        if (module.getModuleType() == t) v.add(module);
-                    }
-                    v.sort(Comparator.comparingDouble(value -> -FontRenderers.getRenderer().getStringWidth(value.getName())));
-                    v.get(selectedModule).toggle();
-                }
+            if (ke.getType() == 0) {
+                return;
             }
-            selected = clampRevert(selected, getModulesForDisplay().length);
-            if (expanded) {
-                int mcCurrentCategory = 0;
-                for (Module module : ModuleRegistry.getModules()) {
-                    if (module.getModuleType() == getModulesForDisplay()[selected]) mcCurrentCategory++;
+            switch (ke.getKeycode()) {
+                case GLFW.GLFW_KEY_DOWN -> scrollerIndex++;
+                case GLFW.GLFW_KEY_UP -> scrollerIndex--;
+                case GLFW.GLFW_KEY_RIGHT -> {
+                    scrollerIndex = makeSureInBounds(scrollerIndex);
+                    entries.get(scrollerIndex).activated();
                 }
-                selectedModule = clampRevert(selectedModule, mcCurrentCategory);
+                case GLFW.GLFW_KEY_LEFT -> {
+                    scrollerIndex = makeSureInBounds(scrollerIndex);
+                    entries.get(scrollerIndex).back();
+                }
             }
         });
+    }
+
+    int makeSureInBounds(int index) {
+        index %= entries.size();
+        if (index < 0) {
+            index = entries.size() + index;
+        }
+        return index;
     }
 
     @Override
@@ -97,13 +75,7 @@ public class TabGui extends Module {
 
     @Override
     public void enable() {
-        anims.clear();
-        for (Module m : ModuleRegistry.getModules()) {
-            anims.put(m, 2D);
-        }
-        for (ModuleType t : getModulesForDisplay()) {
-            animz.put(t, 2D);
-        }
+        entries.clear();
     }
 
     @Override
@@ -123,72 +95,168 @@ public class TabGui extends Module {
 
     @Override
     public void onHudRender() {
+        double texHeight = 48/1.5d;
+        double innerPad = 5;
 
-        y = Hud.real + 9;
-        trackedSelected = Transitions.transition(trackedSelected, selected, 5, 0.0001);
-        trackedSelectedModule = Transitions.transition(trackedSelectedModule, selectedModule, 5, 0.0001);
-        aprog = Transitions.transition(aprog, anim, 2, 0.0001);
-        Color bg = new Color(52, 52, 52, 200);
-        Color active = new Color(95, 95, 95, 200);
-        mwidth = 13 + FontRenderers.getRenderer().getStringWidth(getModulesForDisplay()[0].getName());
-        MatrixStack stack = new MatrixStack();
-        double yOffset = 0;
-        double selectedOffset = mheight * trackedSelected;
-        int index = 0;
-        Renderer.R2D.renderRoundedQuad(stack, new Color(200, 200, 200, 255), x, y + selectedOffset, x + mwidth, y + selectedOffset + mheight, 5, 10);
-        ModuleType t = getModulesForDisplay()[selected];
-        Renderer.R2D.renderRoundedQuad(stack, bg, x, y + yOffset, x + mwidth, y + yOffset + (mheight * getModulesForDisplay().length), 5, 10);
-        for (ModuleType value : getModulesForDisplay()) {
-            int c = 0xFFFFFF;
-            if (t == value) {
-                animz.put(value, Transitions.transition(animz.get(value), 10, 25D));
+        double heightOffsetLeft = 6 +texHeight+3;
+        Hud h = ModuleRegistry.getByClass(Hud.class);
+        if (h.coords.getValue() || h.fps.getValue() || h.ping.getValue() || h.tps.getValue()) heightOffsetLeft += 5+FontRenderers.getRenderer().getMarginHeight()+2;
+        if (ShadowMain.client.options.debugEnabled) {
+            double heightAccordingToMc = 9;
+            List<String> lt = ((IDebugHudAccessor) ((IInGameHudAccessor) ShadowMain.client.inGameHud).getDebugHud()).callGetLeftText();
+            heightOffsetLeft += 2 + heightAccordingToMc * (lt.size() + 3);
+        }
+        MatrixStack ms = Renderer.R3D.getEmptyMatrixStack();
+        ms.push();
+        ms.translate(innerPad, heightOffsetLeft, 0);
+        drawInternal(ms);
+        ms.pop();
+    }
+
+    void drawInternal(MatrixStack stack) {
+
+        double innerPadding = 2;
+        double scrollerWidth = 1.5;
+        double width = ModuleRegistry.getModules().stream().map(value -> FontRenderers.getRenderer().getStringWidth(value.getName())).max(Comparator.comparingDouble(value -> value))
+                .orElse(60f) + scrollerWidth * 6 + innerPadding * 2;
+        double cellHeight = FontRenderers.getRenderer().getMarginHeight() + 1;
+        double maxHeight = cellHeight * 16;
+
+        if (entries.isEmpty()) {
+            for (ModuleType value : ModuleType.values()) {
+                entries.add(new GuiEntry(() -> {
+                    entries.clear();
+                    for (Module module : ModuleRegistry.getModules()) {
+                        if (module.getModuleType() == value) {
+                            GuiEntry ge = new GuiEntry(() -> module.setEnabled(!module.isEnabled()), () -> entries = new ArrayList<>(root), module::isEnabled, module.getName(), cellHeight, width - scrollerWidth * 6);
+                            entries.add(ge);
+                        }
+
+                    }
+                }, () -> {
+
+                }, () -> false, value.getName(), cellHeight, width - scrollerWidth * 6));
+            }
+            root = new ArrayList<>(entries);
+        }
+        double contentHeight = entries.size() * cellHeight;
+        double viewerHeight = Math.min(maxHeight, contentHeight) + innerPadding * 2;
+        Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20), 0, 0, width, viewerHeight, 3, 20);
+        scrollerIndex = makeSureInBounds(scrollerIndex);
+        scrollerY = scrollerIndex * cellHeight;
+        double sc = (double) scrollerIndex / (entries.size() - 1);
+        scroll = sc * (contentHeight + innerPadding * 2d - viewerHeight);
+        stack.push();
+        ClipStack.globalInstance.addWindow(stack, new Rectangle(scrollerWidth * 3, 0, width - innerPadding, viewerHeight - innerPadding));
+        //Renderer.R2D.beginScissor(stack, scrollerWidth * 3, 0, width - innerPadding, viewerHeight - innerPadding);
+        stack.translate(0, -smoothScroll, 0);
+
+
+        double lastEnabledStackHeight = 0;
+        double lastEnabledStackY = 0;
+        double yOff = innerPadding;
+        List<Runnable> renderCalls = new ArrayList<>();
+        for (GuiEntry ge : entries) {
+            if (ge.isEnabled()) {
+                if (lastEnabledStackHeight == 0) {
+                    lastEnabledStackY = yOff;
+                }
+                lastEnabledStackHeight += cellHeight;
             } else {
-                animz.put(value, Transitions.transition(animz.get(value), 2, 25D));
-            }
-            FontRenderers.getRenderer().drawString(stack, value.getName(), x + animz.get(value), y + yOffset + (mheight - 9) / 2f + 0.5f, c);
-            yOffset += mheight;
-            index++;
-        }
-        if (expanded) {
-            anim = 1;
-        } else anim = 0;
-        List<Module> a = new ArrayList<>();
-        for (Module module : ModuleRegistry.getModules()) {
-            if (module.getModuleType() == t) a.add(module);
-        }
-        a.sort(Comparator.comparingDouble(value -> -FontRenderers.getRenderer().getStringWidth(value.getName())));
-        double rx = x + mwidth + 5;
-        double ry = y;
-        int yoff = 0;
-        double w = FontRenderers.getRenderer().getStringWidth(a.get(0).getName()) + 4;
-        if (expanded) {
-            double selectedOffset1 = mheight * trackedSelectedModule;
-            Renderer.R2D.renderRoundedQuad(stack, new Color(200, 200, 200, 255), rx, ry + selectedOffset1, rx + w + 9, ry + selectedOffset1 + mheight, 4, 10);
-            Renderer.R2D.renderRoundedQuad(stack, bg, rx, ry + yoff, rx + w + 9, ry + yoff + (mheight * a.size()), 4, 10);
-            for (Module module : a) {
-                if (module.isEnabled()) {
-                    Renderer.R2D.renderRoundedQuad(stack, active, rx, ry + yoff, rx + w + 9, ry + yoff + mheight, 4, 10);
-                }
-                if (a.get(selectedModule) == module) {
-                    anims.put(module, Transitions.transition(anims.get(module), 11, 15D));
-                } else {
-                    anims.put(module, Transitions.transition(anims.get(module), 2, 15D));
-                }
-                FontRenderers.getRenderer().drawString(stack, module.getName(), rx + anims.get(module), ry + yoff + (mheight - 9) / 2f + 0.5f, 0xFFFFFF);
+                if (lastEnabledStackHeight != 0) {
+                    double finalLastEnabledStackY = lastEnabledStackY;
+                    double finalLastEnabledStackHeight = lastEnabledStackHeight;
+                    renderCalls.add(() -> Renderer.R2D.renderRoundedQuad(stack, new Color(40, 40, 40), scrollerWidth * 3, finalLastEnabledStackY, width - scrollerWidth * 3, finalLastEnabledStackY + finalLastEnabledStackHeight, 3, 20));
 
-                yoff += mheight;
+                }
+                lastEnabledStackHeight = 0;
+                lastEnabledStackY = 0;
             }
+            yOff += cellHeight;
+        }
+        double finalLastEnabledStackY = lastEnabledStackY;
+        double finalLastEnabledStackHeight = lastEnabledStackHeight;
+        if (lastEnabledStackY != 0) {
+            renderCalls.add(() -> Renderer.R2D.renderRoundedQuad(stack, new Color(40, 40, 40), scrollerWidth * 3, finalLastEnabledStackY, width - scrollerWidth * 3, finalLastEnabledStackY + finalLastEnabledStackHeight, 3, 20));
+        }
+        for (Runnable renderCall : renderCalls) {
+            renderCall.run();
+        }
+        stack.push();
+        stack.translate(scrollerWidth * 3, innerPadding, 0);
+        for (int i = 0; i < entries.size(); i++) {
+            GuiEntry ge = entries.get(i);
+            boolean selected = i == scrollerIndex;
+
+            ge.animate(selected ? 1 : 0);
+            ge.render(stack);
+            stack.translate(0, cellHeight, 0);
+        }
+
+        stack.pop();
+
+        ClipStack.globalInstance.popWindow();
+        //Renderer.R2D.endScissor();
+
+        Renderer.R2D.renderRoundedQuad(stack, Color.WHITE, 2, innerPadding + scrollerRenderY + .5, 2 + scrollerWidth, innerPadding + scrollerRenderY + cellHeight - .5, scrollerWidth / 2d, 20);
+        stack.pop();
+    }
+
+    @Override
+    public void onFastTick() {
+        scrollerRenderY = Transitions.transition(scrollerRenderY, scrollerY, 7, 0.00001);
+        smoothScroll = Transitions.transition(smoothScroll, scroll, 7, 0.00001);
+        if (updater.hasExpired(3000)) {
+            updater.reset();
+        }
+        for (GuiEntry entry : entries) {
+            entry.fastTick();
         }
     }
 
+    static class GuiEntry {
+        final Runnable r;
+        final Runnable back;
+        final BooleanSupplier bs;
+        final String name;
+        final double h;
+        final double w;
+        double animation = 0;
+        double animationGoal = 0;
 
-    ModuleType[] getModulesForDisplay() {
-        return Arrays.stream(ModuleType.values()).sorted(Comparator.comparingDouble(value -> -FontRenderers.getRenderer().getStringWidth(value.getName()))).toArray(ModuleType[]::new);
-    }
+        public GuiEntry(Runnable r, Runnable back, BooleanSupplier isEnabled, String name, double height, double width) {
+            this.r = r;
+            this.bs = isEnabled;
+            this.back = back;
+            this.name = name;
+            this.h = height;
+            this.w = width;
+        }
 
-    int clampRevert(int n, int max) {
-        if (n < 0) n = max - 1;
-        else if (n >= max) n = 0;
-        return n;
+        boolean isEnabled() {
+            return bs.getAsBoolean();
+        }
+
+        void fastTick() {
+            this.animation = Transitions.transition(animation, animationGoal, 7, 0.00001);
+        }
+
+        void animate(double d) {
+            this.animationGoal = d;
+        }
+
+        void render(MatrixStack stack) {
+            //            Renderer.R2D.renderQuad(stack,Color.BLUE,0,0,w,h);
+            FontRenderers.getRenderer().drawString(stack, name, MathHelper.lerp(animation, 2, w / 2d - FontRenderers.getRenderer().getStringWidth(name) / 2d), (h - FontRenderers.getRenderer()
+                    .getMarginHeight()) / 2d, 0xFFFFFF);
+        }
+
+        void activated() {
+            r.run();
+        }
+
+        void back() {
+            back.run();
+        }
     }
 }
