@@ -71,7 +71,7 @@ public class HomeScreen extends ClientScreen implements FastTickable {
         if (instance == null) {
             instance = new HomeScreen();
         }
-
+        instance = new HomeScreen();
         return instance;
     }
 
@@ -129,8 +129,19 @@ public class HomeScreen extends ClientScreen implements FastTickable {
             yOffset += rb.getHeight() + widPad;
             addDrawableChild(rb);
         }
+        RoundButton molenheimer = new RoundButton(bg, ShadowMain.client.getWindow().getScaledWidth() - ((75 + padding) * 1) - padding, ShadowMain.client.getWindow().getScaledHeight() - 20 - padding- padding, 75, 20, "Molenheimer", () -> {
+            
+        });
 
-
+        RoundButton capes = new RoundButton(bg, ShadowMain.client.getWindow().getScaledWidth() - ((75 + padding) * 2)- padding, ShadowMain.client.getWindow().getScaledHeight() - 20 - padding- padding, 75, 20, "Capes", () -> {
+            
+        });
+        RoundButton clickgui = new RoundButton(bg, ShadowMain.client.getWindow().getScaledWidth() - ((75 + padding) * 3)- padding, ShadowMain.client.getWindow().getScaledHeight() - 20 - padding- padding, 75, 20, "ClickGUI", () -> {
+            
+        });
+        addDrawableChild(molenheimer);
+        addDrawableChild(capes);
+        addDrawableChild(clickgui);
     }
 
     @Override
@@ -202,6 +213,7 @@ public class HomeScreen extends ClientScreen implements FastTickable {
         }
         stack.translate(0, ap * -(padding + h + 1), 0);
         Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 170), padding, padding, padding + w + padding * 2, padding + h, 10, 14);
+        Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 170), ShadowMain.client.getWindow().getScaledWidth() - ((75 + padding) * 3) - padding - padding,  ShadowMain.client.getWindow().getScaledHeight() - 20 - padding - padding - padding, ShadowMain.client.getWindow().getScaledWidth() - padding, ShadowMain.client.getWindow().getScaledHeight() - padding, 5, samples);
         propFr.drawString(stack, "Changelog", (float) (padding * 2f), (float) (padding * 2f), 0xFFFFFF, false);
         double yoff = padding * 2 + propFr.getMarginHeight() + 2;
         for (String s : changelog.split("\n")) {
