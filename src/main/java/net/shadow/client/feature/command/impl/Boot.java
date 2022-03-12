@@ -12,7 +12,7 @@ import net.minecraft.util.Hand;
 
 public class Boot extends Command {
     public Boot() {
-        super("Boot", "kick players who view you", "renderkick");
+        super("Boot", "kick players who view you", "boot");
     }
 
     @Override
