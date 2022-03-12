@@ -71,7 +71,7 @@ public class HomeScreen extends ClientScreen implements FastTickable {
         if (instance == null) {
             instance = new HomeScreen();
         }
-        instance = new HomeScreen();
+//        instance = new HomeScreen();
         return instance;
     }
 
@@ -275,7 +275,7 @@ public class HomeScreen extends ClientScreen implements FastTickable {
         double totalHeight = 30;
         String verstring = "v" + version + (isDev ? "-dev" : "");
         stack.translate(0, (totalHeight + padding) * heiProg, 0);
-        Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 170), padding, height - padding - totalHeight, fw + FontRenderers.getRenderer().getStringWidth(verstring) + padding * 8, height - padding, 10, 14);
+        Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 170), padding, height - padding - totalHeight, fw + smaller.getStringWidth(verstring) + padding*3, height - padding, 10, 14);
 
         title.drawString(stack, "Shadow", 10f, (float) (height - padding - totalHeight / 2f - title.getMarginHeight() / 2f), 0xFFFFFF, false);
         smaller.drawString(stack, verstring, (float) (10f + fw), (float) (height - padding - totalHeight / 2f - title.getMarginHeight() / 2f) + title.getMarginHeight() - smaller.getMarginHeight() - 1, 0xFFFFFF, false);

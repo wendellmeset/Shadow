@@ -30,6 +30,7 @@ import net.shadow.client.mixin.IDebugHudAccessor;
 import net.shadow.client.mixin.IInGameHudAccessor;
 import net.shadow.client.mixin.IMinecraftClientAccessor;
 
+import java.awt.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -163,8 +164,6 @@ public class Hud extends Module {
 
     void drawTopLeft(MatrixStack ms) {
 //        DrawableHelper.drawTexture(ms, 3, 3, 0, 0, j, i, j, i);
-        double rootX = 0;
-        double rootY = 6;
         List<String> values = new ArrayList<>();
         if (this.fps.getValue()) {
             values.add(((IMinecraftClientAccessor) ShadowMain.client).getCurrentFps() + " fps");
@@ -192,17 +191,22 @@ public class Hud extends Module {
         if (values.isEmpty()) {
             return;
         }
-        double height = FontRenderers.getRenderer().getMarginHeight()+2;
-        int i = (int) Math.round(48/1.3d);
-        int j = (int) Math.round(194/1.3d);
-        Renderer.R2D.renderRoundedQuad(ms, Renderer.Util.modify(ThemeManager.getMainTheme().getModule(), -1, -1, -1, 200), rootX - 5, -5, rootX + width + 5, rootY + height + i + 3 + 5, 7, 14);
-        Renderer.R2D.renderRoundedQuad(ms, ThemeManager.getMainTheme().getInactive(), rootX + 1, rootY + i + 3, rootX + width, rootY + height + i + 3, 5, 11);
+//        Renderer.R2D.renderRoundedQuad(ms, Renderer.Util.modify(ThemeManager.getMainTheme().getModule(), -1, -1, -1, 200), rootX - 5, -5, rootX + width + 5, rootY + height + i + 3 + 5, 7, 14);
+//        Renderer.R2D.renderRoundedQuad(ms, ThemeManager.getMainTheme().getInactive(), rootX + 1, rootY + i + 3, rootX + width, rootY + height + i + 3, 5, 11);
         RenderSystem.defaultBlendFunc();
         RenderSystem.enableBlend();
+
+        double imgWidth = 507/5d;
+        double imgHeight = 167/5d;
+        double widgetWidth = Math.max(Math.max(imgWidth, width),160)+6;
+        double widgetHeight = 3+imgHeight+3+FontRenderers.getRenderer().getMarginHeight()+3;
+        double widgetX = 5;
+        double widgetY = 5;
+        Renderer.R2D.renderRoundedQuad(ms, new Color(30,30,30,200),widgetX,widgetY,widgetX+widgetWidth,widgetY+widgetHeight,5,20);
         RenderSystem.setShaderTexture(0, LOGO);
-        Renderer.R2D.renderTexture(ms,((rootX + width + 5) / 2) - (j / 2) + 15,5,j,i,0,0,j,i,j,i);
-        //Renderer.R2D.renderQuad(ms, ThemeManager.getMainTheme().getActive(), rootX , rootY + i + 3, rootX + 1, rootY + height + i + 3);
-        FontRenderers.getRenderer().drawString(ms, drawStr, rootX + 2, rootY + height / 2d - FontRenderers.getRenderer().getMarginHeight() / 2d + i + 3, 0xAAAAAA);
+        Renderer.R2D.renderTexture(ms,widgetX+widgetWidth/2d-imgWidth/2d,widgetY+3,imgWidth,imgHeight,0,0,imgWidth,imgHeight,imgWidth,imgHeight);
+//        FontRenderers.getRenderer().drawString(ms, drawStr, rootX + 2, rootY + height / 2d - FontRenderers.getRenderer().getMarginHeight() / 2d + i + 3, 0xAAAAAA);
+        FontRenderers.getRenderer().drawCenteredString(ms,drawStr,widgetX+widgetWidth/2d,widgetY+3+imgHeight+3,0xAAAAAA);
     }
 
     void drawModuleList(MatrixStack ms) {

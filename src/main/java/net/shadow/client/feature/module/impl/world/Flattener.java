@@ -1,5 +1,6 @@
 package net.shadow.client.feature.module.impl.world;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -140,6 +141,8 @@ public class Flattener extends Module {
 
     @Override
     public void onWorldRender(MatrixStack matrices) {
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.enableBlend();
         for (RenderEntry render : renders) {
             Renderer.R3D.renderFilled(Vec3d.of(render.pos()), render.dimensions(), render.color(), matrices);
         }
