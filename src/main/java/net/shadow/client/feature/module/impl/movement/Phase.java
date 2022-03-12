@@ -75,7 +75,6 @@ public class Phase extends Module {
             ShadowMain.client.player.setPose(EntityPose.STANDING);
             ShadowMain.client.player.setOnGround(false);
             ShadowMain.client.player.fallDistance = 0;
-            //SipoverPrivate.client.player.setVelocity(0,0,0);
         }
     }
 
