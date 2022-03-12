@@ -4,6 +4,8 @@ package net.shadow.client.helper.util;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.minecraft.entity.Entity;
@@ -317,7 +319,21 @@ public class Utils {
             }
         }
 
+        public static String completeName(String smallname) {
+            String result = "none";
+            for (PlayerListEntry info : ShadowMain.client.player.networkHandler.getPlayerList()) {
+                String name = info.getProfile().getName();
+    
+                if (name.toLowerCase().startsWith(smallname.toLowerCase())) {
+                    result = name;
+                }
+            }
+            if (result.equals("none")) return smallname;
+            return result;
+        }
+
         public static UUID getUUIDFromName(String name) {
+            name = completeName(name); // this really helps trust me
             if (!isPlayerNameValid(name)) {
                 return null;
             }

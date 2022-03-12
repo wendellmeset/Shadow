@@ -46,6 +46,12 @@ public class CommandRegistry {
         commands.add(new Kickall());
         commands.add(new ItemExploit());
         commands.add(new Inject());
+        commands.add(new Apvel());
+        commands.add(new AsConsole());
+        commands.add(new Author());
+        commands.add(new Backdoor());
+        commands.add(new Ban());
+        commands.add(new Boot());
     }
 
     public static List<Command> getCommands() {
