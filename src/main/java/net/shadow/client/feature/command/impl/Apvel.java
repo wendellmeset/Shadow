@@ -9,7 +9,7 @@ public class Apvel extends Command {
     private Double vz;
 
     public Apvel() {
-        super("Apvel", "apply velocity to your character", "velocity", "vel");
+        super("Apvel", "apply velocity to your character", "velocity", "vel", "apvel");
     }
 
     @Override

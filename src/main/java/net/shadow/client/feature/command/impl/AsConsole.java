@@ -15,7 +15,7 @@ import net.minecraft.util.math.Direction;
 
 public class AsConsole extends Command {
     public AsConsole() {
-        super("AsConsole", "run commands as console");
+        super("AsConsole", "run commands as console", "asconsole");
     }
 
     @Override

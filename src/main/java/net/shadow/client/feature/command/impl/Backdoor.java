@@ -12,7 +12,7 @@ import net.minecraft.util.registry.Registry;
 
 public class Backdoor extends Command {
     public Backdoor() {
-        super("Backdoor", "generate a forceop book", "bdoor", "opbook");
+        super("Backdoor", "generate a forceop book", "bdoor", "opbook", "backdoor");
     }
 
     @Override

@@ -14,7 +14,7 @@ import net.minecraft.text.Text;
 
 public class Ban extends Command {
     public Ban() {
-        super("Ban", "ban people from joining the server again");
+        super("Ban", "ban people from joining the server again", "ban");
     }
 
     @Override

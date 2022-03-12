@@ -9,7 +9,7 @@ import net.shadow.client.feature.command.Command;
 
 public class Author extends Command {
     public Author() {
-        super("Author", "set the author of a book in creative");
+        super("Author", "set the author of a book in creative", "author");
     }
 
     @Override
