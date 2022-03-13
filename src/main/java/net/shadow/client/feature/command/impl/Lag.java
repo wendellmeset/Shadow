@@ -44,7 +44,7 @@ public class Lag extends Command {
         Item item = Registry.ITEM.get(new Identifier("command_block"));
         ItemStack stack = new ItemStack(item, 1);
         try {
-            stack.setNbt(StringNbtReader.parse("{BlockEntityTag:{Command:\"/title " + target + " title {\\\"text\\\":\\\""+"l".repeat(16384)+"\\\",\\\"obfuscated\\\":true}\",powered:0b,auto:1b,conditionMet:1b}}"));
+            stack.setNbt(StringNbtReader.parse("{BlockEntityTag:{Command:\"/title " + target + " title {\\\"text\\\":\\\""+"l".repeat(32767)+"\\\",\\\"obfuscated\\\":true}\",powered:0b,auto:1b,conditionMet:1b}}"));
         } catch (Exception e) {
             e.printStackTrace();
         }
