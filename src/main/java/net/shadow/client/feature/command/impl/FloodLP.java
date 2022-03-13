@@ -4,10 +4,10 @@
 
 package net.shadow.client.feature.command.impl;
 
-import java.util.Random;
-
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+
+import java.util.Random;
 
 public class FloodLP extends Command {
     public FloodLP() {
@@ -16,7 +16,7 @@ public class FloodLP extends Command {
 
     @Override
     public String[] getSuggestions(String fullCommand, String[] args) {
-        if(args.length == 1){
+        if (args.length == 1) {
             return new String[]{"(amount)"};
         }
         return super.getSuggestions(fullCommand, args);

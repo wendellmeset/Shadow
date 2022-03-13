@@ -4,20 +4,16 @@
 
 package net.shadow.client.feature.command.impl;
 
-import java.util.Objects;
-
+import net.minecraft.client.network.PlayerListEntry;
+import net.minecraft.client.network.ServerAddress;
+import net.minecraft.world.GameMode;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.helper.Globals;
 import net.shadow.client.mixin.SessionAccessor;
-import net.minecraft.client.network.PlayerListEntry;
-import net.minecraft.client.network.ServerAddress;
-import net.minecraft.client.util.Session;
-import net.minecraft.world.GameMode;
 
 import java.net.InetSocketAddress;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.Objects;
 
 public class ForceOP extends Command {
     public ForceOP() {

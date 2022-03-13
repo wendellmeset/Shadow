@@ -30,6 +30,10 @@ public class AntiCrash extends Module {
             .name("Cap Screens")
             .description("Prevents too many screens from being opened")
             .get());
+    BooleanSetting blockObf = this.config.create(new BooleanSetting.Builder(true)
+            .name("Block &k")
+            .description("Blocks the &k tag from existing")
+            .get());
     @Getter
     BooleanSetting capParticles = this.config.create(new BooleanSetting.Builder(true)
             .name("Cap particles")
@@ -61,7 +65,7 @@ public class AntiCrash extends Module {
             .description("Prevents an abnormal sized velocity packet from going through")
             .get());
     long lastScreen = System.currentTimeMillis();
-//    @Getter
+    //    @Getter
 //    BooleanSetting blockPoof = this.config.create(new BooleanSetting.Builder(true)
 //        .name("Block poof")
 //        .description("Prevents the poof game crash exploit")
@@ -77,6 +81,7 @@ public class AntiCrash extends Module {
 //        .description("Cap the pufferfish size to prevent the crash exploit with it")
 //        .get());
     Notification lastCrashNotif = null;
+
     public AntiCrash() {
         super("AntiCrash", "Prevents you from being fucked", ModuleType.MISC);
         nameMax.showIf(() -> capNames.getValue());

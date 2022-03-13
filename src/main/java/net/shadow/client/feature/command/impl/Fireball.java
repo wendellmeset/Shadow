@@ -4,17 +4,15 @@
 
 package net.shadow.client.feature.command.impl;
 
-import net.minecraft.nbt.StringNbtReader;
-import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
-import net.shadow.client.ShadowMain;
-import net.shadow.client.feature.command.Command;
-
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.StringNbtReader;
+import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import net.shadow.client.ShadowMain;
+import net.shadow.client.feature.command.Command;
 
 public class Fireball extends Command {
     public Fireball() {
@@ -23,7 +21,7 @@ public class Fireball extends Command {
 
     @Override
     public String[] getSuggestions(String fullCommand, String[] args) {
-        if(args.length == 1){
+        if (args.length == 1) {
             return new String[]{"(power)"};
         }
         return super.getSuggestions(fullCommand, args);

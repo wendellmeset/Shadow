@@ -120,7 +120,6 @@ public class ModuleRegistry {
         modules.add(new Theme());
         modules.add(new AntiCrash());
         modules.add(new ClientSettings());
-
     }
 
     public static List<Module> getModules() {

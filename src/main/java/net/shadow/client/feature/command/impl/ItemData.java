@@ -4,17 +4,16 @@
 
 package net.shadow.client.feature.command.impl;
 
-import java.util.Objects;
-
-import net.minecraft.entity.player.PlayerInventory;
-import net.shadow.client.ShadowMain;
-import net.shadow.client.feature.command.Command;
-import net.shadow.client.helper.util.Utils;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
+import net.shadow.client.ShadowMain;
+import net.shadow.client.feature.command.Command;
+import net.shadow.client.helper.util.Utils;
+
+import java.util.Objects;
 
 public class ItemData extends Command {
     public ItemData() {
@@ -26,7 +25,7 @@ public class ItemData extends Command {
         if (args.length == 1) {
             return Objects.requireNonNull(ShadowMain.client.world).getPlayers().stream().map(abstractClientPlayerEntity -> abstractClientPlayerEntity.getGameProfile().getName()).toList().toArray(String[]::new);
         }
-        if(args.length == 2){
+        if (args.length == 2) {
             return new String[]{"hand", "offhand", "head", "chest", "legs", "feet"};
         }
         return super.getSuggestions(fullCommand, args);
