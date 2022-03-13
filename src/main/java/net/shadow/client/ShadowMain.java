@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ */
+
 package net.shadow.client;
 
 import coffeeprotect.SkipObfuscation;
@@ -64,7 +68,7 @@ public class ShadowMain implements ModInitializer {
         registerTexture(new ResourceEntry(new Texture("notif/warning.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/warning.png"));
 
         registerTexture(new ResourceEntry(new Texture("icons/render"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/render.png"));
-        registerTexture(new ResourceEntry(new Texture("icons/crash"), "https://github.com/Saturn5Vfive/shadow-fs/blob/main/crash.png?raw=true"));
+        registerTexture(new ResourceEntry(new Texture("icons/crash"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/crash.png"));
         registerTexture(new ResourceEntry(new Texture("icons/grief"), "https://github.com/Saturn5Vfive/shadow-fs/blob/main/grief.png?raw=true"));
         registerTexture(new ResourceEntry(new Texture("icons/item"), "https://github.com/Saturn5Vfive/shadow-fs/blob/main/items.png?raw=true"));
         registerTexture(new ResourceEntry(new Texture("icons/move"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/movement.png"));
@@ -163,6 +167,9 @@ public class ShadowMain implements ModInitializer {
         CommandRegistry.init();
         System.out.println("sending post init");
         Events.fireEvent(EventType.POST_INIT, new PostInitEvent());
+        for (Module module : ModuleRegistry.getModules()) {
+            module.postInit();
+        }
     }
 
     public record ResourceEntry(Texture tex, String url) {

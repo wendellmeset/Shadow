@@ -1,7 +1,11 @@
+/*
+ * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ */
+
 package net.shadow.client.feature.gui.clickgui.theme;
 
-import net.shadow.client.feature.gui.clickgui.theme.impl.Custom;
 import net.shadow.client.feature.gui.clickgui.theme.impl.Coffee;
+import net.shadow.client.feature.gui.clickgui.theme.impl.Custom;
 import net.shadow.client.feature.gui.clickgui.theme.impl.Shadow;
 import net.shadow.client.feature.module.ModuleRegistry;
 

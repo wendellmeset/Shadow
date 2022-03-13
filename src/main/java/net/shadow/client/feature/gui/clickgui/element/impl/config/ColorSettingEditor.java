@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ */
+
 package net.shadow.client.feature.gui.clickgui.element.impl.config;
 
 import net.minecraft.client.util.math.MatrixStack;
@@ -25,7 +29,9 @@ public class ColorSettingEditor extends ConfigBase<ColorSetting> {
             @Override
             public Double getValue() {
                 return (double) configValue.getValue().getRed();
-            }            @Override
+            }
+
+            @Override
             public void setValue(Double value) {
                 super.setValue(value);
                 configValue.setValue(Renderer.Util.modify(configValue.getValue(), (int) (value + 0), -1, -1, -1));
@@ -37,7 +43,9 @@ public class ColorSettingEditor extends ConfigBase<ColorSetting> {
             @Override
             public Double getValue() {
                 return (double) configValue.getValue().getGreen();
-            }            @Override
+            }
+
+            @Override
             public void setValue(Double value) {
                 super.setValue(value);
                 configValue.setValue(Renderer.Util.modify(configValue.getValue(), -1, (int) (value + 0), -1, -1));
@@ -49,7 +57,9 @@ public class ColorSettingEditor extends ConfigBase<ColorSetting> {
             @Override
             public Double getValue() {
                 return (double) configValue.getValue().getBlue();
-            }            @Override
+            }
+
+            @Override
             public void setValue(Double value) {
                 super.setValue(value);
                 configValue.setValue(Renderer.Util.modify(configValue.getValue(), -1, -1, (int) (value + 0), -1));
@@ -61,7 +71,9 @@ public class ColorSettingEditor extends ConfigBase<ColorSetting> {
             @Override
             public Double getValue() {
                 return (double) configValue.getValue().getAlpha();
-            }            @Override
+            }
+
+            @Override
             public void setValue(Double value) {
                 super.setValue(value);
                 configValue.setValue(Renderer.Util.modify(configValue.getValue(), -1, -1, -1, (int) (value + 0)));

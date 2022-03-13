@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ */
+
 package net.shadow.client.feature.module.impl.render;
 
 import net.minecraft.client.util.math.MatrixStack;
@@ -34,18 +38,14 @@ public class Theme extends Module {
             .name("Inactive")
             .description("The inactive color")
             .get());
-
-    public enum Mode {
-        Custom, Shadow, Coffee
-    }
     public EnumSetting<Mode> modeSetting = this.config.create(new EnumSetting.Builder<>(Mode.Shadow)
-        .name("Theme")
-        .description("Which preset theme to use")
-        .get());
+            .name("Theme")
+            .description("Which preset theme to use")
+            .get());
 
     public Theme() {
         super("Theme", "Allows you to edit the client's appearance", ModuleType.RENDER);
-        for (SettingBase<?> settingBase : new SettingBase<?>[] {
+        for (SettingBase<?> settingBase : new SettingBase<?>[]{
                 accent, header, module, configC, active, inactive
         }) {
             settingBase.showIf(() -> modeSetting.getValue() == Mode.Custom);
@@ -80,5 +80,9 @@ public class Theme extends Module {
     @Override
     public void onHudRender() {
 
+    }
+
+    public enum Mode {
+        Custom, Shadow, Coffee
     }
 }

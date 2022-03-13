@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ */
+
 package net.shadow.client.feature.gui.clickgui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -35,10 +39,10 @@ public class ParticleRenderer {
             return;
         }
         Particle n = new Particle();
-        n.x = ShadowMain.client.getWindow().getScaledWidth()*Math.random();
-        n.y = ShadowMain.client.getWindow().getScaledHeight()*Math.random();
-        n.velY = (Math.random()-.5)/4;
-        n.velX = (Math.random()-.5)/4;
+        n.x = ShadowMain.client.getWindow().getScaledWidth() * Math.random();
+        n.y = ShadowMain.client.getWindow().getScaledHeight() * Math.random();
+        n.velY = (Math.random() - .5) / 4;
+        n.velX = (Math.random() - .5) / 4;
         particles.add(n);
     }
 
@@ -70,6 +74,8 @@ public class ParticleRenderer {
         double x = 0;
         double y = 0;
         double velY = 0;
+        long origLife = (long) (20 * MathHelper.lerp(Math.random(), 4, 6));
+        long life = origLife;
 
         public static BufferBuilder renderPrepare(Color color) {
             float red = color.getRed() / 255f;
@@ -138,8 +144,7 @@ public class ParticleRenderer {
             buffer.vertex(matrix, x1, y1, z2).next();
             buffer.vertex(matrix, x1, y2, z2).next();
         }
-        long origLife = (long) (20*MathHelper.lerp(Math.random(),4,6));
-        long life = origLife;
+
         void move() {
             life--;
             life = Math.max(0, life);
@@ -155,16 +160,16 @@ public class ParticleRenderer {
             if (y > h || y < 0) {
                 velY *= -1;
             }
-            x = MathHelper.clamp(x,0,w);
-            y = MathHelper.clamp(y,0,h);
+            x = MathHelper.clamp(x, 0, w);
+            y = MathHelper.clamp(y, 0, h);
         }
 
         void render(List<Particle> others, MatrixStack stack) {
             long fadeTime = 40;
-            long startDelta = Math.min(origLife-life,fadeTime);
-            long endDelta = Math.min(life,fadeTime);
-            long deltaOverall = Math.min(startDelta,endDelta);
-            double pk = (deltaOverall/(double)fadeTime);
+            long startDelta = Math.min(origLife - life, fadeTime);
+            long endDelta = Math.min(life, fadeTime);
+            long deltaOverall = Math.min(startDelta, endDelta);
+            double pk = (deltaOverall / (double) fadeTime);
 //            ShadowMain.client.textRenderer.draw(stack,pk+"",(float)x,(float)y,0xFFFFFF);
             Theme theme = ThemeManager.getMainTheme();
             stack.push();
@@ -176,15 +181,15 @@ public class ParticleRenderer {
             for (Particle particle : others.stream().filter(particle -> particle != this).toList()) {
                 double px = particle.x;
                 double py = particle.y;
-                double dist = Math.sqrt(Math.pow((px-this.x), 2)+Math.pow((py-this.y),2));
+                double dist = Math.sqrt(Math.pow((px - this.x), 2) + Math.pow((py - this.y), 2));
                 if (dist < maxDist) {
-                    long sd1 = Math.min(particle.origLife-particle.life,fadeTime);
-                    long ed1 = Math.min(particle.life,fadeTime);
-                    long do1 = Math.min(sd1,ed1);
-                    double pk1 = (do1/(double)fadeTime);
-                    double p = 1-(dist/maxDist);
+                    long sd1 = Math.min(particle.origLife - particle.life, fadeTime);
+                    long ed1 = Math.min(particle.life, fadeTime);
+                    long do1 = Math.min(sd1, ed1);
+                    double pk1 = (do1 / (double) fadeTime);
+                    double p = 1 - (dist / maxDist);
                     p = Math.min(p, Math.min(pk1, pk));
-                    Renderer.R2D.renderLine(stack,Renderer.Util.lerp(theme.getAccent(),DYING,p),this.x,this.y,px,py);
+                    Renderer.R2D.renderLine(stack, Renderer.Util.lerp(theme.getAccent(), DYING, p), this.x, this.y, px, py);
                 }
             }
             stack.pop();

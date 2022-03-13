@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ */
+
 package net.shadow.client.feature.gui.hud;
 
 import com.google.gson.JsonArray;
@@ -6,10 +10,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.shadow.client.ShadowMain;
-import net.shadow.client.feature.gui.hud.element.HudElement;
-import net.shadow.client.feature.gui.hud.element.SpeedHud;
-import net.shadow.client.feature.gui.hud.element.Taco;
-import net.shadow.client.feature.gui.hud.element.TargetHUD;
+import net.shadow.client.feature.gui.hud.element.*;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.MouseEvent;
@@ -72,6 +73,7 @@ public class HudRenderer {
         he.add(new TargetHUD());
         he.add(new Taco());
         he.add(new SpeedHud());
+        he.add(new TabGui());
         return he;
     }
 

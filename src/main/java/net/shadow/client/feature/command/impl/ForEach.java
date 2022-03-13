@@ -1,7 +1,11 @@
-
+/*
+ * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ */
 
 package net.shadow.client.feature.command.impl;
 
+import com.mojang.brigadier.suggestion.Suggestion;
+import com.mojang.brigadier.suggestion.Suggestions;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.network.packet.c2s.play.RequestCommandCompletionsC2SPacket;
 import net.minecraft.network.packet.s2c.play.CommandSuggestionsS2CPacket;
@@ -17,18 +21,15 @@ import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.mojang.brigadier.suggestion.Suggestion;
-import com.mojang.brigadier.suggestion.Suggestions;
-
 public class ForEach extends Command {
+    final ExecutorService runner = Executors.newFixedThreadPool(1);
     String partial;
     boolean recieving;
-    final ExecutorService runner = Executors.newFixedThreadPool(1);
 
     public ForEach() {
         super("ForEach", "Do something for each player", "foreach", "for", "fe");
-        Events.registerEventHandler(EventType.PACKET_RECEIVE, event ->{
-            if(!recieving) return;
+        Events.registerEventHandler(EventType.PACKET_RECEIVE, event -> {
+            if (!recieving) return;
             PacketEvent pe = (PacketEvent) event;
             if (pe.getPacket() instanceof CommandSuggestionsS2CPacket packet) {
                 Suggestions all = packet.getSuggestions();
@@ -47,10 +48,10 @@ public class ForEach extends Command {
     @Override
     public String[] getSuggestions(String fullCommand, String[] args) {
         if (args.length == 1) {
-            return new String[]{"player", "tabcomplete"};
+            return new String[]{"player", "tab"};
         } else if (args.length == 2) {
             return new String[]{"(delay)"};
-        }else if (args.length == 3) {
+        } else if (args.length == 3) {
             return new String[]{"(string)"};
         }
         return super.getSuggestions(fullCommand, args);
@@ -60,7 +61,7 @@ public class ForEach extends Command {
     public void onExecute(String[] args) {
         int delay = Utils.Math.tryParseInt(args[1], 0);
         switch (args[0]) {
-            case "player" ->{
+            case "player" -> {
                 for (PlayerListEntry playerListEntry : Objects.requireNonNull(ShadowMain.client.getNetworkHandler()).getPlayerList()) {
                     if (Utils.Players.isPlayerNameValid(playerListEntry.getProfile().getName()) && !playerListEntry.getProfile().getId()
                             .equals(Objects.requireNonNull(ShadowMain.client.player).getUuid())) {
@@ -79,6 +80,7 @@ public class ForEach extends Command {
                 ShadowMain.client.player.networkHandler.sendPacket(new RequestCommandCompletionsC2SPacket(0, partial + " "));
                 recieving = true;
             }
+            default -> error("Argument 1 has to be either player or tab");
         }
     }
 }

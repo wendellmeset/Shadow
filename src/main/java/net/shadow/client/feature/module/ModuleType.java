@@ -1,13 +1,17 @@
+/*
+ * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ */
+
 package net.shadow.client.feature.module;
 
 import net.shadow.client.helper.Texture;
 
 public enum ModuleType {
-    RENDER("Render", new Texture("icons/render")), 
-    MOVEMENT("Movement", new Texture("icons/move")), 
-    MISC("Miscellaneous", new Texture("icons/misc")), 
+    RENDER("Render", new Texture("icons/render")),
+    MOVEMENT("Movement", new Texture("icons/move")),
+    MISC("Miscellaneous", new Texture("icons/misc")),
     WORLD("World", new Texture("icons/world")),
-    EXPLOIT("Exploit", new Texture("icons/exploit")), 
+    EXPLOIT("Exploit", new Texture("icons/exploit")),
     CRASH("Crash", new Texture("icons/crash")),
     ITEM("Items", new Texture("icons/item")),
     GRIEF("Grief", new Texture("icons/grief")),

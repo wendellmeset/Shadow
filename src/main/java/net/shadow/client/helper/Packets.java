@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ */
+
 package net.shadow.client.helper;
 
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;

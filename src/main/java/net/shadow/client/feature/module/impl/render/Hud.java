@@ -1,6 +1,10 @@
+/*
+ * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ */
+
 package net.shadow.client.feature.module.impl.render;
 
-import net.minecraft.client.gui.DrawableHelper;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket;
@@ -38,13 +42,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-
 public class Hud extends Module {
     public static double currentTps = 0;
     static ClientFontRenderer titleFr;
-    final Identifier LOGO = new Texture("logo.png");
     public final BooleanSetting speed = this.config.create(new BooleanSetting.Builder(true).name("Speed").description("Show your current velocity").get());
+    final Identifier LOGO = new Texture("logo.png");
     final DateFormat minSec = new SimpleDateFormat("mm:ss");
     final BooleanSetting fps = this.config.create(new BooleanSetting.Builder(true).name("FPS").description("Whether to show FPS").get());
     final BooleanSetting tps = this.config.create(new BooleanSetting.Builder(true).name("TPS").description("Whether to show TPS").get());
@@ -196,17 +198,17 @@ public class Hud extends Module {
         RenderSystem.defaultBlendFunc();
         RenderSystem.enableBlend();
 
-        double imgWidth = 507/5d;
-        double imgHeight = 167/5d;
-        double widgetWidth = Math.max(Math.max(imgWidth, width),160)+6;
-        double widgetHeight = 3+imgHeight+3+FontRenderers.getRenderer().getMarginHeight()+3;
+        double imgWidth = 507 / 5d;
+        double imgHeight = 167 / 5d;
+        double widgetWidth = Math.max(Math.max(imgWidth, width), 160) + 6;
+        double widgetHeight = 3 + imgHeight + 3 + FontRenderers.getRenderer().getMarginHeight() + 3;
         double widgetX = 5;
         double widgetY = 5;
-        Renderer.R2D.renderRoundedQuad(ms, new Color(30,30,30,200),widgetX,widgetY,widgetX+widgetWidth,widgetY+widgetHeight,5,20);
+        Renderer.R2D.renderRoundedQuad(ms, new Color(30, 30, 30, 200), widgetX, widgetY, widgetX + widgetWidth, widgetY + widgetHeight, 5, 20);
         RenderSystem.setShaderTexture(0, LOGO);
-        Renderer.R2D.renderTexture(ms,widgetX+widgetWidth/2d-imgWidth/2d,widgetY+3,imgWidth,imgHeight,0,0,imgWidth,imgHeight,imgWidth,imgHeight);
+        Renderer.R2D.renderTexture(ms, widgetX + widgetWidth / 2d - imgWidth / 2d, widgetY + 3, imgWidth, imgHeight, 0, 0, imgWidth, imgHeight, imgWidth, imgHeight);
 //        FontRenderers.getRenderer().drawString(ms, drawStr, rootX + 2, rootY + height / 2d - FontRenderers.getRenderer().getMarginHeight() / 2d + i + 3, 0xAAAAAA);
-        FontRenderers.getRenderer().drawCenteredString(ms,drawStr,widgetX+widgetWidth/2d,widgetY+3+imgHeight+3,0xAAAAAA);
+        FontRenderers.getRenderer().drawCenteredString(ms, drawStr, widgetX + widgetWidth / 2d, widgetY + 3 + imgHeight + 3, 0xAAAAAA);
     }
 
     void drawModuleList(MatrixStack ms) {

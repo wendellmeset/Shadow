@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ */
+
 package net.shadow.client.feature.command.impl;
 
 import net.shadow.client.ShadowMain;
@@ -10,7 +14,7 @@ public class CPerm extends Command {
 
     @Override
     public String[] getSuggestions(String fullCommand, String[] args) {
-        if(args.length == 1){
+        if (args.length == 1) {
             return new String[]{"(permission level)"};
         }
         return super.getSuggestions(fullCommand, args);

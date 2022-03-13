@@ -1,9 +1,12 @@
+/*
+ * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ */
+
 package net.shadow.client.mixin;
 
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.particle.ParticleTextureSheet;
-import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.feature.module.impl.misc.AntiCrash;
 import net.shadow.client.mixinUtil.ParticleManagerDuck;
 import org.spongepowered.asm.mixin.Final;

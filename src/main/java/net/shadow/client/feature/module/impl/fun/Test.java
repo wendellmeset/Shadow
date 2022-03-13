@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ */
+
 package net.shadow.client.feature.module.impl.fun;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -5,7 +9,6 @@ import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3f;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.config.ColorSetting;
 import net.shadow.client.feature.module.Module;
@@ -14,8 +17,6 @@ import net.shadow.client.helper.render.Renderer;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Test extends Module {
     ColorSetting color = this.config.create(new ColorSetting.Builder(Color.WHITE)
@@ -47,6 +48,50 @@ public class Test extends Module {
         return null;
     }
 
+    @Override
+    public void onWorldRender(MatrixStack matrices) {
+
+        Color color = this.color.getValue();
+        Vec3d start = new Vec3d(0, 100, 0);
+
+        Camera c = ShadowMain.client.gameRenderer.getCamera();
+        Vec3d camPos = c.getPos();
+        start = start.subtract(camPos);
+        float x1 = (float) start.x;
+        float y1 = (float) start.y;
+        float z1 = (float) start.z;
+        matrices.push();
+        matrices.translate(x1, y1, z1);
+        Matrix4f matrix = matrices.peek().getPositionMatrix();
+
+        BufferBuilder buffer = Tessellator.getInstance().getBuffer();
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        GL11.glDepthFunc(GL11.GL_LEQUAL);
+        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+        //            RenderSystem.defaultBlendFunc();
+        RenderSystem.enableBlend();
+//        RenderSystem.disableCull();
+        buffer.begin(VertexFormat.DrawMode.TRIANGLE_STRIP, VertexFormats.POSITION_COLOR);
+
+        Icosahedron.drawIcosahedron(matrix, buffer, 1f, 1f, 1f, 1f, 1, 2);
+
+        buffer.end();
+
+        BufferRenderer.draw(buffer);
+        GL11.glDepthFunc(GL11.GL_LEQUAL);
+        RenderSystem.disableBlend();
+        matrices.pop();
+
+    }
+
+    @Override
+    public void onHudRender() {
+
+    }
+
+    record Vertex(double x, double y, double z) {
+    }
+
     class Icosahedron {
 
         public static double X = 0.525731112119133606f;
@@ -64,8 +109,8 @@ public class Test extends Module {
             for (int i = 0; i < tindx.length; i++) {
                 int[] ints = tindx[i];
                 double index = (double) i / tindx.length;
-                Color c = Renderer.Util.lerp(Color.RED,Color.GREEN,index);
-                subdivide(matrix,bb,c.getRed()/255f,c.getGreen()/255f,c.getBlue()/255f,a,
+                Color c = Renderer.Util.lerp(Color.RED, Color.GREEN, index);
+                subdivide(matrix, bb, c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, a,
                         vdata[ints[0]], //
                         vdata[ints[1]], //
                         vdata[ints[2]], depth, radius);
@@ -140,58 +185,16 @@ public class Test extends Module {
 //            GL11.glEnable(GL11.GL_TEXTURE_2D);
 
             spherical = calcTextureMap(v1);
-            bb.vertex(matrix,radius*(float)v1[0],radius*(float)v1[1],radius*(float)v1[2]).normal(1,1,1).color(r,g,b,a).next();
+            bb.vertex(matrix, radius * (float) v1[0], radius * (float) v1[1], radius * (float) v1[2]).normal(1, 1, 1).color(r, g, b, a).next();
 //            worldrenderer.addVertexWithUV(radius * v1[0], radius * v1[1], radius * v1[2], spherical[1], spherical[2]);
 
             spherical = calcTextureMap(v2);
-            bb.vertex(matrix,radius*(float)v2[0],radius*(float)v2[1],radius*(float)v2[2]).normal(1,1,1).color(r,g,b,a).next();
+            bb.vertex(matrix, radius * (float) v2[0], radius * (float) v2[1], radius * (float) v2[2]).normal(1, 1, 1).color(r, g, b, a).next();
 
             spherical = calcTextureMap(v3);
-            bb.vertex(matrix,radius*(float)v3[0],radius*(float)v3[1],radius*(float)v3[2]).normal(1,1,1).color(r,g,b,a).next();
+            bb.vertex(matrix, radius * (float) v3[0], radius * (float) v3[1], radius * (float) v3[2]).normal(1, 1, 1).color(r, g, b, a).next();
 
 //            tessellator.draw();
         }
-    }
-
-    record Vertex(double x, double y, double z) {}
-    @Override
-    public void onWorldRender(MatrixStack matrices) {
-
-        Color color = this.color.getValue();
-        Vec3d start = new Vec3d(0,100,0);
-
-        Camera c = ShadowMain.client.gameRenderer.getCamera();
-        Vec3d camPos = c.getPos();
-        start = start.subtract(camPos);
-        float x1 = (float) start.x;
-        float y1 = (float) start.y;
-        float z1 = (float) start.z;
-        matrices.push();
-        matrices.translate(x1,y1,z1);
-        Matrix4f matrix = matrices.peek().getPositionMatrix();
-
-        BufferBuilder buffer = Tessellator.getInstance().getBuffer();
-        RenderSystem.setShader(GameRenderer::getPositionColorShader);
-        GL11.glDepthFunc(GL11.GL_LEQUAL);
-        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-        //            RenderSystem.defaultBlendFunc();
-        RenderSystem.enableBlend();
-//        RenderSystem.disableCull();
-        buffer.begin(VertexFormat.DrawMode.TRIANGLE_STRIP, VertexFormats.POSITION_COLOR);
-
-        Icosahedron.drawIcosahedron(matrix,buffer,1f,1f,1f,1f,1,2);
-
-        buffer.end();
-
-        BufferRenderer.draw(buffer);
-        GL11.glDepthFunc(GL11.GL_LEQUAL);
-        RenderSystem.disableBlend();
-        matrices.pop();
-
-    }
-
-    @Override
-    public void onHudRender() {
-
     }
 }

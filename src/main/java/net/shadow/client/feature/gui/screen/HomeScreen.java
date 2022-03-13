@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ */
+
 package net.shadow.client.feature.gui.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -22,7 +26,6 @@ import net.shadow.client.helper.font.adapter.impl.ClientFontRenderer;
 import net.shadow.client.helper.render.MSAAFramebuffer;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Utils;
-
 import org.apache.commons.io.IOUtils;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL40C;
@@ -39,8 +42,8 @@ import java.net.http.HttpResponse;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 public class HomeScreen extends ClientScreen implements FastTickable {
     static final double padding = 5;
@@ -49,8 +52,8 @@ public class HomeScreen extends ClientScreen implements FastTickable {
     static boolean isDev = false;
     static String version = "unknown";
     static String changelog = "";
-    final ParticleRenderer prend = new ParticleRenderer(100);
     private static HomeScreen instance;
+    final ParticleRenderer prend = new ParticleRenderer(100);
     final ClientFontRenderer title = FontRenderers.getCustomSize(40);
     final ClientFontRenderer smaller = FontRenderers.getCustomSize(30);
     final ClientFontRenderer propFr = FontRenderers.getCustomSize(22);
@@ -62,6 +65,8 @@ public class HomeScreen extends ClientScreen implements FastTickable {
     double initProg = 0;
     boolean currentAccountTextureLoaded = false;
     UUID previousChecked = null;
+    double widgetsHeight = 0;
+    double widgetsWidth = 130;
 
     private HomeScreen() {
         super(MSAAFramebuffer.MAX_SAMPLES);
@@ -100,8 +105,7 @@ public class HomeScreen extends ClientScreen implements FastTickable {
         clearChildren();
         initWidgets();
     }
-    double widgetsHeight = 0;
-    double widgetsWidth = 130;
+
     void initWidgets() {
 
         //TEST GUI - REVERT / CHANGE IF WANTED 
@@ -109,7 +113,7 @@ public class HomeScreen extends ClientScreen implements FastTickable {
         //double centerWidgetsY = height - padding - 25;
         double widPad = 6;
 
-        double centerWidgetsX = Utils.halfWidth() - widgetsWidth/2d;
+        double centerWidgetsX = Utils.halfWidth() - widgetsWidth / 2d;
         double widgetHeight = 30;
 
         List<Map.Entry<String, Runnable>> buttonsMap = new ArrayList<>();
@@ -120,24 +124,24 @@ public class HomeScreen extends ClientScreen implements FastTickable {
                 //                new TestScreen()
         )));
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Settings", () -> ShadowMain.client.setScreen(new OptionsScreen(this, ShadowMain.client.options))));
-        double totalHeight = buttonsMap.size()*(widgetHeight+widPad)-widPad;
+        double totalHeight = buttonsMap.size() * (widgetHeight + widPad) - widPad;
         widgetsHeight = totalHeight;
         double yOffset = 0;
         Color bg = new Color(30, 30, 30);
         for (Map.Entry<String, Runnable> stringRunnableEntry : buttonsMap) {
-            RoundButton rb = new RoundButton(bg,centerWidgetsX,Utils.halfHeight()-totalHeight/2d+yOffset,widgetsWidth,widgetHeight,stringRunnableEntry.getKey(),stringRunnableEntry.getValue());
+            RoundButton rb = new RoundButton(bg, centerWidgetsX, Utils.halfHeight() - totalHeight / 2d + yOffset, widgetsWidth, widgetHeight, stringRunnableEntry.getKey(), stringRunnableEntry.getValue());
             yOffset += rb.getHeight() + widPad;
             addDrawableChild(rb);
         }
-        RoundButton molenheimer = new RoundButton(bg, ShadowMain.client.getWindow().getScaledWidth() - ((75 + padding) * 1) - padding, ShadowMain.client.getWindow().getScaledHeight() - 20 - padding- padding, 75, 20, "Molenheimer", () -> {
-            
+        RoundButton molenheimer = new RoundButton(bg, ShadowMain.client.getWindow().getScaledWidth() - ((75 + padding) * 1) - padding, ShadowMain.client.getWindow().getScaledHeight() - 20 - padding - padding, 75, 20, "Molenheimer", () -> {
+
         });
 
-        RoundButton capes = new RoundButton(bg, ShadowMain.client.getWindow().getScaledWidth() - ((75 + padding) * 2)- padding, ShadowMain.client.getWindow().getScaledHeight() - 20 - padding- padding, 75, 20, "Capes", () -> {
-            
+        RoundButton capes = new RoundButton(bg, ShadowMain.client.getWindow().getScaledWidth() - ((75 + padding) * 2) - padding, ShadowMain.client.getWindow().getScaledHeight() - 20 - padding - padding, 75, 20, "Capes", () -> {
+
         });
-        RoundButton clickgui = new RoundButton(bg, ShadowMain.client.getWindow().getScaledWidth() - ((75 + padding) * 3)- padding, ShadowMain.client.getWindow().getScaledHeight() - 20 - padding- padding, 75, 20, "ClickGUI", () -> {
-            
+        RoundButton clickgui = new RoundButton(bg, ShadowMain.client.getWindow().getScaledWidth() - ((75 + padding) * 3) - padding, ShadowMain.client.getWindow().getScaledHeight() - 20 - padding - padding, 75, 20, "ClickGUI", () -> {
+
         });
         addDrawableChild(molenheimer);
         addDrawableChild(capes);
@@ -213,7 +217,7 @@ public class HomeScreen extends ClientScreen implements FastTickable {
         }
         stack.translate(0, ap * -(padding + h + 1), 0);
         Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 170), padding, padding, padding + w + padding * 2, padding + h, 10, 14);
-        Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 170), ShadowMain.client.getWindow().getScaledWidth() - ((75 + padding) * 3) - padding - padding,  ShadowMain.client.getWindow().getScaledHeight() - 20 - padding - padding - padding, ShadowMain.client.getWindow().getScaledWidth() - padding, ShadowMain.client.getWindow().getScaledHeight() - padding, 5, samples);
+        Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 170), ShadowMain.client.getWindow().getScaledWidth() - ((75 + padding) * 3) - padding - padding, ShadowMain.client.getWindow().getScaledHeight() - 20 - padding - padding - padding, ShadowMain.client.getWindow().getScaledWidth() - padding, ShadowMain.client.getWindow().getScaledHeight() - padding, 5, samples);
         propFr.drawString(stack, "Changelog", (float) (padding * 2f), (float) (padding * 2f), 0xFFFFFF, false);
         double yoff = padding * 2 + propFr.getMarginHeight() + 2;
         for (String s : changelog.split("\n")) {
@@ -275,15 +279,15 @@ public class HomeScreen extends ClientScreen implements FastTickable {
         double totalHeight = 30;
         String verstring = "v" + version + (isDev ? "-dev" : "");
         stack.translate(0, (totalHeight + padding) * heiProg, 0);
-        Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 170), padding, height - padding - totalHeight, fw + smaller.getStringWidth(verstring) + padding*3, height - padding, 10, 14);
+        Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 170), padding, height - padding - totalHeight, fw + smaller.getStringWidth(verstring) + padding * 3, height - padding, 10, 14);
 
         title.drawString(stack, "Shadow", 10f, (float) (height - padding - totalHeight / 2f - title.getMarginHeight() / 2f), 0xFFFFFF, false);
         smaller.drawString(stack, verstring, (float) (10f + fw), (float) (height - padding - totalHeight / 2f - title.getMarginHeight() / 2f) + title.getMarginHeight() - smaller.getMarginHeight() - 1, 0xFFFFFF, false);
         stack.pop();
         stack.push();
-        stack.translate(0, (height-(Utils.halfHeight() - 125)) * heiProg, 0);
+        stack.translate(0, (height - (Utils.halfHeight() - 125)) * heiProg, 0);
         double pad = 6;
-        Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 170), Utils.halfWidth() - widgetsWidth/2d - pad, Utils.halfHeight() - widgetsHeight/2d-pad, Utils.halfWidth() + widgetsWidth/2d + pad, Utils.halfHeight() + widgetsHeight/2d+pad, 5, 20);
+        Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 170), Utils.halfWidth() - widgetsWidth / 2d - pad, Utils.halfHeight() - widgetsHeight / 2d - pad, Utils.halfWidth() + widgetsWidth / 2d + pad, Utils.halfHeight() + widgetsHeight / 2d + pad, 5, 20);
         super.renderInternal(stack, mouseX, mouseY, delta); // render bottom row widgets
         stack.pop();
 

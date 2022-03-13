@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ */
+
 package net.shadow.client.feature.gui.clickgui.element.impl;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -164,10 +168,10 @@ public class CategoryDisplay extends Element {
         matrices.push();
         matrices.translate(x + width - texPad - cw, y + headerHeight() / 2d - ct / 2d, 0);
         matrices.push();
-        matrices.multiply(new Quaternion(0f, 0f, (float) (1-openAnim) * 90f, true));
+        matrices.multiply(new Quaternion(0f, 0f, (float) (1 - openAnim) * 90f, true));
         Renderer.R2D.renderQuad(matrices, Color.WHITE, -cw / 2d, -ct / 2d, cw / 2d, ct / 2d);
         matrices.pop();
-        matrices.multiply(new Quaternion(0f, 0f, (float) (1-openAnim) * 180f, true));
+        matrices.multiply(new Quaternion(0f, 0f, (float) (1 - openAnim) * 180f, true));
         Renderer.R2D.renderQuad(matrices, Color.WHITE, -cw / 2d, -ct / 2d, cw / 2d, ct / 2d);
         matrices.pop();
         if (openAnim != 0) {

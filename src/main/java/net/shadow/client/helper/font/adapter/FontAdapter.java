@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ */
+
 package net.shadow.client.helper.font.adapter;
 
 import net.minecraft.client.util.math.MatrixStack;

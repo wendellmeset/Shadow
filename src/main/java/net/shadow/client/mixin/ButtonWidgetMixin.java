@@ -1,13 +1,12 @@
+/*
+ * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ */
+
 package net.shadow.client.mixin;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
-import net.minecraft.util.math.MathHelper;
-import net.shadow.client.helper.font.FontRenderers;
-import net.shadow.client.helper.render.Renderer;
-import net.shadow.client.helper.util.Transitions;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

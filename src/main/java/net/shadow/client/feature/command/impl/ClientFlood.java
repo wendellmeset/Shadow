@@ -1,8 +1,9 @@
+/*
+ * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ */
+
 package net.shadow.client.feature.command.impl;
 
-import net.shadow.client.ShadowMain;
-import net.shadow.client.feature.command.Command;
-import net.shadow.client.helper.util.Utils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
@@ -10,6 +11,10 @@ import net.minecraft.nbt.NbtIntArray;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
+import net.shadow.client.ShadowMain;
+import net.shadow.client.feature.command.Command;
+import net.shadow.client.helper.util.Utils;
+
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;

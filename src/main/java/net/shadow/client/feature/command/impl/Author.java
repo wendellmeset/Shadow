@@ -1,8 +1,12 @@
+/*
+ * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ */
+
 package net.shadow.client.feature.command.impl;
 
-import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtString;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
@@ -14,7 +18,7 @@ public class Author extends Command {
 
     @Override
     public String[] getSuggestions(String fullCommand, String[] args) {
-        if(args.length > 0){
+        if (args.length > 0) {
             return new String[]{"(new author)"};
         }
         return super.getSuggestions(fullCommand, args);

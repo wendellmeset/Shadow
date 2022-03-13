@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ */
+
 package net.shadow.client.feature.command.impl;
 
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
@@ -12,7 +16,7 @@ public class Damage extends Command {
 
     @Override
     public String[] getSuggestions(String fullCommand, String[] args) {
-        if(args.length == 0){
+        if (args.length == 0) {
             return new String[]{"(integer)"};
         }
         return super.getSuggestions(fullCommand, args);

@@ -1,10 +1,14 @@
+/*
+ * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ */
+
 package net.shadow.client.feature.command.impl;
 
 import net.minecraft.block.entity.CommandBlockBlockEntity;
-import net.shadow.client.ShadowMain;
-import net.shadow.client.feature.command.Command;
 import net.minecraft.network.packet.c2s.play.UpdateCommandBlockC2SPacket;
 import net.minecraft.util.math.Direction;
+import net.shadow.client.ShadowMain;
+import net.shadow.client.feature.command.Command;
 
 public class CheckCmd extends Command {
     public CheckCmd() {

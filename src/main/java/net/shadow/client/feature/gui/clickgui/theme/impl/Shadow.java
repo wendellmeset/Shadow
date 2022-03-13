@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ */
+
 package net.shadow.client.feature.gui.clickgui.theme.impl;
 
 import net.shadow.client.feature.gui.clickgui.theme.Theme;
@@ -5,12 +9,12 @@ import net.shadow.client.feature.gui.clickgui.theme.Theme;
 import java.awt.*;
 
 public class Shadow implements Theme {
-    static final Color accent = new Color(214,255,255);
+    static final Color accent = new Color(214, 255, 255);
     static final Color header = new Color(23, 23, 23);
-    static final Color module = new Color(20,20,20);
-    static final Color config = new Color(23,23,23);
-    static final Color active = new Color(101,101,101);
-    static final Color inactive = new Color(53,53,53);
+    static final Color module = new Color(20, 20, 20);
+    static final Color config = new Color(23, 23, 23);
+    static final Color active = new Color(101, 101, 101);
+    static final Color inactive = new Color(53, 53, 53);
 
     @Override
     public String getName() {

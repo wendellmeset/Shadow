@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ */
+
 package net.shadow.client.feature.gui.hud.element;
 
 import net.minecraft.client.util.math.MatrixStack;
@@ -38,9 +42,9 @@ public class SpeedHud extends HudElement {
                 double min = 0;
 
                 double previous = 0;
-                if(speeds.size() > 0){
+                if (speeds.size() > 0) {
                     previous = height - ((speeds.get(0) - min) / max) * height;
-                }else{
+                } else {
                     previous = 0;
                 }
                 for (int i = 1; i < speeds.size(); i++) {

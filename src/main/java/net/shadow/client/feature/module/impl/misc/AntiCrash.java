@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ */
+
 package net.shadow.client.feature.module.impl.misc;
 
 import lombok.Getter;
@@ -22,10 +26,6 @@ import net.shadow.client.mixinUtil.ParticleManagerDuck;
 
 public class AntiCrash extends Module {
     private static AntiCrash instance = null;
-    public static AntiCrash instance() {
-        if (instance == null) instance = ModuleRegistry.getByClass(AntiCrash.class);
-        return instance;
-    }
     BooleanSetting screenGui = this.config.create(new BooleanSetting.Builder(false)
             .name("Cap Screens")
             .description("Prevents too many screens from being opened")
@@ -60,6 +60,7 @@ public class AntiCrash extends Module {
             .name("Cap velocity")
             .description("Prevents an abnormal sized velocity packet from going through")
             .get());
+    long lastScreen = System.currentTimeMillis();
 //    @Getter
 //    BooleanSetting blockPoof = this.config.create(new BooleanSetting.Builder(true)
 //        .name("Block poof")
@@ -75,15 +76,17 @@ public class AntiCrash extends Module {
 //        .name("Block puffer")
 //        .description("Cap the pufferfish size to prevent the crash exploit with it")
 //        .get());
-
-    long lastScreen = System.currentTimeMillis();
     Notification lastCrashNotif = null;
-
     public AntiCrash() {
         super("AntiCrash", "Prevents you from being fucked", ModuleType.MISC);
         nameMax.showIf(() -> capNames.getValue());
         particleMax.showIf(() -> capParticles.getValue());
         Events.registerEventHandler(EventType.PACKET_RECEIVE, this::handlePacketEvent);
+    }
+
+    public static AntiCrash instance() {
+        if (instance == null) instance = ModuleRegistry.getByClass(AntiCrash.class);
+        return instance;
     }
 
     void handlePacketEvent(Event e) {

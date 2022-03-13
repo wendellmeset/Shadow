@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ */
+
 package net.shadow.client.mixin;
 
 import net.minecraft.client.gui.screen.ChatScreen;
@@ -40,15 +44,17 @@ public class AChatScreenMixin extends Screen {
     protected AChatScreenMixin(Text title) {
         super(title);
     }
+
     private String getPrefix() {
         return ModuleRegistry.getByClass(ClientSettings.class).getSs().getValue();
     }
+
     @Redirect(method = "keyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ChatScreen;sendMessage(Ljava/lang/String;)V"))
     void atomic_interceptChatMessage(ChatScreen instance, String s) {
         String p = getPrefix();
         if (s.startsWith(p)) { // filter all messages starting with .
             ShadowMain.client.inGameHud.getChatHud().addToMessageHistory(s);
-            if (s.equalsIgnoreCase(p+"console")) {
+            if (s.equalsIgnoreCase(p + "console")) {
                 Utils.TickManager.runInNTicks(2, () -> ShadowMain.client.setScreen(ConsoleScreen.instance()));
             } else {
                 CommandRegistry.execute(s.substring(p.length())); // cut off prefix
@@ -147,7 +153,7 @@ public class AChatScreenMixin extends Screen {
         String p = getPrefix();
         String t = chatField.getText();
         if (t.startsWith(p)) {
-            String note = "If you need a bigger console, do \""+p+"console\"";
+            String note = "If you need a bigger console, do \"" + p + "console\"";
             double len = FontRenderers.getRenderer().getStringWidth(note) + 1;
             FontRenderers.getRenderer().drawString(matrices, note, width - len - 2, height - 15 - FontRenderers.getRenderer().getMarginHeight(), 0xFFFFFF);
             MSAAFramebuffer.use(MSAAFramebuffer.MAX_SAMPLES, () -> {

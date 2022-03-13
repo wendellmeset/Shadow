@@ -1,10 +1,11 @@
-
+/*
+ * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ */
 
 package net.shadow.client.helper.util;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.NativeImageBackedTexture;
@@ -59,11 +60,11 @@ public class Utils {
         }
     }
 
-    public static int halfHeight(){
+    public static int halfHeight() {
         return ShadowMain.client.getWindow().getScaledHeight() / 2;
     }
 
-    public static int halfWidth(){
+    public static int halfWidth() {
         return ShadowMain.client.getWindow().getScaledWidth() / 2;
     }
 
@@ -323,7 +324,7 @@ public class Utils {
             String result = "none";
             for (PlayerListEntry info : ShadowMain.client.player.networkHandler.getPlayerList()) {
                 String name = info.getProfile().getName();
-    
+
                 if (name.toLowerCase().startsWith(smallname.toLowerCase())) {
                     result = name;
                 }

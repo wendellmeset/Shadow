@@ -1,10 +1,12 @@
+/*
+ * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ */
+
 package net.shadow.client.feature.command.impl;
 
-import net.minecraft.item.Items;
-import net.shadow.client.ShadowMain;
-import net.shadow.client.feature.command.Command;
 import net.minecraft.block.entity.CommandBlockBlockEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
 import net.minecraft.network.packet.c2s.play.UpdateCommandBlockC2SPacket;
@@ -12,6 +14,8 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.shadow.client.ShadowMain;
+import net.shadow.client.feature.command.Command;
 
 public class AsConsole extends Command {
     public AsConsole() {
@@ -20,7 +24,7 @@ public class AsConsole extends Command {
 
     @Override
     public String[] getSuggestions(String fullCommand, String[] args) {
-        if(args.length > 0){
+        if (args.length > 0) {
             return new String[]{"(command)"};
         }
         return super.getSuggestions(fullCommand, args);

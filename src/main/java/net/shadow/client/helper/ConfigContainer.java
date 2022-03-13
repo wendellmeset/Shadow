@@ -1,11 +1,13 @@
+/*
+ * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ */
+
 package net.shadow.client.helper;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
 
@@ -16,10 +18,12 @@ import java.nio.file.StandardOpenOption;
 
 @SuppressWarnings("unused")
 public class ConfigContainer {
+    static final Gson gson = new Gson();
     final File path;
     final String key;
     @Getter
     JsonObject value;
+
     public ConfigContainer(File f, String key) {
         this.path = f;
         this.key = key;
@@ -29,16 +33,19 @@ public class ConfigContainer {
         });
         reload();
     }
-    static final Gson gson = new Gson();
+
     public <T> T get(Class<T> type) {
         return gson.fromJson(getValue(), type);
     }
+
     public void set(Object data) {
         set(gson.toJsonTree(data).getAsJsonObject());
     }
+
     public void set(JsonObject obj) {
         value = obj;
     }
+
     void write(String data) {
         try {
             Files.writeString(path.toPath(), data, StandardOpenOption.CREATE);
@@ -46,6 +53,7 @@ public class ConfigContainer {
             e.printStackTrace();
         }
     }
+
     public void reload() {
         if (!path.exists()) {
             return;
@@ -57,6 +65,7 @@ public class ConfigContainer {
             e.printStackTrace();
         }
     }
+
     public void save() {
         write(value.toString());
     }

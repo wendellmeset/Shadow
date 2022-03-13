@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ */
+
 package net.shadow.client.feature.gui.hud.element;
 
 import net.minecraft.client.util.math.MatrixStack;
@@ -11,9 +15,9 @@ import java.awt.*;
 public abstract class HudElement {
 
     static final MatrixStack stack = new MatrixStack();
-    final double width;
     final double height;
     final String id;
+    double width;
     double posX, posY;
     boolean selected = false;
 

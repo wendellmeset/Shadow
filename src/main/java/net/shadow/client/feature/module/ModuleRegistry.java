@@ -1,4 +1,6 @@
-
+/*
+ * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ */
 
 package net.shadow.client.feature.module;
 
@@ -13,14 +15,17 @@ import net.shadow.client.feature.module.impl.world.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ModuleRegistry {
     static final List<Module> modules = new ArrayList<>();
-    static boolean initialized = false;
+    static AtomicBoolean initialized = new AtomicBoolean(false);
 
     public static void init() {
+        if (initialized.get()) return;
+        initialized.set(true);
         modules.clear();
-        initialized = true;
+
         modules.add(new Flight());
         modules.add(new Sprint());
         modules.add(new Fullbright());
@@ -115,10 +120,11 @@ public class ModuleRegistry {
         modules.add(new Theme());
         modules.add(new AntiCrash());
         modules.add(new ClientSettings());
+
     }
 
     public static List<Module> getModules() {
-        if (!initialized) {
+        if (!initialized.get()) {
             init();
         }
         return modules;
@@ -126,7 +132,7 @@ public class ModuleRegistry {
 
     @SuppressWarnings("unchecked")
     public static <T extends Module> T getByClass(Class<T> clazz) {
-        if (!initialized) {
+        if (!initialized.get()) {
             init();
         }
         for (Module module : getModules()) {
@@ -138,7 +144,7 @@ public class ModuleRegistry {
     }
 
     public static Module getByName(String n) {
-        if (!initialized) {
+        if (!initialized.get()) {
             init();
         }
         for (Module module : getModules()) {

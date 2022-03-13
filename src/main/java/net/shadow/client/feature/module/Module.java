@@ -1,4 +1,6 @@
-
+/*
+ * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ */
 
 package net.shadow.client.feature.module;
 
@@ -60,6 +62,10 @@ public abstract class Module {
     public abstract void onWorldRender(MatrixStack matrices);
 
     public abstract void onHudRender();
+
+    public void postInit() {
+
+    }
 
     public void onHudRenderNoMSAA() {
 

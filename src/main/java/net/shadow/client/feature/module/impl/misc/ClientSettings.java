@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ */
+
 package net.shadow.client.feature.module.impl.misc;
 
 import lombok.Getter;
@@ -13,6 +17,7 @@ public class ClientSettings extends Module {
             .name("Prefix")
             .description("The prefix to use for commands")
             .get());
+
     public ClientSettings() {
         super("ClientSettings", "Configuration for the client", ModuleType.MISC);
     }
@@ -25,7 +30,7 @@ public class ClientSettings extends Module {
     @Override
     public void enable() {
         setEnabled(false);
-        Notification.create(5000,"ClientSettings", Notification.Type.INFO,"No need to enable this");
+        Notification.create(5000, "ClientSettings", Notification.Type.INFO, "No need to enable this");
     }
 
     @Override
