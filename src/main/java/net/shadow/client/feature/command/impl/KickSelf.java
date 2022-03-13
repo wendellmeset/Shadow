@@ -4,13 +4,13 @@
 
 package net.shadow.client.feature.command.impl;
 
-import net.shadow.client.ShadowMain;
-import net.shadow.client.feature.command.Command;
 import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractItemC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.Hand;
+import net.shadow.client.ShadowMain;
+import net.shadow.client.feature.command.Command;
 
 public class KickSelf extends Command {
     public KickSelf() {
@@ -19,7 +19,7 @@ public class KickSelf extends Command {
 
     @Override
     public String[] getSuggestions(String fullCommand, String[] args) {
-        if(args.length == 1){
+        if (args.length == 1) {
             return new String[]{"quit", "chars", "packet", "self", "spam", "packets"};
         }
         return super.getSuggestions(fullCommand, args);

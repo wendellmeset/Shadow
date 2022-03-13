@@ -4,12 +4,7 @@
 
 package net.shadow.client.feature.command.impl;
 
-import net.shadow.client.ShadowMain;
-import net.shadow.client.feature.command.Command;
-import net.shadow.client.helper.util.Utils;
-
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -20,6 +15,9 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.registry.Registry;
+import net.shadow.client.ShadowMain;
+import net.shadow.client.feature.command.Command;
+import net.shadow.client.helper.util.Utils;
 
 public class LinkPlayer extends Command {
     public LinkPlayer() {

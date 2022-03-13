@@ -4,12 +4,6 @@
 
 package net.shadow.client.feature.command.impl;
 
-import net.shadow.client.ShadowMain;
-import net.shadow.client.feature.command.Command;
-import net.shadow.client.helper.event.EventType;
-import net.shadow.client.helper.event.Events;
-import net.shadow.client.helper.event.events.PacketEvent;
-import net.shadow.client.helper.util.Utils;
 import net.minecraft.block.entity.CommandBlockBlockEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -18,6 +12,12 @@ import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 import net.minecraft.network.packet.c2s.play.UpdateCommandBlockC2SPacket;
 import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
 import net.minecraft.util.hit.BlockHitResult;
+import net.shadow.client.ShadowMain;
+import net.shadow.client.feature.command.Command;
+import net.shadow.client.helper.event.EventType;
+import net.shadow.client.helper.event.Events;
+import net.shadow.client.helper.event.events.PacketEvent;
+import net.shadow.client.helper.util.Utils;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -35,7 +35,7 @@ public class Image extends Command {
     public Image() {
         super("Image", "apply images to various text mediums", "image", "img");
         Events.registerEventHandler(EventType.PACKET_RECEIVE, event -> {
-            if(!real) return;
+            if (!real) return;
             PacketEvent pe = (PacketEvent) event;
             if (pe.getPacket() instanceof GameMessageS2CPacket p) {
                 if (p.getMessage().getString().contains("Command set:")) {
@@ -47,13 +47,13 @@ public class Image extends Command {
 
     @Override
     public String[] getSuggestions(String fullCommand, String[] args) {
-        if(args.length == 1){
+        if (args.length == 1) {
             return new String[]{"chat", "book", "lore"};
         }
-        if(args.length == 2){
+        if (args.length == 2) {
             return new String[]{"(url)"};
         }
-        if(args.length == 3){
+        if (args.length == 3) {
             return new String[]{"(size)"};
         }
         return super.getSuggestions(fullCommand, args);

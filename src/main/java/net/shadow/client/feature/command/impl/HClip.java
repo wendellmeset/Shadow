@@ -16,7 +16,7 @@ public class HClip extends Command {
 
     @Override
     public String[] getSuggestions(String fullCommand, String[] args) {
-        if(args.length == 1){
+        if (args.length == 1) {
             return new String[]{"(amount)"};
         }
         return super.getSuggestions(fullCommand, args);

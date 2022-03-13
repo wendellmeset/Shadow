@@ -8,11 +8,8 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.gui.clickgui.theme.ThemeManager;
-import net.shadow.client.feature.module.impl.render.Theme;
 import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.render.Renderer;
-
-import java.awt.*;
 
 public abstract class HudElement {
 

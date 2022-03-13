@@ -4,8 +4,6 @@
 
 package net.shadow.client.feature.command.impl;
 
-import java.util.Objects;
-
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
@@ -20,9 +18,9 @@ public class ItemSpoof extends Command {
 
     @Override
     public String[] getSuggestions(String fullCommand, String[] args) {
-        if(args.length == 1){
+        if (args.length == 1) {
             return Registry.ITEM.stream().toList().toArray(String[]::new);
-        }else if(args.length ==2){
+        } else if (args.length == 2) {
             return new String[]{"(amount)"};
         }
         return super.getSuggestions(fullCommand, args);

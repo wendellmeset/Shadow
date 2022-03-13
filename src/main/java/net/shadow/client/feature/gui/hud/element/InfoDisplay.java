@@ -6,9 +6,7 @@ package net.shadow.client.feature.gui.hud.element;
 
 import net.minecraft.client.util.math.MatrixStack;
 import net.shadow.client.feature.module.ModuleRegistry;
-import net.shadow.client.feature.module.ModuleType;
 import net.shadow.client.feature.module.impl.render.Hud;
-import net.shadow.client.helper.font.FontRenderers;
 
 public class InfoDisplay extends HudElement {
 
