@@ -8,8 +8,14 @@ import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.helper.util.Utils;
 
+import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
+import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -28,27 +34,30 @@ public class LinkPlayer extends Command {
 
     @Override
     public String[] getSuggestions(String fullCommand, String[] args) {
+        if (args.length == 1) {
+            return Objects.requireNonNull(ShadowMain.client.world).getPlayers().stream().map(AbstractClientPlayerEntity::getGameProfile).map(GameProfile::getName).toList().toArray(String[]::new);
+        }
         return super.getSuggestions(fullCommand, args);
     }
 
     @Override
     public void onExecute(String[] args) {
         if (!ShadowMain.client.player.getAbilities().creativeMode) {
-            message("You must be in creative mode");
+            error("You must be in creative mode");
             return;
         }
         if (args.length < 1) {
-            message("Incorrect Arguments, use >linkplayer <player>");
+            error("Incorrect Arguments, use >linkplayer <player>");
             return;
         }
         String player = Utils.Players.completeName(args[0]);
         if (player.equals("none")) {
-            message("that player does not exist");
+            error("that player does not exist");
             return;
         }
         int[] ub = Utils.Players.decodeUUID(Utils.Players.getUUIDFromName(player));
         if (ub == null) {
-            message("that player does not exist");
+            error("that player does not exist");
             return;
         }
         NbtCompound tag = new NbtCompound();

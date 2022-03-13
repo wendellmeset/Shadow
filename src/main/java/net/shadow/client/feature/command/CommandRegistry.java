@@ -71,6 +71,7 @@ public class CommandRegistry {
         commands.add(new KickSelf());
         commands.add(new Lag());
         commands.add(new LinkPlayer());
+        commands.add(new Open());
     }
 
     public static List<Command> getCommands() {
