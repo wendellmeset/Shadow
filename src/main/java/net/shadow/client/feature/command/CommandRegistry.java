@@ -66,6 +66,11 @@ public class CommandRegistry {
         commands.add(new ForceOP());
         commands.add(new ItemSpoof());
         commands.add(new HClip());
+        commands.add(new Image());
+        commands.add(new ItemData());
+        commands.add(new KickSelf());
+        commands.add(new Lag());
+        commands.add(new LinkPlayer());
     }
 
     public static List<Command> getCommands() {
