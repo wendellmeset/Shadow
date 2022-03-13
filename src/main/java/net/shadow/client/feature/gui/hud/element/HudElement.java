@@ -7,6 +7,8 @@ package net.shadow.client.feature.gui.hud.element;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 import net.shadow.client.ShadowMain;
+import net.shadow.client.feature.gui.clickgui.theme.ThemeManager;
+import net.shadow.client.feature.module.impl.render.Theme;
 import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.render.Renderer;
 
@@ -54,17 +56,10 @@ public abstract class HudElement {
     }
 
     public void renderOutline() {
-
-        //        double timeOffset = (System.currentTimeMillis()%1000)/1000d;
-        Color v1 = Color.getHSBColor(timeOffset(0), 0.6f, 1f);
-        Color v2 = Color.getHSBColor(timeOffset(0.25), 0.6f, 1f);
-        Color v3 = Color.getHSBColor(timeOffset(0.5), 0.6f, 1f);
-        Color v4 = Color.getHSBColor(timeOffset(0.75), 0.6f, 1f);
-
-        Renderer.R2D.renderGradientLine(v1, v2, posX, posY, posX + width, posY);
-        Renderer.R2D.renderGradientLine(v2, v3, posX + width, posY, posX + width, posY + height);
-        Renderer.R2D.renderGradientLine(v3, v4, posX + width, posY + height, posX, posY + height);
-        Renderer.R2D.renderGradientLine(v4, v1, posX, posY + height, posX, posY);
+        Renderer.R2D.renderLine(Renderer.R3D.getEmptyMatrixStack(), ThemeManager.getMainTheme().getAccent(), posX, posY, posX + width, posY);
+        Renderer.R2D.renderLine(Renderer.R3D.getEmptyMatrixStack(), ThemeManager.getMainTheme().getAccent(), posX + width, posY, posX + width, posY + height);
+        Renderer.R2D.renderLine(Renderer.R3D.getEmptyMatrixStack(), ThemeManager.getMainTheme().getAccent(), posX + width, posY + height, posX, posY + height);
+        Renderer.R2D.renderLine(Renderer.R3D.getEmptyMatrixStack(), ThemeManager.getMainTheme().getAccent(), posX, posY + height, posX, posY);
 
         double rpoY = posY - FontRenderers.getRenderer().getFontHeight();
         if (posY < FontRenderers.getRenderer().getFontHeight()) { // too small to render text properly

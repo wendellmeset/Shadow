@@ -27,6 +27,7 @@ import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.PacketEvent;
 import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.font.adapter.impl.ClientFontRenderer;
+import net.shadow.client.helper.render.MSAAFramebuffer;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Transitions;
 import net.shadow.client.helper.util.Utils;
@@ -160,12 +161,11 @@ public class Hud extends Module {
 
     @Override
     public void onHudRender() {
-        MatrixStack ms = Renderer.R3D.getEmptyMatrixStack();
-        drawTopLeft(ms);
     }
 
-    void drawTopLeft(MatrixStack ms) {
-//        DrawableHelper.drawTexture(ms, 3, 3, 0, 0, j, i, j, i);
+    public void drawTopLeft(MatrixStack ms) {
+        MSAAFramebuffer.use(MSAAFramebuffer.MAX_SAMPLES, () ->{
+            //        DrawableHelper.drawTexture(ms, 3, 3, 0, 0, j, i, j, i);
         List<String> values = new ArrayList<>();
         if (this.fps.getValue()) {
             values.add(((IMinecraftClientAccessor) ShadowMain.client).getCurrentFps() + " fps");
@@ -202,13 +202,14 @@ public class Hud extends Module {
         double imgHeight = 167 / 5d;
         double widgetWidth = Math.max(Math.max(imgWidth, width), 160) + 6;
         double widgetHeight = 3 + imgHeight + 3 + FontRenderers.getRenderer().getMarginHeight() + 3;
-        double widgetX = 5;
-        double widgetY = 5;
+        double widgetX = 0;
+        double widgetY = 0;
         Renderer.R2D.renderRoundedQuad(ms, new Color(30, 30, 30, 200), widgetX, widgetY, widgetX + widgetWidth, widgetY + widgetHeight, 5, 20);
         RenderSystem.setShaderTexture(0, LOGO);
         Renderer.R2D.renderTexture(ms, widgetX + widgetWidth / 2d - imgWidth / 2d, widgetY + 3, imgWidth, imgHeight, 0, 0, imgWidth, imgHeight, imgWidth, imgHeight);
 //        FontRenderers.getRenderer().drawString(ms, drawStr, rootX + 2, rootY + height / 2d - FontRenderers.getRenderer().getMarginHeight() / 2d + i + 3, 0xAAAAAA);
         FontRenderers.getRenderer().drawCenteredString(ms, drawStr, widgetX + widgetWidth / 2d, widgetY + 3 + imgHeight + 3, 0xAAAAAA);
+        });
     }
 
     void drawModuleList(MatrixStack ms) {
