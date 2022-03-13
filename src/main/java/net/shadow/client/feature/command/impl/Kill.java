@@ -63,7 +63,7 @@ public class Kill extends Command {
     @Override
     public String[] getSuggestions(String fullCommand, String[] args) {
         if (args.length == 1) {
-            return new String[]{"(player username)", "U(uuid)"};
+            return Objects.requireNonNull(ShadowMain.client.world).getPlayers().stream().map(abstractClientPlayerEntity -> abstractClientPlayerEntity.getGameProfile().getName()).toList().toArray(String[]::new);
         }
         return super.getSuggestions(fullCommand, args);
     }
