@@ -41,6 +41,7 @@ public class PlayerSkinMixin {
     @Final
     private MinecraftSessionService sessionService;
     //I cant even launch mc with this! it doesnt work
+    // skill issue, i would say
     @Inject(method = "method_4653", at = @At(
             value = "INVOKE",
             target = "Lnet/minecraft/client/MinecraftClient;execute(Ljava/lang/Runnable;)V",
@@ -49,56 +50,6 @@ public class PlayerSkinMixin {
     void real(GameProfile gameProfile, boolean bl, PlayerSkinProvider.SkinTextureAvailableCallback skinTextureAvailableCallback, CallbackInfo ci, Map<Type, MinecraftProfileTexture> map) {
         addCape(gameProfile, map);
     }
-
-//    @Inject(at = {@At("HEAD")},
-//            method = {
-//                    "loadSkin(Lcom/mojang/authlib/GameProfile;Lnet/minecraft/client/texture/PlayerSkinProvider$SkinTextureAvailableCallback;Z)V"},
-//            cancellable = true)
-//    private void onLoadSkin(GameProfile profile,
-//                            PlayerSkinProvider.SkinTextureAvailableCallback callback,
-//                            boolean requireSecure, CallbackInfo ci) {
-//
-//        Runnable runnable = () -> {
-//            HashMap<MinecraftProfileTexture.Type, MinecraftProfileTexture> map =
-//                    Maps.newHashMap();
-//
-//            try {
-//                map.putAll(sessionService.getTextures(profile, requireSecure));
-//            } catch (InsecureTextureException ignored) {
-//
-//            }
-//
-//            if (map.isEmpty()) {
-//                profile.getProperties().clear();
-//                if (profile.getId().equals(MinecraftClient.getInstance()
-//                        .getSession().getProfile().getId())) {
-//                    profile.getProperties().putAll(
-//                            MinecraftClient.getInstance().getSessionProperties());
-//                    map.putAll(sessionService.getTextures(profile, false));
-//                } else {
-//                    sessionService.fillProfileProperties(profile,
-//                            requireSecure);
-//
-//                    try {
-//                        map.putAll(
-//                                sessionService.getTextures(profile, requireSecure));
-//                    } catch (InsecureTextureException ignored) {
-//
-//                    }
-//                }
-//            }
-//
-//            addCape(profile, map);
-//
-//            MinecraftClient.getInstance().execute(() -> RenderSystem.recordRenderCall(() -> ImmutableList.of(Type.SKIN, Type.CAPE).forEach((type) -> {
-//                if (map.containsKey(type))
-//                    loadSkin(map.get(type), type, callback);
-//            })));
-//        };
-//        Util.getMainWorkerExecutor().execute(runnable);
-//
-//        ci.cancel();
-//    }
 
     private void addCape(GameProfile profile,
                          Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> map) {

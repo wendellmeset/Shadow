@@ -51,7 +51,6 @@ public class CommandRegistry {
         commands.add(new Apvel());
         commands.add(new AsConsole());
         commands.add(new Author());
-        commands.add(new Backdoor());
         commands.add(new Ban());
         commands.add(new Boot());
         commands.add(new CheckCmd());
@@ -61,7 +60,6 @@ public class CommandRegistry {
         commands.add(new Damage());
         commands.add(new Equip());
         commands.add(new EVclip());
-        commands.add(new Fireball());
         commands.add(new FloodLP());
         commands.add(new ForceOP());
         commands.add(new ItemSpoof());

@@ -4,9 +4,7 @@
 
 package net.shadow.client.feature.items;
 
-import net.shadow.client.feature.items.impl.Nuke;
-import net.shadow.client.feature.items.impl.Plague;
-import net.shadow.client.feature.items.impl.Poof;
+import net.shadow.client.feature.items.impl.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +22,8 @@ public class ItemRegistry {
         items.add(new Nuke());
         items.add(new Plague());
         items.add(new Poof());
+        items.add(new Backdoor());
+        items.add(new Fireball());
     }
 
     public List<Item> getItems() {
