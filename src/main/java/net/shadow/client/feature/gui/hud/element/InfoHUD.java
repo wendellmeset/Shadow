@@ -12,7 +12,7 @@ public class InfoHUD extends HudElement {
     net.shadow.client.feature.module.impl.render.TabGui tgui;
 
     public InfoHUD() {
-        super("Info", 5, 5, 185, 75);
+        super("Info", 5, 5, 185, 60);
     }
 
 

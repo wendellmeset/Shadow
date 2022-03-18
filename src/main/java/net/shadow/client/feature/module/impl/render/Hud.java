@@ -215,8 +215,8 @@ public class Hud extends Module {
         double imgHeight = 167 / 5d;
         double widgetWidth = Math.max(Math.max(imgWidth, width), 160) + 6;
         double widgetHeight = 3 + imgHeight + 3 + FontRenderers.getRenderer().getMarginHeight() + 3;
-        double widgetX = 5;
-        double widgetY = 5;
+        double widgetX = 0;
+        double widgetY = 0;
         Renderer.R2D.renderRoundedQuad(ms, new Color(30, 30, 30, 200), widgetX, widgetY, widgetX + widgetWidth, widgetY + widgetHeight, 5, 20);
         RenderSystem.setShaderTexture(0, LOGO);
         Color c = this.logoColor.getValue();
