@@ -173,11 +173,11 @@ public class Hud extends Module {
         }
         ms.push();
         ms.translate(0, heightOffsetLeft, 0);
-        drawTopLeft(ms);
+        //drawTopLeft(ms);
         ms.pop();
     }
 
-    void drawTopLeft(MatrixStack ms) {
+    public void drawTopLeft(MatrixStack ms) {
 //        DrawableHelper.drawTexture(ms, 3, 3, 0, 0, j, i, j, i);
         List<String> values = new ArrayList<>();
         if (this.fps.getValue()) {

@@ -70,6 +70,9 @@ public class CommandRegistry {
         commands.add(new Lag());
         commands.add(new LinkPlayer());
         commands.add(new Open());
+        commands.add(new PoofCmd());
+        commands.add(new RenameCmd());
+        commands.add(new Pre());
     }
 
     public static List<Command> getCommands() {
