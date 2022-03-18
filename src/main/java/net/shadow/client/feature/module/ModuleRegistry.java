@@ -7,7 +7,6 @@ package net.shadow.client.feature.module;
 
 import net.shadow.client.feature.module.impl.combat.*;
 import net.shadow.client.feature.module.impl.exploit.*;
-import net.shadow.client.feature.module.impl.fun.*;
 import net.shadow.client.feature.module.impl.misc.*;
 import net.shadow.client.feature.module.impl.movement.*;
 import net.shadow.client.feature.module.impl.render.*;

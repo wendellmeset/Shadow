@@ -21,7 +21,7 @@ import java.util.Objects;
 
 public class EntityFly extends Module {
 
-    final KeyBinding down = new KeyBinding("", GLFW.GLFW_KEY_LEFT_SHIFT, "");
+    final KeyBinding down = new KeyBinding("", GLFW.GLFW_KEY_LEFT_ALT, "");
     Entity lastRide = null;
 
     public EntityFly() {
