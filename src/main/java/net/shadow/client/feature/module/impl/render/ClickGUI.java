@@ -9,7 +9,9 @@ import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
+import net.shadow.client.feature.module.NoNotificationDefault;
 
+@NoNotificationDefault
 public class ClickGUI extends Module {
     public final DoubleSetting radius = this.config.create(new DoubleSetting.Builder(5).name("Round radius").precision(1).min(0).max(10).description("How round the clickgui is").get());
     int t = 2;

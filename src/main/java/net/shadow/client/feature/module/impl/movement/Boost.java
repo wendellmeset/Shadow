@@ -11,7 +11,9 @@ import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.config.EnumSetting;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
+import net.shadow.client.feature.module.NoNotificationDefault;
 
+@NoNotificationDefault
 public class Boost extends Module {
 
     final DoubleSetting strength = this.config.create(new DoubleSetting.Builder(3).name("Strength").description("How much to boost you with").min(0.1).max(10).precision(1).get());

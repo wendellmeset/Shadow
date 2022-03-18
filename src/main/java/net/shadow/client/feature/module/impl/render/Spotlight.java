@@ -8,7 +8,9 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.shadow.client.feature.gui.screen.QuickSelectScreen;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
+import net.shadow.client.feature.module.NoNotificationDefault;
 
+@NoNotificationDefault
 public class Spotlight extends Module {
     public Spotlight() {
         super("Spotlight", "Opens the spotlight menu", ModuleType.RENDER);

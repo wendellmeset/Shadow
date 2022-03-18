@@ -12,6 +12,8 @@ import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.config.ModuleConfig;
 import net.shadow.client.feature.gui.notifications.Notification;
 
+import java.lang.annotation.Annotation;
+
 public abstract class Module {
 
     protected static final MinecraftClient client = ShadowMain.client;
@@ -32,7 +34,11 @@ public abstract class Module {
         this.keybind = this.config.create(new DoubleSetting.Builder(-1).name("Keybind").description("The keybind to toggle the module with").min(-1).max(65535).precision(0).get());
         this.keybind.showIf(() -> false);
         this.debuggerEnabled = this.config.create(new BooleanSetting.Builder(false).name("Debugger").description("Shows a lot of funky visuals describing whats going on").get());
-        this.toasts = this.config.create(new BooleanSetting.Builder(true).name("Toasts").description("Whether to show enabled / disabled toasts").get());
+        boolean hasAnnotation = false;
+        for (Annotation declaredAnnotation : this.getClass().getDeclaredAnnotations()) {
+            if (declaredAnnotation.annotationType() == NoNotificationDefault.class) hasAnnotation = true;
+        }
+        this.toasts = this.config.create(new BooleanSetting.Builder(!hasAnnotation).name("Toasts").description("Whether to show enabled / disabled toasts").get());
     }
 
     protected boolean isDebuggerEnabled() {
