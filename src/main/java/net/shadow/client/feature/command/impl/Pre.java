@@ -73,7 +73,7 @@ public class Pre extends Command {
                 if (!stack.hasNbt())
                     stack.setNbt(new NbtCompound());
                 Vec3d se = Objects.requireNonNull(ShadowMain.client.player).raycast(255, ShadowMain.client.getTickDelta(), true).getPos();
-                NbtCompound tag = StringNbtReader.parse("{EntityTag:{Pos:[" + se.x + ".0," + se.y + ".0," + se.z + ".0," + "]}}");
+                NbtCompound tag = StringNbtReader.parse("{EntityTag:{Pos:[" + se.x + "," + se.y + "," + se.z + "," + "]}}");
                 stack.getNbt().copyFrom(tag);
                 ShadowMain.client.player.networkHandler.sendPacket(new CreativeInventoryActionC2SPacket(36 + ShadowMain.client.player.getInventory().selectedSlot, stack));
                 message("Changed Spawning Position");
