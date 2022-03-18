@@ -121,8 +121,8 @@ public class HomeScreen extends ClientScreen implements FastTickable {
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Multiplayer", () -> ShadowMain.client.setScreen(new MultiplayerScreen(this))));
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Realms", () -> ShadowMain.client.setScreen(new RealmsMainScreen(this))));
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Alts", () -> ShadowMain.client.setScreen(
-                new QuickSelectScreen()
-//                AltManagerScreen.instance()
+                //new QuickSelectScreen()
+                AltManagerScreen.instance()
                 //                new TestScreen()
         )));
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Settings", () -> ShadowMain.client.setScreen(new OptionsScreen(this, ShadowMain.client.options))));
