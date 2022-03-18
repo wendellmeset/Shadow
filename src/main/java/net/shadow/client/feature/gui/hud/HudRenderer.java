@@ -74,7 +74,6 @@ public class HudRenderer {
         he.add(new Taco());
         he.add(new SpeedHud());
         he.add(new TabGui());
-        he.add(new InfoDisplay());
         return he;
     }
 

@@ -120,7 +120,9 @@ public class HomeScreen extends ClientScreen implements FastTickable {
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Singleplayer", () -> ShadowMain.client.setScreen(new SelectWorldScreen(this))));
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Multiplayer", () -> ShadowMain.client.setScreen(new MultiplayerScreen(this))));
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Realms", () -> ShadowMain.client.setScreen(new RealmsMainScreen(this))));
-        buttonsMap.add(new AbstractMap.SimpleEntry<>("Alts", () -> ShadowMain.client.setScreen(AltManagerScreen.instance()
+        buttonsMap.add(new AbstractMap.SimpleEntry<>("Alts", () -> ShadowMain.client.setScreen(
+                new QuickSelectScreen()
+//                AltManagerScreen.instance()
                 //                new TestScreen()
         )));
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Settings", () -> ShadowMain.client.setScreen(new OptionsScreen(this, ShadowMain.client.options))));
@@ -217,7 +219,7 @@ public class HomeScreen extends ClientScreen implements FastTickable {
         }
         stack.translate(0, ap * -(padding + h + 1), 0);
         Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 170), padding, padding, padding + w + padding * 2, padding + h, 10, 14);
-        Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 170), ShadowMain.client.getWindow().getScaledWidth() - ((75 + padding) * 3) - padding - padding, ShadowMain.client.getWindow().getScaledHeight() - 20 - padding - padding - padding, ShadowMain.client.getWindow().getScaledWidth() - padding, ShadowMain.client.getWindow().getScaledHeight() - padding, 5, samples);
+
         propFr.drawString(stack, "Changelog", (float) (padding * 2f), (float) (padding * 2f), 0xFFFFFF, false);
         double yoff = padding * 2 + propFr.getMarginHeight() + 2;
         for (String s : changelog.split("\n")) {
@@ -288,6 +290,8 @@ public class HomeScreen extends ClientScreen implements FastTickable {
         stack.translate(0, (height - (Utils.halfHeight() - 125)) * heiProg, 0);
         double pad = 6;
         Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 170), Utils.halfWidth() - widgetsWidth / 2d - pad, Utils.halfHeight() - widgetsHeight / 2d - pad, Utils.halfWidth() + widgetsWidth / 2d + pad, Utils.halfHeight() + widgetsHeight / 2d + pad, 5, 20);
+
+        Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 170), ShadowMain.client.getWindow().getScaledWidth() - ((75 + padding) * 3) - padding - padding, ShadowMain.client.getWindow().getScaledHeight() - 20 - padding - padding - padding, ShadowMain.client.getWindow().getScaledWidth() - padding, ShadowMain.client.getWindow().getScaledHeight() - padding, 5, samples);
         super.renderInternal(stack, mouseX, mouseY, delta); // render bottom row widgets
         stack.pop();
 

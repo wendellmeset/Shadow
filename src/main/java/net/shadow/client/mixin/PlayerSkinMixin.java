@@ -4,20 +4,14 @@
 
 package net.shadow.client.mixin;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Maps;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.minecraft.InsecureTextureException;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
-import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.texture.PlayerSkinProvider;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Util;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Final;
@@ -30,7 +24,6 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Map;
 
 @Debug(export = true)
@@ -40,6 +33,7 @@ public class PlayerSkinMixin {
     @Shadow
     @Final
     private MinecraftSessionService sessionService;
+
     //I cant even launch mc with this! it doesnt work
     // skill issue, i would say
     @Inject(method = "method_4653", at = @At(

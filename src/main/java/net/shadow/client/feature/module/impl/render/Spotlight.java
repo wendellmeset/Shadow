@@ -5,20 +5,19 @@
 package net.shadow.client.feature.module.impl.render;
 
 import net.minecraft.client.util.math.MatrixStack;
+import net.shadow.client.feature.gui.screen.QuickSelectScreen;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 
-public class NoLiquidFog extends Module {
-    public static NoLiquidFog INSTANCE;
-
-    public NoLiquidFog() {
-        super("NoLiquidFog", "Removes the fogging effects of when you're in water or lava", ModuleType.RENDER);
-        INSTANCE = this;
+public class Spotlight extends Module {
+    public Spotlight() {
+        super("Spotlight", "Opens the spotlight menu", ModuleType.RENDER);
     }
 
     @Override
     public void tick() {
-
+        client.setScreen(new QuickSelectScreen());
+        setEnabled(false);
     }
 
     @Override

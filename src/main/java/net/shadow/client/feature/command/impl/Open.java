@@ -4,32 +4,20 @@
 
 package net.shadow.client.feature.command.impl;
 
-import net.shadow.client.ShadowMain;
-import net.shadow.client.feature.command.Command;
-
-import java.util.Arrays;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
+import net.shadow.client.ShadowMain;
+import net.shadow.client.feature.command.Command;
+
+import java.util.Arrays;
 
 public class Open extends Command {
     private static final ItemStack[] ITEMS = new ItemStack[27];
 
     public Open() {
         super("Open", "Open contianers", "open");
-    }
-
-    @Override
-    public String[] getSuggestions(String fullCommand, String[] args) {
-        return super.getSuggestions(fullCommand, args);
-    }
-
-    @Override
-    public void onExecute(String[] args) {
-        success("Done!");
-        getItemsInContainerItem(ShadowMain.client.player.getMainHandStack(), ITEMS);
     }
 
     private static void getItemsInContainerItem(ItemStack itemStack, ItemStack[] items) {
@@ -56,6 +44,17 @@ public class Open extends Command {
                 }
             }
         }
+    }
+
+    @Override
+    public String[] getSuggestions(String fullCommand, String[] args) {
+        return super.getSuggestions(fullCommand, args);
+    }
+
+    @Override
+    public void onExecute(String[] args) {
+        success("Done!");
+        getItemsInContainerItem(ShadowMain.client.player.getMainHandStack(), ITEMS);
     }
 
 }

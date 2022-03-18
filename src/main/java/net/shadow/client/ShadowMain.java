@@ -77,6 +77,9 @@ public class ShadowMain implements ModInitializer {
         registerTexture(new ResourceEntry(new Texture("icons/exploit"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/exploit.png"));
         registerTexture(new ResourceEntry(new Texture("icons/combat"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/combat.png"));
 
+        registerTexture(new ResourceEntry(new Texture("actions/runCommand"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/command.png"));
+        registerTexture(new ResourceEntry(new Texture("actions/toggleModule"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/toggle.png"));
+
         Runtime.getRuntime().addShutdownHook(new Thread(ConfigManager::saveState));
         if (BASE.exists() && !BASE.isDirectory()) {
             BASE.delete();

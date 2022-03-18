@@ -121,6 +121,8 @@ public class ModuleRegistry {
         modules.add(new AntiCrash());
         modules.add(new ClientSettings());
         modules.add(new NoLiquidFog());
+        modules.add(new Spotlight());
+        modules.add(new ShowTntPrime());
     }
 
     public static List<Module> getModules() {

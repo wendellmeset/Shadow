@@ -3,11 +3,11 @@ package net.shadow.client.helper.math;
 import net.minecraft.util.math.Vec3d;
 
 public class DreamSMP {
-    Vec3d takeNormalPills(Vec3d dream){
+    Vec3d takeNormalPills(Vec3d dream) {
         return dream.normalize();
     }
 
-    Vec3d chugNormalPills(Vec3d dream){
+    Vec3d chugNormalPills(Vec3d dream) {
         dream = dream.normalize();
         dream = dream.normalize();
         dream = dream.normalize();

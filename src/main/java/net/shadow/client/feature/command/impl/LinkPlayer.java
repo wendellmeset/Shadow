@@ -4,11 +4,8 @@
 
 package net.shadow.client.feature.command.impl;
 
-import java.util.Objects;
-
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -23,6 +20,8 @@ import net.minecraft.util.registry.Registry;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.helper.util.Utils;
+
+import java.util.Objects;
 
 public class LinkPlayer extends Command {
     public LinkPlayer() {

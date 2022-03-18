@@ -27,7 +27,6 @@ import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.PacketEvent;
 import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.font.adapter.impl.ClientFontRenderer;
-import net.shadow.client.helper.render.MSAAFramebuffer;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Transitions;
 import net.shadow.client.helper.util.Utils;
@@ -152,64 +151,71 @@ public class Hud extends Module {
             drawModuleList(ms);
             ms.pop();
         }
-        ms.push();
-        ms.translate(0, heightOffsetLeft, 0);
-        ms.pop();
+
 
         HudRenderer.getInstance().render();
     }
 
     @Override
     public void onHudRender() {
+        MatrixStack ms = Renderer.R3D.getEmptyMatrixStack();
+        double heightOffsetLeft = 0;
+        if (ShadowMain.client.options.debugEnabled) {
+            double heightAccordingToMc = 9;
+            List<String> lt = ((IDebugHudAccessor) ((IInGameHudAccessor) ShadowMain.client.inGameHud).getDebugHud()).callGetLeftText();
+            heightOffsetLeft = 2 + heightAccordingToMc * (lt.size() + 3);
+        }
+        ms.push();
+        ms.translate(0, heightOffsetLeft, 0);
+        drawTopLeft(ms);
+        ms.pop();
     }
 
-    public void drawTopLeft(MatrixStack ms) {
-        MSAAFramebuffer.use(MSAAFramebuffer.MAX_SAMPLES, () -> {
-            //        DrawableHelper.drawTexture(ms, 3, 3, 0, 0, j, i, j, i);
-            List<String> values = new ArrayList<>();
-            if (this.fps.getValue()) {
-                values.add(((IMinecraftClientAccessor) ShadowMain.client).getCurrentFps() + " fps");
-            }
+    void drawTopLeft(MatrixStack ms) {
+//        DrawableHelper.drawTexture(ms, 3, 3, 0, 0, j, i, j, i);
+        List<String> values = new ArrayList<>();
+        if (this.fps.getValue()) {
+            values.add(((IMinecraftClientAccessor) ShadowMain.client).getCurrentFps() + " fps");
+        }
 
-            if (this.tps.getValue()) {
-                String tStr = currentTps + "";
-                String[] dotS = tStr.split("\\.");
-                String tpsString = dotS[0];
-                if (!dotS[1].equalsIgnoreCase("0")) {
-                    tpsString += "." + dotS[1];
-                }
-                values.add(tpsString + " tps");
+        if (this.tps.getValue()) {
+            String tStr = currentTps + "";
+            String[] dotS = tStr.split("\\.");
+            String tpsString = dotS[0];
+            if (!dotS[1].equalsIgnoreCase("0")) {
+                tpsString += "." + dotS[1];
             }
-            if (this.ping.getValue()) {
-                PlayerListEntry ple = Objects.requireNonNull(ShadowMain.client.getNetworkHandler()).getPlayerListEntry(Objects.requireNonNull(ShadowMain.client.player).getUuid());
-                values.add((ple == null || ple.getLatency() == 0 ? "?" : ple.getLatency() + "") + " ms");
-            }
-            if (this.coords.getValue()) {
-                BlockPos bp = Objects.requireNonNull(ShadowMain.client.player).getBlockPos();
-                values.add(bp.getX() + " " + bp.getY() + " " + bp.getZ());
-            }
-            String drawStr = String.join(" | ", values);
-            double width = FontRenderers.getRenderer().getStringWidth(drawStr) + 5;
-            if (values.isEmpty()) {
-                return;
-            }
+            values.add(tpsString + " tps");
+        }
+        if (this.ping.getValue()) {
+            PlayerListEntry ple = Objects.requireNonNull(ShadowMain.client.getNetworkHandler()).getPlayerListEntry(Objects.requireNonNull(ShadowMain.client.player).getUuid());
+            values.add((ple == null || ple.getLatency() == 0 ? "?" : ple.getLatency() + "") + " ms");
+        }
+        if (this.coords.getValue()) {
+            BlockPos bp = Objects.requireNonNull(ShadowMain.client.player).getBlockPos();
+            values.add(bp.getX() + " " + bp.getY() + " " + bp.getZ());
+        }
+        String drawStr = String.join(" | ", values);
+        double width = FontRenderers.getRenderer().getStringWidth(drawStr) + 5;
+        if (values.isEmpty()) {
+            return;
+        }
 //        Renderer.R2D.renderRoundedQuad(ms, Renderer.Util.modify(ThemeManager.getMainTheme().getModule(), -1, -1, -1, 200), rootX - 5, -5, rootX + width + 5, rootY + height + i + 3 + 5, 7, 14);
 //        Renderer.R2D.renderRoundedQuad(ms, ThemeManager.getMainTheme().getInactive(), rootX + 1, rootY + i + 3, rootX + width, rootY + height + i + 3, 5, 11);
-            RenderSystem.defaultBlendFunc();
-            RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.enableBlend();
 
-            double imgWidth = 507 / 5d;
-            double imgHeight = 167 / 5d;
-            double widgetWidth = Math.max(Math.max(imgWidth, width), 160) + 6;
-            double widgetHeight = 3 + imgHeight + 3 + FontRenderers.getRenderer().getMarginHeight() + 3;
-            double widgetX = 0;
-            double widgetY = 0;
-            Renderer.R2D.renderRoundedQuad(ms, new Color(30, 30, 30, 200), widgetX, widgetY, widgetX + widgetWidth, widgetY + widgetHeight, 5, 20);
-            RenderSystem.setShaderTexture(0, LOGO);
-            Renderer.R2D.renderTexture(ms, widgetX + widgetWidth / 2d - imgWidth / 2d, widgetY + 3, imgWidth, imgHeight, 0, 0, imgWidth, imgHeight, imgWidth, imgHeight);
+        double imgWidth = 507 / 5d;
+        double imgHeight = 167 / 5d;
+        double widgetWidth = Math.max(Math.max(imgWidth, width), 160) + 6;
+        double widgetHeight = 3 + imgHeight + 3 + FontRenderers.getRenderer().getMarginHeight() + 3;
+        double widgetX = 5;
+        double widgetY = 5;
+        Renderer.R2D.renderRoundedQuad(ms, new Color(30, 30, 30, 200), widgetX, widgetY, widgetX + widgetWidth, widgetY + widgetHeight, 5, 20);
+        RenderSystem.setShaderTexture(0, LOGO);
+        Renderer.R2D.renderTexture(ms, widgetX + widgetWidth / 2d - imgWidth / 2d, widgetY + 3, imgWidth, imgHeight, 0, 0, imgWidth, imgHeight, imgWidth, imgHeight);
 //        FontRenderers.getRenderer().drawString(ms, drawStr, rootX + 2, rootY + height / 2d - FontRenderers.getRenderer().getMarginHeight() / 2d + i + 3, 0xAAAAAA);
-            FontRenderers.getRenderer().drawCenteredString(ms, drawStr, widgetX + widgetWidth / 2d, widgetY + 3 + imgHeight + 3, 0xAAAAAA);
-        });
+        FontRenderers.getRenderer().drawCenteredString(ms, drawStr, widgetX + widgetWidth / 2d, widgetY + 3 + imgHeight + 3, 0xAAAAAA);
     }
 
     void drawModuleList(MatrixStack ms) {

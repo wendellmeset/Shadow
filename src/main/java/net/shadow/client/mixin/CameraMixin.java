@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Camera.class)
 public class CameraMixin {
-    @Inject(method="getSubmersionType",at=@At("RETURN"),cancellable = true)
+    @Inject(method = "getSubmersionType", at = @At("RETURN"), cancellable = true)
     void pretendEverythingsFine(CallbackInfoReturnable<CameraSubmersionType> cir) {
         if (NoLiquidFog.INSTANCE != null && NoLiquidFog.INSTANCE.isEnabled() && (cir.getReturnValue() == CameraSubmersionType.WATER || cir.getReturnValue() == CameraSubmersionType.LAVA)) {
             cir.setReturnValue(CameraSubmersionType.NONE);

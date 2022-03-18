@@ -108,7 +108,13 @@ public class CategoryDisplay extends Element {
     }
 
     List<ModuleDisplay> getModules() {
-        return md.stream().filter(moduleDisplay -> moduleDisplay.module.getName().toLowerCase().startsWith(ClickGUI.instance().searchTerm.toLowerCase())).collect(Collectors.toList());
+        return md.stream().filter(moduleDisplay -> {
+            char[] charsToSearchFor = ClickGUI.instance().searchTerm.toLowerCase().toCharArray();
+            for (char c : charsToSearchFor) {
+                if (!moduleDisplay.module.getName().toLowerCase().contains(String.valueOf(c))) return false;
+            }
+            return true;
+        }).collect(Collectors.toList());
     }
 
     @Override
