@@ -13,6 +13,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.config.BooleanSetting;
+import net.shadow.client.feature.config.ColorSetting;
 import net.shadow.client.feature.gui.clickgui.theme.ThemeManager;
 import net.shadow.client.feature.gui.hud.HudRenderer;
 import net.shadow.client.feature.gui.notifications.Notification;
@@ -53,6 +54,11 @@ public class Hud extends Module {
     final BooleanSetting coords = this.config.create(new BooleanSetting.Builder(true).name("Coordinates").description("Whether to show current coordinates").get());
     final BooleanSetting ping = this.config.create(new BooleanSetting.Builder(true).name("Ping").description("Whether to show current ping").get());
     final BooleanSetting modules = this.config.create(new BooleanSetting.Builder(true).name("Array list").description("Whether to show currently enabled modules").get());
+    final ColorSetting logoColor = this.config.create(
+            new ColorSetting.Builder(new Color(0xAAAAAA))
+                    .name("Logo color")
+                    .description("How to color the logo")
+                    .get());
     final List<ModuleEntry> moduleList = new ArrayList<>();
     final Timer tpsUpdateTimer = new Timer();
     final List<Double> last5SecondTpsAverage = new ArrayList<>();
@@ -213,7 +219,10 @@ public class Hud extends Module {
         double widgetY = 5;
         Renderer.R2D.renderRoundedQuad(ms, new Color(30, 30, 30, 200), widgetX, widgetY, widgetX + widgetWidth, widgetY + widgetHeight, 5, 20);
         RenderSystem.setShaderTexture(0, LOGO);
+        Color c = this.logoColor.getValue();
+        RenderSystem.setShaderColor(c.getRed()/255f,c.getGreen()/255f,c.getBlue()/255f,c.getAlpha()/255f);
         Renderer.R2D.renderTexture(ms, widgetX + widgetWidth / 2d - imgWidth / 2d, widgetY + 3, imgWidth, imgHeight, 0, 0, imgWidth, imgHeight, imgWidth, imgHeight);
+        RenderSystem.setShaderColor(1f,1f,1f,1f);
 //        FontRenderers.getRenderer().drawString(ms, drawStr, rootX + 2, rootY + height / 2d - FontRenderers.getRenderer().getMarginHeight() / 2d + i + 3, 0xAAAAAA);
         FontRenderers.getRenderer().drawCenteredString(ms, drawStr, widgetX + widgetWidth / 2d, widgetY + 3 + imgHeight + 3, 0xAAAAAA);
     }
