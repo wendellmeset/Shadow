@@ -7,6 +7,8 @@ package net.shadow.client.feature.module.impl.render;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -215,14 +217,14 @@ public class Hud extends Module {
 //        Renderer.R2D.renderRoundedQuad(ms, ThemeManager.getMainTheme().getInactive(), rootX + 1, rootY + i + 3, rootX + width, rootY + height + i + 3, 5, 11);
         RenderSystem.defaultBlendFunc();
         RenderSystem.enableBlend();
-
         double imgWidth = 507 / 5d;
         double imgHeight = 167 / 5d;
+        
         double widgetWidth = Math.max(Math.max(imgWidth, width), 160) + 6;
         double widgetHeight = 3 + imgHeight + 3 + FontRenderers.getRenderer().getMarginHeight() + 3;
         double widgetX = 0;
         double widgetY = 0;
-        Renderer.R2D.renderRoundedQuad(ms, new Color(30, 30, 30, 200), widgetX, widgetY, widgetX + widgetWidth, widgetY + widgetHeight, 5, 20);
+        Renderer.R2D.renderRoundedQuad(ms, new Color(30, 30, 30, 255), widgetX, widgetY, widgetX + widgetWidth, widgetY + widgetHeight, 5, 20);
         RenderSystem.setShaderTexture(0, LOGO);
         Color c = this.logoColor.getValue();
         RenderSystem.setShaderColor(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, c.getAlpha() / 255f);
