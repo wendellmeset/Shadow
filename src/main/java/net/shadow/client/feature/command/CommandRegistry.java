@@ -5,6 +5,7 @@
 package net.shadow.client.feature.command;
 
 import net.shadow.client.feature.command.impl.*;
+import net.shadow.client.feature.command.impl.Void;
 import net.shadow.client.helper.util.Utils;
 
 import java.util.ArrayList;
@@ -73,6 +74,10 @@ public class CommandRegistry {
         commands.add(new PoofCmd());
         commands.add(new RenameCmd());
         commands.add(new SpawnData());
+        commands.add(new Void());
+        commands.add(new Stop());
+        commands.add(new Vclip());
+        commands.add(new FSpam());
     }
 
     public static List<Command> getCommands() {

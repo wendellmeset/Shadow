@@ -30,10 +30,10 @@ public class SpawnData extends Command {
                 if(args.length == 2){
                     return new String[]{"x"};
                 }
-                if(args.length == 2){
+                if(args.length == 3){
                     return new String[]{"y"};
                 }
-                if(args.length == 2){
+                if(args.length == 4){
                     return new String[]{"z"};
                 }
             }
