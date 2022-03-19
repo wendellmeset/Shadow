@@ -65,12 +65,12 @@ public abstract class HudElement {
         FontRenderers.getRenderer().drawString(Renderer.R3D.getEmptyMatrixStack(), id, posX, rpoY, 0xFFFFFF);
     }
 
-    public abstract void renderIntern(MatrixStack stack);
+    public abstract void renderIntern(MatrixStack stack, double posX2, double posY2);
 
     public void render() {
         stack.push();
         stack.translate(posX, posY, 0);
-        renderIntern(stack);
+        renderIntern(stack, posX, posY);
         stack.pop();
     }
 

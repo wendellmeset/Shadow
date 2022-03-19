@@ -10,15 +10,16 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.feature.module.impl.render.Hud;
+import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.render.MSAAFramebuffer;
 import net.shadow.client.mixin.IDebugHudAccessor;
 import net.shadow.client.mixin.IInGameHudAccessor;
 
-public class InfoHUD extends HudElement {
+public class ModuleList extends HudElement {
     net.shadow.client.feature.module.impl.render.TabGui tgui;
 
-    public InfoHUD() {
-        super("Info", 5, 5, 180, 57);
+    public ModuleList() {
+        super("Modules", 5, 5, 55, 100);
     }
 
 
@@ -43,7 +44,7 @@ public class InfoHUD extends HudElement {
                 stack.translate(0, heightOffsetRight- py, 0);
             }
         }
-        ModuleRegistry.getByClass(Hud.class).drawTopLeft(stack);
+        ModuleRegistry.getByClass(Hud.class).drawModuleList(stack, px, py);
         stack.pop();
     }
 }

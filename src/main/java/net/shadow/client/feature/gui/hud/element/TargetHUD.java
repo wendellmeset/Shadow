@@ -17,7 +17,7 @@ public class TargetHUD extends HudElement {
     }
 
     @Override
-    public void renderIntern(MatrixStack stack) {
+    public void renderIntern(MatrixStack stack, double px, double py) {
         ModuleRegistry.getByClass(TargetHud.class).draw(stack);
     }
 }
