@@ -26,7 +26,7 @@ public class SpeedHud extends HudElement {
     }
 
     @Override
-    public void renderIntern(MatrixStack stack, double px, double py) {
+    public void renderIntern(MatrixStack stack) {
         if (ModuleRegistry.getByClass(Hud.class).speed.getValue()) {
             double size = speedSaved.size();
             double incrX = width / (size - 1);

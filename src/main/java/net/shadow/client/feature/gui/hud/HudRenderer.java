@@ -75,7 +75,6 @@ public class HudRenderer {
         he.add(new SpeedHud());
         he.add(new TabGui());
         he.add(new InfoHUD());
-        he.add(new ModuleList());
         return he;
     }
 

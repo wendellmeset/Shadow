@@ -18,7 +18,7 @@ public class Taco extends HudElement {
     }
 
     @Override
-    public void renderIntern(MatrixStack stack, double px, double py) {
+    public void renderIntern(MatrixStack stack) {
         if (!net.shadow.client.feature.command.impl.Taco.config.enabled) {
             return;
         }
