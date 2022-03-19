@@ -22,7 +22,7 @@ import net.shadow.client.feature.gui.clickgui.ParticleRenderer;
 import net.shadow.client.feature.gui.widget.RoundButton;
 import net.shadow.client.helper.Texture;
 import net.shadow.client.helper.font.FontRenderers;
-import net.shadow.client.helper.font.adapter.impl.ClientFontRenderer;
+import net.shadow.client.helper.font.adapter.FontAdapter;
 import net.shadow.client.helper.render.MSAAFramebuffer;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Utils;
@@ -54,9 +54,9 @@ public class HomeScreen extends ClientScreen implements FastTickable {
     static String changelog = "";
     private static HomeScreen instance;
     final ParticleRenderer prend = new ParticleRenderer(100);
-    final ClientFontRenderer title = FontRenderers.getCustomSize(40);
-    final ClientFontRenderer smaller = FontRenderers.getCustomSize(30);
-    final ClientFontRenderer propFr = FontRenderers.getCustomSize(22);
+    final FontAdapter title = FontRenderers.getCustomSize(40);
+    final FontAdapter smaller = FontRenderers.getCustomSize(30);
+    final FontAdapter propFr = FontRenderers.getCustomSize(22);
     final Texture currentAccountTexture = new Texture("dynamic/tex_currentaccount_home");
     boolean loaded = false;
     long initTime = System.currentTimeMillis();
@@ -121,9 +121,8 @@ public class HomeScreen extends ClientScreen implements FastTickable {
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Multiplayer", () -> ShadowMain.client.setScreen(new MultiplayerScreen(this))));
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Realms", () -> ShadowMain.client.setScreen(new RealmsMainScreen(this))));
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Alts", () -> ShadowMain.client.setScreen(
-                //new QuickSelectScreen()
-                AltManagerScreen.instance()
-                //                new TestScreen()
+//                AltManagerScreen.instance()
+                new TestScreen()
         )));
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Settings", () -> ShadowMain.client.setScreen(new OptionsScreen(this, ShadowMain.client.options))));
         double totalHeight = buttonsMap.size() * (widgetHeight + widPad) - widPad;

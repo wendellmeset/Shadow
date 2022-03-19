@@ -28,7 +28,6 @@ import net.shadow.client.feature.gui.widget.RoundTextFieldWidget;
 import net.shadow.client.helper.Texture;
 import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.font.adapter.FontAdapter;
-import net.shadow.client.helper.font.adapter.impl.ClientFontRenderer;
 import net.shadow.client.helper.render.ClipStack;
 import net.shadow.client.helper.render.MSAAFramebuffer;
 import net.shadow.client.helper.render.Rectangle;
@@ -74,8 +73,8 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
     private static AltManagerScreen instance = null;
     final List<AltContainer> alts = new ArrayList<>();
     final double leftWidth = 200;
-    final ClientFontRenderer titleSmall = FontRenderers.getCustomSize(30);
-    final ClientFontRenderer title = FontRenderers.getCustomSize(40);
+    final FontAdapter titleSmall = FontRenderers.getCustomSize(30);
+    final FontAdapter title = FontRenderers.getCustomSize(40);
     final AtomicBoolean isLoggingIn = new AtomicBoolean(false);
     AltContainer selectedAlt;
     ThemedButton add, exit, remove, tags, login, session, censorMail;
@@ -551,7 +550,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
         final Session session;
         final ClientScreen parent;
         final double padding = 5;
-        final ClientFontRenderer title = FontRenderers.getCustomSize(40);
+        final FontAdapter title = FontRenderers.getCustomSize(40);
         RoundTextFieldWidget access, name, uuid;
         RoundButton save;
 
@@ -766,7 +765,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
         final List<ThemedButton> buttons = new ArrayList<>();
         final ClientScreen parent;
         final double padding = 5;
-        final ClientFontRenderer title = FontRenderers.getCustomSize(40);
+        final FontAdapter title = FontRenderers.getCustomSize(40);
         RoundTextFieldWidget email;
         RoundTextFieldWidget passwd;
         ThemedButton type;

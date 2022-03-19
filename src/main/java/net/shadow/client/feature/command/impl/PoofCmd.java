@@ -4,21 +4,24 @@
 
 package net.shadow.client.feature.command.impl;
 
-import net.shadow.client.ShadowMain;
-import net.shadow.client.feature.command.Command;
-
-import java.util.Objects;
-
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 import net.minecraft.screen.slot.SlotActionType;
+import net.shadow.client.ShadowMain;
+import net.shadow.client.feature.command.Command;
+
+import java.util.Objects;
 
 public class PoofCmd extends Command {
     public PoofCmd() {
         super("Poof", "crash old versions", "poof");
+    }
+
+    public static void drop(int slot) {
+        ShadowMain.client.interactionManager.clickSlot(ShadowMain.client.player.currentScreenHandler.syncId, slot, 1, SlotActionType.THROW, ShadowMain.client.player);
     }
 
     @Override
@@ -27,10 +30,6 @@ public class PoofCmd extends Command {
             return Objects.requireNonNull(ShadowMain.client.world).getPlayers().stream().map(abstractClientPlayerEntity -> abstractClientPlayerEntity.getGameProfile().getName()).toList().toArray(String[]::new);
         }
         return super.getSuggestions(fullCommand, args);
-    }
-
-    public static void drop(int slot) {
-        ShadowMain.client.interactionManager.clickSlot(ShadowMain.client.player.currentScreenHandler.syncId, slot, 1, SlotActionType.THROW, ShadowMain.client.player);
     }
 
     @Override

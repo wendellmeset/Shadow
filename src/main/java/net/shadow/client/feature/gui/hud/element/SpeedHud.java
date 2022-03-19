@@ -10,7 +10,6 @@ import net.shadow.client.feature.gui.clickgui.theme.ThemeManager;
 import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.feature.module.impl.render.Hud;
 import net.shadow.client.helper.Timer;
-import net.shadow.client.helper.render.MSAAFramebuffer;
 import net.shadow.client.helper.render.Renderer;
 
 import java.util.ArrayList;
@@ -29,38 +28,35 @@ public class SpeedHud extends HudElement {
     @Override
     public void renderIntern(MatrixStack stack) {
         if (ModuleRegistry.getByClass(Hud.class).speed.getValue()) {
-            MSAAFramebuffer.use(MSAAFramebuffer.MAX_SAMPLES, () -> {
-                double size = speedSaved.size();
-                double incrX = width / (size - 1);
-                double x = incrX;
+            double size = speedSaved.size();
+            double incrX = width / (size - 1);
+            double x = incrX;
 
-                Comparator<Double> dc = Comparator.comparingDouble(value -> value);
-                List<Double> speeds = new ArrayList<>(speedSaved);
-                speeds = speeds.stream().filter(Objects::nonNull).toList();
+            Comparator<Double> dc = Comparator.comparingDouble(value -> value);
+            List<Double> speeds = new ArrayList<>(speedSaved);
+            speeds = speeds.stream().filter(Objects::nonNull).toList();
 
-                double max = Math.max(0.7, speeds.stream().max(dc).orElse(1d));
-                double min = 0;
+            double max = Math.max(0.7, speeds.stream().max(dc).orElse(1d));
+            double min = 0;
 
-                double previous = 0;
-                if (speeds.size() > 0) {
-                    previous = height - ((speeds.get(0) - min) / max) * height;
-                } else {
-                    previous = 0;
-                }
-                for (int i = 1; i < speeds.size(); i++) {
-                    double ppr = Math.sin(Math.toRadians(((double) i / speeds.size() + (System.currentTimeMillis() % 3000) / -3000d) * 360 * 3)) + 1;
-                    ppr /= 2d;
-                    double aDouble = speeds.get(i);
-                    double prog = ((aDouble - min) / max);
-                    double y = height - prog * height;
+            double previous = 0;
+            if (speeds.size() > 0) {
+                previous = height - ((speeds.get(0) - min) / max) * height;
+            } else {
+                previous = 0;
+            }
+            for (int i = 1; i < speeds.size(); i++) {
+                double ppr = Math.sin(Math.toRadians(((double) i / speeds.size() + (System.currentTimeMillis() % 3000) / -3000d) * 360 * 3)) + 1;
+                ppr /= 2d;
+                double aDouble = speeds.get(i);
+                double prog = ((aDouble - min) / max);
+                double y = height - prog * height;
 
-                    Renderer.R2D.renderLine(stack, Renderer.Util.lerp(ThemeManager.getMainTheme().getActive(), ThemeManager.getMainTheme().getAccent(), ppr), x - incrX, previous, x, y);
+                Renderer.R2D.renderLine(stack, Renderer.Util.lerp(ThemeManager.getMainTheme().getActive(), ThemeManager.getMainTheme().getAccent(), ppr), x - incrX, previous, x, y);
 
-                    x += incrX;
-                    previous = y;
-                }
-            });
-
+                x += incrX;
+                previous = y;
+            }
         }
     }
 

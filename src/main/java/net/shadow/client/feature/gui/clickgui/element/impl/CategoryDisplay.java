@@ -16,7 +16,7 @@ import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.feature.module.ModuleType;
 import net.shadow.client.helper.font.FontRenderers;
-import net.shadow.client.helper.font.adapter.impl.ClientFontRenderer;
+import net.shadow.client.helper.font.adapter.FontAdapter;
 import net.shadow.client.helper.render.ClipStack;
 import net.shadow.client.helper.render.Rectangle;
 import net.shadow.client.helper.render.Renderer;
@@ -31,7 +31,7 @@ import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
 
 public class CategoryDisplay extends Element {
-    static final ClientFontRenderer cfr = FontRenderers.getCustomSize(20);
+    static final FontAdapter cfr = FontRenderers.getCustomSize(20);
     final List<ModuleDisplay> md = new ArrayList<>();
     final ModuleType mt;
     boolean selected = false;

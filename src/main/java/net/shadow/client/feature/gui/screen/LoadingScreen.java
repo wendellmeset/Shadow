@@ -11,7 +11,7 @@ import net.minecraft.util.math.MathHelper;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.gui.FastTickable;
 import net.shadow.client.helper.font.FontRenderers;
-import net.shadow.client.helper.font.adapter.impl.ClientFontRenderer;
+import net.shadow.client.helper.font.adapter.FontAdapter;
 import net.shadow.client.helper.render.MSAAFramebuffer;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Transitions;
@@ -42,7 +42,7 @@ public class LoadingScreen extends ClientScreen implements FastTickable {
     final AtomicBoolean loadInProg = new AtomicBoolean(false);
     //    double progress = 0;
     final AtomicDouble progress = new AtomicDouble();
-    final ClientFontRenderer title = FontRenderers.getCustomSize(40);
+    final FontAdapter title = FontRenderers.getCustomSize(40);
     final Map<ShadowMain.ResourceEntry, ProgressData> progressMap = new ConcurrentHashMap<>();
     double smoothProgress = 0;
     double opacity = 1;

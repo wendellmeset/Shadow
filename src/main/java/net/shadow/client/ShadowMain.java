@@ -19,17 +19,20 @@ import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.PostInitEvent;
 import net.shadow.client.helper.font.FontRenderers;
-import net.shadow.client.helper.font.adapter.impl.ClientFontRenderer;
-import net.shadow.client.helper.font.render.GlyphPageFontRenderer;
+import net.shadow.client.helper.font.adapter.impl.BruhAdapter;
+import net.shadow.client.helper.font.renderer.FontRenderer;
 import net.shadow.client.helper.manager.ConfigManager;
 import net.shadow.client.helper.util.Utils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @SkipObfuscation
 @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -96,7 +99,12 @@ public class ShadowMain implements ModInitializer {
     }
 
     void initFonts() {
-        FontRenderers.setRenderer(new ClientFontRenderer(GlyphPageFontRenderer.createFromID("Font.ttf", 17, false, false, false)));
+        try {
+            int fsize = 18 * 2;
+            FontRenderers.setRenderer(new BruhAdapter(new FontRenderer(Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(ShadowMain.class.getClassLoader().getResourceAsStream("Font.ttf"))).deriveFont(Font.PLAIN, fsize), fsize)));
+        } catch (FontFormatException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
     void tickModulesNWC() {

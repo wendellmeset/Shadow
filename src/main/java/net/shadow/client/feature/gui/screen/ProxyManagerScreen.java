@@ -10,7 +10,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.shadow.client.feature.gui.widget.RoundButton;
 import net.shadow.client.feature.gui.widget.RoundTextFieldWidget;
 import net.shadow.client.helper.font.FontRenderers;
-import net.shadow.client.helper.font.adapter.impl.ClientFontRenderer;
+import net.shadow.client.helper.font.adapter.FontAdapter;
 import net.shadow.client.helper.render.MSAAFramebuffer;
 import net.shadow.client.helper.render.Renderer;
 
@@ -18,7 +18,7 @@ import java.awt.*;
 
 public class ProxyManagerScreen extends ClientScreen {
     static final double widgetWidth = 300;
-    static final ClientFontRenderer title = FontRenderers.getCustomSize(40);
+    static final FontAdapter title = FontRenderers.getCustomSize(40);
     public static Proxy currentProxy = null;
     static double widgetHeight = 400;
     static boolean isSocks4 = false;

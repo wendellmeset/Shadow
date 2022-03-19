@@ -9,15 +9,15 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.helper.font.FontRenderers;
-import net.shadow.client.helper.font.adapter.impl.ClientFontRenderer;
+import net.shadow.client.helper.font.adapter.FontAdapter;
 import org.lwjgl.glfw.GLFW;
 
 import java.lang.reflect.Field;
 
 public class BindScreen extends Screen {
     final Module a;
-    final ClientFontRenderer cfr = FontRenderers.getCustomSize(30);
-    final ClientFontRenderer smaller = FontRenderers.getCustomSize(20);
+    final FontAdapter cfr = FontRenderers.getCustomSize(30);
+    final FontAdapter smaller = FontRenderers.getCustomSize(20);
     long closeAt = -1;
 
     public BindScreen(Module toBind) {

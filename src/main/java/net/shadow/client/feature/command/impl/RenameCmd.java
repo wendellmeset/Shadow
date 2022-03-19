@@ -4,10 +4,10 @@
 
 package net.shadow.client.feature.command.impl;
 
-import net.shadow.client.feature.command.Command;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.LiteralText;
 import net.shadow.client.ShadowMain;
+import net.shadow.client.feature.command.Command;
 
 public class RenameCmd extends Command {
     public RenameCmd() {

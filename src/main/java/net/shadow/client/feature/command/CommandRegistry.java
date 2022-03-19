@@ -72,7 +72,7 @@ public class CommandRegistry {
         commands.add(new Open());
         commands.add(new PoofCmd());
         commands.add(new RenameCmd());
-        commands.add(new Pre());
+        commands.add(new SpawnData());
     }
 
     public static List<Command> getCommands() {

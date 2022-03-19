@@ -5,14 +5,16 @@
 package net.shadow.client.helper.font;
 
 import net.shadow.client.helper.font.adapter.FontAdapter;
-import net.shadow.client.helper.font.adapter.impl.ClientFontRenderer;
-import net.shadow.client.helper.font.render.GlyphPageFontRenderer;
+import net.shadow.client.helper.font.adapter.impl.BruhAdapter;
+import net.shadow.client.helper.font.renderer.FontRenderer;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class FontRenderers {
-    private static final List<ClientFontRenderer> fontRenderers = new ArrayList<>();
+    private static final List<BruhAdapter> fontRenderers = new ArrayList<>();
     private static FontAdapter normal;
     private static FontAdapter mono;
 
@@ -26,19 +28,31 @@ public class FontRenderers {
 
     public static FontAdapter getMono() {
         if (mono == null) {
-            mono = new ClientFontRenderer(GlyphPageFontRenderer.createFromID("Mono.ttf", 17, false, false, false));
+            int fsize = 18 * 2;
+            try {
+                mono = (new BruhAdapter(new FontRenderer(Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(FontRenderers.class.getClassLoader().getResourceAsStream("Mono.ttf"))).deriveFont(Font.PLAIN, fsize), fsize)));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
         return mono;
     }
 
-    public static ClientFontRenderer getCustomSize(int size) {
-        for (ClientFontRenderer fontRenderer : fontRenderers) {
+    public static BruhAdapter getCustomSize(int size) {
+        size *= 2;
+        for (BruhAdapter fontRenderer : fontRenderers) {
             if (fontRenderer.getSize() == size) {
                 return fontRenderer;
             }
         }
-        ClientFontRenderer cfr = new ClientFontRenderer(GlyphPageFontRenderer.createFromID("Font.ttf", size, false, false, false));
-        fontRenderers.add(cfr);
-        return cfr;
+        int fsize = size;
+        try {
+            BruhAdapter bruhAdapter = (new BruhAdapter(new FontRenderer(Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(FontRenderers.class.getClassLoader().getResourceAsStream("Font.ttf"))).deriveFont(Font.PLAIN, fsize), fsize)));
+            fontRenderers.add(bruhAdapter);
+            return bruhAdapter;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

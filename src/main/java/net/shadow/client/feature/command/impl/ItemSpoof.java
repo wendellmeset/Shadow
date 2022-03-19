@@ -19,7 +19,7 @@ public class ItemSpoof extends Command {
     @Override
     public String[] getSuggestions(String fullCommand, String[] args) {
         if (args.length == 1) {
-            return Registry.ITEM.stream().toList().toArray(String[]::new);
+            return Registry.ITEM.stream().map(p -> Registry.ITEM.getId(p).toString()).toList().toArray(String[]::new);
         } else if (args.length == 2) {
             return new String[]{"(amount)"};
         }

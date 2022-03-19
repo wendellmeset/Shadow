@@ -6,16 +6,16 @@ package net.shadow.client.helper.font.adapter.impl;
 
 import net.minecraft.client.util.math.MatrixStack;
 import net.shadow.client.helper.font.adapter.FontAdapter;
-import net.shadow.client.helper.font.render.GlyphPageFontRenderer;
+import net.shadow.client.helper.font.renderer.FontRenderer;
 
-public class ClientFontRenderer implements FontAdapter {
-    final GlyphPageFontRenderer renderer;
+public class BruhAdapter implements FontAdapter {
+    FontRenderer renderer;
 
-    public ClientFontRenderer(GlyphPageFontRenderer fontRenderer) {
-        this.renderer = fontRenderer;
+    public BruhAdapter(FontRenderer fr) {
+        this.renderer = fr;
     }
 
-    public GlyphPageFontRenderer getRenderer() {
+    public FontRenderer getRenderer() {
         return renderer;
     }
 
@@ -28,7 +28,8 @@ public class ClientFontRenderer implements FontAdapter {
         float r = (float) (color >> 16 & 255) / 255.0F;
         float g = (float) (color >> 8 & 255) / 255.0F;
         float b = (float) (color & 255) / 255.0F;
-        return renderer.drawString(matrices, text, x, y, r, g, b, alpha);
+        renderer.drawString(matrices, text, x, y, r, g, b, alpha);
+        return 0;
     }
 
     @Override
@@ -40,12 +41,14 @@ public class ClientFontRenderer implements FontAdapter {
         float r = (float) (color >> 16 & 255) / 255.0F;
         float g = (float) (color >> 8 & 255) / 255.0F;
         float b = (float) (color & 255) / 255.0F;
-        return renderer.drawString(matrices, text, x, y, r, g, b, alpha);
+        renderer.drawString(matrices, text, (float) x, (float) y, r, g, b, alpha);
+        return 0;
     }
 
     @Override
     public int drawString(MatrixStack matrices, String text, float x, float y, float r, float g, float b, float a) {
-        return renderer.drawString(matrices, text, x, y, r, g, b, a);
+        renderer.drawString(matrices, text, x, y, r, g, b, a);
+        return 0;
     }
 
     @Override
@@ -57,12 +60,14 @@ public class ClientFontRenderer implements FontAdapter {
         float r = (float) (color >> 16 & 255) / 255.0F;
         float g = (float) (color >> 8 & 255) / 255.0F;
         float b = (float) (color & 255) / 255.0F;
-        return renderer.drawCenteredString(matrices, text, x, y, r, g, b, alpha);
+        renderer.drawCenteredString(matrices, text, (float) x, (float) y, r, g, b, alpha);
+        return 0;
     }
 
     @Override
     public int drawCenteredString(MatrixStack matrices, String text, double x, double y, float r, float g, float b, float a) {
-        return renderer.drawCenteredString(matrices, text, x, y, r, g, b, a);
+        renderer.drawCenteredString(matrices, text, (float) x, (float) y, r, g, b, a);
+        return 0;
     }
 
     @Override
@@ -77,7 +82,7 @@ public class ClientFontRenderer implements FontAdapter {
 
     @Override
     public float getFontHeight(String text) {
-        return renderer.getHeight(text);
+        return renderer.getFontHeight();
     }
 
     @Override
@@ -99,20 +104,20 @@ public class ClientFontRenderer implements FontAdapter {
 
     @Override
     public void drawString(MatrixStack matrices, String s, float x, float y, float r, float g, float b, float a, boolean dropShadow) {
-        renderer.drawString(matrices, s, x, y, r, g, b, a, dropShadow);
+        renderer.drawString(matrices, s, x, y, r, g, b, a);
     }
 
     @Override
     public String trimStringToWidth(String in, double width) {
-        return renderer.trimStringToWidth(in, width);
+        return renderer.trimStringToWidth(in, (float) width);
     }
 
     @Override
     public String trimStringToWidth(String in, double width, boolean reverse) {
-        return renderer.trimStringToWidth(in, width, reverse);
+        return trimStringToWidth(in, width);
     }
 
     public int getSize() {
-        return renderer.size;
+        return renderer.getSize();
     }
 }

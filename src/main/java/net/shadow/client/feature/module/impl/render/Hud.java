@@ -27,7 +27,6 @@ import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.PacketEvent;
 import net.shadow.client.helper.font.FontRenderers;
-import net.shadow.client.helper.font.adapter.impl.ClientFontRenderer;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Transitions;
 import net.shadow.client.helper.util.Utils;
@@ -45,7 +44,6 @@ import java.util.Objects;
 
 public class Hud extends Module {
     public static double currentTps = 0;
-    static ClientFontRenderer titleFr;
     public final BooleanSetting speed = this.config.create(new BooleanSetting.Builder(true).name("Speed").description("Show your current velocity").get());
     final Identifier LOGO = new Texture("logo.png");
     final DateFormat minSec = new SimpleDateFormat("mm:ss");
@@ -121,6 +119,17 @@ public class Hud extends Module {
 
     @Override
     public void onHudRenderNoMSAA() {
+
+    }
+
+    @Override
+    public void postInit() {
+        makeSureIsInitialized();
+        super.postInit();
+    }
+
+    @Override
+    public void onHudRender() {
         if (ShadowMain.client.getNetworkHandler() == null) {
             return;
         }
@@ -149,7 +158,6 @@ public class Hud extends Module {
         if (!NotificationRenderer.topBarNotifications.contains(serverNotResponding)) {
             serverNotResponding = null;
         }
-        makeSureIsInitialized();
 
         if (modules.getValue()) {
             ms.push();
@@ -158,23 +166,20 @@ public class Hud extends Module {
             ms.pop();
         }
 
-
         HudRenderer.getInstance().render();
-    }
 
-    @Override
-    public void onHudRender() {
-        MatrixStack ms = Renderer.R3D.getEmptyMatrixStack();
-        double heightOffsetLeft = 0;
-        if (ShadowMain.client.options.debugEnabled) {
-            double heightAccordingToMc = 9;
-            List<String> lt = ((IDebugHudAccessor) ((IInGameHudAccessor) ShadowMain.client.inGameHud).getDebugHud()).callGetLeftText();
-            heightOffsetLeft = 2 + heightAccordingToMc * (lt.size() + 3);
-        }
-        ms.push();
-        ms.translate(0, heightOffsetLeft, 0);
+
+//        MatrixStack ms = Renderer.R3D.getEmptyMatrixStack();
+//        double heightOffsetLeft = 0;
+//        if (ShadowMain.client.options.debugEnabled) {
+//            double heightAccordingToMc = 9;
+//            List<String> lt = ((IDebugHudAccessor) ((IInGameHudAccessor) ShadowMain.client.inGameHud).getDebugHud()).callGetLeftText();
+//            heightOffsetLeft = 2 + heightAccordingToMc * (lt.size() + 3);
+//        }
+//        ms.push();
+//        ms.translate(0, heightOffsetLeft, 0);
         //drawTopLeft(ms);
-        ms.pop();
+//        ms.pop();
     }
 
     public void drawTopLeft(MatrixStack ms) {
@@ -220,9 +225,9 @@ public class Hud extends Module {
         Renderer.R2D.renderRoundedQuad(ms, new Color(30, 30, 30, 200), widgetX, widgetY, widgetX + widgetWidth, widgetY + widgetHeight, 5, 20);
         RenderSystem.setShaderTexture(0, LOGO);
         Color c = this.logoColor.getValue();
-        RenderSystem.setShaderColor(c.getRed()/255f,c.getGreen()/255f,c.getBlue()/255f,c.getAlpha()/255f);
+        RenderSystem.setShaderColor(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, c.getAlpha() / 255f);
         Renderer.R2D.renderTexture(ms, widgetX + widgetWidth / 2d - imgWidth / 2d, widgetY + 3, imgWidth, imgHeight, 0, 0, imgWidth, imgHeight, imgWidth, imgHeight);
-        RenderSystem.setShaderColor(1f,1f,1f,1f);
+        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 //        FontRenderers.getRenderer().drawString(ms, drawStr, rootX + 2, rootY + height / 2d - FontRenderers.getRenderer().getMarginHeight() / 2d + i + 3, 0xAAAAAA);
         FontRenderers.getRenderer().drawCenteredString(ms, drawStr, widgetX + widgetWidth / 2d, widgetY + 3 + imgHeight + 3, 0xAAAAAA);
     }
@@ -238,7 +243,7 @@ public class Hud extends Module {
             double expandProg = MathHelper.clamp(prog, 0, 1); // 0-1 as 0-1 from 0-2
             double slideProg = MathHelper.clamp(prog - 1, 0, 1); // 1-2 as 0-1 from 0-2
             double hei = (FontRenderers.getRenderer().getMarginHeight() + 2);
-            double wid = moduleEntry.getRenderWidth() + 3;
+            double wid = moduleEntry.getRenderWidth() + 2;
             Renderer.R2D.renderQuad(ms, ThemeManager.getMainTheme().getActive(), width - (wid + 1), y, width, y + hei * expandProg);
             ms.push();
             ms.translate((1 - slideProg) * wid, 0, 0);
@@ -269,7 +274,6 @@ public class Hud extends Module {
     public void onFastTick() {
         rNoConnectionPosY = Transitions.transition(rNoConnectionPosY, shouldNoConnectionDropDown() ? 10 : -10, 10);
         HudRenderer.getInstance().fastTick();
-        makeSureIsInitialized();
         for (ModuleEntry moduleEntry : new ArrayList<>(moduleList)) {
             moduleEntry.animate();
         }

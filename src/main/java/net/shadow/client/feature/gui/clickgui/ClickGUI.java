@@ -19,7 +19,7 @@ import net.shadow.client.feature.module.ModuleType;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.font.FontRenderers;
-import net.shadow.client.helper.font.adapter.impl.ClientFontRenderer;
+import net.shadow.client.helper.font.adapter.FontAdapter;
 import net.shadow.client.helper.render.MSAAFramebuffer;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Transitions;
@@ -128,7 +128,7 @@ public class ClickGUI extends Screen implements FastTickable {
     void renderIntern(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         double wid = width / 2d;
         double hei = height / 2d;
-        ClientFontRenderer bigAssFr = FontRenderers.getCustomSize(70);
+        FontAdapter bigAssFr = FontRenderers.getCustomSize(70);
         double tx = wid - bigAssFr.getStringWidth(searchTerm) / 2d;
         double ty = hei - bigAssFr.getMarginHeight() / 2d;
         bigAssFr.drawString(matrices, searchTerm, (float) tx, (float) ty, 0x50FFFFFF, false);
