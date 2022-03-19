@@ -4,8 +4,10 @@
 
 package net.shadow.client.feature.command.impl;
 
+import lombok.val;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.exception.CommandException;
 
 import java.util.Objects;
 
@@ -24,11 +26,8 @@ public class Say extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) {
-        if (args.length == 0) {
-            error("not sure if i can say nothing");
-            return;
-        }
+    public void onExecute(String[] args) throws CommandException {
+        validateArgumentsLength(args, 1);
         Objects.requireNonNull(ShadowMain.client.player).sendChatMessage(String.join(" ", args));
     }
 }

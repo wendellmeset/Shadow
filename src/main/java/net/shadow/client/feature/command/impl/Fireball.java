@@ -13,6 +13,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.argument.IntegerArgumentParser;
+import net.shadow.client.feature.command.exception.CommandException;
 
 public class Fireball extends Command {
     public Fireball() {
@@ -28,13 +30,10 @@ public class Fireball extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) {
-        if (args.length != 1) {
-            error("Please use the format >fireball <power>");
-            return;
-        }
+    public void onExecute(String[] args) throws CommandException {
+        validateArgumentsLength(args, 1);
 
-        int fireballpower = Integer.parseInt(args[0]);
+        int fireballpower = new IntegerArgumentParser().parse(args[0]);
         Item item = Registry.ITEM.get(new Identifier("blaze_spawn_egg"));
         ItemStack stack = new ItemStack(item, 1);
         try {

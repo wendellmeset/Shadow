@@ -1,2 +1,3 @@
-RETARD GANG
-hello
+Did a funny
+changed font renderer
+fixed bugs

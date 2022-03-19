@@ -13,7 +13,7 @@ import java.io.IOException;
 public class RageQuit extends Command {
 
     public RageQuit() {
-        super("RageQuit", "Rage quits", "ragequit");
+        super("RageQuit", "U mad?", "ragequit");
     }
 
     public static boolean shutdown(int time) throws IOException {

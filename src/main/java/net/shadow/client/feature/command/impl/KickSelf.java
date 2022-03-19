@@ -11,6 +11,7 @@ import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.Hand;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.exception.CommandException;
 
 public class KickSelf extends Command {
     public KickSelf() {
@@ -26,11 +27,8 @@ public class KickSelf extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) {
-        if (args.length < 1) {
-            message("Please use the format >kickself <quit/chars/packet/self/spam/packets>");
-            return;
-        }
+    public void onExecute(String[] args) throws CommandException {
+        validateArgumentsLength(args, 1);
 
         switch (args[0].toLowerCase()) {
             case "spam":
@@ -60,6 +58,9 @@ public class KickSelf extends Command {
                 for (int i = 0; i < 5000; i++) {
                     ShadowMain.client.player.networkHandler.sendPacket(new PlayerInteractItemC2SPacket(Hand.MAIN_HAND));
                 }
+                break;
+            default:
+                error("Mode invalid");
                 break;
         }
     }

@@ -9,6 +9,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.argument.PlayerFromNameArgumentParser;
+import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.helper.util.Utils;
 
 import java.util.Objects;
@@ -28,25 +30,9 @@ public class Invsee extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) {
-        if (args.length == 0) {
-            message("i need username");
-            return;
-        }
-        PlayerEntity t = null;
-        for (Entity player : Objects.requireNonNull(ShadowMain.client.world).getEntities()) {
-            if (player instanceof PlayerEntity player1) {
-                if (player1.getGameProfile().getName().equalsIgnoreCase(args[0])) {
-                    t = player1;
-                    break;
-                }
-            }
-        }
-        if (t == null) {
-            error("No player found");
-            return;
-        }
-        PlayerEntity finalT = t;
-        Utils.TickManager.runOnNextRender(() -> ShadowMain.client.setScreen(new InventoryScreen(finalT)));
+    public void onExecute(String[] args) throws CommandException {
+        validateArgumentsLength(args, 1);
+        PlayerEntity t = new PlayerFromNameArgumentParser(true).parse(args[0]);
+        Utils.TickManager.runOnNextRender(() -> ShadowMain.client.setScreen(new InventoryScreen(t)));
     }
 }

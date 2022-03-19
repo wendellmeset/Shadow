@@ -5,6 +5,7 @@
 package net.shadow.client.feature.command.impl;
 
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.feature.config.SettingBase;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleRegistry;
@@ -21,9 +22,9 @@ public class Config extends Command {
     @Override
     public String[] getSuggestions(String fullCommand, String[] args) {
         if (args.length == 1) {
-            return ModuleRegistry.getModules().stream().map(Module::getName).toList().toArray(String[]::new);
+            return ModuleRegistry.getModules().stream().map(mod -> mod.getName().replaceAll(" ","-")).toList().toArray(String[]::new);
         } else if (args.length == 2 && ModuleRegistry.getByName(args[0]) != null) {
-            return Objects.requireNonNull(ModuleRegistry.getByName(args[0])).config.getSettings().stream().map(SettingBase::getName).toList().toArray(String[]::new);
+            return Objects.requireNonNull(ModuleRegistry.getByName(args[0].replaceAll("-", " "))).config.getSettings().stream().map(SettingBase::getName).toList().toArray(String[]::new);
         } else if (args.length == 3) {
             return new String[]{"(New value)"};
         }
@@ -31,7 +32,8 @@ public class Config extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) {
+    public void onExecute(String[] args) throws CommandException {
+//        validateArgumentsLength(args, 1);
         if (args.length == 0) {
             message("Syntax: .config (module) <key> <value>");
             message("For a module or key with spaces, use - as a separator");

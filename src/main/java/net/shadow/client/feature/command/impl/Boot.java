@@ -20,11 +20,6 @@ public class Boot extends Command {
     }
 
     @Override
-    public String[] getSuggestions(String fullCommand, String[] args) {
-        return super.getSuggestions(fullCommand, args);
-    }
-
-    @Override
     public void onExecute(String[] args) {
         ItemStack boot = new ItemStack(Items.WRITTEN_BOOK, 1);
         try {

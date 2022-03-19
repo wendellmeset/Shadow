@@ -27,6 +27,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.PacketEvent;
@@ -128,11 +129,8 @@ public class Kill extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) {
-        if (args.length == 0) {
-            error("Cant kill no one");
-            return;
-        }
+    public void onExecute(String[] args) throws CommandException {
+        validateArgumentsLength(args, 1);
         assert ShadowMain.client.interactionManager != null;
         if (!ShadowMain.client.interactionManager.hasCreativeInventory()) {
             error("I cant give you a kill pot because you dont have a creative inv");

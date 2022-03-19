@@ -15,6 +15,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.argument.PlayerFromNameArgumentParser;
+import net.shadow.client.feature.command.exception.CommandException;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -32,42 +34,23 @@ public class FakeItem extends Command {
         } else if (args.length == 2) {
             return new String[]{"hand", "custom:(item id) [item nbt]"};
         } else if (args.length == 3 && args[1].toLowerCase().startsWith("custom:")) {
-            return new String[]{"[item nbt]"};
+            return new String[]{"(item nbt)"};
         }
         return super.getSuggestions(fullCommand, args);
     }
 
     @Override
-    public void onExecute(String[] args) {
-        if (args.length == 0) { // no uuid or item
-            error("Specify player UUID or player username and item");
-            return;
-        } else if (args.length == 1) { // no item
-            error("You have to specify which item to fake (hand or custom:id).");
-            message("Tip: you can also provide additional nbt for the item with custom:id, fakeitem entity custom:minecraft:item {\"nbt\":\"goes here\"}");
-            return;
-        }
-        UUID u = null;
-        String nameTarget = null;
-        try {
-            u = UUID.fromString(args[0]);
-        } catch (Exception ignored) {
-            nameTarget = args[0];
-        }
-        PlayerEntity le = null;
-        for (Entity entity : Objects.requireNonNull(ShadowMain.client.world).getEntities()) {
-            if (entity instanceof PlayerEntity le1) {
-                if (u != null && entity.getUuid().equals(u)) {
-                    le = le1;
-                } else if (nameTarget != null && le1.getGameProfile().getName().equals(nameTarget)) {
-                    le = le1;
-                }
-            }
-        }
-        if (le == null) {
-            error("Player not found");
-            return;
-        }
+    public void onExecute(String[] args) throws CommandException {
+        validateArgumentsLength(args, 2);
+//        if (args.length == 0) { // no uuid or item
+//            error("Specify player UUID or player username and item");
+//            return;
+//        } else if (args.length == 1) { // no item
+//            error("You have to specify which item to fake (hand or custom:id).");
+//            message("Tip: you can also provide additional nbt for the item with custom:id, fakeitem entity custom:minecraft:item {\"nbt\":\"goes here\"}");
+//            return;
+//        }
+        PlayerEntity le = new PlayerFromNameArgumentParser(true).parse(args[0]);
         if (args[1].equalsIgnoreCase("hand")) {
             ItemStack main = Objects.requireNonNull(ShadowMain.client.player).getMainHandStack().copy();
             if (main.isEmpty()) {

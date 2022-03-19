@@ -9,6 +9,7 @@ import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.helper.Texture;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
@@ -173,38 +174,26 @@ public class Taco extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) {
-        if (args.length == 0) {
-            error("Please specify an action");
-            return;
-        }
+    public void onExecute(String[] args) throws CommandException {
+        validateArgumentsLength(args, 1);
         switch (args[0].toLowerCase()) {
             case "fps" -> {
-                if (args.length < 2) {
-                    error("give me the fps lmao");
-                    return;
-                }
+                validateArgumentsLength(args, 2);
                 int i = Utils.Math.tryParseInt(args[1], -1);
                 if (i < 1 || i > 1000) {
-                    error("fps cant be below 1 or above 1000 mf");
-                    return;
+                    throw new CommandException("Fps outside of bounds", "Specify fps count within 1-1000 fps");
                 }
                 config.fps = i;
                 success("set fps to " + i);
             }
             case "frames" -> {
-                if (args.length < 2) {
-                    error("give me the folder location lmao");
-                    return;
-                }
+                validateArgumentsLength(args, 2);
                 File f = new File(String.join(" ", Arrays.copyOfRange(args, 1, args.length)));
                 if (!f.exists()) {
-                    error("that folder doesnt exist");
-                    return;
+                    throw new CommandException("Folder doesn't exist", "Specify a path to an existing folder");
                 }
                 if (!f.isDirectory()) {
-                    error("has to be a folder with the frames stored in order of appearance, use https://ezgif.com/split to convert the gif");
-                    return;
+                    throw new CommandException("Folder is invalid", "Use https://ezgif.com/split to split the gif into frames and specify the output");
                 }
                 message("Loading gif files, this may take a bit");
                 checkGifPath();

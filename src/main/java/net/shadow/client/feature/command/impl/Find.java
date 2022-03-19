@@ -19,6 +19,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.Vec3d;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.PacketEvent;
@@ -105,11 +106,13 @@ public class Find extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) {
+    public void onExecute(String[] args) throws CommandException {
+        validateArgumentsLength(args, 1);
         if (!Objects.requireNonNull(ShadowMain.client.interactionManager).hasCreativeInventory()) {
             error("Cant find the player, need GMC");
             return;
         }
+
         UUID u = Utils.Players.getUUIDFromName(args[0]);
         if (u == null) {
             error("Couldn't find user's uuid.");

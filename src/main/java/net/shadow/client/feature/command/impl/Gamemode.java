@@ -7,6 +7,7 @@ package net.shadow.client.feature.command.impl;
 import net.minecraft.world.GameMode;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.exception.CommandException;
 
 import java.util.Arrays;
 
@@ -25,15 +26,13 @@ public class Gamemode extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) {
+    public void onExecute(String[] args) throws CommandException {
         if (ShadowMain.client.interactionManager == null) {
             return;
         }
-        if (args.length == 0) {
-            message("gamemode pls");
-        } else {
-            GameMode gm = GameMode.byName(args[0]);
-            ShadowMain.client.interactionManager.setGameMode(gm);
-        }
+        validateArgumentsLength(args, 1);
+        GameMode gm = GameMode.byName(args[0], null);
+        if (gm == null) throw new CommandException("Invalid gamemode", "Specify a valid gamemode");
+        ShadowMain.client.interactionManager.setGameMode(gm);
     }
 }

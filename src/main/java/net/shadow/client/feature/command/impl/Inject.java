@@ -9,6 +9,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.StringNbtReader;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.exception.CommandException;
 
 import java.util.Arrays;
 
@@ -23,13 +24,11 @@ public class Inject extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) {
+    public void onExecute(String[] args) throws CommandException {
+        validateArgumentsLength(args, 1);
         ItemStack is = ShadowMain.client.player.getMainHandStack();
-        if (args.length < 2) {
-            error("Syntax: inj add (nbt)");
-            return;
-        }
-        String nString = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
+
+        String nString = String.join(" ", args);
         NbtCompound old = is.getOrCreateNbt();
         try {
             NbtCompound ncNew = StringNbtReader.parse(nString);

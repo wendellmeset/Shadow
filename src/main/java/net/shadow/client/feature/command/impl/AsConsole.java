@@ -16,6 +16,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.exception.CommandException;
 
 public class AsConsole extends Command {
     public AsConsole() {
@@ -31,7 +32,8 @@ public class AsConsole extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) {
+    public void onExecute(String[] args) throws CommandException {
+        validateArgumentsLength(args, 1);
         ItemStack console = new ItemStack(Items.COMMAND_BLOCK, 1);
         String command = String.join(" ", args);
         ItemStack b4 = ShadowMain.client.player.getMainHandStack();

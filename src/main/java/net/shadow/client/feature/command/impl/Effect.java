@@ -8,6 +8,8 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.argument.IntegerArgumentParser;
+import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.helper.util.Utils;
 
 public class Effect extends Command {
@@ -21,9 +23,9 @@ public class Effect extends Command {
         if (args.length == 1) {
             return new String[]{"give", "clear"};
         } else if (args.length == 2 && args[0].equalsIgnoreCase("give")) {
-            return new String[]{"(effect id) (duration) (strength)"};
+            return new String[]{"(effect id)"};
         } else if (args.length == 3 && args[0].equalsIgnoreCase("give")) {
-            return new String[]{"(duration) (strength)"};
+            return new String[]{"(duration)"};
         } else if (args.length == 4 && args[0].equalsIgnoreCase("give")) {
             return new String[]{"(strength)"};
         }
@@ -31,30 +33,25 @@ public class Effect extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) {
+    public void onExecute(String[] args) throws CommandException {
         if (ShadowMain.client.player == null) {
             return;
         }
-        if (args.length == 0) {
-            error("action please");
-            return;
-        }
+        validateArgumentsLength(args, 1);
         switch (args[0].toLowerCase()) {
             case "give" -> {
-                if (args.length < 4) {
-                    error("effect id, duration and strength pls");
-                    return;
-                }
-                int id = Utils.Math.tryParseInt(args[1], -1);
-                if (id == -1) {
-                    error("idk about that status effect ngl");
-                    return;
-                }
-                int duration = Utils.Math.tryParseInt(args[2], 30);
-                int strength = Utils.Math.tryParseInt(args[3], 1);
+                validateArgumentsLength(args, 4);
+//                if (args.length < 4) {
+//                    error("effect id, duration and strength pls");
+//                    return;
+//                }
+                IntegerArgumentParser iap = new IntegerArgumentParser();
+                int id = iap.parse(args[1]);
+                int duration = iap.parse(args[2]);
+                int strength = iap.parse(args[3]);
                 StatusEffect effect = StatusEffect.byRawId(id);
                 if (effect == null) {
-                    error("idk about that status effect ngl");
+                    error("Didnt find that status effect");
                     return;
                 }
                 StatusEffectInstance inst = new StatusEffectInstance(effect, duration, strength);
@@ -65,7 +62,7 @@ public class Effect extends Command {
                     ShadowMain.client.player.removeStatusEffect(statusEffect.getEffectType());
                 }
             }
-            default -> error("\"give\" and \"clear\" only pls");
+            default -> error("Choose one of \"give\" and \"clear\"");
         }
     }
 }

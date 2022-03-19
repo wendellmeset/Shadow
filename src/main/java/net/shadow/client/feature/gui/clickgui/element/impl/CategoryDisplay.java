@@ -20,6 +20,7 @@ import net.shadow.client.helper.font.adapter.FontAdapter;
 import net.shadow.client.helper.render.ClipStack;
 import net.shadow.client.helper.render.Rectangle;
 import net.shadow.client.helper.render.Renderer;
+import net.shadow.client.helper.render.Scroller;
 import net.shadow.client.helper.util.Transitions;
 
 import java.awt.*;
@@ -37,6 +38,7 @@ public class CategoryDisplay extends Element {
     boolean selected = false;
     double scroll = 0;
     double smoothScroll = 0;
+    Scroller scroller = new Scroller(0);
 
     boolean open = true;
     double openAnim = 1;
@@ -64,7 +66,7 @@ public class CategoryDisplay extends Element {
             }
         } else if (x >= this.x && x < this.x + width && y >= this.y + headerHeight() && y < this.y + this.height - r) {
             for (ModuleDisplay moduleDisplay : getModules()) {
-                if (moduleDisplay.clicked(x, y - smoothScroll, button)) {
+                if (moduleDisplay.clicked(x, y - scroller.getScroll(), button)) {
                     return true;
                 }
             }
@@ -80,7 +82,7 @@ public class CategoryDisplay extends Element {
             return true;
         } else {
             for (ModuleDisplay moduleDisplay : getModules()) {
-                if (moduleDisplay.dragged(x, y - smoothScroll, deltaX, deltaY, button)) {
+                if (moduleDisplay.dragged(x, y - scroller.getScroll(), deltaX, deltaY, button)) {
                     return true;
                 }
             }
@@ -124,12 +126,14 @@ public class CategoryDisplay extends Element {
 //            if (module.scroll(mouseX, mouseY, amount)) return true;
 //        }
         if (amount == 0 || inBounds(mouseX, mouseY)) {
-            scroll += amount * 10;
+//            scroll += amount * 10;
             double contentHeight = getModules().stream().map(ModuleDisplay::getHeight).reduce(Double::sum).orElse(0d);
             double viewerHeight = Math.min(contentHeight, 350);
             double elScroll = contentHeight - viewerHeight;
-            scroll = MathHelper.clamp(scroll, -elScroll, 0);
-            smoothScroll = MathHelper.clamp(smoothScroll, -elScroll, 0);
+//            scroll = MathHelper.clamp(scroll, -elScroll, 0);
+//            smoothScroll = MathHelper.clamp(smoothScroll, -elScroll, 0);
+            scroller.setBounds(0,elScroll);
+            scroller.scroll(amount);
             return true;
         }
         return super.scroll(mouseX, mouseY, amount);
@@ -185,7 +189,7 @@ public class CategoryDisplay extends Element {
             ClipStack.globalInstance.addWindow(matrices, new Rectangle(x, y + headerHeight(), x + width, y + Math.round(this.height) - (modHeight != 0 ? r : 0)));
             double y = headerHeight();
             matrices.push();
-            matrices.translate(0, smoothScroll, 0);
+            matrices.translate(0, scroller.getScroll(), 0);
             if (!(mouseX >= x && mouseX < x + width && mouseY >= this.y + headerHeight() && mouseY < this.y + this.height - (modHeight != 0 ? r : 0))) {
                 mouseX = -1000;
                 mouseY = -1000;
@@ -193,16 +197,16 @@ public class CategoryDisplay extends Element {
             for (ModuleDisplay moduleDisplay : getModules()) {
                 moduleDisplay.setX(this.x);
                 moduleDisplay.setY(this.y + y);
-                if (moduleDisplay.getY() + smoothScroll > this.y + height) continue;
+                if (moduleDisplay.getY() + scroller.getScroll() > this.y + height) continue;
 
-                moduleDisplay.render(matrices, mouseX, mouseY - smoothScroll, scrollBeingUsed);
+                moduleDisplay.render(matrices, mouseX, mouseY - scroller.getScroll(), scrollBeingUsed);
                 y += moduleDisplay.getHeight();
             }
             matrices.pop();
             ClipStack.globalInstance.popWindow();
             if (modHeightUnclamped > 350) {
                 double elScroll = modHeightUnclamped - modHeight;
-                double scrollIndex = (smoothScroll * -1) / elScroll;
+                double scrollIndex = (scroller.getScroll() * -1) / elScroll;
 
                 double ratio = modHeight / modHeightUnclamped;
                 double scrollbarHeight = modHeight - 2;
@@ -218,6 +222,7 @@ public class CategoryDisplay extends Element {
 
     @Override
     public void tickAnim() {
+        scroller.tick();
         double oaDelta = 0.02;
         if (!open) oaDelta *= -1;
         openAnim += oaDelta;
@@ -225,7 +230,7 @@ public class CategoryDisplay extends Element {
         for (ModuleDisplay moduleDisplay : getModules()) {
             moduleDisplay.tickAnim();
         }
-        smoothScroll = Transitions.transition(smoothScroll, scroll, 7, 0);
+//        smoothScroll = Transitions.transition(smoothScroll, scroll, 7, 0);
     }
 
     @Override

@@ -7,6 +7,7 @@ package net.shadow.client.feature.command.impl;
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -19,9 +20,12 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.registry.Registry;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.argument.PlayerFromNameArgumentParser;
+import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.helper.util.Utils;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public class LinkPlayer extends Command {
     public LinkPlayer() {
@@ -37,25 +41,14 @@ public class LinkPlayer extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) {
+    public void onExecute(String[] args) throws CommandException {
+        validateArgumentsLength(args, 1);
         if (!ShadowMain.client.player.getAbilities().creativeMode) {
             error("You must be in creative mode");
             return;
         }
-        if (args.length < 1) {
-            error("Incorrect Arguments, use >linkplayer <player>");
-            return;
-        }
-        String player = Utils.Players.completeName(args[0]);
-        if (player.equals("none")) {
-            error("that player does not exist");
-            return;
-        }
-        int[] ub = Utils.Players.decodeUUID(Utils.Players.getUUIDFromName(player));
-        if (ub == null) {
-            error("that player does not exist");
-            return;
-        }
+        PlayerEntity player = new PlayerFromNameArgumentParser(true).parse(args[0]);
+        int[] ub = Utils.Players.decodeUUID(player.getUuid());
         NbtCompound tag = new NbtCompound();
         try {
             tag = StringNbtReader.parse("{EntityTag:{CustomNameVisible:0b,Owner:[I;" + ub[0] + "," + ub[1] + "," + ub[2] + "," + ub[3] + "],Sitting:1b}}");
@@ -69,6 +62,6 @@ public class LinkPlayer extends Command {
         ShadowMain.client.player.networkHandler.sendPacket(new CreativeInventoryActionC2SPacket(36 + ShadowMain.client.player.getInventory().selectedSlot, stack));
         ShadowMain.client.player.networkHandler.sendPacket(new PlayerInteractBlockC2SPacket(Hand.MAIN_HAND, (BlockHitResult) ShadowMain.client.crosshairTarget));
         ShadowMain.client.player.networkHandler.sendPacket(new CreativeInventoryActionC2SPacket(36 + ShadowMain.client.player.getInventory().selectedSlot, handitem));
-        message("Spawned linked wolf for " + player);
+        message("Spawned linked wolf for " + player.getGameProfile().getName());
     }
 }

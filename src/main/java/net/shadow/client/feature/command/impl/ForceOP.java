@@ -9,6 +9,7 @@ import net.minecraft.client.network.ServerAddress;
 import net.minecraft.world.GameMode;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.helper.Globals;
 import net.shadow.client.mixin.SessionAccessor;
 
@@ -43,7 +44,8 @@ public class ForceOP extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) {
+    public void onExecute(String[] args) throws CommandException {
+        validateArgumentsLength(args, 1);
         InetSocketAddress socket = (InetSocketAddress) ShadowMain.client.player.networkHandler.getConnection().getAddress();
         Globals.serverAddress = new ServerAddress(socket.getHostName(), socket.getPort());
         String nick;

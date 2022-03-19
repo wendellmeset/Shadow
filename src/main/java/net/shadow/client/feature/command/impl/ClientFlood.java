@@ -27,11 +27,6 @@ public class ClientFlood extends Command {
     }
 
     @Override
-    public String[] getSuggestions(String fullCommand, String[] args) {
-        return super.getSuggestions(fullCommand, args);
-    }
-
-    @Override
     public void onExecute(String[] args) {
         new Thread(() -> {
             for (int i = 0; i < 600; i++) {

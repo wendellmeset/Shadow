@@ -47,11 +47,6 @@ public class Open extends Command {
     }
 
     @Override
-    public String[] getSuggestions(String fullCommand, String[] args) {
-        return super.getSuggestions(fullCommand, args);
-    }
-
-    @Override
     public void onExecute(String[] args) {
         success("Done!");
         getItemsInContainerItem(ShadowMain.client.player.getMainHandStack(), ITEMS);

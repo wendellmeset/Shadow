@@ -7,6 +7,7 @@ package net.shadow.client.feature.command.impl;
 import net.minecraft.screen.slot.SlotActionType;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.exception.CommandException;
 
 public class Equip extends Command {
     public Equip() {
@@ -22,11 +23,8 @@ public class Equip extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) {
-        if (args.length != 1) {
-            error("You must provide one slot head/chest/legs/feet");
-            return;
-        }
+    public void onExecute(String[] args) throws CommandException {
+        validateArgumentsLength(args, 1);
 
         switch (args[0].toLowerCase()) {
             case "head" -> {

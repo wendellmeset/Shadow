@@ -11,6 +11,8 @@ import net.minecraft.network.packet.c2s.play.RequestCommandCompletionsC2SPacket;
 import net.minecraft.network.packet.s2c.play.CommandSuggestionsS2CPacket;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.argument.IntegerArgumentParser;
+import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.PacketEvent;
@@ -36,8 +38,8 @@ public class ForEach extends Command {
                 for (Suggestion i : all.getList()) {
                     String name = i.getText();
                     if (name.contains(ShadowMain.client.player.getName().toString())) continue;
-                    ShadowMain.client.player.sendChatMessage(partial + " " + name);
-                    message(partial + " " + name);
+                    ShadowMain.client.player.sendChatMessage(partial.replaceAll("%s", name));
+                    message(partial.replaceAll("%s", name));
                 }
                 message("Foreach operation completed");
                 recieving = false;
@@ -58,8 +60,9 @@ public class ForEach extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) {
-        int delay = Utils.Math.tryParseInt(args[1], 0);
+    public void onExecute(String[] args) throws CommandException {
+        validateArgumentsLength(args, 3);
+        int delay = new IntegerArgumentParser().parse(args[1]);
         switch (args[0]) {
             case "player" -> {
                 for (PlayerListEntry playerListEntry : Objects.requireNonNull(ShadowMain.client.getNetworkHandler()).getPlayerList()) {

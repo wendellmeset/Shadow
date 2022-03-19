@@ -10,6 +10,7 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtString;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.exception.CommandException;
 
 public class Author extends Command {
     public Author() {
@@ -25,23 +26,24 @@ public class Author extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) {
-        if (args.length == 0) {
-            error("Please use the format >author <author>");
-            return;
-        }
+    public void onExecute(String[] args) throws CommandException  {
+        validateArgumentsLength(args, 1);
+//        if (args.length == 0) {
+//            error("Please use the format >author <author>");
+//            return;
+//        }
 
-        if (!ShadowMain.client.player.getAbilities().creativeMode) {
+        if (!ShadowMain.client.interactionManager.hasCreativeInventory()) {
             error("You must be in creative mode to do this!");
             return;
         }
 
         ItemStack heldItem = ShadowMain.client.player.getInventory().getMainHandStack();
-        int heldItemID = Item.getRawId(heldItem.getItem());
-        int writtenBookID = Item.getRawId(Items.WRITTEN_BOOK);
+//        int heldItemID = Item.getRawId(heldItem.getItem());
+//        int writtenBookID = Item.getRawId(Items.WRITTEN_BOOK);
 
-        if (heldItemID != writtenBookID) {
-            error("You must hole a written book");
+        if (!heldItem.isOf(Items.WRITTEN_BOOK)) {
+            error("You must hold a written book");
             return;
         }
         String author = String.join(" ", args);

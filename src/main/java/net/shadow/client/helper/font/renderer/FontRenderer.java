@@ -122,7 +122,9 @@ public class FontRenderer {
     public float getStringWidth(String text) {
         float wid = 0;
         for (char c : stripControlCodes(text).toCharArray()) {
-            wid += glyphMap.get(c).dimensions.getWidth();
+            Glyph g = glyphMap.get(c);
+            if (g == null) continue;
+            wid += g.dimensions.getWidth();
         }
         return wid * 0.25f;
     }
@@ -146,6 +148,7 @@ public class FontRenderer {
 
     private double drawChar(BufferBuilder bufferBuilder, Matrix4f matrix, char c, float x, float y, float r, float g, float b, float a) {
         Glyph glyph = glyphMap.get(c);
+        if (glyph == null) return 0;
         RenderSystem.setShaderTexture(0, glyph.getImageTex());
 
 

@@ -6,6 +6,8 @@ package net.shadow.client.feature.command.impl;
 
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.argument.IntegerArgumentParser;
+import net.shadow.client.feature.command.exception.CommandException;
 
 public class CPerm extends Command {
     public CPerm() {
@@ -21,18 +23,11 @@ public class CPerm extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) {
-        if (args.length < 1) {
-            message("Please provide an integer");
-            return;
-        }
-        try {
-            int uwu = Integer.parseInt(args[0]);
-            ShadowMain.client.player.setClientPermissionLevel(uwu);
-            message("Set the Permission level to [" + uwu + "]");
-        } catch (Exception e) {
-            message("Please provide an integer");
-            e.printStackTrace();
-        }
+    public void onExecute(String[] args) throws CommandException {
+        validateArgumentsLength(args, 1);
+        IntegerArgumentParser iap = new IntegerArgumentParser();
+        int uwu = iap.parse(args[0]);
+        ShadowMain.client.player.setClientPermissionLevel(uwu);
+        message("Set the Permission level to [" + uwu + "]");
     }
 }

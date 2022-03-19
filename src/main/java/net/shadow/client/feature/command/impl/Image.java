@@ -14,6 +14,7 @@ import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
 import net.minecraft.util.hit.BlockHitResult;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.PacketEvent;
@@ -60,18 +61,17 @@ public class Image extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) {
-        if (args.length < 3) {
-            message("Please Use >image <mode> <url> <size>, or >image help");
+    public void onExecute(String[] args) throws CommandException {
+        validateArgumentsLength(args, 1);
+        if (args[0].equalsIgnoreCase("help")) {
+            message("Modes:");
+            message(">image chat");
+            message(">image book");
+            message(">image lore");
             return;
         }
-        switch (args[0]) {
-            case "help" -> {
-                message("Modes:");
-                message(">image chat");
-                message(">image book");
-                message(">image lore");
-            }
+        validateArgumentsLength(args, 3);
+        switch (args[0].toLowerCase()) {
             case "chat" -> new Thread(() -> {
                 try {
                     real = true;

@@ -8,6 +8,8 @@ import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.math.Vec3d;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.argument.IntegerArgumentParser;
+import net.shadow.client.feature.command.exception.CommandException;
 
 public class Damage extends Command {
     public Damage() {
@@ -16,39 +18,25 @@ public class Damage extends Command {
 
     @Override
     public String[] getSuggestions(String fullCommand, String[] args) {
-        if (args.length == 0) {
-            return new String[]{"(integer)"};
+        if (args.length == 1) {
+            return new String[]{"(strength)"};
         }
         return super.getSuggestions(fullCommand, args);
     }
 
     @Override
-    public void onExecute(String[] args) {
-        if (args.length != 1) {
-            error("Please use the format >damage <amount>");
-            return;
-        }
+    public void onExecute(String[] args) throws CommandException {
+        validateArgumentsLength(args, 1);
 
-        if (ShadowMain.client.player.getAbilities().creativeMode) {
+        if (ShadowMain.client.interactionManager.hasCreativeInventory()) {
             error("you cannot damage in creative mode");
             return;
         }
 
-        int amount = parseAmount(args[0]);
+        int amount = new IntegerArgumentParser().parse(args[0]);
         if (amount == 0) return;
         applyDamage(amount);
         message("Applied Damage");
-    }
-
-    private int parseAmount(String dmgString) {
-        try {
-            return Integer.parseInt(dmgString);
-        } catch (Exception e) {
-            {
-                error("Not a number!");
-                return 0;
-            }
-        }
     }
 
 

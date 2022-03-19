@@ -9,6 +9,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.helper.manager.HologramManager;
 
 import java.util.Arrays;
@@ -32,11 +33,8 @@ public class Hologram extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) {
-        if (args.length < 2) {
-            message("i need options and text pls. example: \".hologram eb your text\". specify option \"h\" to show help");
-            return;
-        }
+    public void onExecute(String[] args) throws CommandException {
+        validateArgumentsLength(args, 2);
         String options = args[0].toLowerCase();
         boolean generateAsBaby = false;
         boolean generateAsEgg = false;

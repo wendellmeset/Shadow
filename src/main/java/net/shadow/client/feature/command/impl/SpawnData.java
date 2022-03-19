@@ -14,6 +14,12 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 import net.minecraft.util.math.Vec3d;
+import net.shadow.client.feature.command.argument.DoubleArgumentParser;
+import net.shadow.client.feature.command.exception.CommandException;
+import net.shadow.client.helper.nbt.NbtGroup;
+import net.shadow.client.helper.nbt.NbtList;
+import net.shadow.client.helper.nbt.NbtObject;
+import net.shadow.client.helper.nbt.NbtProperty;
 
 public class SpawnData extends Command {
     public SpawnData() {
@@ -25,63 +31,83 @@ public class SpawnData extends Command {
         if(args.length == 1){
             return new String[]{"position", "velocity", "cursor"};
         }
-        if(args.length < 1){
+        if(args.length > 1){
             if(args[0].equals("position") || args[0].equals("velocity")){
-                if(args.length == 2){
-                    return new String[]{"x"};
-                }
-                if(args.length == 2){
-                    return new String[]{"y"};
-                }
-                if(args.length == 2){
-                    return new String[]{"z"};
-                }
+                return switch(args.length) {
+                    case 2 -> new String[] {"x"};
+                    case 3 -> new String[] {"y"};
+                    case 4 -> new String[] {"z"};
+                    default -> new String[0];
+                };
             }
         }
         return super.getSuggestions(fullCommand, args);
     }
 
     @Override
-    public void onExecute(String[] args) {
-        if (args[0].equalsIgnoreCase("position")) {
-            try {
+    public void onExecute(String[] args) throws CommandException {
+        validateArgumentsLength(args, 1);
+        DoubleArgumentParser dap = new DoubleArgumentParser();
+        switch(args[0].toLowerCase()) {
+            case "position" -> {
+                validateArgumentsLength(args, 4);
                 ItemStack stack = ShadowMain.client.player.getInventory().getMainHandStack();
                 if (!stack.hasNbt())
                     stack.setNbt(new NbtCompound());
-                NbtCompound tag = StringNbtReader.parse("{EntityTag:{Pos:[" + args[1] + ".5," + args[2] + ".0," + args[3] + ".5," + "]}}");
-                stack.getNbt().copyFrom(tag);
+
+                NbtGroup ng = new NbtGroup(
+                        new NbtObject("EntityTag",
+                                new NbtList("Pos",
+                                        new NbtProperty(dap.parse(args[1])),
+                                        new NbtProperty(dap.parse(args[2])),
+                                        new NbtProperty(dap.parse(args[3]))
+                                )
+                        )
+                );
+                NbtCompound tag = ng.toCompound();
+                stack.getOrCreateNbt().copyFrom(tag);
                 ShadowMain.client.player.networkHandler.sendPacket(new CreativeInventoryActionC2SPacket(36 + ShadowMain.client.player.getInventory().selectedSlot, stack));
                 message("Changed Spawning Position");
-            } catch (Exception e) {
-                e.printStackTrace();
             }
-        } else if (args[0].equalsIgnoreCase("velocity")) {
-            try {
+            case "velocity" -> {
+                validateArgumentsLength(args, 4);
                 ItemStack stack = ShadowMain.client.player.getInventory().getMainHandStack();
                 if (!stack.hasNbt())
                     stack.setNbt(new NbtCompound());
-                NbtCompound tag = StringNbtReader.parse("{EntityTag:{Motion:[" + args[1] + ".0," + args[2] + ".0," + args[3] + ".0," + "]}}");
-                stack.getNbt().copyFrom(tag);
+                NbtGroup ng = new NbtGroup(
+                        new NbtObject("EntityTag",
+                                new NbtList("Motion",
+                                        new NbtProperty(dap.parse(args[1])),
+                                        new NbtProperty(dap.parse(args[2])),
+                                        new NbtProperty(dap.parse(args[3]))
+                                )
+                        )
+                );
+                NbtCompound tag = ng.toCompound();
+                stack.getOrCreateNbt().copyFrom(tag);
                 ShadowMain.client.player.networkHandler.sendPacket(new CreativeInventoryActionC2SPacket(36 + ShadowMain.client.player.getInventory().selectedSlot, stack));
-                message("Changed Spawning Motion");
-            } catch (Exception e) {
-                e.printStackTrace();
+                message("Changed Velocity");
             }
-        } else if (args[0].equalsIgnoreCase("cursor")) {
-            try {
+            case "cursor" -> {
                 ItemStack stack = ShadowMain.client.player.getInventory().getMainHandStack();
                 if (!stack.hasNbt())
                     stack.setNbt(new NbtCompound());
                 Vec3d se = Objects.requireNonNull(ShadowMain.client.player).raycast(255, ShadowMain.client.getTickDelta(), true).getPos();
-                NbtCompound tag = StringNbtReader.parse("{EntityTag:{Pos:[" + se.x + "," + se.y + "," + se.z + "," + "]}}");
-                stack.getNbt().copyFrom(tag);
+                NbtGroup ng = new NbtGroup(
+                        new NbtObject("EntityTag",
+                                new NbtList("Pos",
+                                        new NbtProperty(se.x),
+                                        new NbtProperty(se.y),
+                                        new NbtProperty(se.z)
+                                )
+                        )
+                );
+                NbtCompound tag = ng.toCompound();
+                stack.getOrCreateNbt().copyFrom(tag);
                 ShadowMain.client.player.networkHandler.sendPacket(new CreativeInventoryActionC2SPacket(36 + ShadowMain.client.player.getInventory().selectedSlot, stack));
                 message("Changed Spawning Position");
-            } catch (Exception e) {
-                e.printStackTrace();
             }
-        } else {
-            error("Please use the format >prespawn <position/velocity/cursor> <x> <y> <z>");
+            default -> error("Please use the format >prespawn <position/velocity/cursor> <x> <y> <z>");
         }
     }
 }

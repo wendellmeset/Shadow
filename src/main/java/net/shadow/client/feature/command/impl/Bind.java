@@ -6,6 +6,7 @@ package net.shadow.client.feature.command.impl;
 
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.feature.gui.screen.BindScreen;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleRegistry;
@@ -25,11 +26,12 @@ public class Bind extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) {
-        if (args.length == 0) {
-            error("Give me a module name");
-            return;
-        }
+    public void onExecute(String[] args) throws CommandException {
+        validateArgumentsLength(args, 1);
+//        if (args.length == 0) {
+//            error("Give me a module name");
+//            return;
+//        }
         String mn = args[0];
         Module module = ModuleRegistry.getByName(mn);
         if (module == null) {

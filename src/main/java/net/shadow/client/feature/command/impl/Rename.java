@@ -7,6 +7,7 @@ package net.shadow.client.feature.command.impl;
 import net.minecraft.text.Text;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.exception.CommandException;
 
 import java.util.Objects;
 
@@ -25,14 +26,10 @@ public class Rename extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) {
-        if (args.length == 0) {
-            error("I need a new name dude");
-            error("example: rename &c&lthe &afunny");
-            return;
-        }
+    public void onExecute(String[] args) throws CommandException {
+        validateArgumentsLength(args, 1);
         if (Objects.requireNonNull(ShadowMain.client.player).getInventory().getMainHandStack().isEmpty()) {
-            error("idk if you're holding anything");
+            error("You're not holding anything");
             return;
         }
         ShadowMain.client.player.getInventory().getMainHandStack().setCustomName(Text.of("§r" + String.join(" ", args).replaceAll("&", "§")));

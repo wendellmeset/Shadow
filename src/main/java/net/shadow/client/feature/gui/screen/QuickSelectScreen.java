@@ -156,7 +156,7 @@ public class QuickSelectScreen extends ClientScreen implements FastTickable {
             selectingIndex--;
             return true;
         } else if (keyCode == GLFW.GLFW_KEY_ENTER) {
-            entries.get(selectingIndex).onCl.run();
+            if (!entries.isEmpty()) entries.get(selectingIndex).onCl.run();
             return true;
         } else if (keyCode == GLFW.GLFW_KEY_TAB) {
             for (SuggestionsEntry entry : entries) {

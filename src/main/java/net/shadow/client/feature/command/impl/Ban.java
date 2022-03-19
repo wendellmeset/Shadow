@@ -11,6 +11,8 @@ import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 import net.minecraft.text.Text;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.argument.PlayerFromNameArgumentParser;
+import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.helper.util.Utils;
 
 import java.util.Objects;
@@ -29,15 +31,14 @@ public class Ban extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) {
+    public void onExecute(String[] args) throws CommandException {
+        validateArgumentsLength(args, 1);
+        PlayerFromNameArgumentParser parser = new PlayerFromNameArgumentParser(true);
         String name = Utils.Players.completeName(args[0]);
-        int[] player = Utils.Players.decodeUUID(Utils.Players.getUUIDFromName(name));
-        if (player == null) {
-            error("Invalid Player");
-            return;
-        }
+        int[] player = Utils.Players.decodeUUID(parser.parse(name).getUuid());
+
         ItemStack ban = new ItemStack(Items.ARMOR_STAND, 1);
-        error("Created Ban Stand for " + name);
+        message("Created Ban Stand for " + name);
         try {
             ban.setNbt(StringNbtReader.parse("{EntityTag:{UUID:[I;" + player[0] + "," + player[1] + "," + player[2] + "," + player[3] + "],ArmorItems:[{},{},{},{id:\"minecraft:player_head\",Count:1b,tag:{SkullOwner:\"" + name + "\"}}]}}"));
         } catch (Exception ignored) {

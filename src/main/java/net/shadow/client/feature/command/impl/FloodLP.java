@@ -6,6 +6,8 @@ package net.shadow.client.feature.command.impl;
 
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.argument.IntegerArgumentParser;
+import net.shadow.client.feature.command.exception.CommandException;
 
 import java.util.Random;
 
@@ -23,17 +25,9 @@ public class FloodLP extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) {
-        if (args.length < 1) {
-            error("use >floodlp <amount>");
-            return;
-        }
-        int pp = 0;
-        try {
-            pp = Integer.parseInt(args[0]);
-        } catch (Exception e) {
-            error("use >floodlp <amount>");
-        }
+    public void onExecute(String[] args) throws CommandException {
+        validateArgumentsLength(args, 1);
+        int pp = new IntegerArgumentParser().parse(args[0]);
         Random r = new Random();
         for (int i = 0; i < pp; i++) {
             ShadowMain.client.player.sendChatMessage("/lp creategroup " + i + r.nextInt(100));

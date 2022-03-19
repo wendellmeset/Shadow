@@ -14,19 +14,18 @@ import org.lwjgl.glfw.GLFW;
 
 import java.lang.reflect.Field;
 
-public class BindScreen extends Screen {
+public class BindScreen extends ClientScreen {
     final Module a;
     final FontAdapter cfr = FontRenderers.getCustomSize(30);
     final FontAdapter smaller = FontRenderers.getCustomSize(20);
     long closeAt = -1;
 
     public BindScreen(Module toBind) {
-        super(Text.of(""));
         this.a = toBind;
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    public void renderInternal(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         renderBackground(matrices);
         cfr.drawCenteredString(matrices, "Press any key", width / 2d, height / 2d - cfr.getMarginHeight(), 0xAAAAAA);
         String kn = a.keybind.getValue() > 0 ? GLFW.glfwGetKeyName((int) (a.keybind.getValue() + 0), GLFW.glfwGetKeyScancode((int) (a.keybind.getValue() + 0))) : "None";
@@ -46,7 +45,7 @@ public class BindScreen extends Screen {
             }
         }
         smaller.drawCenteredString(matrices, "Current bind: " + kn, width / 2d, height / 2d, 0xBBBBBB);
-        super.render(matrices, mouseX, mouseY, delta);
+        super.renderInternal(matrices, mouseX, mouseY, delta);
     }
 
     @Override

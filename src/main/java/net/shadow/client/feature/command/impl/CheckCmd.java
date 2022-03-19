@@ -16,11 +16,6 @@ public class CheckCmd extends Command {
     }
 
     @Override
-    public String[] getSuggestions(String fullCommand, String[] args) {
-        return super.getSuggestions(fullCommand, args);
-    }
-
-    @Override
     public void onExecute(String[] args) {
         message("Checking command blocks");
         ShadowMain.client.player.networkHandler.sendPacket(new UpdateCommandBlockC2SPacket(ShadowMain.client.player.getBlockPos().offset(Direction.DOWN, 1), "/", CommandBlockBlockEntity.Type.AUTO, false, false, false));

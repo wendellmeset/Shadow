@@ -4,6 +4,7 @@
 
 package net.shadow.client.feature.command;
 
+import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.helper.util.Utils;
 
 public abstract class Command extends Utils.Logging {
@@ -30,7 +31,11 @@ public abstract class Command extends Utils.Logging {
         return aliases;
     }
 
-    public abstract void onExecute(String[] args);
+    public abstract void onExecute(String[] args) throws CommandException;
+
+    protected void validateArgumentsLength(String[] args, int requiredLength) throws CommandException {
+        if (args.length < requiredLength) throw new CommandException("Invalid number of arguments: "+requiredLength+" arguments required", "Provide more arguments");
+    }
 
     public String[] getSuggestions(String fullCommand, String[] args) {
         return new String[0];

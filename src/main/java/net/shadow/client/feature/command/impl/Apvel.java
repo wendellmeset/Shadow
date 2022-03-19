@@ -6,6 +6,8 @@ package net.shadow.client.feature.command.impl;
 
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.argument.DoubleArgumentParser;
+import net.shadow.client.feature.command.exception.CommandException;
 
 public class Apvel extends Command {
     private Double vx;
@@ -29,25 +31,14 @@ public class Apvel extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) {
-        if (args.length < 2) {
-            error("Please Provide three values for velocity");
-            return;
-        }
+    public void onExecute(String[] args) throws CommandException {
+        validateArgumentsLength(args, 3);
 
-        try {
-            vx = Double.parseDouble(args[0]);
-            vy = Double.parseDouble(args[1]);
-            vz = Double.parseDouble(args[2]);
-        } catch (Exception e) {
-            error("Please Provide three valid numbers for velocity");
-        }
+        DoubleArgumentParser dap = new DoubleArgumentParser();
+        vx = dap.parse(args[0]);
+        vy = dap.parse(args[1]);
+        vz = dap.parse(args[2]);
 
-
-        try {
-            ShadowMain.client.player.addVelocity(vx, vy, vz);
-        } catch (Exception e) {
-            error("Please Provide three values for velocity");
-        }
+        ShadowMain.client.player.addVelocity(vx, vy, vz);
     }
 }

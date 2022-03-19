@@ -5,6 +5,7 @@
 package net.shadow.client.feature.command.impl;
 
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.exception.CommandException;
 
 public class Template extends Command {
     public Template() {
@@ -17,6 +18,6 @@ public class Template extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) {
+    public void onExecute(String[] args) throws CommandException {
     }
 }

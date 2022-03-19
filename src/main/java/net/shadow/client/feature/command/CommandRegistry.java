@@ -4,6 +4,7 @@
 
 package net.shadow.client.feature.command;
 
+import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.feature.command.impl.*;
 import net.shadow.client.helper.util.Utils;
 
@@ -70,8 +71,7 @@ public class CommandRegistry {
         commands.add(new Lag());
         commands.add(new LinkPlayer());
         commands.add(new Open());
-        commands.add(new PoofCmd());
-        commands.add(new RenameCmd());
+        commands.add(new Poof());
         commands.add(new SpawnData());
     }
 
@@ -90,6 +90,9 @@ public class CommandRegistry {
             //            CoffeeConsoleScreen.instance().log("> " + command, CoffeeConsoleScreen.CLIENT);
             try {
                 c.onExecute(args);
+            } catch (CommandException cex) {
+                Utils.Logging.error(cex.getMessage());
+                if (cex.getPotentialFix() != null) Utils.Logging.error("Potential fix: "+cex.getPotentialFix());
             } catch (Exception e) {
                 Utils.Logging.error("Error while running command " + command);
                 e.printStackTrace();

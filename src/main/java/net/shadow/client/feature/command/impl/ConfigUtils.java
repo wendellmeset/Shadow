@@ -12,6 +12,7 @@ import com.google.gson.JsonParser;
 import net.minecraft.text.*;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.feature.config.SettingBase;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleRegistry;
@@ -45,17 +46,14 @@ public class ConfigUtils extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) {
-        if (args.length == 0) {
-            error("I need an action, load or save");
-            return;
-        }
+    public void onExecute(String[] args) throws CommandException {
+        validateArgumentsLength(args, 2);
+//        if (args.length == 0) {
+//            error("I need an action, load or save");
+//            return;
+//        }
         switch (args[0].toLowerCase()) {
             case "load" -> {
-                if (args.length < 2) {
-                    error("I need you to specify a file name of the config");
-                    return;
-                }
                 File f = new File(CONFIG_STORAGE.getAbsolutePath() + "/" + String.join(" ", Arrays.copyOfRange(args, 1, args.length)));
                 if (!f.exists()) {
                     error("That file doesn't exist");
@@ -115,10 +113,6 @@ public class ConfigUtils extends Command {
                 }
             }
             case "save" -> {
-                if (args.length < 2) {
-                    error("I need the output file name");
-                    return;
-                }
                 File out = new File(CONFIG_STORAGE.getAbsolutePath() + "/" + String.join(" ", Arrays.copyOfRange(args, 1, args.length)));
                 if (out.exists()) {
                     warn("Overwriting file because it already exists");

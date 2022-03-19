@@ -8,6 +8,8 @@ import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.math.Vec3d;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.argument.DoubleArgumentParser;
+import net.shadow.client.feature.command.exception.CommandException;
 
 public class HClip extends Command {
     public HClip() {
@@ -23,25 +25,16 @@ public class HClip extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) {
-        if (args.length != 1) {
-            error("Please use the format >hclip <length>");
-            return;
-        }
+    public void onExecute(String[] args) throws CommandException {
+        validateArgumentsLength(args, 1);
 
-        try {
-            double brik = Double.parseDouble(args[0]);
-            Vec3d forward = Vec3d.fromPolar(0, ShadowMain.client.player.getYaw()).normalize();
+        double brik = new DoubleArgumentParser().parse(args[0]);
+        Vec3d forward = Vec3d.fromPolar(0, ShadowMain.client.player.getYaw()).normalize();
 
-            if (ShadowMain.client.player.getAbilities().creativeMode) {
-                ShadowMain.client.player.updatePosition(ShadowMain.client.player.getX() + forward.x * brik, ShadowMain.client.player.getY(), ShadowMain.client.player.getZ() + forward.z * brik);
-
-            } else {
-                clip(brik);
-            }
-
-        } catch (NumberFormatException ignored) {
-            error("Invalid number");
+        if (ShadowMain.client.player.getAbilities().creativeMode) {
+            ShadowMain.client.player.updatePosition(ShadowMain.client.player.getX() + forward.x * brik, ShadowMain.client.player.getY(), ShadowMain.client.player.getZ() + forward.z * brik);
+        } else {
+            clip(brik);
         }
     }
 
@@ -50,28 +43,28 @@ public class HClip extends Command {
         Vec3d forward = Vec3d.fromPolar(0, ShadowMain.client.player.getYaw()).normalize();
         float oldy = ShadowMain.client.player.getYaw();
         float oldp = ShadowMain.client.player.getPitch();
-        sendPosition(pos.x, pos.y + 9, pos.z, true);
-        sendPosition(pos.x, pos.y + 18, pos.z, true);
-        sendPosition(pos.x, pos.y + 27, pos.z, true);
-        sendPosition(pos.x, pos.y + 36, pos.z, true);
-        sendPosition(pos.x, pos.y + 45, pos.z, true);
-        sendPosition(pos.x, pos.y + 54, pos.z, true);
-        sendPosition(pos.x, pos.y + 63, pos.z, true);
-        sendPosition(pos.x + forward.x * blocks, ShadowMain.client.player.getY(), pos.z + forward.z * blocks, true);
-        sendPosition(ShadowMain.client.player.getX(), ShadowMain.client.player.getY() - 9, ShadowMain.client.player.getZ(), true);
-        sendPosition(ShadowMain.client.player.getX(), ShadowMain.client.player.getY() - 9, ShadowMain.client.player.getZ(), true);
-        sendPosition(ShadowMain.client.player.getX(), ShadowMain.client.player.getY() - 9, ShadowMain.client.player.getZ(), true);
-        sendPosition(ShadowMain.client.player.getX(), ShadowMain.client.player.getY() - 9, ShadowMain.client.player.getZ(), true);
-        sendPosition(ShadowMain.client.player.getX(), ShadowMain.client.player.getY() - 9, ShadowMain.client.player.getZ(), true);
-        sendPosition(ShadowMain.client.player.getX(), ShadowMain.client.player.getY() - 9, ShadowMain.client.player.getZ(), true);
-        sendPosition(ShadowMain.client.player.getX(), ShadowMain.client.player.getY() - 8.9, ShadowMain.client.player.getZ(), true);
-        sendPosition(ShadowMain.client.player.getX(), ShadowMain.client.player.getY(), ShadowMain.client.player.getZ(), true);
+        sendPosition(pos.x, pos.y + 9, pos.z);
+        sendPosition(pos.x, pos.y + 18, pos.z);
+        sendPosition(pos.x, pos.y + 27, pos.z);
+        sendPosition(pos.x, pos.y + 36, pos.z);
+        sendPosition(pos.x, pos.y + 45, pos.z);
+        sendPosition(pos.x, pos.y + 54, pos.z);
+        sendPosition(pos.x, pos.y + 63, pos.z);
+        sendPosition(pos.x + forward.x * blocks, ShadowMain.client.player.getY(), pos.z + forward.z * blocks);
+        sendPosition(ShadowMain.client.player.getX(), ShadowMain.client.player.getY() - 9, ShadowMain.client.player.getZ());
+        sendPosition(ShadowMain.client.player.getX(), ShadowMain.client.player.getY() - 9, ShadowMain.client.player.getZ());
+        sendPosition(ShadowMain.client.player.getX(), ShadowMain.client.player.getY() - 9, ShadowMain.client.player.getZ());
+        sendPosition(ShadowMain.client.player.getX(), ShadowMain.client.player.getY() - 9, ShadowMain.client.player.getZ());
+        sendPosition(ShadowMain.client.player.getX(), ShadowMain.client.player.getY() - 9, ShadowMain.client.player.getZ());
+        sendPosition(ShadowMain.client.player.getX(), ShadowMain.client.player.getY() - 9, ShadowMain.client.player.getZ());
+        sendPosition(ShadowMain.client.player.getX(), ShadowMain.client.player.getY() - 8.9, ShadowMain.client.player.getZ());
+        sendPosition(ShadowMain.client.player.getX(), ShadowMain.client.player.getY(), ShadowMain.client.player.getZ());
         ShadowMain.client.player.setYaw(oldy);
         ShadowMain.client.player.setPitch(oldp);
     }
 
 
-    private void sendPosition(double x, double y, double z, boolean onGround) {
-        ShadowMain.client.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(x, y, z, onGround));
+    private void sendPosition(double x, double y, double z) {
+        ShadowMain.client.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(x, y, z, true));
     }
 }

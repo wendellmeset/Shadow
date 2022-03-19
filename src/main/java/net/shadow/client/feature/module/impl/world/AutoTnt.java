@@ -15,6 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.shadow.client.ShadowMain;
+import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.gui.notifications.Notification;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
@@ -107,9 +108,15 @@ public class AutoTnt extends Module {
     public String getContext() {
         return missingTntAck ? "Missing tnt!" : null;
     }
-
+    DoubleSetting placeDistance = this.config.create(new DoubleSetting.Builder(4)
+                .name("Place distance")
+                .description("How far to place the blocks apart")
+                .min(1)
+                .max(4)
+                .precision(0)
+                .get());
     boolean shouldPlace(BlockPos b) {
-        return b.getX() % 4 == 0 && b.getZ() % 4 == 0;
+        return b.getX() % ((int) Math.floor(placeDistance.getValue())) == 0 && b.getZ() % ((int) Math.floor(placeDistance.getValue())) == 0;
     }
 
     @Override

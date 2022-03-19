@@ -6,6 +6,7 @@ package net.shadow.client.feature.command.impl;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
@@ -13,6 +14,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.helper.util.Utils;
 
 import java.util.Objects;
@@ -31,17 +33,13 @@ public class Lag extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) {
-        if (args.length < 1) {
-            error("Please use the format >lag <player>");
-            return;
-        }
+    public void onExecute(String[] args) throws CommandException {
+        validateArgumentsLength(args, 1);
         String target = Utils.Players.completeName(args[0]);
         ShadowMain.client.getNetworkHandler().sendPacket(new ChatMessageC2SPacket("/gamerule sendCommandFeedback false"));
         ShadowMain.client.getNetworkHandler().sendPacket(new ChatMessageC2SPacket("/title " + target + " times 0 999999999 0"));
         ShadowMain.client.getNetworkHandler().sendPacket(new ChatMessageC2SPacket("/gamerule sendCommandFeedback true"));
-        Item item = Registry.ITEM.get(new Identifier("command_block"));
-        ItemStack stack = new ItemStack(item, 1);
+        ItemStack stack = new ItemStack(Items.COMMAND_BLOCK, 1);
         try {
             stack.setNbt(StringNbtReader.parse("{BlockEntityTag:{Command:\"/title " + target + " title {\\\"text\\\":\\\"" + "l".repeat(32767) + "\\\",\\\"obfuscated\\\":true}\",powered:0b,auto:1b,conditionMet:1b}}"));
         } catch (Exception e) {
