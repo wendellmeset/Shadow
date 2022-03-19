@@ -122,7 +122,9 @@ public class FontRenderer {
     public float getStringWidth(String text) {
         float wid = 0;
         for (char c : stripControlCodes(text).toCharArray()) {
-            wid += glyphMap.get(c).dimensions.getWidth();
+            if(glyphMap.containsKey(c)){
+                wid += glyphMap.get(c).dimensions.getWidth(); //man didnt even launch the client
+            }
         }
         return wid * 0.25f;
     }
@@ -145,6 +147,7 @@ public class FontRenderer {
     }
 
     private double drawChar(BufferBuilder bufferBuilder, Matrix4f matrix, char c, float x, float y, float r, float g, float b, float a) {
+        if(!glyphMap.containsKey(c)) return -1;
         Glyph glyph = glyphMap.get(c);
         RenderSystem.setShaderTexture(0, glyph.getImageTex());
 
