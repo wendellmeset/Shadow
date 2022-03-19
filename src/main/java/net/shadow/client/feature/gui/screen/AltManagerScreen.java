@@ -511,7 +511,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
             double originX = -width / 2d;
             double originY = -height / 2d;
             Renderer.R2D.renderRoundedQuad(matrices, widgetColor, originX, originY, width / 2d, height / 2d, 5, 20);
-            FontRenderers.getRenderer().drawString(matrices, text, -(FontRenderers.getRenderer().getStringWidth(text) + 2) / 2f, -FontRenderers.getRenderer()
+            FontRenderers.getRenderer().drawString(matrices, text, -(FontRenderers.getRenderer().getStringWidth(text)) / 2f, -FontRenderers.getRenderer()
                     .getMarginHeight() / 2f, isEnabled() ? 0xFFFFFF : 0xAAAAAA, false);
             matrices.pop();
         }
