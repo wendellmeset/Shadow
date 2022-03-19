@@ -16,6 +16,7 @@ import net.shadow.client.helper.nbt.NbtGroup;
 import net.shadow.client.helper.nbt.NbtList;
 import net.shadow.client.helper.nbt.NbtObject;
 import net.shadow.client.helper.nbt.NbtProperty;
+import net.shadow.client.helper.render.Renderer;
 
 import java.util.Objects;
 
