@@ -26,11 +26,6 @@ public class Stop extends Command {
     }
 
     @Override
-    public String[] getSuggestions(String fullCommand, String[] args) {
-        return super.getSuggestions(fullCommand, args);
-    }
-
-    @Override
     public void onExecute(String[] args) {
         if(!ShadowMain.client.player.getAbilities().creativeMode){
             error("You must be in creative mode to do this");

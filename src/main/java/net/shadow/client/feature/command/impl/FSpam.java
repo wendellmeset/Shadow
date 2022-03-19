@@ -6,8 +6,11 @@ package net.shadow.client.feature.command.impl;
 
 import java.util.Arrays;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.argument.IntegerArgumentParser;
+import net.shadow.client.feature.command.exception.CommandException;
 
 public class FSpam extends Command {
     public FSpam() {
@@ -26,14 +29,9 @@ public class FSpam extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) {
-        int amount = 0;
-        try{
-            amount = Integer.parseInt(args[0]);
-        }catch(NumberFormatException e){
-            error("Not a valid integer!");
-            return;
-        }
+    public void onExecute(String[] args) throws CommandException {
+        validateArgumentsLength(args, 2);
+        int amount = new IntegerArgumentParser().parse(args[0]);
         for(int i = 0; i < amount; i++){
             ShadowMain.client.player.sendChatMessage(String.join("", Arrays.copyOfRange(args, 1, args.length)));
         }
