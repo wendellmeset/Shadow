@@ -30,12 +30,18 @@ public class ConfigDisplay extends Element {
         super(x, y, 100, 0);
         this.mc = mc;
         for (SettingBase<?> setting : mc.getSettings()) {
+
             if (setting instanceof BooleanSetting set) {
                 BooleanSettingEditor bse = new BooleanSettingEditor(0, 0, width - padding - paddingLeft, set);
                 bases.add(bse);
             } else if (setting instanceof DoubleSetting set) {
-                DoubleSettingEditor dse = new DoubleSettingEditor(0, 0, width - padding - paddingLeft, set);
-                bases.add(dse);
+                if (set.getName().equalsIgnoreCase("keybind")) {
+                    KeybindEditor ke = new KeybindEditor(0,0,width-padding-paddingLeft,set);
+                    bases.add(ke);
+                } else {
+                    DoubleSettingEditor dse = new DoubleSettingEditor(0, 0, width - padding - paddingLeft, set);
+                    bases.add(dse);
+                }
             } else if (setting instanceof EnumSetting<?> set) {
                 EnumSettingEditor ese = new EnumSettingEditor(0, 0, width - padding - paddingLeft, set);
                 bases.add(ese);

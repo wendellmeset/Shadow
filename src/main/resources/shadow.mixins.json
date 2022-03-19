@@ -13,7 +13,6 @@
     "BlockEntityRenderDispatcherMixin",
     "BlockMixin",
     "BlockRenderManagerMixin",
-    "ButtonWidgetMixin",
     "CameraMixin",
     "ClientConnection1Mixin",
     "ClientConnectionMixin",
