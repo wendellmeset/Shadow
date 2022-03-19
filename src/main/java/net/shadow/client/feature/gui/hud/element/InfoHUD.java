@@ -7,11 +7,8 @@ package net.shadow.client.feature.gui.hud.element;
 import net.minecraft.client.util.math.MatrixStack;
 import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.feature.module.impl.render.Hud;
-import net.shadow.client.helper.render.MSAAFramebuffer;
 
 public class InfoHUD extends HudElement {
-    net.shadow.client.feature.module.impl.render.TabGui tgui;
-
     public InfoHUD() {
         super("Info", 5, 5, 180, 57);
     }

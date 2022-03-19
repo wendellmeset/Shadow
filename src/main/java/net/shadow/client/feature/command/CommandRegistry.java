@@ -95,7 +95,7 @@ public class CommandRegistry {
                 c.onExecute(args);
             } catch (CommandException cex) {
                 Utils.Logging.error(cex.getMessage());
-                if (cex.getPotentialFix() != null) Utils.Logging.error("Potential fix: "+cex.getPotentialFix());
+                if (cex.getPotentialFix() != null) Utils.Logging.error("Potential fix: " + cex.getPotentialFix());
             } catch (Exception e) {
                 Utils.Logging.error("Error while running command " + command);
                 e.printStackTrace();

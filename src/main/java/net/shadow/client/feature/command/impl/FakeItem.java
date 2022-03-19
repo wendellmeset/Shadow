@@ -5,7 +5,6 @@
 package net.shadow.client.feature.command.impl;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -20,7 +19,6 @@ import net.shadow.client.feature.command.exception.CommandException;
 
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.UUID;
 
 public class FakeItem extends Command {
     public FakeItem() {

@@ -4,7 +4,6 @@
 
 package net.shadow.client.feature.command.impl;
 
-import lombok.val;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.exception.CommandException;

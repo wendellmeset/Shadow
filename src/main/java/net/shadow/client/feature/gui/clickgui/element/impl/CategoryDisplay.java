@@ -21,7 +21,6 @@ import net.shadow.client.helper.render.ClipStack;
 import net.shadow.client.helper.render.Rectangle;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.render.Scroller;
-import net.shadow.client.helper.util.Transitions;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -132,7 +131,7 @@ public class CategoryDisplay extends Element {
             double elScroll = contentHeight - viewerHeight;
 //            scroll = MathHelper.clamp(scroll, -elScroll, 0);
 //            smoothScroll = MathHelper.clamp(smoothScroll, -elScroll, 0);
-            scroller.setBounds(0,elScroll);
+            scroller.setBounds(0, elScroll);
             scroller.scroll(amount);
             return true;
         }

@@ -106,6 +106,7 @@ public class FontRenderer {
 
         matrices.pop();
     }
+
     String stripControlCodes(String in) {
         char[] s = in.toCharArray();
         StringBuilder out = new StringBuilder();
@@ -119,6 +120,7 @@ public class FontRenderer {
         }
         return out.toString();
     }
+
     public float getStringWidth(String text) {
         float wid = 0;
         for (char c : stripControlCodes(text).toCharArray()) {

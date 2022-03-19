@@ -28,6 +28,13 @@ import java.util.stream.Collectors;
 
 public class AutoTnt extends Module {
     boolean missingTntAck = false;
+    DoubleSetting placeDistance = this.config.create(new DoubleSetting.Builder(4)
+            .name("Place distance")
+            .description("How far to place the blocks apart")
+            .min(1)
+            .max(4)
+            .precision(0)
+            .get());
 
     public AutoTnt() {
         super("AutoTNT", "Automatically places tnt in a grid", ModuleType.WORLD);
@@ -108,13 +115,7 @@ public class AutoTnt extends Module {
     public String getContext() {
         return missingTntAck ? "Missing tnt!" : null;
     }
-    DoubleSetting placeDistance = this.config.create(new DoubleSetting.Builder(4)
-                .name("Place distance")
-                .description("How far to place the blocks apart")
-                .min(1)
-                .max(4)
-                .precision(0)
-                .get());
+
     boolean shouldPlace(BlockPos b) {
         return b.getX() % ((int) Math.floor(placeDistance.getValue())) == 0 && b.getZ() % ((int) Math.floor(placeDistance.getValue())) == 0;
     }

@@ -7,12 +7,9 @@ package net.shadow.client.mixin;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
-import net.shadow.client.feature.gui.clickgui.ClickGUI;
 import net.shadow.client.feature.gui.clickgui.theme.ThemeManager;
 import net.shadow.client.helper.font.FontRenderers;
-import net.shadow.client.helper.render.MSAAFramebuffer;
 import net.shadow.client.helper.render.Renderer;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

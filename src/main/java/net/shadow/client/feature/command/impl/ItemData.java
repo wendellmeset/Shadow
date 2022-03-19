@@ -4,7 +4,6 @@
 
 package net.shadow.client.feature.command.impl;
 
-import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -14,7 +13,6 @@ import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.argument.PlayerFromNameArgumentParser;
 import net.shadow.client.feature.command.exception.CommandException;
-import net.shadow.client.helper.util.Utils;
 
 import java.util.Objects;
 
@@ -32,7 +30,7 @@ public class ItemData extends Command {
             return new String[]{"hand", "offhand", "head", "chest", "legs", "feet"};
         }
         if (args.length == 3) {
-            return new String[] {"--onlyShow"};
+            return new String[]{"--onlyShow"};
         }
         return super.getSuggestions(fullCommand, args);
     }

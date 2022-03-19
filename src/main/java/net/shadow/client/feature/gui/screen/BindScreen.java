@@ -4,9 +4,7 @@
 
 package net.shadow.client.feature.gui.screen;
 
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.Text;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.font.adapter.FontAdapter;

@@ -5,7 +5,6 @@
 package net.shadow.client.feature.command.impl;
 
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;

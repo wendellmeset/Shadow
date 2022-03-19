@@ -11,8 +11,6 @@ import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.exception.CommandException;
 
-import java.util.Arrays;
-
 public class Inject extends Command {
     public Inject() {
         super("Inject", "Injects a chunk of nbt into the target item", "inject", "inj", "addNbt");

@@ -9,14 +9,17 @@ public class Scroller {
     double velocity;
     double minBound = -1;
     double maxBound = -1;
+
     public Scroller(double initialScroll) {
         this.scroll = initialScroll;
         this.velocity = 0;
     }
+
     public void setBounds(double min, double max) {
         this.minBound = min;
         this.maxBound = max;
     }
+
     public void tick() {
         scroll -= velocity;
         if (maxBound != -1) {
@@ -31,11 +34,13 @@ public class Scroller {
     public double getScroll() {
         return -scroll;
     }
-    public void scroll(double howMuch) {
-        this.velocity += howMuch;
-    }
+
     public void setScroll(double scroll) {
         this.scroll = scroll;
+    }
+
+    public void scroll(double howMuch) {
+        this.velocity += howMuch;
     }
 
     public void setVelocity(double velocity) {

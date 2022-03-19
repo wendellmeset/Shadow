@@ -95,7 +95,7 @@ public class ModuleRegistry {
         modules.add(new Step());
         modules.add(new Freecam());
         modules.add(new FreeLook());
-       modules.add(new ItemByteSize()); // TO BE RE-WRITTEN AS TOOLTIPS | keep it in for now tho
+        modules.add(new ItemByteSize()); // TO BE RE-WRITTEN AS TOOLTIPS | keep it in for now tho
         modules.add(new Zoom());
         modules.add(new AutoTool()); // WHY????? this is so useless | how?
         modules.add(new BlockTagViewer());

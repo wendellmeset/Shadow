@@ -9,8 +9,6 @@ import net.minecraft.util.Identifier;
 import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.feature.module.impl.exploit.SkinChangeExploit;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(AbstractClientPlayerEntity.class)

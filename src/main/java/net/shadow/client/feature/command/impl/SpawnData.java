@@ -4,22 +4,20 @@
 
 package net.shadow.client.feature.command.impl;
 
-import net.shadow.client.ShadowMain;
-import net.shadow.client.feature.command.Command;
-
-import java.util.Objects;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 import net.minecraft.util.math.Vec3d;
+import net.shadow.client.ShadowMain;
+import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.argument.DoubleArgumentParser;
 import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.helper.nbt.NbtGroup;
 import net.shadow.client.helper.nbt.NbtList;
 import net.shadow.client.helper.nbt.NbtObject;
 import net.shadow.client.helper.nbt.NbtProperty;
+
+import java.util.Objects;
 
 public class SpawnData extends Command {
     public SpawnData() {
@@ -28,15 +26,15 @@ public class SpawnData extends Command {
 
     @Override
     public String[] getSuggestions(String fullCommand, String[] args) {
-        if(args.length == 1){
+        if (args.length == 1) {
             return new String[]{"position", "velocity", "cursor"};
         }
-        if(args.length > 1){
-            if(args[0].equals("position") || args[0].equals("velocity")){
-                return switch(args.length) {
-                    case 2 -> new String[] {"x"};
-                    case 3 -> new String[] {"y"};
-                    case 4 -> new String[] {"z"};
+        if (args.length > 1) {
+            if (args[0].equals("position") || args[0].equals("velocity")) {
+                return switch (args.length) {
+                    case 2 -> new String[]{"x"};
+                    case 3 -> new String[]{"y"};
+                    case 4 -> new String[]{"z"};
                     default -> new String[0];
                 };
             }
@@ -48,7 +46,7 @@ public class SpawnData extends Command {
     public void onExecute(String[] args) throws CommandException {
         validateArgumentsLength(args, 1);
         DoubleArgumentParser dap = new DoubleArgumentParser();
-        switch(args[0].toLowerCase()) {
+        switch (args[0].toLowerCase()) {
             case "position" -> {
                 validateArgumentsLength(args, 4);
                 ItemStack stack = ShadowMain.client.player.getInventory().getMainHandStack();

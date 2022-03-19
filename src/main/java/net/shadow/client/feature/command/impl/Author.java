@@ -4,7 +4,6 @@
 
 package net.shadow.client.feature.command.impl;
 
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtString;
@@ -26,7 +25,7 @@ public class Author extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) throws CommandException  {
+    public void onExecute(String[] args) throws CommandException {
         validateArgumentsLength(args, 1);
 //        if (args.length == 0) {
 //            error("Please use the format >author <author>");

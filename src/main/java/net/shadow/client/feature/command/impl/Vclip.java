@@ -17,7 +17,7 @@ public class Vclip extends Command {
 
     @Override
     public String[] getSuggestions(String fullCommand, String[] args) {
-        if (args.length == 1) return new String[] {"(distance)"};
+        if (args.length == 1) return new String[]{"(distance)"};
         return super.getSuggestions(fullCommand, args);
     }
 

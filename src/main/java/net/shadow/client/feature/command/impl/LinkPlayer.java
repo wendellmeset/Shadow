@@ -25,7 +25,6 @@ import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.helper.util.Utils;
 
 import java.util.Objects;
-import java.util.UUID;
 
 public class LinkPlayer extends Command {
     public LinkPlayer() {
