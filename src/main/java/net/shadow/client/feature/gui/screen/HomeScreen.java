@@ -214,7 +214,7 @@ public class HomeScreen extends ClientScreen implements FastTickable {
         double h = padding + propFr.getMarginHeight() + 2 + changelog.split("\n").length * FontRenderers.getRenderer().getMarginHeight() + padding;
         double w = 100;
         for (String s : changelog.split("\n")) {
-            w = Math.max(w, 10 + FontRenderers.getRenderer().getStringWidth(s));
+            w = Math.max(w, 10 + FontRenderers.getRenderer().getStringWidth(s.strip()));
         }
         stack.translate(0, ap * -(padding + h + 1), 0);
         Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 170), padding, padding, padding + w + padding * 2, padding + h, 10, 14);

@@ -7,6 +7,12 @@ package net.shadow.client.mixin;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
+import net.shadow.client.feature.gui.clickgui.ClickGUI;
+import net.shadow.client.feature.gui.clickgui.theme.ThemeManager;
+import net.shadow.client.helper.font.FontRenderers;
+import net.shadow.client.helper.render.MSAAFramebuffer;
+import net.shadow.client.helper.render.Renderer;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -16,8 +22,8 @@ import java.awt.*;
 
 @Mixin(ClickableWidget.class)
 public abstract class ButtonWidgetMixin {
-    final Color unselectedColor = new Color(150, 150, 150, 75);
-    final Color selectedColor = new Color(100, 100, 100, 100);
+    final Color unselectedColor = ThemeManager.getMainTheme().getInactive();
+    final Color selectedColor = ThemeManager.getMainTheme().getHeader();
     @org.spongepowered.asm.mixin.Shadow
     public int x;
     @org.spongepowered.asm.mixin.Shadow
@@ -36,10 +42,10 @@ public abstract class ButtonWidgetMixin {
 
     @Inject(method = "renderButton", at = @At("HEAD"), cancellable = true)
     public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        //if (!UnloadModule.loaded) return;
-//        Renderer.R2D.renderRoundedQuad(matrices, this.isHovered() ? selectedColor : unselectedColor, x, y, x + width, y + height, 5, 7);
-//        FontRenderers.getRenderer().drawCenteredString(matrices, this.getMessage().getString(), this.x + this.width / 2f, this.y + (this.height - 9) / 2f, 0xFFFFFF);
-//        ci.cancel();
+        Renderer.R2D.renderRoundedQuad(matrices, this.isHovered() ? selectedColor : unselectedColor, x, y, x + width, y + height, 5, 7);
+        FontRenderers.getRenderer().drawCenteredString(matrices, this.getMessage().getString(), this.x + this.width / 2f, this.y + (this.height - 9) / 2f, 0xFFFFFF);
+        ci.cancel();
+        //if (!UnloadModule.loaded) return
     }
 
 

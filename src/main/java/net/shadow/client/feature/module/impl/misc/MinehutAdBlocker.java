@@ -16,7 +16,7 @@ public class MinehutAdBlocker extends Module {
     long blocked = 0;
 
     public MinehutAdBlocker() {
-        super("MinehutAdBlocker", "Blocks the /ad command on minehut from sending to you", ModuleType.MISC);
+        super("AdBlock", "Blocks the /ad command on minehut from sending to you", ModuleType.MISC);
         Events.registerEventHandler(EventType.PACKET_RECEIVE, event -> {
             if (!this.isEnabled()) {
                 return;

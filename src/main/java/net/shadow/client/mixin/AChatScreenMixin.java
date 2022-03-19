@@ -171,8 +171,8 @@ public class AChatScreenMixin extends Screen {
         }
     }
 
-    @Inject(method = "onChatFieldUpdate", at = @At("HEAD"))
-    public void atomic_preChatFieldUpdate(String chatText, CallbackInfo ci) {
+    @Inject(method = {"init()V"}, at = @At("TAIL"))
+    public void onInit(CallbackInfo ci) {
         chatField.setMaxLength((ModuleRegistry.getByClass(InfChatLength.class).isEnabled()) ? Integer.MAX_VALUE : 256);
     }
 }

@@ -35,6 +35,11 @@ import net.shadow.client.mixin.IInGameHudAccessor;
 import net.shadow.client.mixin.IMinecraftClientAccessor;
 
 import java.awt.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,6 +54,7 @@ public class Hud extends Module {
     final DateFormat minSec = new SimpleDateFormat("mm:ss");
     final BooleanSetting fps = this.config.create(new BooleanSetting.Builder(true).name("FPS").description("Whether to show FPS").get());
     final BooleanSetting tps = this.config.create(new BooleanSetting.Builder(true).name("TPS").description("Whether to show TPS").get());
+    final BooleanSetting stackdata = this.config.create(new BooleanSetting.Builder(true).name("Stack").description("Whether to show the top left stack of data").get());
     final BooleanSetting coords = this.config.create(new BooleanSetting.Builder(true).name("Coordinates").description("Whether to show current coordinates").get());
     final BooleanSetting ping = this.config.create(new BooleanSetting.Builder(true).name("Ping").description("Whether to show current ping").get());
     final BooleanSetting modules = this.config.create(new BooleanSetting.Builder(true).name("Array list").description("Whether to show currently enabled modules").get());
@@ -162,7 +168,7 @@ public class Hud extends Module {
         if (modules.getValue()) {
             ms.push();
             ms.translate(0, heightOffsetRight, 0);
-            drawModuleList(ms);
+            //drawModuleList(ms);
             ms.pop();
         }
 
@@ -184,6 +190,7 @@ public class Hud extends Module {
 
     public void drawTopLeft(MatrixStack ms) {
 //        DrawableHelper.drawTexture(ms, 3, 3, 0, 0, j, i, j, i);
+        if(!stackdata.getValue()) return;
         List<String> values = new ArrayList<>();
         if (this.fps.getValue()) {
             values.add(((IMinecraftClientAccessor) ShadowMain.client).getCurrentFps() + " fps");
@@ -232,9 +239,12 @@ public class Hud extends Module {
         FontRenderers.getRenderer().drawCenteredString(ms, drawStr, widgetX + widgetWidth / 2d, widgetY + 3 + imgHeight + 3, 0xAAAAAA);
     }
 
-    void drawModuleList(MatrixStack ms) {
+    public void drawModuleList(MatrixStack ms, double posX, double posY){
+        if(!modules.getValue()) return;
+        posX += 55;
         double width = ShadowMain.client.getWindow().getScaledWidth();
         double y = 0;
+        double whalf = width / 4;
         for (ModuleEntry moduleEntry : moduleList.stream().sorted(Comparator.comparingDouble(value -> -value.getRenderWidth())).toList()) {
             double prog = moduleEntry.getAnimProg() * 2;
             if (prog == 0) {
@@ -244,17 +254,36 @@ public class Hud extends Module {
             double slideProg = MathHelper.clamp(prog - 1, 0, 1); // 1-2 as 0-1 from 0-2
             double hei = (FontRenderers.getRenderer().getMarginHeight() + 2);
             double wid = moduleEntry.getRenderWidth() + 2;
-            Renderer.R2D.renderQuad(ms, ThemeManager.getMainTheme().getActive(), width - (wid + 1), y, width, y + hei * expandProg);
             ms.push();
-            ms.translate((1 - slideProg) * wid, 0, 0);
+            //time for some hacker tier byte shit
+            //--BEGIN BYTE FUCKARY--
+            /*ByteArrayOutputStream bar = new ByteArrayOutputStream();
+            ObjectOutputStream os = new ObjectOutputStream(bar);
+            os.writeObject((Object)ms);
+            os.flush();
+            byte[] matrix = bar.toByteArray();
+            ByteArrayInputStream bir = new ByteArrayInputStream(matrix);
+            ObjectInputStream input = new ObjectInputStream(bir);
+            MatrixStack b = (MatrixStack)input.readObject();*/
+            //--END BYTE FUCKARY--
+
+            //was gonna try harder on this but realised it looks better without it anyways :D
+            ms.translate(-ShadowMain.client.getWindow().getScaledWidth() + ((1 - slideProg) * wid) + 55, (posY > whalf) ? 85 : 0, 0);
+            Renderer.R2D.beginScissor(0, 0, posX, ShadowMain.client.getWindow().getScaledHeight()); //wait holy shit this WORKS???!?!? Im supposed to be shit at rendering!
+            Renderer.R2D.renderQuad(ms, ThemeManager.getMainTheme().getActive(), width - (wid + 1), y, width, y + hei * expandProg);
             Renderer.R2D.renderQuad(ms, ThemeManager.getMainTheme().getModule(), width - wid, y, width, y + hei * expandProg);
             double nameW = FontRenderers.getRenderer().getStringWidth(moduleEntry.module.getName());
             FontRenderers.getRenderer().drawString(ms, moduleEntry.module.getName(), width - wid + 1, y + 1, 0xFFFFFF);
             if (moduleEntry.module.getContext() != null && !moduleEntry.module.getContext().isEmpty()) {
                 FontRenderers.getRenderer().drawString(ms, " " + moduleEntry.module.getContext(), width - wid + 1 + nameW, y + 1, 0xAAAAAA);
             }
+            Renderer.R2D.endScissor();
             ms.pop();
-            y += hei * expandProg;
+            if(posY > whalf){
+                y -= hei * expandProg;
+            }else{
+                y += hei * expandProg;
+            }
         }
 
     }
