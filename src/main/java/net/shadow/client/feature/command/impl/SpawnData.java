@@ -15,8 +15,8 @@ import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 import net.minecraft.util.math.Vec3d;
 
-public class Pre extends Command {
-    public Pre() {
+public class SpawnData extends Command {
+    public SpawnData() {
         super("SpawnData", "set pre-spawn conditions for spawn eggs", "prespawn", "spawndata");
     }
 
