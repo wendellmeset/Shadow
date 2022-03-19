@@ -7,6 +7,7 @@ package net.shadow.client.feature.command.impl;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.StringNbtReader;
+import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 
@@ -26,10 +27,10 @@ public class Inject extends Command {
     public void onExecute(String[] args) {
         ItemStack is = ShadowMain.client.player.getMainHandStack();
         if (args.length < 2) {
-            error("Syntax: inj add (nbt)");
+            error("Syntax: inj (nbt)");
             return;
         }
-        String nString = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
+        String nString = String.join(" ", Arrays.copyOfRange(args, 0, args.length));
         NbtCompound old = is.getOrCreateNbt();
         try {
             NbtCompound ncNew = StringNbtReader.parse(nString);
@@ -38,5 +39,6 @@ public class Inject extends Command {
         } catch (Exception e) {
             error(e.getMessage());
         }
+        ShadowMain.client.player.networkHandler.sendPacket(new CreativeInventoryActionC2SPacket(36 + ShadowMain.client.player.getInventory().selectedSlot, is));
     }
 }

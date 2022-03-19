@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(AbstractClientPlayerEntity.class)
 public class AbstractClientPlayerEntityMixin {
-    @Inject(method = "getSkinTexture", at = @At("HEAD"), cancellable = true)
+    //@Inject(method = "getSkinTexture", at = @At("HEAD"), cancellable = true)
     void replaceSkinTex(CallbackInfoReturnable<Identifier> cir) {
         SkinChangeExploit sce = ModuleRegistry.getByClass(SkinChangeExploit.class);
         if (!sce.isEnabled()) {
