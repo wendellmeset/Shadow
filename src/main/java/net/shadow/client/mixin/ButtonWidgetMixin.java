@@ -22,8 +22,8 @@ import java.awt.*;
 
 @Mixin(ClickableWidget.class)
 public abstract class ButtonWidgetMixin {
-    final Color unselectedColor = ThemeManager.getMainTheme().getActive();
-    final Color selectedColor = ThemeManager.getMainTheme().getInactive();
+    final Color unselectedColor = ThemeManager.getMainTheme().getInactive();
+    final Color selectedColor = ThemeManager.getMainTheme().getHeader();
     @org.spongepowered.asm.mixin.Shadow
     public int x;
     @org.spongepowered.asm.mixin.Shadow

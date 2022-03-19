@@ -54,6 +54,7 @@ public class Hud extends Module {
     final DateFormat minSec = new SimpleDateFormat("mm:ss");
     final BooleanSetting fps = this.config.create(new BooleanSetting.Builder(true).name("FPS").description("Whether to show FPS").get());
     final BooleanSetting tps = this.config.create(new BooleanSetting.Builder(true).name("TPS").description("Whether to show TPS").get());
+    final BooleanSetting stackdata = this.config.create(new BooleanSetting.Builder(true).name("Stack").description("Whether to show the top left stack of data").get());
     final BooleanSetting coords = this.config.create(new BooleanSetting.Builder(true).name("Coordinates").description("Whether to show current coordinates").get());
     final BooleanSetting ping = this.config.create(new BooleanSetting.Builder(true).name("Ping").description("Whether to show current ping").get());
     final BooleanSetting modules = this.config.create(new BooleanSetting.Builder(true).name("Array list").description("Whether to show currently enabled modules").get());
@@ -189,6 +190,7 @@ public class Hud extends Module {
 
     public void drawTopLeft(MatrixStack ms) {
 //        DrawableHelper.drawTexture(ms, 3, 3, 0, 0, j, i, j, i);
+        if(!stackdata.getValue()) return;
         List<String> values = new ArrayList<>();
         if (this.fps.getValue()) {
             values.add(((IMinecraftClientAccessor) ShadowMain.client).getCurrentFps() + " fps");
@@ -238,6 +240,7 @@ public class Hud extends Module {
     }
 
     public void drawModuleList(MatrixStack ms, double posX, double posY){
+        if(!modules.getValue()) return;
         posX += 55;
         double width = ShadowMain.client.getWindow().getScaledWidth();
         double y = 0;
@@ -266,8 +269,8 @@ public class Hud extends Module {
 
             //was gonna try harder on this but realised it looks better without it anyways :D
             ms.translate(-ShadowMain.client.getWindow().getScaledWidth() + ((1 - slideProg) * wid) + 55, (posY > whalf) ? 85 : 0, 0);
-            Renderer.R2D.renderQuad(ms, ThemeManager.getMainTheme().getActive(), width - (wid + 1), y, width, y + hei * expandProg);
             Renderer.R2D.beginScissor(0, 0, posX, ShadowMain.client.getWindow().getScaledHeight()); //wait holy shit this WORKS???!?!? Im supposed to be shit at rendering!
+            Renderer.R2D.renderQuad(ms, ThemeManager.getMainTheme().getActive(), width - (wid + 1), y, width, y + hei * expandProg);
             Renderer.R2D.renderQuad(ms, ThemeManager.getMainTheme().getModule(), width - wid, y, width, y + hei * expandProg);
             double nameW = FontRenderers.getRenderer().getStringWidth(moduleEntry.module.getName());
             FontRenderers.getRenderer().drawString(ms, moduleEntry.module.getName(), width - wid + 1, y + 1, 0xFFFFFF);

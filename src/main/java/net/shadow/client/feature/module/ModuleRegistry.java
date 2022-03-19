@@ -30,13 +30,13 @@ public class ModuleRegistry {
         modules.add(new Fullbright());
         modules.add(new Hud());
         modules.add(new TargetHud());
-        modules.add(new AntiOffhandCrash());
+        //modules.add(new AntiOffhandCrash()); this should be under anticrash
         modules.add(new AntiPacketKick());
         modules.add(new AntiReducedDebugInfo());
         modules.add(new BoatPhase());
         modules.add(new Boaty());
         modules.add(new Boom());
-        modules.add(new CaveMapper());
+        //modules.add(new CaveMapper());
         modules.add(new InstaBow());
         modules.add(new NoComCrash());
         modules.add(new OffhandCrash());
@@ -48,13 +48,13 @@ public class ModuleRegistry {
         modules.add(new ClickGUI());
         modules.add(new TpRange());
         modules.add(new AnyPlacer());
-        modules.add(new FireballDeflector());
-        modules.add(new ShulkerDeflector());
-        modules.add(new CarpetBomb());
-        modules.add(new SkinChangeExploit());
+        //modules.add(new FireballDeflector()); as much as i like these next two they aren't really in the theme of shadow, if you really want them back you can move them to combat
+        //modules.add(new ShulkerDeflector());
+        //modules.add(new CarpetBomb()); i'm rewriting this its ASS
+        //modules.add(new SkinChangeExploit()); litteral fucking joke module, to be re-written as personhider or whatever i named it (skinfuscator is a good name lol)
         modules.add(new AutoTrap());
         modules.add(new AutoTnt());
-        modules.add(new LetThereBeLight());
+        //modules.add(new LetThereBeLight()); awful why?
         modules.add(new FakeHacker());
         modules.add(new NoFall());
         modules.add(new ESP());
@@ -64,12 +64,12 @@ public class ModuleRegistry {
         modules.add(new Swing());
         modules.add(new AimAssist());
         modules.add(new Criticals());
-        modules.add(new Killaura());
+        modules.add(new Killaura()); //TODO: add settings and shit
         modules.add(new Velocity());
         modules.add(new AntiAntiXray());
         modules.add(new PingSpoof());
         modules.add(new AutoAttack());
-        modules.add(new MouseEars());
+        modules.add(new MouseEars()); //i really wanna remove this one
         modules.add(new Spinner());
         modules.add(new AllowFormatCodes());
         modules.add(new InfChatLength());
@@ -77,14 +77,14 @@ public class ModuleRegistry {
         modules.add(new PortalGUI());
         modules.add(new Timer());
         modules.add(new XCarry());
-        modules.add(new AirJump());
+        modules.add(new AirJump()); //TODO: unshit
         modules.add(new AutoElytra());
         modules.add(new Blink());
         modules.add(new Boost());
-        modules.add(new EdgeJump());
-        modules.add(new EdgeSneak());
+        //modules.add(new EdgeJump()); again, two that are really nice but don't fit with the theme of shadow
+        //modules.add(new EdgeSneak());
         modules.add(new EntityFly());
-        modules.add(new IgnoreWorldBorder());
+        modules.add(new IgnoreWorldBorder()); //i'll allow it
         modules.add(new InventoryWalk());
         modules.add(new Jesus());
         modules.add(new LongJump());
@@ -95,15 +95,15 @@ public class ModuleRegistry {
         modules.add(new Step());
         modules.add(new Freecam());
         modules.add(new FreeLook());
-        modules.add(new ItemByteSize());
+       //modules.add(new ItemByteSize()); TO BE RE-WRITTEN AS TOOLTIPS
         modules.add(new Zoom());
-        modules.add(new AutoTool());
+        //modules.add(new AutoTool()); WHY????? this is so useless
         modules.add(new BlockTagViewer());
         modules.add(new ClickNuke());
         modules.add(new FastUse());
         modules.add(new Flattener());
-        modules.add(new GodBridge());
-        modules.add(new InstantBreak());
+        modules.add(new GodBridge()); //TODO: add this as a mode to scaffold
+        modules.add(new InstantBreak()); //TODO: unshit
         modules.add(new MassUse());
         modules.add(new NoBreakDelay());
         modules.add(new Nuker());
