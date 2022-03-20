@@ -2,7 +2,7 @@
  * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
  */
 
-package net.shadow.client.feature.module.impl.misc;
+package net.shadow.client.feature.module.impl.combat;
 
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
@@ -29,7 +29,7 @@ public class FireballDeflector extends Module {
             .description("Checks if the fireball is actually approaching before hitting. Can get funky with a lot of them").get());
 
     public FireballDeflector() {
-        super("FireballDeflector", "Deflects (or reflects) fireballs in your hit range", ModuleType.MISC);
+        super("FireballDeflector", "Deflects (or reflects) fireballs in your hit range", ModuleType.COMBAT);
     }
 
     boolean isApproaching(Vec3d checkAgainst, Vec3d checkPos, Vec3d checkVel) {

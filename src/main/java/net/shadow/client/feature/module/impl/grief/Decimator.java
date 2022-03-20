@@ -2,7 +2,7 @@
  * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
  */
 
-package net.shadow.client.feature.module.impl.world;
+package net.shadow.client.feature.module.impl.grief;
 
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.BlockPos;
@@ -19,7 +19,7 @@ import java.awt.*;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class Voider extends Module {
+public class Decimator extends Module {
     final DoubleSetting radius = this.config.create(new DoubleSetting.Builder(100).precision(0).name("Radius").description("How much to erase on X and Z").min(20).max(500).get());
     final DoubleSetting delay = this.config.create(new DoubleSetting.Builder(30).precision(0).name("Delay").description("How much delay to use while erasing").min(0).max(1000).get());
     final AtomicBoolean cancel = new AtomicBoolean(false);
@@ -27,8 +27,8 @@ public class Voider extends Module {
     Vec3d startPos = null;
     Vec3d latest = null;
 
-    public Voider() {
-        super("Voider", "Transforms a radius around you to void", ModuleType.WORLD);
+    public Decimator() {
+        super("Decimator", "Transforms a radius around you to void", ModuleType.GRIEF);
     }
 
     @Override

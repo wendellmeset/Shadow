@@ -2,7 +2,7 @@
  * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
  */
 
-package net.shadow.client.feature.module.impl.misc;
+package net.shadow.client.feature.module.impl.combat;
 
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
@@ -18,7 +18,7 @@ public class ShulkerDeflector extends Module {
     final BooleanSetting checkOwner = this.config.create(new BooleanSetting.Builder(true).name("Check owner").description("Check if you own the projectile, else hit it").get());
 
     public ShulkerDeflector() {
-        super("ShulkerDeflector", "Automatically reflects shulker's projectiles", ModuleType.MISC);
+        super("ShulkerDeflector", "Automatically reflects shulker's projectiles", ModuleType.COMBAT);
     }
 
     @Override

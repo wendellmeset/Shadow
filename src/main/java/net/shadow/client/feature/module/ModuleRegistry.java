@@ -7,6 +7,8 @@ package net.shadow.client.feature.module;
 
 import net.shadow.client.feature.module.impl.combat.*;
 import net.shadow.client.feature.module.impl.exploit.*;
+import net.shadow.client.feature.module.impl.grief.Annhilator;
+import net.shadow.client.feature.module.impl.grief.Decimator;
 import net.shadow.client.feature.module.impl.misc.*;
 import net.shadow.client.feature.module.impl.movement.*;
 import net.shadow.client.feature.module.impl.render.*;
@@ -44,7 +46,7 @@ public class ModuleRegistry {
         modules.add(new Phase());
         modules.add(new VanillaSpoof());
         modules.add(new XRAY());
-        modules.add(new Voider());
+        modules.add(new Decimator());
         modules.add(new ClickGUI());
         modules.add(new TpRange());
         modules.add(new AnyPlacer());
@@ -99,7 +101,7 @@ public class ModuleRegistry {
         modules.add(new Zoom());
         modules.add(new AutoTool()); // WHY????? this is so useless | how?
         modules.add(new BlockTagViewer());
-        modules.add(new ClickNuke());
+        modules.add(new Annhilator());
         modules.add(new FastUse());
         modules.add(new Flattener());
         modules.add(new GodBridge()); //TODO: add this as a mode to scaffold

@@ -2,7 +2,7 @@
  * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
  */
 
-package net.shadow.client.feature.module.impl.world;
+package net.shadow.client.feature.module.impl.grief;
 
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.hit.HitResult;
@@ -20,7 +20,7 @@ import net.shadow.client.helper.event.events.MouseEvent;
 
 import java.util.Objects;
 
-public class ClickNuke extends Module {
+public class Annhilator extends Module {
 
     final DoubleSetting rangeX = this.config.create(new DoubleSetting.Builder(5).name("Range X").description("How big of an area to fill in the X direction").min(1).max(10).precision(0).get());
     final DoubleSetting rangeY = this.config.create(new DoubleSetting.Builder(5).name("Range Y").description("How big of an area to fill in the Y direction").min(1).max(10).precision(0).get());
@@ -28,8 +28,8 @@ public class ClickNuke extends Module {
     final BooleanSetting destroy = this.config.create(new BooleanSetting.Builder(false).name("Destroy particles").description("makes the block breaking particles appear").get());
 
 
-    public ClickNuke() {
-        super("ClickNuke", "Nukes whatever you click at, requires /fill permissions", ModuleType.WORLD);
+    public Annhilator() {
+        super("Annihilator", "Nukes whatever you click at, requires /fill permissions", ModuleType.GRIEF);
         Events.registerEventHandler(EventType.MOUSE_EVENT, event -> {
             if (!this.isEnabled()) {
                 return;
