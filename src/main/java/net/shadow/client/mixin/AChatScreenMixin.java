@@ -156,9 +156,10 @@ public class AChatScreenMixin extends Screen {
             String note = "If you need a bigger console, do \"" + p + "console\"";
             double len = FontRenderers.getRenderer().getStringWidth(note) + 1;
             FontRenderers.getRenderer().drawString(matrices, note, width - len - 2, height - 15 - FontRenderers.getRenderer().getMarginHeight(), 0xFFFFFF);
-            MSAAFramebuffer.use(MSAAFramebuffer.MAX_SAMPLES, () -> {
-                renderSuggestions(matrices);
-            });
+            renderSuggestions(matrices);
+//            MSAAFramebuffer.use(MSAAFramebuffer.MAX_SAMPLES, () -> {
+//
+//            });
         }
     }
 

@@ -457,7 +457,7 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
             return 0;
         }
         pos = Math.min(text.length(), pos);
-        return FontRenderers.getRenderer().getStringWidth(text.substring(0, pos)) + 1;
+        return FontRenderers.getRenderer().getStringWidth(text.substring(0, pos));
     }
 
     protected double getCursorTextWidth(int offset) {

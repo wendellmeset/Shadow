@@ -17,17 +17,23 @@ import net.shadow.client.helper.util.Utils;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.Level;
 import org.lwjgl.BufferUtils;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.metadata.IIOMetadata;
+import javax.imageio.stream.ImageInputStream;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Taco extends Command {
@@ -106,10 +112,23 @@ public class Taco extends Command {
         File[] a = Objects.requireNonNull(gifPath.listFiles()).clone();
         List<String> framesSorted = Arrays.stream(a).map(File::getName).sorted().toList();
         for (String file : framesSorted) {
+            if (!file.endsWith(".gif")) continue;
             File f = Arrays.stream(a).filter(file1 -> file1.getName().equals(file)).findFirst().orElseThrow();
-            BufferedImage bi = ImageIO.read(f);
-            Frame now = new Frame(bi);
-            frames.add(now);
+            try {
+                ImageReader reader = ImageIO.getImageReadersByFormatName("gif").next();
+                ImageInputStream stream = ImageIO.createImageInputStream(f);
+                reader.setInput(stream);
+
+                int count = reader.getNumImages(true);
+                for (int index = 0; index < count; index++) {
+                    BufferedImage frame = reader.read(index);
+                    Frame frame1 = new Frame(frame);
+                    frames.add(frame1);
+                    // Here you go
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -139,34 +158,36 @@ public class Taco extends Command {
             //noinspection ResultOfMethodCallIgnored
             file.delete();
         }
-        for (File file : Objects.requireNonNull(f.listFiles())) {
-            try {
-                FileUtils.copyFile(file, new File(gifPath, file.getName()));
-            } catch (Exception ignored) {
-
-            }
+        try {
+            FileUtils.copyFile(f, new File(gifPath, f.getName()));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     static void checkGifPath() {
-        if (!gifPath.isDirectory()) {
+        if (!gifPath.isFile()) {
             //noinspection ResultOfMethodCallIgnored
             gifPath.delete();
         }
         if (!gifPath.exists()) {
-            //noinspection ResultOfMethodCallIgnored
-            gifPath.mkdir();
+            try {
+                //noinspection ResultOfMethodCallIgnored
+                gifPath.createNewFile();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
     public String[] getSuggestions(String fullCommand, String[] args) {
         if (args.length == 1) {
-            return new String[]{"fps", "frames", "toggle"};
+            return new String[]{"fps", "play", "toggle"};
         } else if (args.length == 2) {
             return switch (args[0].toLowerCase()) {
                 case "fps" -> new String[]{"(new fps)"};
-                case "frames" -> new String[]{"(path to frames folder)"};
+                case "play" -> new String[]{"(path to gif file)"};
                 default -> new String[0];
             };
         }
@@ -186,16 +207,16 @@ public class Taco extends Command {
                 config.fps = i;
                 success("set fps to " + i);
             }
-            case "frames" -> {
+            case "play" -> {
                 validateArgumentsLength(args, 2);
                 File f = new File(String.join(" ", Arrays.copyOfRange(args, 1, args.length)));
                 if (!f.exists()) {
-                    throw new CommandException("Folder doesn't exist", "Specify a path to an existing folder");
+                    throw new CommandException("File doesn't exist", "Provide valid gif file");
                 }
-                if (!f.isDirectory()) {
-                    throw new CommandException("Folder is invalid", "Use https://ezgif.com/split to split the gif into frames and specify the output");
+                if (!f.isFile()) {
+                    throw new CommandException("File is not a file", "Provide a valid .gif file");
                 }
-                message("Loading gif files, this may take a bit");
+                message("Loading gif frames");
                 checkGifPath();
                 message("Copying frames");
                 copyGifFiles(f);
@@ -227,35 +248,33 @@ public class Taco extends Command {
 
     public static class Frame {
         static long frameCounter = 0;
-        NativeImageBackedTexture tex;
         Texture i;
 
         public Frame(BufferedImage image) {
-            try {
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                ImageIO.write(image, "png", baos);
-                byte[] bytes = baos.toByteArray();
-
-                ByteBuffer data = BufferUtils.createByteBuffer(bytes.length).put(bytes);
-                data.flip();
-                tex = new NativeImageBackedTexture(NativeImage.read(data));
-
-                //                i = new Identifier("atomic", "tacoframe_" + frameCounter);
-                i = new Texture("taco/frame_" + frameCounter);
-                frameCounter++;
-                ShadowMain.client.execute(() -> ShadowMain.client.getTextureManager().registerTexture(i, tex));
-            } catch (Exception e) {
-                Utils.Logging.error("failed to register frame " + frameCounter);
-                e.printStackTrace();
-            }
+            i = new Texture("taco/frame_" + frameCounter);
+            frameCounter++;
+            Utils.registerBufferedImageTexture(i, image);
+//            try {
+//                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//                ImageIO.write(image, "png", baos);
+//                byte[] bytes = baos.toByteArray();
+//
+//                ByteBuffer data = BufferUtils.createByteBuffer(bytes.length).put(bytes);
+//                data.flip();
+//                tex = new NativeImageBackedTexture(NativeImage.read(data));
+//
+//                //                i = new Identifier("atomic", "tacoframe_" + frameCounter);
+//
+//                frameCounter++;
+//                ShadowMain.client.execute(() -> ShadowMain.client.getTextureManager().registerTexture(i, tex));
+//            } catch (Exception e) {
+//                Utils.Logging.error("failed to register frame " + frameCounter);
+//                e.printStackTrace();
+//            }
         }
 
         public Texture getI() {
             return i;
-        }
-
-        public NativeImageBackedTexture getTex() {
-            return tex;
         }
     }
 }

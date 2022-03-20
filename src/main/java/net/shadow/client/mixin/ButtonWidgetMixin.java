@@ -10,6 +10,7 @@ import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.SliderWidget;
+import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
@@ -103,7 +104,7 @@ public abstract class ButtonWidgetMixin implements DoesMSAA, FastTickable {
 
     @Inject(method="renderButton",at=@At("HEAD"),cancellable = true)
     void p(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if (((Object) this) instanceof SliderWidget) return;
+        if (((Object) this) instanceof SliderWidget || ((Object) this) instanceof TextFieldWidget) return;
         ci.cancel();
 
         Renderer.R2D.renderRoundedQuad(matrices,Renderer.Util.lerp(c1.brighter(), c1, anim),x,y,x+width,y+height,5,15);
