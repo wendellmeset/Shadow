@@ -5,9 +5,6 @@
 package net.shadow.client.mixin;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.gui.screen.GameModeSelectionScreen;
-import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
-import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.SliderWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -31,17 +28,17 @@ import java.awt.*;
 @Mixin(ClickableWidget.class)
 public abstract class ButtonWidgetMixin implements DoesMSAA, FastTickable {
 
-    @Shadow public abstract boolean isHovered();
-
-    @Shadow public int x;
-
-    @Shadow public int y;
-
-    @Shadow protected int width;
-
-    @Shadow protected int height;
-
-    @Shadow public abstract Text getMessage();
+    @Shadow
+    public int x;
+    @Shadow
+    public int y;
+    @Shadow
+    protected int width;
+    @Shadow
+    protected int height;
+    Color c = new Color(30, 30, 30);
+    Color c1 = new Color(15, 15, 15);
+    double anim = 0;
 
     private static void renderRoundedQuadOutline(MatrixStack matrices, Color c, double fromX, double fromY, double toX, double toY, double rad, double samples) {
 
@@ -62,6 +59,7 @@ public abstract class ButtonWidgetMixin implements DoesMSAA, FastTickable {
         RenderSystem.disableBlend();
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
     }
+
     private static void drawRoundOutline(Matrix4f matrix, float cr, float cg, float cb, float ca, double fromX, double fromY, double toX, double toY, double rad, double samples) {
         BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
         bufferBuilder.begin(VertexFormat.DrawMode.TRIANGLE_STRIP, VertexFormats.POSITION_COLOR);
@@ -90,9 +88,12 @@ public abstract class ButtonWidgetMixin implements DoesMSAA, FastTickable {
         bufferBuilder.end();
         BufferRenderer.draw(bufferBuilder);
     }
-    Color c = new Color(30,30,30);
-    Color c1 = new Color(15,15,15);
-    double anim = 0;
+
+    @Shadow
+    public abstract boolean isHovered();
+
+    @Shadow
+    public abstract Text getMessage();
 
     @Override
     public void onFastTick() {
@@ -102,13 +103,13 @@ public abstract class ButtonWidgetMixin implements DoesMSAA, FastTickable {
         anim = MathHelper.clamp(anim, 0, 1);
     }
 
-    @Inject(method="renderButton",at=@At("HEAD"),cancellable = true)
+    @Inject(method = "renderButton", at = @At("HEAD"), cancellable = true)
     void p(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (((Object) this) instanceof SliderWidget || ((Object) this) instanceof TextFieldWidget) return;
         ci.cancel();
 
-        Renderer.R2D.renderRoundedQuad(matrices,Renderer.Util.lerp(c1.brighter(), c1, anim),x,y,x+width,y+height,5,15);
-        renderRoundedQuadOutline(matrices,Renderer.Util.lerp(c.brighter(), c, anim),x,y,x+width,y+height,5,15);
-        FontRenderers.getRenderer().drawCenteredString(matrices,getMessage().getString(),x+width/2d,y+height/2d-FontRenderers.getRenderer().getMarginHeight()/2d,1f,1f,1f,1f);
+        Renderer.R2D.renderRoundedQuad(matrices, Renderer.Util.lerp(c1.brighter(), c1, anim), x, y, x + width, y + height, 5, 15);
+        renderRoundedQuadOutline(matrices, Renderer.Util.lerp(c.brighter(), c, anim), x, y, x + width, y + height, 5, 15);
+        FontRenderers.getRenderer().drawCenteredString(matrices, getMessage().getString(), x + width / 2d, y + height / 2d - FontRenderers.getRenderer().getMarginHeight() / 2d, 1f, 1f, 1f, 1f);
     }
 }

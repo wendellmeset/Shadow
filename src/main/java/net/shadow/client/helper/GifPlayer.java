@@ -28,10 +28,12 @@ import java.util.List;
 import java.util.Map;
 
 public class GifPlayer {
-Object gifFile;
+    Object gifFile;
     int fps;
     long currentFrame = 0;
     List<Frame> frameList = new ArrayList<>();
+    long lastRender = System.currentTimeMillis();
+
     private GifPlayer(Object file, int fps) {
         this.gifFile = file;
         this.fps = fps;
@@ -83,7 +85,7 @@ Object gifFile;
                 for (int j = 0; j < children.getLength(); j++) {
                     Node nodeItem = children.item(j);
 
-                    if(nodeItem.getNodeName().equals("ImageDescriptor")){
+                    if (nodeItem.getNodeName().equals("ImageDescriptor")) {
                         Map<String, Integer> imageAttr = new HashMap<>();
 
                         for (String s : imageatt) {
@@ -91,13 +93,13 @@ Object gifFile;
                             Node attnode = attr.getNamedItem(s);
                             imageAttr.put(s, Integer.valueOf(attnode.getNodeValue()));
                         }
-                        if(master == null){
+                        if (master == null) {
                             master = new BufferedImage(imageAttr.get("imageWidth"), imageAttr.get("imageHeight"), BufferedImage.TYPE_INT_ARGB);
                         }
                         master.getGraphics().drawImage(image, imageAttr.get("imageLeftPosition"), imageAttr.get("imageTopPosition"), null);
                     }
                 }
-                Frame f = new Frame("lmfao",master);
+                Frame f = new Frame("lmfao", master);
                 frameList.add(f);
 //                ImageIO.write(master, "GIF", new File( i + ".gif"));
             }
@@ -106,41 +108,45 @@ Object gifFile;
         }
         currentFrame = 0;
     }
+
     public void progressFrame() {
         currentFrame++;
         currentFrame %= frameList.size();
     }
+
     public Frame getCurrentFrame() {
         return frameList.get((int) currentFrame);
     }
 
-    long lastRender = System.currentTimeMillis();
     public void renderFrame(MatrixStack stack, double x, double y, double width, double height) {
-        long timeDelta = System.currentTimeMillis()-lastRender;
-        long eachXmsFrame = 1000/fps;
-        int framesToProgress = (int) (timeDelta/eachXmsFrame);
+        long timeDelta = System.currentTimeMillis() - lastRender;
+        long eachXmsFrame = 1000 / fps;
+        int framesToProgress = (int) (timeDelta / eachXmsFrame);
         if (framesToProgress > 0) lastRender = System.currentTimeMillis();
-        for(int i = 0;i<framesToProgress;i++) {
+        for (int i = 0; i < framesToProgress; i++) {
             progressFrame();
         }
         Frame current = getCurrentFrame();
         RenderSystem.setShaderTexture(0, current.getTexture());
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        Renderer.R2D.renderTexture(stack,x,y,width,height,0,0,width,height,width,height);
-        FontRenderers.getRenderer().drawString(stack,currentFrame+"/"+frameList.size(),x,y,0);
+        Renderer.R2D.renderTexture(stack, x, y, width, height, 0, 0, width, height, width, height);
+        FontRenderers.getRenderer().drawString(stack, currentFrame + "/" + frameList.size(), x, y, 0);
     }
 
     static class Frame {
         Texture texture;
+
         public Frame(String id, BufferedImage bi) {
-            String rndId = Integer.toHexString((int) Math.floor(Math.random()*0xFFFFFF));
-            this.texture = new Texture("gifPlayer/"+id+"-"+rndId);
-            Utils.registerBufferedImageTexture(texture,bi);
+            String rndId = Integer.toHexString((int) Math.floor(Math.random() * 0xFFFFFF));
+            this.texture = new Texture("gifPlayer/" + id + "-" + rndId);
+            Utils.registerBufferedImageTexture(texture, bi);
         }
+
         public void clear() {
             MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().getTextureManager().destroyTexture(texture));
         }
+
         public Texture getTexture() {
             return texture;
         }

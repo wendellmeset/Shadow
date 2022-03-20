@@ -17,7 +17,8 @@ public class SelectWorldScreen extends Screen {
     public SelectWorldScreen() {
         super(Text.of(""));
     }
-    @Inject(method="render",at=@At("HEAD"))
+
+    @Inject(method = "render", at = @At("HEAD"))
     void a(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         renderBackground(matrices);
     }

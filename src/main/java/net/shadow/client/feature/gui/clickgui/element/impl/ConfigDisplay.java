@@ -36,7 +36,7 @@ public class ConfigDisplay extends Element {
                 bases.add(bse);
             } else if (setting instanceof DoubleSetting set) {
                 if (set.getName().equalsIgnoreCase("keybind")) {
-                    KeybindEditor ke = new KeybindEditor(0,0,width-padding-paddingLeft,set);
+                    KeybindEditor ke = new KeybindEditor(0, 0, width - padding - paddingLeft, set);
                     bases.add(ke);
                 } else {
                     DoubleSettingEditor dse = new DoubleSettingEditor(0, 0, width - padding - paddingLeft, set);

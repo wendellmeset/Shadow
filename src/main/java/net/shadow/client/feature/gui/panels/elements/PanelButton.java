@@ -5,17 +5,14 @@
 package net.shadow.client.feature.gui.panels.elements;
 
 import net.minecraft.client.util.math.MatrixStack;
-import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.gui.clickgui.element.Element;
 import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.render.Renderer;
-import org.lwjgl.glfw.GLFW;
 
 import java.awt.*;
-import java.lang.reflect.Field;
 
 public class PanelButton extends Element {
-    static double h = FontRenderers.getRenderer().getFontHeight()+2;
+    static double h = FontRenderers.getRenderer().getFontHeight() + 2;
     boolean selecting = false;
     boolean cancelNextCharTyped = false;
     Runnable code;
@@ -35,7 +32,7 @@ public class PanelButton extends Element {
 
     @Override
     public boolean clicked(double x, double y, int button) {
-        if (inBounds(x,y)) {
+        if (inBounds(x, y)) {
             code.run();
             return true;
         }
@@ -51,7 +48,8 @@ public class PanelButton extends Element {
     public boolean released() {
         return false;
     }
-//    long lastUpdate = System.currentTimeMillis();
+
+    //    long lastUpdate = System.currentTimeMillis();
     @Override
     public boolean keyPressed(int keycode, int modifiers) {
         return false;
@@ -59,8 +57,8 @@ public class PanelButton extends Element {
 
     @Override
     public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
-        Renderer.R2D.renderRoundedQuad(matrices, new Color(40, 40, 40),x,y,x+width,y+h,5,20);
-        FontRenderers.getRenderer().drawCenteredString(matrices,title,x+width/2d,y+h/2d-FontRenderers.getRenderer().getMarginHeight()/2d,1f,1f,1f,1f);
+        Renderer.R2D.renderRoundedQuad(matrices, new Color(40, 40, 40), x, y, x + width, y + h, 5, 20);
+        FontRenderers.getRenderer().drawCenteredString(matrices, title, x + width / 2d, y + h / 2d - FontRenderers.getRenderer().getMarginHeight() / 2d, 1f, 1f, 1f, 1f);
     }
 
     @Override

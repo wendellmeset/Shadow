@@ -14,9 +14,10 @@ import java.awt.*;
 import java.lang.reflect.Field;
 
 public class KeybindEditor extends ConfigBase<DoubleSetting> {
-    static double h = FontRenderers.getRenderer().getFontHeight()+2;
+    static double h = FontRenderers.getRenderer().getFontHeight() + 2;
     boolean selecting = false;
     boolean cancelNextCharTyped = false;
+
     public KeybindEditor(double x, double y, double width, DoubleSetting configValue) {
         super(x, y, width, h, configValue);
     }
@@ -28,7 +29,7 @@ public class KeybindEditor extends ConfigBase<DoubleSetting> {
 
     @Override
     public boolean clicked(double x, double y, int button) {
-        if (inBounds(x,y)) {
+        if (inBounds(x, y)) {
             selecting = !selecting;
             return true;
         }
@@ -44,7 +45,8 @@ public class KeybindEditor extends ConfigBase<DoubleSetting> {
     public boolean released() {
         return false;
     }
-//    long lastUpdate = System.currentTimeMillis();
+
+    //    long lastUpdate = System.currentTimeMillis();
     @Override
     public boolean keyPressed(int keycode, int modifiers) {
         if (selecting) {
@@ -55,7 +57,7 @@ public class KeybindEditor extends ConfigBase<DoubleSetting> {
                 return true;
             }
             if (keycode == GLFW.GLFW_KEY_BACKSPACE) keycode = -1;
-            configValue.setValue(keycode+0d);
+            configValue.setValue(keycode + 0d);
             selecting = false;
             return true;
         }
@@ -68,8 +70,7 @@ public class KeybindEditor extends ConfigBase<DoubleSetting> {
         int keybind = getKeybind();
         if (selecting) {
             keyName = "...";
-        }
-        else if (keybind == -1) {
+        } else if (keybind == -1) {
             keyName = "None";
         } else {
             keyName = GLFW.glfwGetKeyName(keybind, GLFW.glfwGetKeyScancode(keybind));
@@ -89,12 +90,12 @@ public class KeybindEditor extends ConfigBase<DoubleSetting> {
                 }
             } else keyName = keyName.toUpperCase();
         }
-        Renderer.R2D.renderRoundedQuad(matrices, new Color(40, 40, 40),x,y,x+width,y+h,5,20);
-        FontRenderers.getRenderer().drawCenteredString(matrices,keyName,x+width/2d,y+h/2d-FontRenderers.getRenderer().getMarginHeight()/2d,1f,1f,1f,1f);
+        Renderer.R2D.renderRoundedQuad(matrices, new Color(40, 40, 40), x, y, x + width, y + h, 5, 20);
+        FontRenderers.getRenderer().drawCenteredString(matrices, keyName, x + width / 2d, y + h / 2d - FontRenderers.getRenderer().getMarginHeight() / 2d, 1f, 1f, 1f, 1f);
     }
 
     int getKeybind() {
-        return (int) (configValue.getValue()+0);
+        return (int) (configValue.getValue() + 0);
     }
 
     @Override

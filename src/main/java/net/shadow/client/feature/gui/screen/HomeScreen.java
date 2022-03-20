@@ -22,6 +22,8 @@ import net.shadow.client.feature.gui.FastTickable;
 import net.shadow.client.feature.gui.clickgui.ParticleRenderer;
 import net.shadow.client.feature.gui.clickgui.element.Element;
 import net.shadow.client.feature.gui.clickgui.element.impl.config.DoubleSettingEditor;
+import net.shadow.client.feature.gui.panels.PanelsGui;
+import net.shadow.client.feature.gui.panels.elements.PanelFrame;
 import net.shadow.client.feature.gui.widget.RoundButton;
 import net.shadow.client.helper.Texture;
 import net.shadow.client.helper.font.FontRenderers;
@@ -32,8 +34,6 @@ import net.shadow.client.helper.util.Utils;
 import org.apache.commons.io.IOUtils;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL40C;
-import net.shadow.client.feature.gui.panels.*;
-import net.shadow.client.feature.gui.panels.elements.PanelFrame;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -129,11 +129,11 @@ public class HomeScreen extends ClientScreen implements FastTickable {
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Alts", () -> ShadowMain.client.setScreen(
                 //AltManagerScreen.instance()
 //                new TestScreen()
-            new PanelsGui(new PanelFrame[]{
-                new PanelFrame(0, 0, 100, 150, "hello chat", new Element[]{
-                    new DoubleSettingEditor(0, 0, 25, dub)
+                new PanelsGui(new PanelFrame[]{
+                        new PanelFrame(0, 0, 100, 150, "hello chat", new Element[]{
+                                new DoubleSettingEditor(0, 0, 25, dub)
+                        })
                 })
-            })
         )));
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Settings", () -> ShadowMain.client.setScreen(new OptionsScreen(this, ShadowMain.client.options))));
         double totalHeight = buttonsMap.size() * (widgetHeight + widPad) - widPad;

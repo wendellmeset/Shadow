@@ -7,8 +7,6 @@ package net.shadow.client.feature.module.impl.render;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -219,7 +217,7 @@ public class Hud extends Module {
         RenderSystem.enableBlend();
         double imgWidth = 507 / 5d;
         double imgHeight = 167 / 5d;
-        
+
         double widgetWidth = Math.max(Math.max(imgWidth, width), 160) + 6;
         double widgetHeight = 3 + imgHeight + 3 + FontRenderers.getRenderer().getMarginHeight() + 3;
         double widgetX = 0;

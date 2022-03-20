@@ -17,7 +17,6 @@ import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.feature.module.impl.misc.ClientSettings;
 import net.shadow.client.feature.module.impl.misc.InfChatLength;
 import net.shadow.client.helper.font.FontRenderers;
-import net.shadow.client.helper.render.MSAAFramebuffer;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Utils;
 import org.lwjgl.glfw.GLFW;

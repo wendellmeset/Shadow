@@ -2,26 +2,26 @@ package net.shadow.client.feature.gui.panels.elements;
 
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
+import net.shadow.client.feature.gui.FastTickable;
 import net.shadow.client.feature.gui.clickgui.element.Element;
 import net.shadow.client.feature.gui.clickgui.theme.ThemeManager;
 import net.shadow.client.helper.font.FontRenderers;
+import net.shadow.client.helper.render.ClipStack;
+import net.shadow.client.helper.render.Rectangle;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Transitions;
-import java.util.Set;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.HashMap;
-import java.util.HashSet;
 
-public class PanelFrame extends Element {
+public class PanelFrame extends Element implements FastTickable {
     String title;
     Element[] elements;
-    HashMap<Element, double[]> positions = new HashMap<Element, double[]>();
+    HashMap<Element, double[]> positions = new HashMap<>();
     boolean selected = false;
     boolean open = true;
     double xGoal, yGoal;
-    double smoothTransition = 0;
-    double realglobal;
+    double smoothInit = 0;
     boolean resizer = false;
 
     public PanelFrame(double x, double y, double w, double h, String title, Element[] elements) {
@@ -30,14 +30,15 @@ public class PanelFrame extends Element {
         this.elements = elements;
         this.xGoal = x;
         this.yGoal = y;
-        for(Element el : this.elements){
+        for (Element el : this.elements) {
             positions.put(el, new double[]{el.getX(), el.getY(), el.getWidth(), el.getHeight()});
         }
     }
 
     @Override
     public boolean clicked(double x, double y, int button) {
-        if(x >= this.x  + this.width - 15 && x < this.x + this.width && y >= this.y + (realglobal * height) - 15&& y < this.y + (realglobal * height)){
+        double real = easeInOutQuint(smoothInit);
+        if (x >= this.x + this.width - 15 && x < this.x + this.width && y >= this.y + (real * height) - 15 && y < this.y + (real * height)) {
             System.out.println("real");
             resizer = true;
             return false;
@@ -50,7 +51,7 @@ public class PanelFrame extends Element {
                 open = !open;
             }
         }
-        for(Element pb : elements){
+        for (Element pb : elements) {
             pb.clicked(x, y, button);
         }
         return false;
@@ -58,15 +59,17 @@ public class PanelFrame extends Element {
 
     @Override
     public boolean dragged(double x, double y, double deltaX, double deltaY, int button) {
-        if(selected){
+        if (selected) {
             this.xGoal += deltaX;
             this.yGoal += deltaY;
         }
-        if(resizer){
+        if (resizer) {
             this.width += deltaX;
+            this.width = Math.max(50, this.width);
             this.height += deltaY;
+            this.height = Math.max(50, this.height);
         }
-        for(Element pb : elements){
+        for (Element pb : elements) {
             pb.dragged(x, y, deltaX, deltaY, button);
         }
         // TODO Auto-generated method stub
@@ -77,7 +80,7 @@ public class PanelFrame extends Element {
     public boolean released() {
         selected = false;
         resizer = false;
-        for(Element pb : elements){
+        for (Element pb : elements) {
             pb.released();
         }
         return false;
@@ -85,7 +88,7 @@ public class PanelFrame extends Element {
 
     @Override
     public boolean keyPressed(int keycode, int modifiers) {
-        for(Element pb : elements){
+        for (Element pb : elements) {
             pb.keyPressed(keycode, modifiers);
         }
         // TODO Auto-generated method stub
@@ -98,52 +101,61 @@ public class PanelFrame extends Element {
 
     @Override
     public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
-        this.x = Transitions.transition(this.x, this.xGoal, 4);
-        this.y =  Transitions.transition(this.y, this.yGoal, 4);
-        double d = 0.03;
-        if(open) {
-            d *= -1;
-        }
-        smoothTransition += d;
-        smoothTransition = MathHelper.clamp(smoothTransition, 0, 1);
-        double real = easeInOutQuint(smoothTransition);
-        if(real > 0.09){
-            Renderer.R2D.renderRoundedQuad(matrices, ThemeManager.getMainTheme().getInactive(), x, y, x + width, y + (real * height), 5, 10);
-            realglobal = real;   
+
+        double real = easeInOutQuint(smoothInit);
+        Renderer.R2D.renderRoundedQuad(matrices, new Color(30, 30, 30), x, y, x + width, y + 15 + (real * (height - 15)), 5, 10);
+        if (real > 0.09) {
+
             Renderer.R2D.renderRoundedQuad(matrices, ThemeManager.getMainTheme().getConfig(), x + width - 15, y + (real * height) - 15, x + width, y + (real * height), 5, 10);
         }
-        Renderer.R2D.beginScissor(x, y, x + width, y + (real * width));
-        for(Element pb : elements){
+        ClipStack.globalInstance.addWindow(matrices, new Rectangle(x, y, x + width, y + (real * height)));
+//        Renderer.R2D.beginScissor(x, y, x + width, y + (real * width));
+        for (Element pb : elements) {
+            // why?
             pb.setX(this.x + positions.get(pb)[0] + 5);
             pb.setY(this.y + 15 + positions.get(pb)[1]);
-            if(positions.get(pb)[2] < 0){
-                pb.setWidth(this.width - 10);
-            }
-            if(positions.get(pb)[3] < 0){
-                pb.setHeight(this.height - 10);
-            }
+            pb.setWidth(positions.get(pb)[2]);
+            pb.setHeight(positions.get(pb)[3]);
+//            if(positions.get(pb)[2] < 0){
+//                pb.setWidth(this.width - 10);
+//            }
+//            if(positions.get(pb)[3] < 0){
+//                pb.setHeight(this.height - 10);
+//            }
         }
-        for(Element pb : elements){
+        for (Element pb : elements) {
             pb.render(matrices, mouseX, mouseY, scrollBeingUsed);
         }
-        Renderer.R2D.endScissor();
+//        Renderer.R2D.endScissor();
+        ClipStack.globalInstance.popWindow();
         Renderer.R2D.renderRoundedQuad(matrices, ThemeManager.getMainTheme().getHeader(), x, y, x + width, y + 15, 5, 10);
-        FontRenderers.getRenderer().drawString(matrices, title, x  + (width/2) - FontRenderers.getRenderer().getStringWidth(title) / 2, y + 3, new Color(255, 255, 255, 255).getRGB());
+        FontRenderers.getRenderer().drawString(matrices, title, x + (width / 2) - FontRenderers.getRenderer().getStringWidth(title) / 2, y + 3, new Color(255, 255, 255, 255).getRGB());
         // TODO Auto-generated method stub
-        
+
     }
 
+    @Override
+    public void onFastTick() {
+        this.x = Transitions.transition(this.x, this.xGoal, 4);
+        this.y = Transitions.transition(this.y, this.yGoal, 4);
+        double d = 0.03;
+        if (open) {
+            d *= -1;
+        }
+        smoothInit += d;
+        smoothInit = MathHelper.clamp(smoothInit, 0, 1);
+    }
 
     @Override
     public void tickAnim() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public boolean charTyped(char c, int mods) {
-        for(Element pb : elements){
-            pb.charTyped(c, mods);
+        for (Element pb : elements) {
+            if (pb.charTyped(c, mods)) return true;
         }
         // TODO Auto-generated method stub
         return false;

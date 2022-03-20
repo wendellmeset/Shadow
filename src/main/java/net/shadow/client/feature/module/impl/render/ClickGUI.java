@@ -18,8 +18,8 @@ import net.shadow.client.feature.module.NoNotificationDefault;
 
 @NoNotificationDefault
 public class ClickGUI extends Module {
-    DoubleSetting dub = new DoubleSetting(10D, "realDouble", "some dumbass shit", 1, 0, 100);
     public final DoubleSetting radius = this.config.create(new DoubleSetting.Builder(5).name("Round radius").precision(1).min(0).max(10).description("How round the clickgui is").get());
+    DoubleSetting dub = new DoubleSetting(10D, "realDouble", "some dumbass shit", 1, 0, 100);
     int t = 2;
 
     public ClickGUI() {
@@ -31,13 +31,13 @@ public class ClickGUI extends Module {
         t--;
         if (t == 0) {
             ShadowMain.client.setScreen(new PanelsGui(new PanelFrame[]{
-                new PanelFrame(0, 0, 100, 150, "hello chat", new Element[]{
-                    new DoubleSettingEditor(0, 0, -1, dub),
-                    new PanelButton(0, 50, -1, "real shit", () -> {
-                        System.out.println("hello shidders");
-                        System.out.println(dub.getValue() + "");
+                    new PanelFrame(0, 0, 100, 150, "hello chat", new Element[]{
+                            new DoubleSettingEditor(0, 0, -1, dub),
+                            new PanelButton(0, 50, -1, "real shit", () -> {
+                                System.out.println("hello shidders");
+                                System.out.println(dub.getValue() + "");
+                            })
                     })
-                })
             }));
             setEnabled(false);
         }

@@ -13,7 +13,6 @@ import net.minecraft.nbt.visitor.NbtElementVisitor;
 import net.minecraft.util.Util;
 
 import java.util.*;
-import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
