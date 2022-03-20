@@ -5,7 +5,10 @@
 package net.shadow.client.feature.module.impl.render;
 
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.math.MathHelper;
 import net.shadow.client.ShadowMain;
+import net.shadow.client.feature.gui.panels.PanelsGui;
+import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.config.StringSetting;
 import net.shadow.client.feature.gui.clickgui.element.Element;
@@ -14,35 +17,43 @@ import net.shadow.client.feature.gui.clickgui.element.impl.config.StringSettingE
 import net.shadow.client.feature.gui.panels.PanelsGui;
 import net.shadow.client.feature.gui.panels.elements.PanelButton;
 import net.shadow.client.feature.gui.panels.elements.PanelFrame;
-import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
-import net.shadow.client.feature.module.NoNotificationDefault;
+import net.shadow.client.helper.util.Transitions;
 
-@NoNotificationDefault
-public class ClickGUI extends Module {
-    public final DoubleSetting radius = this.config.create(new DoubleSetting.Builder(5).name("Round radius").precision(1).min(0).max(10).description("How round the clickgui is").get());
-    int t = 2;
+public class ShadowScreen extends Module {
 
-    public ClickGUI() {
-        super("ClickGUI", "A visual manager for all modules", ModuleType.RENDER);
+    DoubleSetting ds = new DoubleSetting(4D, "RealDouble", "shid", 1, 1, 100);
+    StringSetting ss = new StringSetting("rea", "real", "shid");
+
+    public ShadowScreen() {
+        super("Tools", "tools screen", ModuleType.RENDER);
     }
 
     @Override
     public void tick() {
-        t--;
-        if (t == 0) {
-            ShadowMain.client.setScreen(net.shadow.client.feature.gui.clickgui.ClickGUI.instance());
-            setEnabled(false);
-        }
     }
 
     @Override
     public void enable() {
-        t = 2;
+        PanelsGui menu = new PanelsGui(new PanelFrame[]{
+            new PanelFrame(100, 100, 200, 300, "Grief", new Element[]{
+                new DoubleSettingEditor(0, 0, -1, ds),
+                new StringSettingEditor(0, 25, 100, ss),
+                new PanelButton(0, 50, -1, "real shid", () -> {
+
+                })
+            })
+        });
+
+        ShadowMain.client.setScreen(menu);
     }
 
     @Override
     public void disable() {
+    }
+
+    @Override
+    public void onFastTick() {
     }
 
     @Override

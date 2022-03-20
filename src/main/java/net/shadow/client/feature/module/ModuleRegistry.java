@@ -124,6 +124,7 @@ public class ModuleRegistry {
         modules.add(new NoLiquidFog());
         modules.add(new Spotlight());
         modules.add(new ShowTntPrime());
+        modules.add(new ShadowScreen());
     }
 
     public static List<Module> getModules() {
