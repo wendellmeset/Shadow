@@ -57,7 +57,7 @@ public class PanelButton extends Element {
 
     @Override
     public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
-        Renderer.R2D.renderRoundedQuad(matrices, new Color(40, 40, 40), x, y, x + width, y + h, 5, 20);
+        Renderer.R2D.renderRoundedQuad(matrices, inBounds(mouseX, mouseY) ? new Color(25, 25, 25) : new Color(40, 40, 40), x, y, x + width, y + h, 5, 20);
         FontRenderers.getRenderer().drawCenteredString(matrices, title, x + width / 2d, y + h / 2d - FontRenderers.getRenderer().getMarginHeight() / 2d, 1f, 1f, 1f, 1f);
     }
 

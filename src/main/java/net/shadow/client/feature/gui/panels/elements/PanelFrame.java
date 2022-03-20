@@ -112,7 +112,7 @@ public class PanelFrame extends Element implements FastTickable {
         for (Element pb : elements) {
             // why?
             pb.setX(this.x + positions.get(pb)[0] + 5);
-            pb.setY(this.y + 15 + positions.get(pb)[1]);
+            pb.setY(this.y + 20 + positions.get(pb)[1]);
             pb.setWidth(positions.get(pb)[2]);
             pb.setHeight(positions.get(pb)[3]);
             if(positions.get(pb)[2] < 0){
