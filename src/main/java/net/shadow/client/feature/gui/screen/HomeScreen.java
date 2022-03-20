@@ -17,8 +17,11 @@ import net.minecraft.client.util.DefaultSkinHelper;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 import net.shadow.client.ShadowMain;
+import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.gui.FastTickable;
 import net.shadow.client.feature.gui.clickgui.ParticleRenderer;
+import net.shadow.client.feature.gui.clickgui.element.Element;
+import net.shadow.client.feature.gui.clickgui.element.impl.config.DoubleSettingEditor;
 import net.shadow.client.feature.gui.widget.RoundButton;
 import net.shadow.client.helper.Texture;
 import net.shadow.client.helper.font.FontRenderers;
@@ -29,6 +32,8 @@ import net.shadow.client.helper.util.Utils;
 import org.apache.commons.io.IOUtils;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL40C;
+import net.shadow.client.feature.gui.panels.*;
+import net.shadow.client.feature.gui.panels.elements.PanelFrame;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -67,6 +72,7 @@ public class HomeScreen extends ClientScreen implements FastTickable {
     UUID previousChecked = null;
     double widgetsHeight = 0;
     double widgetsWidth = 130;
+    DoubleSetting dub = new DoubleSetting(10D, "realDouble", "some dumbass shit", 1, 0, 100);
 
     private HomeScreen() {
         super(MSAAFramebuffer.MAX_SAMPLES);
@@ -121,8 +127,13 @@ public class HomeScreen extends ClientScreen implements FastTickable {
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Multiplayer", () -> ShadowMain.client.setScreen(new MultiplayerScreen(this))));
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Realms", () -> ShadowMain.client.setScreen(new RealmsMainScreen(this))));
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Alts", () -> ShadowMain.client.setScreen(
-                AltManagerScreen.instance()
+                //AltManagerScreen.instance()
 //                new TestScreen()
+            new PanelsGui(new PanelFrame[]{
+                new PanelFrame(0, 0, 100, 150, "hello chat", new Element[]{
+                    new DoubleSettingEditor(0, 0, 25, dub)
+                })
+            })
         )));
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Settings", () -> ShadowMain.client.setScreen(new OptionsScreen(this, ShadowMain.client.options))));
         double totalHeight = buttonsMap.size() * (widgetHeight + widPad) - widPad;
