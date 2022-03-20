@@ -39,7 +39,6 @@ public class PanelFrame extends Element implements FastTickable {
     public boolean clicked(double x, double y, int button) {
         double real = easeInOutQuint(smoothInit);
         if (x >= this.x + this.width - 15 && x < this.x + this.width && y >= this.y + (real * height) - 15 && y < this.y + (real * height)) {
-            System.out.println("real");
             resizer = true;
             return false;
         }
@@ -116,12 +115,12 @@ public class PanelFrame extends Element implements FastTickable {
             pb.setY(this.y + 15 + positions.get(pb)[1]);
             pb.setWidth(positions.get(pb)[2]);
             pb.setHeight(positions.get(pb)[3]);
-//            if(positions.get(pb)[2] < 0){
-//                pb.setWidth(this.width - 10);
-//            }
-//            if(positions.get(pb)[3] < 0){
-//                pb.setHeight(this.height - 10);
-//            }
+            if(positions.get(pb)[2] < 0){
+                pb.setWidth(this.width - 10);
+            }
+            if(positions.get(pb)[3] < 0){
+                pb.setHeight(this.height - 10);
+            }
         }
         for (Element pb : elements) {
             pb.render(matrices, mouseX, mouseY, scrollBeingUsed);
