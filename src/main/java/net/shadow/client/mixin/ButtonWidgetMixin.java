@@ -28,6 +28,8 @@ import java.awt.*;
 @Mixin(ClickableWidget.class)
 public abstract class ButtonWidgetMixin implements DoesMSAA, FastTickable {
 
+    final Color c = new Color(30, 30, 30);
+    final Color c1 = new Color(15, 15, 15);
     @Shadow
     public int x;
     @Shadow
@@ -36,8 +38,6 @@ public abstract class ButtonWidgetMixin implements DoesMSAA, FastTickable {
     protected int width;
     @Shadow
     protected int height;
-    Color c = new Color(30, 30, 30);
-    Color c1 = new Color(15, 15, 15);
     double anim = 0;
 
     private static void renderRoundedQuadOutline(MatrixStack matrices, Color c, double fromX, double fromY, double toX, double toY, double rad, double samples) {

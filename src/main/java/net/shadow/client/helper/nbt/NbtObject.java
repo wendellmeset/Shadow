@@ -11,7 +11,7 @@ import net.minecraft.nbt.NbtCompound;
 import java.util.Arrays;
 
 public class NbtObject extends NbtElement {
-    String name;
+    final String name;
     @Getter
     @Setter
     NbtElement[] children;

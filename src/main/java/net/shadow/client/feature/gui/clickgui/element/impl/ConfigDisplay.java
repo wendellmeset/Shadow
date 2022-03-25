@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 
 public class ConfigDisplay extends Element {
     final List<ConfigBase<?>> bases = new ArrayList<>();
-    final ModuleConfig mc;
     final double padding = 4;
     final double paddingLeft = 4;
     long hoverStart = System.currentTimeMillis();
@@ -28,7 +27,6 @@ public class ConfigDisplay extends Element {
 
     public ConfigDisplay(double x, double y, ModuleConfig mc) {
         super(x, y, 100, 0);
-        this.mc = mc;
         for (SettingBase<?> setting : mc.getSettings()) {
 
             if (setting instanceof BooleanSetting set) {

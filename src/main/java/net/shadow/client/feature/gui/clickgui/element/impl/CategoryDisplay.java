@@ -34,11 +34,8 @@ public class CategoryDisplay extends Element {
     static final FontAdapter cfr = FontRenderers.getCustomSize(20);
     final List<ModuleDisplay> md = new ArrayList<>();
     final ModuleType mt;
+    final Scroller scroller = new Scroller(0);
     boolean selected = false;
-    double scroll = 0;
-    double smoothScroll = 0;
-    Scroller scroller = new Scroller(0);
-
     boolean open = true;
     double openAnim = 1;
 
@@ -121,16 +118,11 @@ public class CategoryDisplay extends Element {
     @Override
     public boolean scroll(double mouseX, double mouseY, double amount) {
         // not needed for now
-//        for (ModuleDisplay module : getModules()) {
-//            if (module.scroll(mouseX, mouseY, amount)) return true;
-//        }
         if (amount == 0 || inBounds(mouseX, mouseY)) {
 //            scroll += amount * 10;
             double contentHeight = getModules().stream().map(ModuleDisplay::getHeight).reduce(Double::sum).orElse(0d);
             double viewerHeight = Math.min(contentHeight, 350);
             double elScroll = contentHeight - viewerHeight;
-//            scroll = MathHelper.clamp(scroll, -elScroll, 0);
-//            smoothScroll = MathHelper.clamp(smoothScroll, -elScroll, 0);
             scroller.setBounds(0, elScroll);
             scroller.scroll(amount);
             return true;

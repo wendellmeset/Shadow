@@ -21,7 +21,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ModuleRegistry {
     static final List<Module> modules = new ArrayList<>();
-    static AtomicBoolean initialized = new AtomicBoolean(false);
+    static final AtomicBoolean initialized = new AtomicBoolean(false);
 
     public static void init() {
         if (initialized.get()) return;
@@ -53,7 +53,7 @@ public class ModuleRegistry {
         modules.add(new AnyPlacer());
         modules.add(new FireballDeflector()); // its a fucking utility client saturn
         modules.add(new ShulkerDeflector());
-        //modules.add(new CarpetBomb()); i'm rewriting this its ASS
+        modules.add(new CarpetBomb());
         //modules.add(new SkinChangeExploit()); litteral fucking joke module, to be re-written as personhider or whatever i named it (skinfuscator is a good name lol)
         modules.add(new AutoTrap());
         modules.add(new AutoTnt());

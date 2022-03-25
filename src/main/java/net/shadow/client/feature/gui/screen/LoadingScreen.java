@@ -10,6 +10,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.gui.FastTickable;
+import net.shadow.client.helper.GameTexture;
 import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.font.adapter.FontAdapter;
 import net.shadow.client.helper.render.MSAAFramebuffer;
@@ -43,7 +44,7 @@ public class LoadingScreen extends ClientScreen implements FastTickable {
     //    double progress = 0;
     final AtomicDouble progress = new AtomicDouble();
     final FontAdapter title = FontRenderers.getCustomSize(40);
-    final Map<ShadowMain.ResourceEntry, ProgressData> progressMap = new ConcurrentHashMap<>();
+    final Map<GameTexture, ProgressData> progressMap = new ConcurrentHashMap<>();
     double smoothProgress = 0;
     double opacity = 1;
     String warningIfPresent = "";
@@ -71,9 +72,8 @@ public class LoadingScreen extends ClientScreen implements FastTickable {
 
     @Override
     public void onFastTick() {
-
         //System.out.println(progressMap.values().stream().map(AtomicDouble::get).reduce(Double::sum)+"-"+CoffeeClientMain.resources.size());
-        progress.set(progressMap.values().stream().map(progressData -> progressData.getProgress().get()).reduce(Double::sum).orElse(0d) / ShadowMain.resources.size());
+        progress.set(progressMap.values().stream().map(progressData -> progressData.getProgress().get()).reduce(Double::sum).orElse(0d) / GameTexture.values().length);
 
         smoothProgress = Transitions.transition(smoothProgress, progress.get(), 10, 0.0001);
         //        smoothProgress = progress.get();
@@ -95,14 +95,14 @@ public class LoadingScreen extends ClientScreen implements FastTickable {
         ExecutorService es = Executors.newFixedThreadPool(atOnce);
 
 
-        for (ShadowMain.ResourceEntry resource : ShadowMain.resources) {
+        for (GameTexture resource : GameTexture.values()) {
             progressMap.put(resource, new ProgressData());
             es.execute(() -> {
-                ShadowMain.log(Level.INFO, "Downloading " + resource.url());
+                ShadowMain.log(Level.INFO, "Downloading " + resource.getDownloadUrl());
                 progressMap.get(resource).getWorkingOnIt().set(true);
                 try {
 
-                    URL url = new URL(resource.url());
+                    URL url = new URL(resource.getDownloadUrl());
                     HttpURLConnection httpConnection = (HttpURLConnection) (url.openConnection());
                     long completeFileSize = httpConnection.getContentLength();
 
@@ -125,13 +125,13 @@ public class LoadingScreen extends ClientScreen implements FastTickable {
                     in.close();
                     byte[] imageBuffer = bout.toByteArray();
                     BufferedImage bi = ImageIO.read(new ByteArrayInputStream(imageBuffer));
-                    Utils.registerBufferedImageTexture(resource.tex(), bi);
-                    ShadowMain.log(Level.INFO, "Downloaded " + resource.url());
+                    Utils.registerBufferedImageTexture(resource.getWhere(), bi);
+                    ShadowMain.log(Level.INFO, "Downloaded " + resource.getDownloadUrl());
                 } catch (Exception e) {
-                    ShadowMain.log(Level.ERROR, "Failed to download " + resource.url() + ": " + e.getMessage());
+                    ShadowMain.log(Level.ERROR, "Failed to download " + resource.getDownloadUrl() + ": " + e.getMessage());
                     BufferedImage empty = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
                     empty.setRGB(0, 0, 0xFF000000);
-                    Utils.registerBufferedImageTexture(resource.tex(), empty);
+                    Utils.registerBufferedImageTexture(resource.getWhere(), empty);
                     warningIfPresent = "Some textures failed to download. They won't show up in game.";
                 } finally {
                     progressMap.get(resource).getProgress().set(1);

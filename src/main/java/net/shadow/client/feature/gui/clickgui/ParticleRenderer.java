@@ -70,11 +70,11 @@ public class ParticleRenderer {
     }
 
     static class Particle {
+        final long origLife = (long) (20 * MathHelper.lerp(Math.random(), 4, 6));
         double velX = 0;
         double x = 0;
         double y = 0;
         double velY = 0;
-        long origLife = (long) (20 * MathHelper.lerp(Math.random(), 4, 6));
         long life = origLife;
 
         public static BufferBuilder renderPrepare(Color color) {
@@ -148,8 +148,6 @@ public class ParticleRenderer {
         void move() {
             life--;
             life = Math.max(0, life);
-//            size -= decline;
-//            size = Math.max(0, size);
             x += velX;
             y += velY;
             double h = ShadowMain.client.getWindow().getScaledHeight();
@@ -173,10 +171,6 @@ public class ParticleRenderer {
 //            ShadowMain.client.textRenderer.draw(stack,pk+"",(float)x,(float)y,0xFFFFFF);
             Theme theme = ThemeManager.getMainTheme();
             stack.push();
-//            stack.translate(x, y, 0);
-//            stack.multiply(new Quaternion(0, (System.currentTimeMillis() % rotSpeed2) / ((float) rotSpeed2) * 360f * (spinsReverse2 ? -1 : 1), (System.currentTimeMillis() % rotSpeed) / ((float) rotSpeed) * 360f * (spinsReverse ? -1 : 1), true));
-//            //            Renderer.R2D.fill(stack, Renderer.Util.lerp(theme.getAccent(), DYING, size / 10d), -size, -size, size, size);
-//            renderOutline(new Vec3d(-size, -size, -size), new Vec3d(size, size, size).multiply(2), Renderer.Util.lerp(theme.getAccent(), DYING, size / 10d), stack);
             double maxDist = 100;
             for (Particle particle : others.stream().filter(particle -> particle != this).toList()) {
                 double px = particle.x;

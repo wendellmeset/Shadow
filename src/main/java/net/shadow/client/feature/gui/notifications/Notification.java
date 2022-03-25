@@ -4,6 +4,7 @@
 
 package net.shadow.client.feature.gui.notifications;
 
+import net.shadow.client.helper.GameTexture;
 import net.shadow.client.helper.Texture;
 import net.shadow.client.helper.font.FontRenderers;
 
@@ -79,8 +80,8 @@ public class Notification {
     }
 
     public enum Type {
-        SUCCESS(new Texture("notif/success.png"), new Color(58, 223, 118)), INFO(new Texture("notif/info.png"), new Color(39, 186, 253)),
-        WARNING(new Texture("notif/warning.png"), new Color(255, 189, 17)), ERROR(new Texture("notif/error.png"), new Color(254, 92, 92));
+        SUCCESS(GameTexture.NOTIF_SUCCESS.getWhere(), new Color(58, 223, 118)), INFO(GameTexture.NOTIF_INFO.getWhere(), new Color(39, 186, 253)),
+        WARNING(GameTexture.NOTIF_WARNING.getWhere(), new Color(255, 189, 17)), ERROR(GameTexture.NOTIF_ERROR.getWhere(), new Color(254, 92, 92));
         final Color c;
         final Texture i;
 

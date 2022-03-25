@@ -42,10 +42,6 @@ public class EntryListWidgetMixin {
         return false;
     }
 
-    //    @Inject(method="render",at=@At("RETURN"))
-//    void e(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-//        ClipStack.globalInstance.popWindow();
-//    }
     @Redirect(method = "render", at = @At(
             value = "FIELD",
             target = "Lnet/minecraft/client/gui/widget/EntryListWidget;renderBackground:Z",

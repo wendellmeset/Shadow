@@ -39,7 +39,7 @@ public class SpeedHud extends HudElement {
             double max = Math.max(0.7, speeds.stream().max(dc).orElse(1d));
             double min = 0;
 
-            double previous = 0;
+            double previous;
             if (speeds.size() > 0) {
                 previous = height - ((speeds.get(0) - min) / max) * height;
             } else {

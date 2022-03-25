@@ -19,7 +19,10 @@ import java.awt.*;
 import static java.lang.Math.pow;
 
 public class ColorSettingEditor extends ConfigBase<ColorSetting> {
-    DoubleSettingEditor red, green, blue, alpha;
+    final DoubleSettingEditor red;
+    final DoubleSettingEditor green;
+    final DoubleSettingEditor blue;
+    final DoubleSettingEditor alpha;
     boolean expanded = false;
     double expandProg = 1;
 

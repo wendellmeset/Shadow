@@ -9,7 +9,7 @@ import net.shadow.client.helper.font.adapter.FontAdapter;
 import net.shadow.client.helper.font.renderer.FontRenderer;
 
 public class BruhAdapter implements FontAdapter {
-    FontRenderer renderer;
+    final FontRenderer renderer;
 
     public BruhAdapter(FontRenderer fr) {
         this.renderer = fr;
@@ -20,7 +20,7 @@ public class BruhAdapter implements FontAdapter {
     }
 
     @Override
-    public int drawString(MatrixStack matrices, String text, float x, float y, int color) {
+    public void drawString(MatrixStack matrices, String text, float x, float y, int color) {
         if ((color & 0xfc000000) == 0) {
             color |= 0xff000000;
         }
@@ -29,11 +29,10 @@ public class BruhAdapter implements FontAdapter {
         float g = (float) (color >> 8 & 255) / 255.0F;
         float b = (float) (color & 255) / 255.0F;
         renderer.drawString(matrices, text, x, y, r, g, b, alpha);
-        return 0;
     }
 
     @Override
-    public int drawString(MatrixStack matrices, String text, double x, double y, int color) {
+    public void drawString(MatrixStack matrices, String text, double x, double y, int color) {
         if ((color & 0xfc000000) == 0) {
             color |= 0xff000000;
         }
@@ -42,7 +41,6 @@ public class BruhAdapter implements FontAdapter {
         float g = (float) (color >> 8 & 255) / 255.0F;
         float b = (float) (color & 255) / 255.0F;
         renderer.drawString(matrices, text, (float) x, (float) y, r, g, b, alpha);
-        return 0;
     }
 
     @Override
@@ -52,7 +50,7 @@ public class BruhAdapter implements FontAdapter {
     }
 
     @Override
-    public int drawCenteredString(MatrixStack matrices, String text, double x, double y, int color) {
+    public void drawCenteredString(MatrixStack matrices, String text, double x, double y, int color) {
         if ((color & 0xfc000000) == 0) {
             color |= 0xff000000;
         }
@@ -61,13 +59,11 @@ public class BruhAdapter implements FontAdapter {
         float g = (float) (color >> 8 & 255) / 255.0F;
         float b = (float) (color & 255) / 255.0F;
         renderer.drawCenteredString(matrices, text, (float) x, (float) y, r, g, b, alpha);
-        return 0;
     }
 
     @Override
-    public int drawCenteredString(MatrixStack matrices, String text, double x, double y, float r, float g, float b, float a) {
+    public void drawCenteredString(MatrixStack matrices, String text, double x, double y, float r, float g, float b, float a) {
         renderer.drawCenteredString(matrices, text, (float) x, (float) y, r, g, b, a);
-        return 0;
     }
 
     @Override

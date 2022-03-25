@@ -9,7 +9,7 @@ import net.minecraft.nbt.NbtCompound;
 import java.util.Arrays;
 
 public class NbtGroup {
-    NbtElement[] elements;
+    final NbtElement[] elements;
 
     public NbtGroup(NbtElement... elements) {
         this.elements = elements;

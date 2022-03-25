@@ -10,7 +10,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.shadow.client.ShadowMain;
-import net.shadow.client.feature.config.BooleanSetting;
 import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.config.StringSetting;
 import net.shadow.client.feature.module.Module;
@@ -25,7 +24,6 @@ public class Annhilator extends Module {
 
     final DoubleSetting range = this.config.create(new DoubleSetting.Builder(5).name("Range").description("Range of the nuke").min(1).max(14).precision(0).get());
     final StringSetting block = this.config.create(new StringSetting.Builder("air").name("Block").description("The block to fill with").get());
-    final BooleanSetting destroy = this.config.create(new BooleanSetting.Builder(false).name("Destroy particles").description("makes the block breaking particles appear").get());
 
 
     public Annhilator() {
@@ -52,7 +50,7 @@ public class Annhilator extends Module {
         Vec3d pos1 = hr.getPos();
         BlockPos pos = new BlockPos(pos1);
         int startY = MathHelper.clamp(r(pos.getY() - range.getValue()), Objects.requireNonNull(ShadowMain.client.world).getBottomY(), ShadowMain.client.world.getTopY());
-        int endY = MathHelper.clamp(r(pos.getY() +range.getValue()), ShadowMain.client.world.getBottomY(), ShadowMain.client.world.getTopY());
+        int endY = MathHelper.clamp(r(pos.getY() + range.getValue()), ShadowMain.client.world.getBottomY(), ShadowMain.client.world.getTopY());
         String cmd = "/fill " + r(pos.getX() - range.getValue()) + " " + startY + " " + r(pos.getZ() - range.getValue()) + " " + r(pos.getX() + range.getValue()) + " " + endY + " " + r(pos.getZ() + range.getValue()) + " " + "minecraft:" + block.getValue();
         System.out.println(cmd);
         client.player.sendChatMessage(cmd);

@@ -14,8 +14,8 @@ import net.shadow.client.helper.nbt.NbtObject;
 import net.shadow.client.helper.nbt.NbtProperty;
 
 public class Plague extends Item {
-    Option<Integer> duration = new Option<>("durationSeconds", 60, Integer.class);
-    Option<Float> spread = new Option<>("spreadRadius", 0.3f, Float.class);
+    final Option<Integer> duration = new Option<>("durationSeconds", 60, Integer.class);
+    final Option<Float> spread = new Option<>("spreadRadius", 0.3f, Float.class);
 
     public Plague() {
         super("Plague", "the doctor");

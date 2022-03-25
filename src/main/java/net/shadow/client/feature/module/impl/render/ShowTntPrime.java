@@ -28,7 +28,7 @@ import net.shadow.client.helper.util.Utils;
 import java.awt.*;
 
 public class ShowTntPrime extends Module {
-    Int2IntArrayMap i2iamp = new Int2IntArrayMap();
+    final Int2IntArrayMap i2iamp = new Int2IntArrayMap();
 
     public ShowTntPrime() {
         super("ShowTntPrime", "Shows how much time is left for a piece of tnt to explode", ModuleType.RENDER);

@@ -54,7 +54,7 @@
     "PlayerInteractEntityC2SPacketAccessor",
     "PlayerSkinMixin",
     "ScreenMixin",
-    "SelectWorldScreen",
+    "SelectWorldScreenMixin",
     "SessionAccessor",
     "SharedConstantsMixin",
     "TitleScreenMixin",

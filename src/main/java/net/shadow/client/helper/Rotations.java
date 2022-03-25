@@ -95,8 +95,7 @@ public class Rotations {
             fl.newyaw = (fl.newyaw + (float) add);
 
             // setting pitch
-            double sqrt = sqrt1;
-            required = -Math.toDegrees(Math.atan2(delY, sqrt));
+            required = -Math.toDegrees(Math.atan2(delY, sqrt1));
             delta = MathHelper.wrapDegrees(required - fl.newpitch);
             speed = Math.abs(delta / laziness);
             add = speed * (delta >= 0 ? 1 : -1);
@@ -115,8 +114,7 @@ public class Rotations {
             ShadowMain.client.player.setYaw(ShadowMain.client.player.getYaw() + (float) add);
 
             // setting pitch
-            double sqrt = sqrt1;
-            required = -Math.toDegrees(Math.atan2(delY, sqrt));
+            required = -Math.toDegrees(Math.atan2(delY, sqrt1));
             delta = MathHelper.wrapDegrees(required - ShadowMain.client.player.getPitch());
             speed = Math.abs(delta / laziness);
             add = speed * (delta >= 0 ? 1 : -1);

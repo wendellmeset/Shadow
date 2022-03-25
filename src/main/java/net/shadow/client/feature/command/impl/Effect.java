@@ -40,10 +40,6 @@ public class Effect extends Command {
         switch (args[0].toLowerCase()) {
             case "give" -> {
                 validateArgumentsLength(args, 4);
-//                if (args.length < 4) {
-//                    error("effect id, duration and strength pls");
-//                    return;
-//                }
                 IntegerArgumentParser iap = new IntegerArgumentParser();
                 int id = iap.parse(args[1]);
                 int duration = iap.parse(args[2]);

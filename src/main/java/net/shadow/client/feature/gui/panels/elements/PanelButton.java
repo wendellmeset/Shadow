@@ -12,11 +12,9 @@ import net.shadow.client.helper.render.Renderer;
 import java.awt.*;
 
 public class PanelButton extends Element {
-    static double h = FontRenderers.getRenderer().getFontHeight() + 2;
-    boolean selecting = false;
-    boolean cancelNextCharTyped = false;
-    Runnable code;
-    String title;
+    static final double h = FontRenderers.getRenderer().getFontHeight() + 2;
+    final Runnable code;
+    final String title;
 
 
     public PanelButton(double x, double y, double width, String title, Runnable code) {

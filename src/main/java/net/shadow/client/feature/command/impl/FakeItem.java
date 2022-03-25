@@ -40,14 +40,6 @@ public class FakeItem extends Command {
     @Override
     public void onExecute(String[] args) throws CommandException {
         validateArgumentsLength(args, 2);
-//        if (args.length == 0) { // no uuid or item
-//            error("Specify player UUID or player username and item");
-//            return;
-//        } else if (args.length == 1) { // no item
-//            error("You have to specify which item to fake (hand or custom:id).");
-//            message("Tip: you can also provide additional nbt for the item with custom:id, fakeitem entity custom:minecraft:item {\"nbt\":\"goes here\"}");
-//            return;
-//        }
         PlayerEntity le = new PlayerFromNameArgumentParser(true).parse(args[0]);
         if (args[1].equalsIgnoreCase("hand")) {
             ItemStack main = Objects.requireNonNull(ShadowMain.client.player).getMainHandStack().copy();

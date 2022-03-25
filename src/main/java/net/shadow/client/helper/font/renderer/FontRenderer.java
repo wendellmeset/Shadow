@@ -40,9 +40,9 @@ public class FontRenderer {
         ci.put('F', 0xFFFFFF);
         return ci;
     });
-    Font f;
-    Map<Character, Glyph> glyphMap = new ConcurrentHashMap<>();
-    int size;
+    final Font f;
+    final Map<Character, Glyph> glyphMap = new ConcurrentHashMap<>();
+    final int size;
 
     public FontRenderer(Font f, int size) {
         this.f = f;
@@ -101,8 +101,6 @@ public class FontRenderer {
             double prevWidth = drawChar(bufferBuilder, matrix, c, x, y, r, g, b, a);
             matrices.translate(prevWidth, 0, 0);
         }
-//        bufferBuilder.end();
-//        BufferRenderer.draw(bufferBuilder);
 
         matrices.pop();
     }
@@ -159,8 +157,6 @@ public class FontRenderer {
         float height = (float) glyph.dimensions.getHeight();
         float width = (float) glyph.dimensions.getWidth();
 
-//        RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
-//        BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
         bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
         bufferBuilder.vertex(matrix, 0, height, 0).texture(0, 1).color(r, g, b, a).next();
         bufferBuilder.vertex(matrix, width, height, 0).texture(1, 1).color(r, g, b, a).next();

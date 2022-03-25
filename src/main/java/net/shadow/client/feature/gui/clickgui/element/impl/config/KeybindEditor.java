@@ -14,7 +14,7 @@ import java.awt.*;
 import java.lang.reflect.Field;
 
 public class KeybindEditor extends ConfigBase<DoubleSetting> {
-    static double h = FontRenderers.getRenderer().getFontHeight() + 2;
+    static final double h = FontRenderers.getRenderer().getFontHeight() + 2;
     boolean selecting = false;
     boolean cancelNextCharTyped = false;
 

@@ -12,9 +12,6 @@ import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtDouble;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.LiteralText;
@@ -31,9 +28,6 @@ import net.shadow.client.helper.font.adapter.FontAdapter;
 import net.shadow.client.mixin.IMinecraftClientAccessor;
 import net.shadow.client.mixin.IRenderTickCounterAccessor;
 import org.lwjgl.BufferUtils;
-import oshi.SystemInfo;
-import oshi.hardware.GraphicsCard;
-import oshi.hardware.HardwareAbstractionLayer;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -45,7 +39,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.ByteBuffer;
-import java.security.MessageDigest;
 import java.time.Duration;
 import java.util.List;
 import java.util.*;
@@ -53,16 +46,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Utils {
 
-    public static String rndStr(int size) {
-        StringBuilder buf = new StringBuilder();
-        String[] chars = new String[]{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
-        Random r = new Random();
-        for (int i = 0; i < size; i++) {
-            buf.append(chars[r.nextInt(chars.length)]);
-        }
-        return buf.toString();
-    }
-    
     public static void sleep(long ms) {
         try {
             Thread.sleep(ms);
@@ -129,16 +112,6 @@ public class Utils {
         return splits.toArray(new String[0]);
     }
 
-    @SuppressWarnings("UnusedReturnValue")
-    public static NbtCompound putPos(Vec3d pos, NbtCompound comp) {
-        NbtList list = new NbtList();
-        list.add(NbtDouble.of(pos.x));
-        list.add(NbtDouble.of(pos.y));
-        list.add(NbtDouble.of(pos.z));
-        comp.put("Pos", list);
-        return comp;
-    }
-
     public static ItemStack generateItemStackWithMeta(String nbt, Item item) {
         try {
             ItemStack stack = new ItemStack(item);
@@ -146,38 +119,6 @@ public class Utils {
             return stack;
         } catch (Exception ignored) {
             return new ItemStack(item);
-        }
-    }
-
-    public static String getHWID() {
-
-        try {
-            SystemInfo si = new SystemInfo();
-            HardwareAbstractionLayer hal = si.getHardware();
-            StringBuilder toEncrypt = new StringBuilder();
-            for (GraphicsCard graphicsCard : hal.getGraphicsCards()) {
-                toEncrypt.append(graphicsCard.getVendor()).append(graphicsCard.getName());
-            }
-            toEncrypt.append(hal.getComputerSystem().getBaseboard().getModel());
-            toEncrypt.append(hal.getComputerSystem().getHardwareUUID());
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            md.update(toEncrypt.toString().getBytes());
-            StringBuilder hexString = new StringBuilder();
-
-            byte[] byteData = md.digest();
-
-            for (byte aByteData : byteData) {
-                String hex = Integer.toHexString(0xff & aByteData);
-                if (hex.length() == 1) {
-                    hexString.append('0');
-                }
-                hexString.append(hex);
-            }
-
-            return hexString.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Error";
         }
     }
 

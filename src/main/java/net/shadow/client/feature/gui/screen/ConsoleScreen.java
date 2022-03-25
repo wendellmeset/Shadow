@@ -42,14 +42,6 @@ public class ConsoleScreen extends ClientScreen implements FastTickable {
         super(MSAAFramebuffer.MAX_SAMPLES);
     }
 
-    public static ConsoleScreen instance(ClientScreen parent) {
-        if (instance == null) {
-            instance = new ConsoleScreen();
-        }
-        instance.parent = parent;
-        return instance;
-    }
-
     public static ConsoleScreen instance() {
         if (instance == null) {
             instance = new ConsoleScreen();

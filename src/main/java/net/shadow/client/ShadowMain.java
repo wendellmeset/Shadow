@@ -14,7 +14,6 @@ import net.shadow.client.feature.gui.notifications.NotificationRenderer;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.helper.Rotations;
-import net.shadow.client.helper.Texture;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.PostInitEvent;
@@ -31,57 +30,29 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @SkipObfuscation
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class ShadowMain implements ModInitializer {
 
-    public static final String MOD_ID = "shadow";
     public static final String MOD_NAME = "Shadow";
     public static final Logger LOGGER = LogManager.getLogger();
     public static final MinecraftClient client = MinecraftClient.getInstance();
     public static final File BASE = new File(MinecraftClient.getInstance().runDirectory, "sip");
-    public static final List<ResourceEntry> resources = new ArrayList<>();
     public static long lastScreenChange = System.currentTimeMillis();
     public static ShadowMain INSTANCE;
     public static Thread MODULE_FTTICKER;
     public static Thread FAST_TICKER;
-    public boolean initialized = false;
 
     public static void log(Level level, String message) {
         LOGGER.log(level, "[" + MOD_NAME + "] " + message);
-    }
-
-    public static void registerTexture(ResourceEntry entry) {
-        resources.add(entry);
     }
 
     @Override
     public void onInitialize() {
         INSTANCE = this;
         log(Level.INFO, "Initializing");
-
-        registerTexture(new ResourceEntry(new Texture("background.jpg"), "https://github.com/Saturn5Vfive/shadow-fs/blob/main/bgfull.png?raw=true"));
-        registerTexture(new ResourceEntry(new Texture("logo.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/shadow_logo.png"));
-        registerTexture(new ResourceEntry(new Texture("notif/error.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/error.png"));
-        registerTexture(new ResourceEntry(new Texture("notif/info.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/info.png"));
-        registerTexture(new ResourceEntry(new Texture("notif/success.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/success.png"));
-        registerTexture(new ResourceEntry(new Texture("notif/warning.png"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/warning.png"));
-
-        registerTexture(new ResourceEntry(new Texture("icons/render"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/render.png"));
-        registerTexture(new ResourceEntry(new Texture("icons/crash"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/crash.png"));
-        registerTexture(new ResourceEntry(new Texture("icons/grief"), "https://github.com/Saturn5Vfive/shadow-fs/blob/main/grief.png?raw=true"));
-        registerTexture(new ResourceEntry(new Texture("icons/item"), "https://github.com/Saturn5Vfive/shadow-fs/blob/main/items.png?raw=true"));
-        registerTexture(new ResourceEntry(new Texture("icons/move"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/movement.png"));
-        registerTexture(new ResourceEntry(new Texture("icons/misc"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/misc.png"));
-        registerTexture(new ResourceEntry(new Texture("icons/world"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/world.png"));
-        registerTexture(new ResourceEntry(new Texture("icons/exploit"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/exploit.png"));
-        registerTexture(new ResourceEntry(new Texture("icons/combat"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/combat.png"));
-
-        registerTexture(new ResourceEntry(new Texture("actions/runCommand"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/command.png"));
-        registerTexture(new ResourceEntry(new Texture("actions/toggleModule"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/toggle.png"));
 
         Runtime.getRuntime().addShutdownHook(new Thread(ConfigManager::saveState));
         if (BASE.exists() && !BASE.isDirectory()) {
@@ -90,12 +61,9 @@ public class ShadowMain implements ModInitializer {
         if (!BASE.exists()) {
             BASE.mkdir();
         }
-        //        KeybindingManager.init();
         ConfigManager.loadState();
 
-
         log(Level.INFO, "Done initializing");
-        //TODO: Initializer
     }
 
     void initFonts() {
@@ -148,7 +116,6 @@ public class ShadowMain implements ModInitializer {
     }
 
     public void postWindowInit() {
-        initialized = true;
         initFonts();
         ConfigManager.loadState();
         MODULE_FTTICKER = new Thread(() -> {
@@ -181,9 +148,6 @@ public class ShadowMain implements ModInitializer {
         for (Module module : ModuleRegistry.getModules()) {
             module.postInit();
         }
-    }
-
-    public record ResourceEntry(Texture tex, String url) {
     }
 
 }

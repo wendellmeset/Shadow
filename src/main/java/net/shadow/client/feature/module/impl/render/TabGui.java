@@ -29,7 +29,6 @@ import java.util.function.BooleanSupplier;
 public class TabGui extends Module {
     @Getter
     Stack<TabPane> tabStack = new Stack<>();
-    double height = 0;
 
     public TabGui() {
         super("TabGui", "Renders a small module manager top left", ModuleType.RENDER);
@@ -56,9 +55,7 @@ public class TabGui extends Module {
                     TabPane modules = new TabPane();
                     for (Module module : ModuleRegistry.getModules()) {
                         if (module.getModuleType() != value) continue;
-                        GuiEntry ge1 = new GuiEntry(module.getName(), module::isEnabled, module::toggle, () -> {
-                            tabStack.pop();
-                        }, FontRenderers.getRenderer().getStringWidth(module.getName()), FontRenderers.getRenderer().getMarginHeight());
+                        GuiEntry ge1 = new GuiEntry(module.getName(), module::isEnabled, module::toggle, () -> tabStack.pop(), FontRenderers.getRenderer().getStringWidth(module.getName()), FontRenderers.getRenderer().getMarginHeight());
                         modules.entries.add(ge1);
                     }
                     if (modules.entries.isEmpty()) return;

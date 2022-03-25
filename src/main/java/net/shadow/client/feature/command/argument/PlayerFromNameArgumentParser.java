@@ -10,7 +10,7 @@ import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.exception.CommandException;
 
 public class PlayerFromNameArgumentParser implements ArgumentParser<PlayerEntity> {
-    boolean ignoreCase;
+    final boolean ignoreCase;
 
     public PlayerFromNameArgumentParser(boolean ignoreCase) {
         this.ignoreCase = ignoreCase;

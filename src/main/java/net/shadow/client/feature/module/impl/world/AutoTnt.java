@@ -27,14 +27,14 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class AutoTnt extends Module {
-    boolean missingTntAck = false;
-    DoubleSetting placeDistance = this.config.create(new DoubleSetting.Builder(4)
+    final DoubleSetting placeDistance = this.config.create(new DoubleSetting.Builder(4)
             .name("Place distance")
             .description("How far to place the blocks apart")
             .min(1)
             .max(4)
             .precision(0)
             .get());
+    boolean missingTntAck = false;
 
     public AutoTnt() {
         super("AutoTNT", "Automatically places tnt in a grid", ModuleType.WORLD);

@@ -26,8 +26,6 @@ public class TestScreen extends ClientScreen {
     public void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
         renderBackground(stack);
         gp.renderFrame(stack, 10, 10, 300, 300);
-//        FontRenderers.getRenderer().drawString(stack, "among us", mouseX, mouseY, 1f, 1f, 1f, 1f);
-//        FontRenderers.getMono().drawString(stack, "among us", mouseX, mouseY + FontRenderers.getRenderer().getMarginHeight(), 1f, 1f, 1f, 1f);
         super.renderInternal(stack, mouseX, mouseY, delta);
     }
 

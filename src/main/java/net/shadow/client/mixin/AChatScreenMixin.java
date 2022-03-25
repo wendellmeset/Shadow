@@ -156,9 +156,6 @@ public class AChatScreenMixin extends Screen {
             double len = FontRenderers.getRenderer().getStringWidth(note) + 1;
             FontRenderers.getRenderer().drawString(matrices, note, width - len - 2, height - 15 - FontRenderers.getRenderer().getMarginHeight(), 0xFFFFFF);
             renderSuggestions(matrices);
-//            MSAAFramebuffer.use(MSAAFramebuffer.MAX_SAMPLES, () -> {
-//
-//            });
         }
     }
 

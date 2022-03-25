@@ -28,10 +28,10 @@ import java.util.List;
 import java.util.Map;
 
 public class GifPlayer {
+    final int fps;
+    final List<Frame> frameList = new ArrayList<>();
     Object gifFile;
-    int fps;
     long currentFrame = 0;
-    List<Frame> frameList = new ArrayList<>();
     long lastRender = System.currentTimeMillis();
 
     private GifPlayer(Object file, int fps) {
@@ -135,7 +135,7 @@ public class GifPlayer {
     }
 
     static class Frame {
-        Texture texture;
+        final Texture texture;
 
         public Frame(String id, BufferedImage bi) {
             String rndId = Integer.toHexString((int) Math.floor(Math.random() * 0xFFFFFF));

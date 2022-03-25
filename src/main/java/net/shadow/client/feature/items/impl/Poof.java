@@ -11,7 +11,7 @@ import net.shadow.client.feature.items.Item;
 import net.shadow.client.feature.items.Option;
 
 public class Poof extends Item {
-    Option<String> name = new Option<>("itemName", "Sam the Salmon", String.class);
+    final Option<String> name = new Option<>("itemName", "Sam the Salmon", String.class);
 
     public Poof() {
         super("Poof", "the");

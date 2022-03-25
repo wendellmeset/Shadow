@@ -29,7 +29,6 @@ import java.net.URL;
 
 public class Image extends Command {
     final String block = "█";
-    final String unblock = "⠀";
     BufferedImage imageToBuild;
     boolean real;
 
@@ -135,7 +134,7 @@ public class Image extends Command {
                         lamo.append("{\"text\":\"").append(block).append("\",\"color\":\"#").append(Integer.toString(hex, 16).substring(1)).append("\",\"italic\":false},");
                     }
                     String lamopage = lamo.substring(0, lamo.length() - 1);
-                    page.append("'[" + lamopage + "]'" + ",");
+                    page.append("'[").append(lamopage).append("]'").append(",");
                 }
                 String loader = page.substring(0, page.length() - 1);
                 try {

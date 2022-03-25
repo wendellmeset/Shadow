@@ -27,10 +27,6 @@ public class Author extends Command {
     @Override
     public void onExecute(String[] args) throws CommandException {
         validateArgumentsLength(args, 1);
-//        if (args.length == 0) {
-//            error("Please use the format >author <author>");
-//            return;
-//        }
 
         if (!ShadowMain.client.interactionManager.hasCreativeInventory()) {
             error("You must be in creative mode to do this!");
@@ -38,8 +34,6 @@ public class Author extends Command {
         }
 
         ItemStack heldItem = ShadowMain.client.player.getInventory().getMainHandStack();
-//        int heldItemID = Item.getRawId(heldItem.getItem());
-//        int writtenBookID = Item.getRawId(Items.WRITTEN_BOOK);
 
         if (!heldItem.isOf(Items.WRITTEN_BOOK)) {
             error("You must hold a written book");

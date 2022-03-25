@@ -4,18 +4,19 @@
 
 package net.shadow.client.feature.module;
 
+import net.shadow.client.helper.GameTexture;
 import net.shadow.client.helper.Texture;
 
 public enum ModuleType {
-    RENDER("Render", new Texture("icons/render")),
-    MOVEMENT("Movement", new Texture("icons/move")),
-    MISC("Miscellaneous", new Texture("icons/misc")),
-    WORLD("World", new Texture("icons/world")),
-    EXPLOIT("Exploit", new Texture("icons/exploit")),
-    CRASH("Crash", new Texture("icons/crash")),
-    ITEM("Items", new Texture("icons/item")),
-    GRIEF("Grief", new Texture("icons/grief")),
-    COMBAT("Combat", new Texture("icons/combat"));
+    RENDER("Render", GameTexture.ICONS_RENDER.getWhere()),
+    MOVEMENT("Movement", GameTexture.ICONS_MOVE.getWhere()),
+    MISC("Miscellaneous", GameTexture.ICONS_MISC.getWhere()),
+    WORLD("World", GameTexture.ICONS_WORLD.getWhere()),
+    EXPLOIT("Exploit", GameTexture.ICONS_EXPLOIT.getWhere()),
+    CRASH("Crash", GameTexture.ICONS_CRASH.getWhere()),
+    ITEM("Items", GameTexture.ICONS_ITEMS.getWhere()),
+    GRIEF("Grief", GameTexture.ICONS_GRIEF.getWhere()),
+    COMBAT("Combat", GameTexture.ICONS_COMBAT.getWhere());
 
 
     final String name;
