@@ -36,50 +36,11 @@ import net.shadow.client.helper.util.Utils;
 
 public class ShadowScreen extends Module {
 
-    final PanelsGui menu = new PanelsGui(new PanelFrame[]{
-        new PanelFrame(100, 100, 250, 190, "Grief", new Element[]{
-            new PanelButton(0, 0, -1, "Delete LP Data", () -> {
-                packetinputmode = "lp";
-                enabled = true;
-                ShadowMain.client.player.networkHandler.sendPacket(new RequestCommandCompletionsC2SPacket(0, "/lp deletegroup "));
-            }),
-            new PanelButton(0, 20, -1, "Delete MRL Data", () -> {
-                packetinputmode = "mrl";
-                enabled = true;
-                ShadowMain.client.player.sendChatMessage("/mrl list");
-            }),
-            new PanelButton(0, 40, -1, "Disable Skripts", () -> {
-                ShadowMain.client.player.sendChatMessage("/sk disable all");
-            }),
-            new PanelButton(0, 60, -1, "Delete Shopkeepers", () -> {
-                new Thread(() -> {
-                    ShadowMain.client.player.sendChatMessage("/shopkeeper deleteall admin");
-                    Utils.sleep(50);
-                    ShadowMain.client.player.sendChatMessage("/shopkeeper confirm");
-                }).start();
-            }),
-            new PanelButton(0, 80, -1, "Spam LP Data", () -> {
-                for (int i = 0; i < 100; i++) {
-                    ShadowMain.client.player.sendChatMessage("/lp creategroup " + i + new Random().nextInt(10000));
-                }
-            }),
-            new PanelButton(0, 100, -1, "Delete Warp Data", () -> {
-                packetinputmode = "warps";
-                enabled = true;
-                ShadowMain.client.player.networkHandler.sendPacket(new RequestCommandCompletionsC2SPacket(0, "/delwarp "));
-            }),
-            new PanelButton(0, 120, -1, "Delete Region Data", () -> {
-                packetinputmode = "worldguard";
-                enabled = true;
-                ShadowMain.client.player.sendChatMessage("/rg list");
-            })
-        })
-    });
-
     String packetinputmode = "";
     int blocked = 0;
     boolean enabled = false;
     boolean alt = false;
+    PanelsGui menu = null;
 
     public ShadowScreen() {
         super("Tools", "tools screen", ModuleType.RENDER);
@@ -157,6 +118,47 @@ public class ShadowScreen extends Module {
 
     @Override
     public void enable() {
+        if(menu == null){
+            menu = new PanelsGui(new PanelFrame[]{
+                new PanelFrame(100, 100, 250, 190, "Grief", new Element[]{
+                    new PanelButton(0, 0, -1, "Delete LP Data", () -> {
+                        packetinputmode = "lp";
+                        enabled = true;
+                        ShadowMain.client.player.networkHandler.sendPacket(new RequestCommandCompletionsC2SPacket(0, "/lp deletegroup "));
+                    }),
+                    new PanelButton(0, 20, -1, "Delete MRL Data", () -> {
+                        packetinputmode = "mrl";
+                        enabled = true;
+                        ShadowMain.client.player.sendChatMessage("/mrl list");
+                    }),
+                    new PanelButton(0, 40, -1, "Disable Skripts", () -> {
+                        ShadowMain.client.player.sendChatMessage("/sk disable all");
+                    }),
+                    new PanelButton(0, 60, -1, "Delete Shopkeepers", () -> {
+                        new Thread(() -> {
+                            ShadowMain.client.player.sendChatMessage("/shopkeeper deleteall admin");
+                            Utils.sleep(50);
+                            ShadowMain.client.player.sendChatMessage("/shopkeeper confirm");
+                        }).start();
+                    }),
+                    new PanelButton(0, 80, -1, "Spam LP Data", () -> {
+                        for (int i = 0; i < 100; i++) {
+                            ShadowMain.client.player.sendChatMessage("/lp creategroup " + i + new Random().nextInt(10000));
+                        }
+                    }),
+                    new PanelButton(0, 100, -1, "Delete Warp Data", () -> {
+                        packetinputmode = "warps";
+                        enabled = true;
+                        ShadowMain.client.player.networkHandler.sendPacket(new RequestCommandCompletionsC2SPacket(0, "/delwarp "));
+                    }),
+                    new PanelButton(0, 120, -1, "Delete Region Data", () -> {
+                        packetinputmode = "worldguard";
+                        enabled = true;
+                        ShadowMain.client.player.sendChatMessage("/rg list");
+                    })
+                })
+            });
+        }
         ShadowMain.client.setScreen(menu);
         this.setEnabled(false);
     }

@@ -53,6 +53,16 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Utils {
 
+    public static String rndStr(int size) {
+        StringBuilder buf = new StringBuilder();
+        String[] chars = new String[]{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
+        Random r = new Random();
+        for (int i = 0; i < size; i++) {
+            buf.append(chars[r.nextInt(chars.length)]);
+        }
+        return buf.toString();
+    }
+    
     public static void sleep(long ms) {
         try {
             Thread.sleep(ms);

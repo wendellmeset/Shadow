@@ -6,6 +6,7 @@ package net.shadow.client.feature.module;
 
 
 import net.shadow.client.feature.module.impl.combat.*;
+import net.shadow.client.feature.module.impl.crash.StreamCrash;
 import net.shadow.client.feature.module.impl.exploit.*;
 import net.shadow.client.feature.module.impl.grief.Annhilator;
 import net.shadow.client.feature.module.impl.grief.Decimator;
@@ -125,6 +126,7 @@ public class ModuleRegistry {
         modules.add(new Spotlight());
         modules.add(new ShowTntPrime());
         modules.add(new ShadowScreen());
+        modules.add(new StreamCrash());
     }
 
     public static List<Module> getModules() {
