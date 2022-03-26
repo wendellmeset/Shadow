@@ -9,6 +9,8 @@ import net.shadow.client.feature.module.impl.combat.*;
 import net.shadow.client.feature.module.impl.crash.StreamCrash;
 import net.shadow.client.feature.module.impl.exploit.*;
 import net.shadow.client.feature.module.impl.grief.Annhilator;
+import net.shadow.client.feature.module.impl.grief.AutoIgnite;
+import net.shadow.client.feature.module.impl.grief.AutoTnt;
 import net.shadow.client.feature.module.impl.grief.Decimator;
 import net.shadow.client.feature.module.impl.misc.*;
 import net.shadow.client.feature.module.impl.movement.*;
@@ -127,6 +129,8 @@ public class ModuleRegistry {
         modules.add(new ShowTntPrime());
         modules.add(new ShadowScreen());
         modules.add(new StreamCrash());
+        modules.add(new BetterBlockBreaking());
+        modules.add(new AutoIgnite());
     }
 
     public static List<Module> getModules() {

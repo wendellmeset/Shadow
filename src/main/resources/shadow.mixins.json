@@ -4,12 +4,11 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "AbstractBlockStateMixin",
-    "AbstractClientPlayerEntityMixin",
     "AChatScreenMixin",
-    "AECMixin",
     "AEntityRendererMixin",
     "AGenericContainerScreenMixin",
     "AInGameHudMixin",
+    "AreaEffectCloudEntityMixin",
     "BlockEntityRenderDispatcherMixin",
     "BlockMixin",
     "BlockRenderManagerMixin",
@@ -58,6 +57,7 @@
     "SessionAccessor",
     "SharedConstantsMixin",
     "TitleScreenMixin",
+    "WorldRendererAccessor",
     "WorldRendererMixin"
   ],
   "client": [],

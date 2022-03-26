@@ -23,7 +23,7 @@ public class ProxyManagerScreen extends ClientScreen {
     static double widgetHeight = 400;
     static boolean isSocks4 = false;
     final Screen parent;
-    RoundTextFieldWidget ip, port;
+    RoundTextFieldWidget ip, port, user, pass;
     RoundButton reset, apply, type;
 
     public ProxyManagerScreen(Screen parent) {
@@ -48,26 +48,38 @@ public class ProxyManagerScreen extends ClientScreen {
         ip = new RoundTextFieldWidget(sourceX, sourceY + yOffset, wWidth, 20, "IP");
         yOffset += ip.getHeight() + padding();
         port = new RoundTextFieldWidget(sourceX, sourceY + yOffset, wWidth, 20, "Port");
+
+        yOffset += port.getHeight() + padding();
+        user = new RoundTextFieldWidget(sourceX, sourceY+yOffset,wWidth,20,"Username (opt.)");
+        yOffset += user.getHeight()+padding();
+        pass = new RoundTextFieldWidget(sourceX,sourceY+yOffset,wWidth,20,"Password (opt.)");
+        yOffset += pass.getHeight()+padding();
         if (currentProxy != null) {
             ip.setText(currentProxy.address);
             port.setText(currentProxy.port + "");
+            user.setText(currentProxy.user);
+            pass.setText(currentProxy.pass);
         }
-        yOffset += port.getHeight() + padding();
         type = new RoundButton(new Color(40, 40, 40), sourceX, sourceY + yOffset, wWidth, 20, "Type: " + (isSocks4 ? "Socks4" : "Socks5"), () -> {
             isSocks4 = !isSocks4;
             type.setText("Type: " + (isSocks4 ? "Socks4" : "Socks5"));
         });
+
         yOffset += 20 + padding();
         double doubleWidth = wWidth / 2d - padding() / 2d;
         reset = new RoundButton(new Color(40, 40, 40), sourceX, yOffset, doubleWidth, 20, "Reset", () -> {
             currentProxy = null;
             ip.set("");
             port.set("");
+            user.set("");
+            pass.set("");
         });
-        apply = new RoundButton(new Color(40, 40, 40), sourceX + doubleWidth + padding(), yOffset, doubleWidth, 20, "Apply", () -> currentProxy = new Proxy(ip.get(), Integer.parseInt(port.get()), isSocks4));
+        apply = new RoundButton(new Color(40, 40, 40), sourceX + doubleWidth + padding(), yOffset, doubleWidth, 20, "Apply", () -> currentProxy = new Proxy(ip.get(), Integer.parseInt(port.get()), isSocks4, user.get(), pass.get()));
 
         addDrawableChild(ip);
         addDrawableChild(port);
+        addDrawableChild(user);
+        addDrawableChild(pass);
         addDrawableChild(type);
         addDrawableChild(reset);
         addDrawableChild(apply);
@@ -105,6 +117,12 @@ public class ProxyManagerScreen extends ClientScreen {
         port.setX(sourceX);
         port.setY(sourceY + yOffset);
         yOffset += port.getHeight() + padding();
+        user.setX(sourceX);
+        user.setY(sourceY+yOffset);
+        yOffset += user.getHeight()+padding();
+        pass.setX(sourceX);
+        pass.setY(sourceY+yOffset);
+        yOffset += pass.getHeight()+padding();
         type.setX(sourceX);
         type.setY(sourceY + yOffset);
         yOffset += 20 + padding();
@@ -151,7 +169,7 @@ public class ProxyManagerScreen extends ClientScreen {
         client.setScreen(parent);
     }
 
-    public record Proxy(String address, int port, boolean socks4) {
+    public record Proxy(String address, int port, boolean socks4, String user, String pass) {
 
     }
 }

@@ -2,7 +2,7 @@
  * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
  */
 
-package net.shadow.client.feature.module.impl.world;
+package net.shadow.client.feature.module.impl.grief;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -37,7 +37,7 @@ public class AutoTnt extends Module {
     boolean missingTntAck = false;
 
     public AutoTnt() {
-        super("AutoTNT", "Automatically places tnt in a grid", ModuleType.WORLD);
+        super("AutoTNT", "Automatically places tnt in a grid", ModuleType.GRIEF);
     }
 
     @Override

@@ -49,7 +49,7 @@ public class AChatScreenMixin extends Screen {
     }
 
     @Redirect(method = "keyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ChatScreen;sendMessage(Ljava/lang/String;)V"))
-    void atomic_interceptChatMessage(ChatScreen instance, String s) {
+    void shadow_interceptChatMessage(ChatScreen instance, String s) {
         String p = getPrefix();
         if (s.startsWith(p)) { // filter all messages starting with .
             ShadowMain.client.inGameHud.getChatHud().addToMessageHistory(s);
@@ -148,7 +148,7 @@ public class AChatScreenMixin extends Screen {
     }
 
     @Inject(method = "render", at = @At("RETURN"))
-    void renderText(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    void shadow_renderText(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         String p = getPrefix();
         String t = chatField.getText();
         if (t.startsWith(p)) {
@@ -160,7 +160,7 @@ public class AChatScreenMixin extends Screen {
     }
 
     @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true)
-    void pressed(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> cir) {
+    void shadow_injectKeyPressed(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> cir) {
         String p = getPrefix();
         if (keyCode == GLFW.GLFW_KEY_TAB && chatField.getText().startsWith(p)) {
             autocomplete();

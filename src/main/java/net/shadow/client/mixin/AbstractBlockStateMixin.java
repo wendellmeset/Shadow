@@ -18,7 +18,7 @@ import java.util.Objects;
 public class AbstractBlockStateMixin {
 
     @Inject(method = "getLuminance", at = @At("HEAD"), cancellable = true)
-    public void atomic_overwriteBlockLuminance(CallbackInfoReturnable<Integer> cir) {
+    public void shadow_luminateBlock(CallbackInfoReturnable<Integer> cir) {
         if (Objects.requireNonNull(ModuleRegistry.getByClass(XRAY.class)).isEnabled()) {
             cir.setReturnValue(15);
         }
