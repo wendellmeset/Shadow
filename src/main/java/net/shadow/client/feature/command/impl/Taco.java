@@ -66,6 +66,7 @@ public class Taco extends Command {
         } catch (Exception ignored) {
 
         }
+        if (!gifPath.exists()) gifPath.mkdir();
         try {
             if (!storage.isFile()) {
                 //noinspection ResultOfMethodCallIgnored
@@ -240,29 +241,12 @@ public class Taco extends Command {
 
     public static class Frame {
         static long frameCounter = 0;
-        Texture i;
+        final Texture i;
 
         public Frame(BufferedImage image) {
             i = new Texture("taco/frame_" + frameCounter);
             frameCounter++;
             Utils.registerBufferedImageTexture(i, image);
-//            try {
-//                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//                ImageIO.write(image, "png", baos);
-//                byte[] bytes = baos.toByteArray();
-//
-//                ByteBuffer data = BufferUtils.createByteBuffer(bytes.length).put(bytes);
-//                data.flip();
-//                tex = new NativeImageBackedTexture(NativeImage.read(data));
-//
-//                //                i = new Identifier("atomic", "tacoframe_" + frameCounter);
-//
-//                frameCounter++;
-//                ShadowMain.client.execute(() -> ShadowMain.client.getTextureManager().registerTexture(i, tex));
-//            } catch (Exception e) {
-//                Utils.Logging.error("failed to register frame " + frameCounter);
-//                e.printStackTrace();
-//            }
         }
 
         public Texture getI() {

@@ -9,6 +9,8 @@ import net.shadow.client.feature.module.impl.combat.*;
 import net.shadow.client.feature.module.impl.crash.StreamCrash;
 import net.shadow.client.feature.module.impl.exploit.*;
 import net.shadow.client.feature.module.impl.grief.Annhilator;
+import net.shadow.client.feature.module.impl.grief.AutoIgnite;
+import net.shadow.client.feature.module.impl.grief.AutoTnt;
 import net.shadow.client.feature.module.impl.grief.Decimator;
 import net.shadow.client.feature.module.impl.misc.*;
 import net.shadow.client.feature.module.impl.movement.*;
@@ -21,7 +23,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ModuleRegistry {
     static final List<Module> modules = new ArrayList<>();
-    static AtomicBoolean initialized = new AtomicBoolean(false);
+    static final AtomicBoolean initialized = new AtomicBoolean(false);
 
     public static void init() {
         if (initialized.get()) return;
@@ -53,7 +55,7 @@ public class ModuleRegistry {
         modules.add(new AnyPlacer());
         modules.add(new FireballDeflector()); // its a fucking utility client saturn
         modules.add(new ShulkerDeflector());
-        //modules.add(new CarpetBomb()); i'm rewriting this its ASS
+        modules.add(new CarpetBomb());
         //modules.add(new SkinChangeExploit()); litteral fucking joke module, to be re-written as personhider or whatever i named it (skinfuscator is a good name lol)
         modules.add(new AutoTrap());
         modules.add(new AutoTnt());
@@ -127,6 +129,8 @@ public class ModuleRegistry {
         modules.add(new ShowTntPrime());
         modules.add(new ShadowScreen());
         modules.add(new StreamCrash());
+        modules.add(new BetterBlockBreaking());
+        modules.add(new AutoIgnite());
     }
 
     public static List<Module> getModules() {

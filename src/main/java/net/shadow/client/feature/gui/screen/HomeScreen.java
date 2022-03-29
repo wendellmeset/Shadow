@@ -17,14 +17,10 @@ import net.minecraft.client.util.DefaultSkinHelper;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 import net.shadow.client.ShadowMain;
-import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.gui.FastTickable;
 import net.shadow.client.feature.gui.clickgui.ParticleRenderer;
-import net.shadow.client.feature.gui.clickgui.element.Element;
-import net.shadow.client.feature.gui.clickgui.element.impl.config.DoubleSettingEditor;
-import net.shadow.client.feature.gui.panels.PanelsGui;
-import net.shadow.client.feature.gui.panels.elements.PanelFrame;
 import net.shadow.client.feature.gui.widget.RoundButton;
+import net.shadow.client.helper.GameTexture;
 import net.shadow.client.helper.Texture;
 import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.font.adapter.FontAdapter;
@@ -52,7 +48,7 @@ import java.util.*;
 
 public class HomeScreen extends ClientScreen implements FastTickable {
     static final double padding = 5;
-    static final Texture background = new Texture("background.jpg");
+    static final Texture background = GameTexture.TEXTURE_BACKGROUND.getWhere();
     static final HttpClient downloader = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(3)).build();
     static boolean isDev = false;
     static String version = "unknown";
@@ -63,6 +59,7 @@ public class HomeScreen extends ClientScreen implements FastTickable {
     final FontAdapter smaller = FontRenderers.getCustomSize(30);
     final FontAdapter propFr = FontRenderers.getCustomSize(22);
     final Texture currentAccountTexture = new Texture("dynamic/tex_currentaccount_home");
+    final double widgetsWidth = 130;
     boolean loaded = false;
     long initTime = System.currentTimeMillis();
     double prog = 0;
@@ -71,8 +68,6 @@ public class HomeScreen extends ClientScreen implements FastTickable {
     boolean currentAccountTextureLoaded = false;
     UUID previousChecked = null;
     double widgetsHeight = 0;
-    double widgetsWidth = 130;
-    DoubleSetting dub = new DoubleSetting(10D, "realDouble", "some dumbass shit", 1, 0, 100);
 
     private HomeScreen() {
         super(MSAAFramebuffer.MAX_SAMPLES);
@@ -126,15 +121,7 @@ public class HomeScreen extends ClientScreen implements FastTickable {
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Singleplayer", () -> ShadowMain.client.setScreen(new SelectWorldScreen(this))));
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Multiplayer", () -> ShadowMain.client.setScreen(new MultiplayerScreen(this))));
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Realms", () -> ShadowMain.client.setScreen(new RealmsMainScreen(this))));
-        buttonsMap.add(new AbstractMap.SimpleEntry<>("Alts", () -> ShadowMain.client.setScreen(
-                //AltManagerScreen.instance()
-//                new TestScreen()
-                new PanelsGui(new PanelFrame[]{
-                        new PanelFrame(0, 0, 100, 150, "hello chat", new Element[]{
-                                new DoubleSettingEditor(0, 0, 25, dub)
-                        })
-                })
-        )));
+        buttonsMap.add(new AbstractMap.SimpleEntry<>("Alts", () -> ShadowMain.client.setScreen(AltManagerScreen.instance())));
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Settings", () -> ShadowMain.client.setScreen(new OptionsScreen(this, ShadowMain.client.options))));
         double totalHeight = buttonsMap.size() * (widgetHeight + widPad) - widPad;
         widgetsHeight = totalHeight;

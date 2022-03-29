@@ -4,28 +4,17 @@
 
 package net.shadow.client.feature.module.impl.crash;
 
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.network.packet.c2s.play.BookUpdateC2SPacket;
+import net.shadow.client.ShadowMain;
+import net.shadow.client.feature.module.Module;
+import net.shadow.client.feature.module.ModuleType;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtString;
-import net.minecraft.network.packet.c2s.play.BookUpdateC2SPacket;
-import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
-import net.minecraft.util.math.MathHelper;
-import net.shadow.client.ShadowMain;
-import net.shadow.client.feature.module.Module;
-import net.shadow.client.feature.module.ModuleType;
-import net.shadow.client.helper.util.Transitions;
-import net.shadow.client.helper.util.Utils;
-
 public class StreamCrash extends Module {
-
-    int slot = 5;
 
     public StreamCrash() {
         super("BookInflater", "Writes a book thats nbt value is 3x bigger than normal", ModuleType.CRASH);
@@ -59,10 +48,6 @@ public class StreamCrash extends Module {
 
     @Override
     public void disable() {
-    }
-
-    @Override
-    public void onFastTick() {
     }
 
     @Override

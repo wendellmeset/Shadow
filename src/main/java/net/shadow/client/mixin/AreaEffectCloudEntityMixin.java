@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Debug(export = true)
 @Mixin(AreaEffectCloudEntity.class)
-public class AECMixin {
+public class AreaEffectCloudEntityMixin {
     @ModifyVariable(method = "tick", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/util/math/MathHelper;ceil(F)I"), index = 4)
     int re(int value) {
         AntiCrash ac = AntiCrash.instance();

@@ -13,8 +13,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(net.minecraft.client.gui.screen.world.SelectWorldScreen.class)
-public class SelectWorldScreen extends Screen {
-    public SelectWorldScreen() {
+public class SelectWorldScreenMixin extends Screen {
+    public SelectWorldScreenMixin() {
         super(Text.of(""));
     }
 

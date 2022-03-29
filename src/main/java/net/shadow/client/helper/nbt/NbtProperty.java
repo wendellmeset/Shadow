@@ -9,8 +9,8 @@ import net.minecraft.nbt.*;
 import java.util.UUID;
 
 public class NbtProperty extends net.shadow.client.helper.nbt.NbtElement {
-    String name;
-    Object val;
+    final String name;
+    final Object val;
 
     public NbtProperty(String name, Object value) {
         this.name = name;

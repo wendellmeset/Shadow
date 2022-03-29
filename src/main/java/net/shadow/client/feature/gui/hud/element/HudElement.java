@@ -48,10 +48,6 @@ public abstract class HudElement {
         this.posY = posY;
     }
 
-    float timeOffset(double in) {
-        return (float) (((System.currentTimeMillis() % 4000) / 4000f + in) % 1);
-    }
-
     public void renderOutline() {
         Renderer.R2D.renderLine(Renderer.R3D.getEmptyMatrixStack(), ThemeManager.getMainTheme().getAccent(), posX, posY, posX + width, posY);
         Renderer.R2D.renderLine(Renderer.R3D.getEmptyMatrixStack(), ThemeManager.getMainTheme().getAccent(), posX + width, posY, posX + width, posY + height);

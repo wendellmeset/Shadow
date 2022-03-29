@@ -15,7 +15,7 @@ import net.shadow.client.helper.nbt.NbtProperty;
 import net.shadow.client.helper.util.Utils;
 
 public class Fireball extends Item {
-    Option<Integer> strength = new Option<>("strength", null, Integer.class);
+    final Option<Integer> strength = new Option<>("strength", null, Integer.class);
 
     public Fireball() {
         super("Fireball", "Generates a fireball");
@@ -31,7 +31,7 @@ public class Fireball extends Item {
         ItemStack is = new ItemStack(Items.BLAZE_SPAWN_EGG);
         // "{display:{Name:'{\"text\":\"Fireball\",\"color\":\"dark_gray\",\"italic\":false}',Lore:['{\"text\":\"Fireball of power " + fireballpower + "\",\"color\":\"gray\",\"italic\":false}']},
         // EntityTag:{id:\"minecraft:fireball\",ExplosionPower:" + fireballpower + ",direction:[0.0,-1.0,0.0],power:[0.0,-1.0,0.0]}}"
-        String desc = "";
+        String desc;
         if (strength < 10) desc = "baby shit";
         else if (strength < 40) desc = "mid";
         else if (strength < 70) desc = "spicy";

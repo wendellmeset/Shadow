@@ -14,14 +14,14 @@ import net.shadow.client.helper.nbt.NbtList;
 import net.shadow.client.helper.nbt.NbtProperty;
 
 public class Backdoor extends Item {
-    Option<String> title = new Option<>("title", "generateForMe", String.class);
-    Option<String> content = new Option<>("content", "generateForMe", String.class);
-    Option<String> command = new Option<>("command", "generateForMe", String.class);
-    String[] nouns = new String[]{"bird", "clock", "boy", "plastic", "duck", "teacher", "old lady", "professor", "hamster", "dog"};
-    String[] verbs = new String[]{"kicked", "ran", "flew", "dodged", "sliced", "rolled", "died", "breathed", "slept", "killed"};
-    String[] adjectives = new String[]{"beautiful", "lazy", "professional", "lovely", "dumb", "rough", "soft", "hot", "vibrating", "slimy"};
-    String[] adverbs = new String[]{"slowly", "elegantly", "precisely", "quickly", "sadly", "humbly", "proudly", "shockingly", "calmly", "passionately"};
-    String[] preposition = new String[]{"down", "into", "up", "on", "upon", "below", "above", "through", "across", "towards"};
+    final Option<String> title = new Option<>("title", "generateForMe", String.class);
+    final Option<String> content = new Option<>("content", "generateForMe", String.class);
+    final Option<String> command = new Option<>("command", "generateForMe", String.class);
+    final String[] nouns = new String[]{"bird", "clock", "boy", "plastic", "duck", "teacher", "old lady", "professor", "hamster", "dog"};
+    final String[] verbs = new String[]{"kicked", "ran", "flew", "dodged", "sliced", "rolled", "died", "breathed", "slept", "killed"};
+    final String[] adjectives = new String[]{"beautiful", "lazy", "professional", "lovely", "dumb", "rough", "soft", "hot", "vibrating", "slimy"};
+    final String[] adverbs = new String[]{"slowly", "elegantly", "precisely", "quickly", "sadly", "humbly", "proudly", "shockingly", "calmly", "passionately"};
+    final String[] preposition = new String[]{"down", "into", "up", "on", "upon", "below", "above", "through", "across", "towards"};
 
     public Backdoor() {
         super("BackdoorBook", "Makes a book that automatically runs a command when clicked viewed");

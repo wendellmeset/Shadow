@@ -19,7 +19,7 @@ import org.lwjgl.opengl.GL11;
 import java.awt.*;
 
 public class Test extends Module {
-    ColorSetting color = this.config.create(new ColorSetting.Builder(Color.WHITE)
+    final ColorSetting color = this.config.create(new ColorSetting.Builder(Color.WHITE)
             .name("REAL")
             .description("REAL")
             .get());
@@ -92,15 +92,15 @@ public class Test extends Module {
     record Vertex(double x, double y, double z) {
     }
 
-    class Icosahedron {
+    static class Icosahedron {
 
-        public static double X = 0.525731112119133606f;
-        public static double Z = 0.850650808352039932f;
+        public static final double X = 0.525731112119133606f;
+        public static final double Z = 0.850650808352039932f;
 
-        public static double[][] vdata = {{-X, +0, +Z}, {+X, +0, +Z}, {-X, +0, -Z}, {+X, +0, -Z}, {+0, +Z, +X}, {+0, +Z, -X},
+        public static final double[][] vdata = {{-X, +0, +Z}, {+X, +0, +Z}, {-X, +0, -Z}, {+X, +0, -Z}, {+0, +Z, +X}, {+0, +Z, -X},
                 {+0, -Z, +X}, {+0, -Z, -X}, {+Z, +X, +0}, {-Z, +X, +0}, {+Z, -X, +0}, {-Z, -X, +0}};
 
-        public static int[][] tindx = {{0, 4, 1}, {0, 9, 4}, {9, 5, 4}, {4, 5, 8}, {4, 8, 1}, {8, 10, 1}, {8, 3, 10},
+        public static final int[][] tindx = {{0, 4, 1}, {0, 9, 4}, {9, 5, 4}, {4, 5, 8}, {4, 8, 1}, {8, 10, 1}, {8, 3, 10},
                 {5, 3, 8}, {5, 2, 3}, {2, 7, 3}, {7, 10, 3}, {7, 6, 10}, {7, 11, 6}, {11, 0, 6}, {0, 1, 6}, {6, 1, 10},
                 {9, 0, 11}, {9, 11, 2}, {9, 2, 5}, {7, 2, 11}};
 
@@ -176,22 +176,12 @@ public class Test extends Module {
         }
 
         private static void drawTriangle(Matrix4f matrix, BufferBuilder bb, float r, float g, float b, float a, double[] v1, double[] v2, double[] v3, float radius) {
-            double[] spherical;
 
-//            Tessellator tessellator = Tessellator.getInstance();
-//            WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-//            worldrenderer.startDrawing(GL11.GL_TRIANGLES);
-
-//            GL11.glEnable(GL11.GL_TEXTURE_2D);
-
-            spherical = calcTextureMap(v1);
             bb.vertex(matrix, radius * (float) v1[0], radius * (float) v1[1], radius * (float) v1[2]).normal(1, 1, 1).color(r, g, b, a).next();
 //            worldrenderer.addVertexWithUV(radius * v1[0], radius * v1[1], radius * v1[2], spherical[1], spherical[2]);
 
-            spherical = calcTextureMap(v2);
             bb.vertex(matrix, radius * (float) v2[0], radius * (float) v2[1], radius * (float) v2[2]).normal(1, 1, 1).color(r, g, b, a).next();
 
-            spherical = calcTextureMap(v3);
             bb.vertex(matrix, radius * (float) v3[0], radius * (float) v3[1], radius * (float) v3[2]).normal(1, 1, 1).color(r, g, b, a).next();
 
 //            tessellator.draw();

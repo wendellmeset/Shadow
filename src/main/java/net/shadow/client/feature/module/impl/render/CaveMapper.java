@@ -17,7 +17,6 @@ import net.minecraft.util.math.Vec3d;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.config.BooleanSetting;
 import net.shadow.client.feature.config.DoubleSetting;
-import net.shadow.client.feature.config.SettingsGroup;
 import net.shadow.client.feature.gui.notifications.Notification;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
@@ -54,9 +53,6 @@ public class CaveMapper extends Module {
             .description("How big the cache should be (bigger = more time + more memory)").min(5000).max(30000).get());
     final BooleanSetting includeTranslucent = this.config.create(new BooleanSetting.Builder(true).name("Scan transparent")
             .description("Scan through transparent blocks as well").get());
-    SettingsGroup scanner = this.config.create(new SettingsGroup.Builder().name("Scanner").description("The scanner configuration")
-            .settings(coal, iron, gold, redstone, diamond, lapis, copper, emerald, quartz, debris, cacheSize, includeTranslucent).get());
-    SettingsGroup rendering = this.config.create(new SettingsGroup.Builder().name("Rendering").description("The sexy stuff").settings(showScanned, showEntire).get());
     BlockPos start = null;
     boolean scanned = false;
 

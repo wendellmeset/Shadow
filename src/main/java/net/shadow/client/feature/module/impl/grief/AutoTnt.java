@@ -2,7 +2,7 @@
  * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
  */
 
-package net.shadow.client.feature.module.impl.world;
+package net.shadow.client.feature.module.impl.grief;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -27,17 +27,17 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class AutoTnt extends Module {
-    boolean missingTntAck = false;
-    DoubleSetting placeDistance = this.config.create(new DoubleSetting.Builder(4)
+    final DoubleSetting placeDistance = this.config.create(new DoubleSetting.Builder(4)
             .name("Place distance")
             .description("How far to place the blocks apart")
             .min(1)
             .max(4)
             .precision(0)
             .get());
+    boolean missingTntAck = false;
 
     public AutoTnt() {
-        super("AutoTNT", "Automatically places tnt in a grid", ModuleType.WORLD);
+        super("AutoTNT", "Automatically places tnt in a grid", ModuleType.GRIEF);
     }
 
     @Override

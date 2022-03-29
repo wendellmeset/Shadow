@@ -9,8 +9,8 @@ import net.minecraft.nbt.NbtCompound;
 import java.util.Arrays;
 
 public class NbtList extends NbtElement {
-    String name;
-    NbtElement[] children;
+    final String name;
+    final NbtElement[] children;
 
     public NbtList(String name, NbtElement... children) {
         this.name = name;

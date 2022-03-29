@@ -14,9 +14,9 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 public class Glyph {
-    Texture imageTex;
-    Font f;
-    char c;
+    final Texture imageTex;
+    final Font f;
+    final char c;
     Rectangle2D dimensions;
 
     public Glyph(char c, Font f) {

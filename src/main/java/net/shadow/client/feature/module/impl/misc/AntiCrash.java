@@ -26,13 +26,13 @@ import net.shadow.client.mixinUtil.ParticleManagerDuck;
 
 public class AntiCrash extends Module {
     private static AntiCrash instance = null;
-    BooleanSetting screenGui = this.config.create(new BooleanSetting.Builder(false)
+    final BooleanSetting screenGui = this.config.create(new BooleanSetting.Builder(false)
             .name("Cap Screens")
             .description("Prevents too many screens from being opened")
             .get());
-    BooleanSetting blockObf = this.config.create(new BooleanSetting.Builder(true)
-            .name("Block &k")
-            .description("Blocks the &k tag from existing")
+    final BooleanSetting capVel = this.config.create(new BooleanSetting.Builder(true)
+            .name("Cap velocity")
+            .description("Prevents an abnormal sized velocity packet from going through")
             .get());
     @Getter
     BooleanSetting capParticles = this.config.create(new BooleanSetting.Builder(true)
@@ -60,26 +60,7 @@ public class AntiCrash extends Module {
             .max(100)
             .precision(0)
             .get());
-    BooleanSetting capVel = this.config.create(new BooleanSetting.Builder(true)
-            .name("Cap velocity")
-            .description("Prevents an abnormal sized velocity packet from going through")
-            .get());
     long lastScreen = System.currentTimeMillis();
-    //    @Getter
-//    BooleanSetting blockPoof = this.config.create(new BooleanSetting.Builder(true)
-//        .name("Block poof")
-//        .description("Prevents the poof game crash exploit")
-//        .get());
-//    @Getter
-//    BooleanSetting blockIdentifier = this.config.create(new BooleanSetting.Builder(true)
-//        .name("Block identifiers")
-//        .description("Block identifiers from crashing the game with an invalid path")
-//        .get());
-//    @Getter
-//    BooleanSetting capPuffer = this.config.create(new BooleanSetting.Builder(true)
-//        .name("Block puffer")
-//        .description("Cap the pufferfish size to prevent the crash exploit with it")
-//        .get());
     Notification lastCrashNotif = null;
 
     public AntiCrash() {

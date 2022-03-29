@@ -14,7 +14,7 @@ import net.shadow.client.helper.nbt.NbtObject;
 import net.shadow.client.helper.nbt.NbtProperty;
 
 public class Nuke extends Item {
-    Option<Integer> o = new Option<>("tntFuse", 120, Integer.class);
+    final Option<Integer> o = new Option<>("tntFuse", 120, Integer.class);
 
     public Nuke() {
         super("Nuke", "Nukes the area");

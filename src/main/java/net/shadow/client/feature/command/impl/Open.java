@@ -20,8 +20,8 @@ public class Open extends Command {
         super("Open", "Open contianers", "open");
     }
 
-    private static void getItemsInContainerItem(ItemStack itemStack, ItemStack[] items) {
-        Arrays.fill(items, ItemStack.EMPTY);
+    private static void getItemsInContainerItem(ItemStack itemStack) {
+        Arrays.fill(Open.ITEMS, ItemStack.EMPTY);
         NbtCompound nbt = itemStack.getNbt();
 
         if (nbt != null && nbt.contains("ShadowItemTag")) {
@@ -49,7 +49,7 @@ public class Open extends Command {
     @Override
     public void onExecute(String[] args) {
         success("Done!");
-        getItemsInContainerItem(ShadowMain.client.player.getMainHandStack(), ITEMS);
+        getItemsInContainerItem(ShadowMain.client.player.getMainHandStack());
     }
 
 }

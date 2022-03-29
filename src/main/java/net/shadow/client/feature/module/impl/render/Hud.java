@@ -8,12 +8,10 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.config.BooleanSetting;
-import net.shadow.client.feature.config.ColorSetting;
 import net.shadow.client.feature.gui.clickgui.theme.ThemeManager;
 import net.shadow.client.feature.gui.hud.HudRenderer;
 import net.shadow.client.feature.gui.notifications.Notification;
@@ -21,7 +19,7 @@ import net.shadow.client.feature.gui.notifications.NotificationRenderer;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.feature.module.ModuleType;
-import net.shadow.client.helper.Texture;
+import net.shadow.client.helper.GameTexture;
 import net.shadow.client.helper.Timer;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
@@ -34,7 +32,6 @@ import net.shadow.client.mixin.IDebugHudAccessor;
 import net.shadow.client.mixin.IInGameHudAccessor;
 import net.shadow.client.mixin.IMinecraftClientAccessor;
 
-import java.awt.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,24 +42,19 @@ import java.util.Objects;
 public class Hud extends Module {
     public static double currentTps = 0;
     public final BooleanSetting speed = this.config.create(new BooleanSetting.Builder(true).name("Speed").description("Show your current velocity").get());
-    final Identifier LOGO = new Texture("logo.png");
     final DateFormat minSec = new SimpleDateFormat("mm:ss");
     final BooleanSetting fps = this.config.create(new BooleanSetting.Builder(true).name("FPS").description("Whether to show FPS").get());
     final BooleanSetting tps = this.config.create(new BooleanSetting.Builder(true).name("TPS").description("Whether to show TPS").get());
     final BooleanSetting coords = this.config.create(new BooleanSetting.Builder(true).name("Coordinates").description("Whether to show current coordinates").get());
     final BooleanSetting ping = this.config.create(new BooleanSetting.Builder(true).name("Ping").description("Whether to show current ping").get());
     final BooleanSetting modules = this.config.create(new BooleanSetting.Builder(true).name("Array list").description("Whether to show currently enabled modules").get());
-    final ColorSetting logoColor = this.config.create(
-            new ColorSetting.Builder(new Color(0xAAAAAA))
-                    .name("Logo color")
-                    .description("How to color the logo")
-                    .get());
     final List<ModuleEntry> moduleList = new ArrayList<>();
     final Timer tpsUpdateTimer = new Timer();
     final List<Double> last5SecondTpsAverage = new ArrayList<>();
     long lastTimePacketReceived;
     double rNoConnectionPosY = -10d;
     Notification serverNotResponding = null;
+
 
     public Hud() {
         super("Hud", "Shows information about the player on screen", ModuleType.RENDER);
@@ -166,24 +158,18 @@ public class Hud extends Module {
             ms.pop();
         }
 
+        ms.push();
+        ms.translate(0, heightOffsetLeft, 0);
+        drawTopLeft(ms);
+        ms.pop();
+
         HudRenderer.getInstance().render();
 
 
-//        MatrixStack ms = Renderer.R3D.getEmptyMatrixStack();
-//        double heightOffsetLeft = 0;
-//        if (ShadowMain.client.options.debugEnabled) {
-//            double heightAccordingToMc = 9;
-//            List<String> lt = ((IDebugHudAccessor) ((IInGameHudAccessor) ShadowMain.client.inGameHud).getDebugHud()).callGetLeftText();
-//            heightOffsetLeft = 2 + heightAccordingToMc * (lt.size() + 3);
-//        }
-//        ms.push();
-//        ms.translate(0, heightOffsetLeft, 0);
-        //drawTopLeft(ms);
-//        ms.pop();
     }
 
     public void drawTopLeft(MatrixStack ms) {
-//        DrawableHelper.drawTexture(ms, 3, 3, 0, 0, j, i, j, i);
+        ms.translate(5, 5, 0);
         List<String> values = new ArrayList<>();
         if (this.fps.getValue()) {
             values.add(((IMinecraftClientAccessor) ShadowMain.client).getCurrentFps() + " fps");
@@ -206,30 +192,23 @@ public class Hud extends Module {
             BlockPos bp = Objects.requireNonNull(ShadowMain.client.player).getBlockPos();
             values.add(bp.getX() + " " + bp.getY() + " " + bp.getZ());
         }
-        String drawStr = String.join(" | ", values);
-        double width = FontRenderers.getRenderer().getStringWidth(drawStr) + 5;
-        if (values.isEmpty()) {
-            return;
-        }
-//        Renderer.R2D.renderRoundedQuad(ms, Renderer.Util.modify(ThemeManager.getMainTheme().getModule(), -1, -1, -1, 200), rootX - 5, -5, rootX + width + 5, rootY + height + i + 3 + 5, 7, 14);
-//        Renderer.R2D.renderRoundedQuad(ms, ThemeManager.getMainTheme().getInactive(), rootX + 1, rootY + i + 3, rootX + width, rootY + height + i + 3, 5, 11);
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.enableBlend();
-        double imgWidth = 507 / 5d;
-        double imgHeight = 167 / 5d;
+        double pad = 2;
 
-        double widgetWidth = Math.max(Math.max(imgWidth, width), 160) + 6;
-        double widgetHeight = 3 + imgHeight + 3 + FontRenderers.getRenderer().getMarginHeight() + 3;
-        double widgetX = 0;
-        double widgetY = 0;
-        Renderer.R2D.renderRoundedQuad(ms, new Color(30, 30, 30, 255), widgetX, widgetY, widgetX + widgetWidth, widgetY + widgetHeight, 5, 20);
-        RenderSystem.setShaderTexture(0, LOGO);
-        Color c = this.logoColor.getValue();
-        RenderSystem.setShaderColor(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, c.getAlpha() / 255f);
-        Renderer.R2D.renderTexture(ms, widgetX + widgetWidth / 2d - imgWidth / 2d, widgetY + 3, imgWidth, imgHeight, 0, 0, imgWidth, imgHeight, imgWidth, imgHeight);
-        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-//        FontRenderers.getRenderer().drawString(ms, drawStr, rootX + 2, rootY + height / 2d - FontRenderers.getRenderer().getMarginHeight() / 2d + i + 3, 0xAAAAAA);
-        FontRenderers.getRenderer().drawCenteredString(ms, drawStr, widgetX + widgetWidth / 2d, widgetY + 3 + imgHeight + 3, 0xAAAAAA);
+        double originalIconWidth = 782;
+        double originalIconHeight = 1000;
+
+        double newWidth = 16;
+        double delta = newWidth / originalIconWidth;
+        double newHeight = originalIconHeight * delta;
+
+        String desc = String.join(" | ", values);
+
+        double width = pad + newWidth + 5 + FontRenderers.getRenderer().getStringWidth(desc) + pad;
+        double height = pad * 2 + Math.max(newHeight, FontRenderers.getRenderer().getFontHeight());
+        Renderer.R2D.renderRoundedQuad(ms, ThemeManager.getMainTheme().getConfig(), 0, 0, width, height, 5, 20);
+        RenderSystem.setShaderTexture(0, GameTexture.TEXTURE_ICON.getWhere());
+        Renderer.R2D.renderTexture(ms, pad, height / 2d - newHeight / 2d, newWidth, newHeight, 0, 0, newWidth, newHeight, newWidth, newHeight);
+        FontRenderers.getRenderer().drawString(ms, desc, pad + newWidth + 5, height / 2d - FontRenderers.getRenderer().getMarginHeight() / 2d, 0xFFFFFF);
     }
 
     void drawModuleList(MatrixStack ms) {

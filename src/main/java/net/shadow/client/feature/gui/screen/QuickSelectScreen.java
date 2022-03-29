@@ -19,6 +19,7 @@ import net.shadow.client.feature.gui.DoesMSAA;
 import net.shadow.client.feature.gui.FastTickable;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleRegistry;
+import net.shadow.client.helper.GameTexture;
 import net.shadow.client.helper.Texture;
 import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.font.adapter.FontAdapter;
@@ -68,7 +69,7 @@ public class QuickSelectScreen extends ClientScreen implements FastTickable {
             String firstPart = cmdArgs[0].toLowerCase();
             for (Module module : ModuleRegistry.getModules()) {
                 if (module.getName().toLowerCase().startsWith(firstPart)) {
-                    entries.add(new SuggestionsEntry(module.getName(), new Texture("actions/toggleModule"), "Toggle module", () -> {
+                    entries.add(new SuggestionsEntry(module.getName(), GameTexture.ACTION_TOGGLEMODULE.getWhere(), "Toggle module", () -> {
                         module.toggle();
                         close();
                     }, 0, 0, 0, () -> {
@@ -80,7 +81,7 @@ public class QuickSelectScreen extends ClientScreen implements FastTickable {
             for (Command command1 : CommandRegistry.getCommands()) {
                 for (String alias : command1.getAliases()) {
                     if (alias.toLowerCase().startsWith(firstPart)) {
-                        entries.add(new SuggestionsEntry(alias + " " + String.join(" ", Arrays.copyOfRange(cmdArgs, 1, cmdArgs.length)), new Texture("actions/runCommand"), "Run command", () -> {
+                        entries.add(new SuggestionsEntry(alias + " " + String.join(" ", Arrays.copyOfRange(cmdArgs, 1, cmdArgs.length)), GameTexture.ACTION_RUNCOMMAND.getWhere(), "Run command", () -> {
                             CommandRegistry.execute(alias + " " + String.join(" ", Arrays.copyOfRange(cmdArgs, 1, cmdArgs.length)));
                             close();
                         }, 0, 0, 0, () -> {
@@ -230,9 +231,10 @@ public class QuickSelectScreen extends ClientScreen implements FastTickable {
     }
 
     public static class CommandTextField implements Element, Drawable, Selectable, DoesMSAA {
-        protected final String suggestion;
-        public Runnable changeListener = () -> {
+        public final Runnable changeListener = () -> {
         };
+        protected final String suggestion;
+        final FontAdapter fa;
         public float opacity = 0f;
         protected String text = "";
         protected boolean focused;
@@ -241,7 +243,6 @@ public class QuickSelectScreen extends ClientScreen implements FastTickable {
         protected int selectionStart, selectionEnd;
         boolean mouseOver = false;
         double x, y, width, height;
-        FontAdapter fa;
 
         public CommandTextField(FontAdapter fa, double x, double y, double width, double height, String text) {
             this.fa = fa;
@@ -554,8 +555,6 @@ public class QuickSelectScreen extends ClientScreen implements FastTickable {
             double innerHeight = fa.getFontHeight();
             double centerY = y + height / 2d - innerHeight / 2d;
 
-            //        Renderer.R2D.renderQuad(stack,Color.RED,x,y+height,x+width,y+height+.5);
-//            Renderer.R2D.renderRoundedQuad(stack, new Color(40, 40, 40), x, y, x + width, y + height, 5, 20);
             ClipStack.globalInstance.addWindow(stack, new Rectangle(x + pad, y, x + width - pad, y + height));
             //Renderer.R2D.beginScissor(stack, x + pad, y, x + width - pad, y + height);
             // Text content
@@ -754,13 +753,14 @@ public class QuickSelectScreen extends ClientScreen implements FastTickable {
     }
 
     static class SuggestionsEntry {
+        final String text;
+        final String title;
+        final Texture icon;
+        final Runnable onCl;
+        final Runnable tabcomplete;
+        final double padUpDown = 3;
         public boolean selected = false;
-        String text, title;
-        Texture icon;
-        Runnable onCl;
-        Runnable tabcomplete;
         double x, y, wid;
-        double padUpDown = 3;
 
         public SuggestionsEntry(String text, Texture icon, String title, Runnable onClick, double x, double y, double width, Runnable onTab) {
             this.text = text;

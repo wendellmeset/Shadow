@@ -7,7 +7,7 @@ import net.shadow.client.feature.gui.panels.elements.PanelFrame;
 import net.shadow.client.feature.gui.screen.ClientScreen;
 
 public class PanelsGui extends ClientScreen implements FastTickable {
-    PanelFrame[] renders;
+    final PanelFrame[] renders;
 
     public PanelsGui(PanelFrame[] renders) {
         this.renders = renders;

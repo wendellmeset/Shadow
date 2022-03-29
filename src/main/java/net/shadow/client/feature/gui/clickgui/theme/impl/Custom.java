@@ -10,7 +10,7 @@ import net.shadow.client.feature.module.ModuleRegistry;
 import java.awt.*;
 
 public class Custom implements Theme {
-    net.shadow.client.feature.module.impl.render.Theme theme = ModuleRegistry.getByClass(net.shadow.client.feature.module.impl.render.Theme.class);
+    final net.shadow.client.feature.module.impl.render.Theme theme = ModuleRegistry.getByClass(net.shadow.client.feature.module.impl.render.Theme.class);
 
     @Override
     public String getName() {

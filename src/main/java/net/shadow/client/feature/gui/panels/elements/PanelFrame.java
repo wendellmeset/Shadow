@@ -15,9 +15,9 @@ import java.awt.*;
 import java.util.HashMap;
 
 public class PanelFrame extends Element implements FastTickable {
-    String title;
-    Element[] elements;
-    HashMap<Element, double[]> positions = new HashMap<>();
+    final String title;
+    final Element[] elements;
+    final HashMap<Element, double[]> positions = new HashMap<>();
     boolean selected = false;
     boolean open = true;
     double xGoal, yGoal;
@@ -115,10 +115,10 @@ public class PanelFrame extends Element implements FastTickable {
             pb.setY(this.y + 20 + positions.get(pb)[1]);
             pb.setWidth(positions.get(pb)[2]);
             pb.setHeight(positions.get(pb)[3]);
-            if(positions.get(pb)[2] < 0){
+            if (positions.get(pb)[2] < 0) {
                 pb.setWidth(this.width - 10);
             }
-            if(positions.get(pb)[3] < 0){
+            if (positions.get(pb)[3] < 0) {
                 pb.setHeight(this.height - 10);
             }
         }

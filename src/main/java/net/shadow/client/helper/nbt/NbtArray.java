@@ -13,8 +13,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class NbtArray<T> extends NbtElement {
-    String name;
-    T[] elements;
+    final String name;
+    final T[] elements;
 
     @SafeVarargs
     private NbtArray(String name, T... elements) {
