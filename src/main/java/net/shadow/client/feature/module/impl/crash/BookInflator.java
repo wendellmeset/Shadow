@@ -19,7 +19,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 public class BookInflator extends Module {
     int slot = 5;
     public BookInflator() {
-        super("BookInflater", "Writes a book thats nbt value is 3x bigger than normal", ModuleType.CRASH);
+        super("BookInflater", "Writes a book thats big", ModuleType.CRASH);
     }
 
     @Override
