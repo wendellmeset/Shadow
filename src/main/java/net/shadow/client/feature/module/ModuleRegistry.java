@@ -111,6 +111,7 @@ public class ModuleRegistry {
         modules.add(new InstantBreak()); //TODO: unshit
         modules.add(new MassUse());
         modules.add(new NoBreakDelay());
+        modules.add(new SurvivalNuker());
         modules.add(new Nuker());
         modules.add(new Scaffold());
         modules.add(new Test());
@@ -131,6 +132,7 @@ public class ModuleRegistry {
         modules.add(new BookInflator());
         modules.add(new BetterBlockBreaking());
         modules.add(new AutoIgnite());
+
     }
 
     public static List<Module> getModules() {

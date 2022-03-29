@@ -4,12 +4,14 @@
 
 package net.shadow.client.feature.module.impl.world;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.config.BooleanSetting;
 import net.shadow.client.feature.gui.notifications.Notification;
 import net.shadow.client.feature.gui.notifications.NotificationRenderer;
@@ -91,8 +93,10 @@ public class GodBridge extends Module {
         HitResult hr = client.crosshairTarget;
         if (Objects.requireNonNull(hr).getType() == HitResult.Type.BLOCK && hr instanceof BlockHitResult result) {
             if (Arrays.stream(allowedSides).anyMatch(direction -> direction == result.getSide())) {
-                client.player.swingHand(Hand.MAIN_HAND);
-                Objects.requireNonNull(client.interactionManager).interactBlock(client.player, client.world, Hand.MAIN_HAND, result);
+                ShadowMain.client.execute(() -> {
+                    client.player.swingHand(Hand.MAIN_HAND);
+                    Objects.requireNonNull(client.interactionManager).interactBlock(client.player, client.world, Hand.MAIN_HAND, result);
+                });
             }
         }
         if (!courseCorrect.getValue()) {
