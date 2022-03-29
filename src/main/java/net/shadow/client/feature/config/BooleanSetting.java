@@ -4,13 +4,15 @@
 
 package net.shadow.client.feature.config;
 
+import java.util.function.Consumer;
+
 /**
  * A setting describing a boolean
  */
 public class BooleanSetting extends SettingBase<Boolean> {
 
-    public BooleanSetting(Boolean defaultValue, String name, String description) {
-        super(defaultValue, name, description);
+    public BooleanSetting(Boolean defaultValue, String name, String description, Consumer<Boolean> onChanged) {
+        super(defaultValue, name, description, onChanged);
     }
 
     @Override
@@ -26,7 +28,7 @@ public class BooleanSetting extends SettingBase<Boolean> {
 
         @Override
         public BooleanSetting get() {
-            return new BooleanSetting(defaultValue, name, description);
+            return new BooleanSetting(defaultValue, name, description, changed);
         }
     }
 }

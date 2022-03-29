@@ -28,7 +28,7 @@ public class ColorSettingEditor extends ConfigBase<ColorSetting> {
 
     public ColorSettingEditor(double x, double y, double width, ColorSetting configValue) {
         super(x, y, width, 0, configValue);
-        red = new DoubleSettingEditor(x + 4, y, width - 4, new DoubleSetting((double) configValue.getValue().getRed(), "Red", "", 0, 0, 255) {
+        red = new DoubleSettingEditor(x + 4, y, width - 4, new DoubleSetting((double) configValue.getValue().getRed(), "Red", "", 0, 0, 255, null) {
             @Override
             public Double getValue() {
                 return (double) configValue.getValue().getRed();
@@ -42,7 +42,7 @@ public class ColorSettingEditor extends ConfigBase<ColorSetting> {
 
 
         });
-        green = new DoubleSettingEditor(x + 4, y + red.getHeight(), width - 4, new DoubleSetting((double) configValue.getValue().getGreen(), "Green", "", 0, 0, 255) {
+        green = new DoubleSettingEditor(x + 4, y + red.getHeight(), width - 4, new DoubleSetting((double) configValue.getValue().getGreen(), "Green", "", 0, 0, 255, null) {
             @Override
             public Double getValue() {
                 return (double) configValue.getValue().getGreen();
@@ -56,7 +56,7 @@ public class ColorSettingEditor extends ConfigBase<ColorSetting> {
 
 
         });
-        blue = new DoubleSettingEditor(x + 4, y + red.getHeight() + green.getHeight(), width - 4, new DoubleSetting((double) configValue.getValue().getBlue(), "Blue", "", 0, 0, 255) {
+        blue = new DoubleSettingEditor(x + 4, y + red.getHeight() + green.getHeight(), width - 4, new DoubleSetting((double) configValue.getValue().getBlue(), "Blue", "", 0, 0, 255, null) {
             @Override
             public Double getValue() {
                 return (double) configValue.getValue().getBlue();
@@ -70,7 +70,7 @@ public class ColorSettingEditor extends ConfigBase<ColorSetting> {
 
 
         });
-        alpha = new DoubleSettingEditor(x + 4, y + red.getHeight() + green.getHeight() + blue.getHeight(), width - 4, new DoubleSetting((double) configValue.getValue().getAlpha(), "Alpha", "", 0, 0, 255) {
+        alpha = new DoubleSettingEditor(x + 4, y + red.getHeight() + green.getHeight() + blue.getHeight(), width - 4, new DoubleSetting((double) configValue.getValue().getAlpha(), "Alpha", "", 0, 0, 255, null) {
             @Override
             public Double getValue() {
                 return (double) configValue.getValue().getAlpha();

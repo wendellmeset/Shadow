@@ -132,7 +132,7 @@ public class ModuleRegistry {
         modules.add(new BookInflator());
         modules.add(new BetterBlockBreaking());
         modules.add(new AutoIgnite());
-
+        modules.add(new DiscordRPC());
     }
 
     public static List<Module> getModules() {

@@ -5,6 +5,7 @@
 package net.shadow.client.feature.config;
 
 import java.awt.*;
+import java.util.function.Consumer;
 
 public class ColorSetting extends SettingBase<Color> {
     /**
@@ -14,8 +15,8 @@ public class ColorSetting extends SettingBase<Color> {
      * @param name         The name
      * @param description  The description
      */
-    public ColorSetting(Color defaultValue, String name, String description) {
-        super(defaultValue, name, description);
+    public ColorSetting(Color defaultValue, String name, String description, Consumer<Color> onChanged) {
+        super(defaultValue, name, description, onChanged);
     }
 
     @Override
@@ -41,7 +42,7 @@ public class ColorSetting extends SettingBase<Color> {
 
         @Override
         public ColorSetting get() {
-            return new ColorSetting(defaultValue, name, description);
+            return new ColorSetting(defaultValue, name, description, changed);
         }
     }
 }

@@ -6,13 +6,14 @@ package net.shadow.client.feature.config;
 
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.function.Consumer;
 
 public class EnumSetting<T extends Enum<?>> extends SettingBase<T> {
     private T[] values;
 
     @SuppressWarnings("unchecked")
-    public EnumSetting(T defaultValue, String name, String description) {
-        super(defaultValue, name, description);
+    public EnumSetting(T defaultValue, String name, String description, Consumer<T> onChanged) {
+        super(defaultValue, name, description, onChanged);
         if (!Modifier.isPublic(defaultValue.getClass().getModifiers())) {
             throw new IllegalArgumentException("Enum has to be public!");
         }
@@ -52,7 +53,7 @@ public class EnumSetting<T extends Enum<?>> extends SettingBase<T> {
 
         @Override
         public EnumSetting<T> get() {
-            return new EnumSetting<>(defaultValue, name, description);
+            return new EnumSetting<>(defaultValue, name, description, changed);
         }
     }
 }

@@ -29,6 +29,8 @@ public abstract class SettingBase<V> {
      */
     V value;
 
+    Consumer<V> onChanged;
+
     /**
      * Constructs a new Setting
      *
@@ -36,10 +38,11 @@ public abstract class SettingBase<V> {
      * @param name         The name
      * @param description  The description
      */
-    public SettingBase(V defaultValue, String name, String description) {
+    public SettingBase(V defaultValue, String name, String description, Consumer<V> onChanged) {
         this.name = name;
         this.description = description;
         this.defaultValue = this.value = defaultValue;
+        this.onChanged = onChanged;
     }
 
     public void showIf(BooleanSupplier supplier) {
@@ -87,6 +90,7 @@ public abstract class SettingBase<V> {
      */
     public void setValue(V value) {
         this.value = value;
+        if (this.onChanged != null) this.onChanged.accept(value);
     }
 
     public void reset() {

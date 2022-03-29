@@ -4,10 +4,12 @@
 
 package net.shadow.client.feature.config;
 
+import java.util.function.Consumer;
+
 public class StringSetting extends SettingBase<String> {
 
-    public StringSetting(String defaultValue, String name, String description) {
-        super(defaultValue, name, description);
+    public StringSetting(String defaultValue, String name, String description, Consumer<String> onChange) {
+        super(defaultValue, name, description, onChange);
     }
 
     @Override
@@ -23,7 +25,7 @@ public class StringSetting extends SettingBase<String> {
 
         @Override
         public StringSetting get() {
-            return new StringSetting(defaultValue, name, description);
+            return new StringSetting(defaultValue, name, description, changed);
         }
     }
 }
