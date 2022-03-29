@@ -28,6 +28,10 @@ public class Renderer {
 
         static final MatrixStack empty = new MatrixStack();
 
+        public static void renderFadingBlock(MatrixStack stack, Color outlineColor, Color fillColor, Vec3d start, Vec3d dimensions) {
+
+        }
+
 
         public static void renderCircleOutline(MatrixStack stack, Color c, Vec3d start, double rad, double width, double segments) {
             Camera camera = ShadowMain.client.gameRenderer.getCamera();
@@ -132,6 +136,105 @@ public class Renderer {
         public static MatrixStack getEmptyMatrixStack() {
             empty.loadIdentity(); // essentially clear the stack
             return empty;
+        }
+
+        public static void renderEdged(MatrixStack stack, Vec3d start, Vec3d dimensions, Color colorFill, Color colorOutline) {
+            float red = colorFill.getRed() / 255f;
+            float green = colorFill.getGreen() / 255f;
+            float blue = colorFill.getBlue() / 255f;
+            float alpha = colorFill.getAlpha() / 255f;
+
+            float r1 = colorOutline.getRed()/255f;
+            float g1 = colorOutline.getGreen()/255f;
+            float b1 = colorOutline.getBlue()/255f;
+            float a1 = colorOutline.getAlpha()/255f;
+
+            Camera c = ShadowMain.client.gameRenderer.getCamera();
+            Vec3d camPos = c.getPos();
+            start = start.subtract(camPos);
+            Vec3d end = start.add(dimensions);
+            Matrix4f matrix = stack.peek().getPositionMatrix();
+            float x1 = (float) start.x;
+            float y1 = (float) start.y;
+            float z1 = (float) start.z;
+            float x2 = (float) end.x;
+            float y2 = (float) end.y;
+            float z2 = (float) end.z;
+            BufferBuilder buffer = Tessellator.getInstance().getBuffer();
+
+            GL11.glDepthFunc(GL11.GL_ALWAYS);
+            setupRender();
+            RenderSystem.setShader(GameRenderer::getPositionColorShader);
+            buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+            buffer.vertex(matrix, x1, y2, z1).color(red, green, blue, alpha).next();
+            buffer.vertex(matrix, x1, y2, z2).color(red, green, blue, alpha).next();
+            buffer.vertex(matrix, x2, y2, z2).color(red, green, blue, alpha).next();
+            buffer.vertex(matrix, x2, y2, z1).color(red, green, blue, alpha).next();
+
+            buffer.vertex(matrix, x1, y1, z2).color(red, green, blue, alpha).next();
+            buffer.vertex(matrix, x2, y1, z2).color(red, green, blue, alpha).next();
+            buffer.vertex(matrix, x2, y2, z2).color(red, green, blue, alpha).next();
+            buffer.vertex(matrix, x1, y2, z2).color(red, green, blue, alpha).next();
+
+            buffer.vertex(matrix, x2, y2, z2).color(red, green, blue, alpha).next();
+            buffer.vertex(matrix, x2, y1, z2).color(red, green, blue, alpha).next();
+            buffer.vertex(matrix, x2, y1, z1).color(red, green, blue, alpha).next();
+            buffer.vertex(matrix, x2, y2, z1).color(red, green, blue, alpha).next();
+
+            buffer.vertex(matrix, x2, y2, z1).color(red, green, blue, alpha).next();
+            buffer.vertex(matrix, x2, y1, z1).color(red, green, blue, alpha).next();
+            buffer.vertex(matrix, x1, y1, z1).color(red, green, blue, alpha).next();
+            buffer.vertex(matrix, x1, y2, z1).color(red, green, blue, alpha).next();
+
+            buffer.vertex(matrix, x1, y2, z1).color(red, green, blue, alpha).next();
+            buffer.vertex(matrix, x1, y1, z1).color(red, green, blue, alpha).next();
+            buffer.vertex(matrix, x1, y1, z2).color(red, green, blue, alpha).next();
+            buffer.vertex(matrix, x1, y2, z2).color(red, green, blue, alpha).next();
+
+            buffer.vertex(matrix, x1, y1, z1).color(red, green, blue, alpha).next();
+            buffer.vertex(matrix, x2, y1, z1).color(red, green, blue, alpha).next();
+            buffer.vertex(matrix, x2, y1, z2).color(red, green, blue, alpha).next();
+            buffer.vertex(matrix, x1, y1, z2).color(red, green, blue, alpha).next();
+
+            buffer.end();
+            BufferRenderer.draw(buffer);
+
+            RenderSystem.setShader(GameRenderer::getPositionColorShader);
+            buffer.begin(VertexFormat.DrawMode.DEBUG_LINES, VertexFormats.POSITION_COLOR);
+            buffer.vertex(matrix, x1, y1, z1).color(r1, g1, b1, a1).next();
+            buffer.vertex(matrix, x1, y1, z2).color(r1, g1, b1, a1).next();
+            buffer.vertex(matrix, x1, y1, z2).color(r1, g1, b1, a1).next();
+            buffer.vertex(matrix, x2, y1, z2).color(r1, g1, b1, a1).next();
+            buffer.vertex(matrix, x2, y1, z2).color(r1, g1, b1, a1).next();
+            buffer.vertex(matrix, x2, y1, z1).color(r1, g1, b1, a1).next();
+            buffer.vertex(matrix, x2, y1, z1).color(r1, g1, b1, a1).next();
+            buffer.vertex(matrix, x1, y1, z1).color(r1, g1, b1, a1).next();
+
+            buffer.vertex(matrix, x1, y2, z1).color(r1, g1, b1, a1).next();
+            buffer.vertex(matrix, x1, y2, z2).color(r1, g1, b1, a1).next();
+            buffer.vertex(matrix, x1, y2, z2).color(r1, g1, b1, a1).next();
+            buffer.vertex(matrix, x2, y2, z2).color(r1, g1, b1, a1).next();
+            buffer.vertex(matrix, x2, y2, z2).color(r1, g1, b1, a1).next();
+            buffer.vertex(matrix, x2, y2, z1).color(r1, g1, b1, a1).next();
+            buffer.vertex(matrix, x2, y2, z1).color(r1, g1, b1, a1).next();
+            buffer.vertex(matrix, x1, y2, z1).color(r1, g1, b1, a1).next();
+
+            buffer.vertex(matrix, x1, y1, z1).color(r1, g1, b1, a1).next();
+            buffer.vertex(matrix, x1, y2, z1).color(r1, g1, b1, a1).next();
+
+            buffer.vertex(matrix, x2, y1, z1).color(r1, g1, b1, a1).next();
+            buffer.vertex(matrix, x2, y2, z1).color(r1, g1, b1, a1).next();
+
+            buffer.vertex(matrix, x2, y1, z2).color(r1, g1, b1, a1).next();
+            buffer.vertex(matrix, x2, y2, z2).color(r1, g1, b1, a1).next();
+
+            buffer.vertex(matrix, x1, y1, z2).color(r1, g1, b1, a1).next();
+            buffer.vertex(matrix, x1, y2, z2).color(r1, g1, b1, a1).next();
+
+            buffer.end();
+
+            BufferRenderer.draw(buffer);
+            GL11.glDepthFunc(GL11.GL_LEQUAL);
         }
 
         public static void renderFilled(Vec3d start, Vec3d dimensions, Color color, MatrixStack stack, int GLMODE) {

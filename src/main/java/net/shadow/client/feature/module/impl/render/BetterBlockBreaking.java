@@ -53,8 +53,9 @@ public class BetterBlockBreaking extends Module {
         Vec3d len = new Vec3d(bb.getXLength(),bb.getYLength(),bb.getZLength());
         Color outline = new Color(50,50,50,255);
         Color fill = new Color(20,20,20,100);
-        Renderer.R3D.renderFilled(start,len,fill,stack);
-        Renderer.R3D.renderOutline(start,len,outline,stack);
+        Renderer.R3D.renderEdged(stack,start,len,fill,outline);
+//        Renderer.R3D.renderFilled(start,len,fill,stack);
+//        Renderer.R3D.renderOutline(start,len,outline,stack);
 
     }
 
