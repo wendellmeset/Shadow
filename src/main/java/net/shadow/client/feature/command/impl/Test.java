@@ -11,8 +11,9 @@ public class Test extends Command {
         super("Test", "REAL", "test");
     }
 
+
+
     @Override
     public void onExecute(String[] args) {
-
     }
 }

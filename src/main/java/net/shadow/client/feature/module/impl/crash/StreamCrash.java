@@ -33,7 +33,7 @@ public class StreamCrash extends Module {
 
     @Override
     public void tick() {
-        /*for(int i = 0; i < 5; i++){
+        for(int i = 0; i < 5; i++){
             if(slot > 36 + 9){
                 slot = 0;
                 return;
@@ -50,14 +50,11 @@ public class StreamCrash extends Module {
             tag.put("pages", list);
             crash.setNbt(tag);
             ShadowMain.client.player.networkHandler.sendPacket(new CreativeInventoryActionC2SPacket(slot, crash));
-        }*/
+        }
     }
 
     @Override
     public void enable() {
-        List<String> real = new ArrayList<String>();
-        real.add("\"cock and balls, also known as \"\"\"\"\"");
-        ShadowMain.client.player.networkHandler.sendPacket(new BookUpdateC2SPacket(0, real, Optional.of("cock")));
     }
 
     @Override
