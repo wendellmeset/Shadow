@@ -6,12 +6,9 @@ package net.shadow.client.feature.module;
 
 
 import net.shadow.client.feature.module.impl.combat.*;
-import net.shadow.client.feature.module.impl.crash.BookInflator;
+import net.shadow.client.feature.module.impl.crash.*;
 import net.shadow.client.feature.module.impl.exploit.*;
-import net.shadow.client.feature.module.impl.grief.Annhilator;
-import net.shadow.client.feature.module.impl.grief.AutoIgnite;
-import net.shadow.client.feature.module.impl.grief.AutoTnt;
-import net.shadow.client.feature.module.impl.grief.Decimator;
+import net.shadow.client.feature.module.impl.grief.*;
 import net.shadow.client.feature.module.impl.misc.*;
 import net.shadow.client.feature.module.impl.movement.*;
 import net.shadow.client.feature.module.impl.render.*;
@@ -131,6 +128,10 @@ public class ModuleRegistry {
         modules.add(new BookInflator());
         modules.add(new BetterBlockBreaking());
         modules.add(new AutoIgnite());
+        modules.add(new AirPlace());
+        modules.add(new AdSpammer());
+        modules.add(new AnimationCrash());
+        modules.add(new AutoFireball());
     }
 
     public static List<Module> getModules() {

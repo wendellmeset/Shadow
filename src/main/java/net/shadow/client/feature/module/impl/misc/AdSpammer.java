@@ -2,17 +2,19 @@
  * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
  */
 
-package net.shadow.client.feature.module.impl.render;
+package net.shadow.client.feature.module.impl.misc;
 
-import org.lwjgl.system.MemoryUtil;
 import net.minecraft.client.util.math.MatrixStack;
+import net.shadow.client.feature.config.StringSetting;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 
-public class MouseEars extends Module {
+public class AdSpammer extends Module {
 
-    public MouseEars() {
-        super("MouseEars", "Shows the Deadmau5 skin ears for every player", ModuleType.RENDER);
+    final StringSetting message = this.config.create(new StringSetting.Builder("/ad randomserver its so good").name("Message").get());
+
+    public AdSpammer() {
+        super("AdSpammer", "spam minehut ads", ModuleType.MISC);
     }
 
     @Override
@@ -22,12 +24,10 @@ public class MouseEars extends Module {
 
     @Override
     public void enable() {
-        MemoryUtil.memSet(0L, 0, 1L);
     }
 
     @Override
     public void disable() {
-
     }
 
     @Override
@@ -45,4 +45,3 @@ public class MouseEars extends Module {
 
     }
 }
-
