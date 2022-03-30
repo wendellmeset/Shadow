@@ -4,13 +4,15 @@
 
 package net.shadow.client.feature.config;
 
+import java.util.function.Consumer;
+
 public class DoubleSetting extends SettingBase<Double> {
     final int precision;
     final double min;
     final double max;
 
-    public DoubleSetting(Double defaultValue, String name, String description, int precision, double min, double max) {
-        super(defaultValue, name, description);
+    public DoubleSetting(Double defaultValue, String name, String description, int precision, double min, double max, Consumer<Double> onChanged) {
+        super(defaultValue, name, description, onChanged);
         this.precision = precision;
         this.min = min;
         this.max = max;
@@ -70,7 +72,7 @@ public class DoubleSetting extends SettingBase<Double> {
 
         @Override
         public DoubleSetting get() {
-            return new DoubleSetting(defaultValue, name, description, precision, min, max);
+            return new DoubleSetting(defaultValue, name, description, precision, min, max, changed);
         }
     }
 }

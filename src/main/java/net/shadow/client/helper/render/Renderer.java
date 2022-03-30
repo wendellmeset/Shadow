@@ -12,9 +12,13 @@ import net.minecraft.util.shape.VoxelShape;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.helper.math.Matrix4x4;
 import net.shadow.client.helper.math.Vector3D;
+import net.shadow.client.mixin.MatrixStackAccessor;
+import net.shadow.client.mixin.MatrixStackEntryAccessor;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Renderer {
     public static void setupRender() {
@@ -27,11 +31,30 @@ public class Renderer {
     public static class R3D {
 
         static final MatrixStack empty = new MatrixStack();
-
-        public static void renderFadingBlock(MatrixStack stack, Color outlineColor, Color fillColor, Vec3d start, Vec3d dimensions) {
-
+        static final List<FadingBlock> fades = new ArrayList<>();
+        record FadingBlock(Color outline, Color fill, Vec3d start, Vec3d dimensions, long created, long lifeTime) {
+            long getLifeTimeLeft() {
+                return Math.max(0, (created-System.currentTimeMillis())+lifeTime);
+            }
+            boolean isDead() {
+                return getLifeTimeLeft()==0;
+            }
         }
-
+        public static void renderFadingBlock(Color outlineColor, Color fillColor, Vec3d start, Vec3d dimensions, long lifeTimeMs) {
+            FadingBlock fb = new FadingBlock(outlineColor,fillColor,start,dimensions,System.currentTimeMillis(),lifeTimeMs);
+            fades.removeIf(fadingBlock -> fadingBlock.start.equals(start) && fadingBlock.dimensions.equals(dimensions));
+            fades.add(fb);
+        }
+        public static void renderFadingBlocks(MatrixStack stack) {
+            fades.removeIf(FadingBlock::isDead);
+            for (FadingBlock fade : fades) {
+                long lifetimeLeft = fade.getLifeTimeLeft();
+                double progress = lifetimeLeft/(double)fade.lifeTime;
+                Color out = Util.modify(fade.outline,-1,-1,-1,(int) (fade.outline.getAlpha()*progress));
+                Color fill = Util.modify(fade.fill,-1,-1,-1,(int) (fade.fill.getAlpha()*progress));
+                Renderer.R3D.renderEdged(stack,fade.start,fade.dimensions,fill,out);
+            }
+        }
 
         public static void renderCircleOutline(MatrixStack stack, Color c, Vec3d start, double rad, double width, double segments) {
             Camera camera = ShadowMain.client.gameRenderer.getCamera();

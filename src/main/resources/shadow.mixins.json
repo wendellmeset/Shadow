@@ -41,6 +41,7 @@
     "LivingEntityMixin",
     "LivingEntityRendererMixin",
     "MatrixStackAccessor",
+    "MatrixStackEntryAccessor",
     "MinecraftClientMixin",
     "ModelPartCuboidMixin",
     "ModelPartMixin",

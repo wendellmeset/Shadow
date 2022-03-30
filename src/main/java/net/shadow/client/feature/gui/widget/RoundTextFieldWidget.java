@@ -339,7 +339,8 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
     @Override
     public void render(MatrixStack stack, int mouseX, int mouseY, float delta) {
         mouseOver = inBounds(mouseX, mouseY);
-        double pad = pad();
+//        double pad = pad();
+        double pad = 2;
         double overflowWidth = getOverflowWidthForRender();
         double innerHeight = FontRenderers.getRenderer().getFontHeight();
         double centerY = y + height / 2d - innerHeight / 2d;

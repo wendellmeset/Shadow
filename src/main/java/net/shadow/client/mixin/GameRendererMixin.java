@@ -22,6 +22,7 @@ import net.shadow.client.feature.module.impl.render.FreeLook;
 import net.shadow.client.feature.module.impl.render.Zoom;
 import net.shadow.client.helper.Rotations;
 import net.shadow.client.helper.render.MSAAFramebuffer;
+import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Utils;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
@@ -49,6 +50,7 @@ public class GameRendererMixin {
                     module.onWorldRender(matrix);
                 }
             }
+            Renderer.R3D.renderFadingBlocks(matrix);
         });
         for (Module module : ModuleRegistry.getModules()) {
             if (module.isEnabled()) {

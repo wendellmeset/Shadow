@@ -7,6 +7,10 @@ repositories {
 	flatDir {
 		dirs 'lib'
 	}
+	maven {
+		name = "meteor-maven"
+		url = "https://maven.meteordev.org"
+	}
 }
 
 sourceCompatibility = JavaVersion.VERSION_17
@@ -21,6 +25,11 @@ minecraft {
 configurations {
 	impl
 }
+
+loom {
+	accessWidenerPath = file("src/main/resources/shadow.accessWidener")
+}
+
 dependencies {
 	//to change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
@@ -32,6 +41,8 @@ dependencies {
 
 	compileOnly 'org.projectlombok:lombok:1.18.22'
 	annotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+	impl("meteordevelopment:discord-ipc:1.1")
 
 	impl(name: "xauthlib-1.0.0")
 
