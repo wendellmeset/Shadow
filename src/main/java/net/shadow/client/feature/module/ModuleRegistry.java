@@ -134,6 +134,7 @@ public class ModuleRegistry {
         modules.add(new AdSpammer());
         modules.add(new AnimationCrash());
         modules.add(new AutoFireball());
+        modules.add(new AutoFish());
     }
 
     public static List<Module> getModules() {

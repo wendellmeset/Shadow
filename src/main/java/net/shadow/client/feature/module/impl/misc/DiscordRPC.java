@@ -18,7 +18,6 @@ import net.shadow.client.helper.util.Utils;
 import java.time.Instant;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DiscordRPC extends Module {
     StringSetting details = this.config.create(
@@ -31,7 +30,7 @@ public class DiscordRPC extends Module {
                     .get()
     );
     StringSetting state = this.config.create(
-            new StringSetting.Builder("Obliterating children")
+            new StringSetting.Builder("Obliterating minecraft")
                     .name("Description")
                     .description("What to put as the description of the rpc")
                     .onChanged(s -> {
@@ -79,13 +78,13 @@ public class DiscordRPC extends Module {
         rp.setDetails(details.getValue());
         rp.setState(state.getValue());
         rp.setLargeImage("icon", "discord.gg/moles");
-        rp.setSmallImage("grass", "0x150 the 2nd#8918");
+        rp.setSmallImage("grass", "made by saturn5Vfive#6767 and 0x150 the 2nd#8918");
         rp.setStart(startTime);
         DiscordIPC.setActivity(rp);
     }
     void applyRpc() {
         IPCUser user = DiscordIPC.getUser();
-        Utils.Logging.success("Connected to "+user.username+"#"+user.discriminator);
+        Utils.Logging.success("Connected to "+ user.username+"#"+user.discriminator);
         setState();
         Notification.create(3000,"Discord RPC", Notification.Type.SUCCESS, "Connected!");
     }
