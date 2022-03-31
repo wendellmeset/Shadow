@@ -127,7 +127,7 @@ public class ModuleRegistry {
         modules.add(new ShowTntPrime());
         modules.add(new ShadowScreen());
         modules.add(new BookInflator());
-        modules.add(new BetterBlockBreaking());
+        modules.add(new BlockHighlighting());
         modules.add(new AutoIgnite());
         modules.add(new DiscordRPC());
         modules.add(new AirPlace());

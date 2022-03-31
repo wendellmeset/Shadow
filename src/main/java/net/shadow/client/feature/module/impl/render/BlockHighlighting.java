@@ -16,15 +16,30 @@ import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
+import net.minecraft.network.packet.s2c.play.BlockEventS2CPacket;
+import net.minecraft.network.packet.s2c.play.BlockUpdateS2CPacket;
+import net.shadow.client.helper.event.EventType;
+import net.shadow.client.helper.event.Events;
+import net.shadow.client.helper.event.events.PacketEvent;
 import net.shadow.client.helper.render.Renderer;
+import net.shadow.client.helper.util.Utils;
 import net.shadow.client.mixin.WorldRendererAccessor;
 
 import java.awt.*;
 import java.util.SortedSet;
 
-public class BetterBlockBreaking extends Module {
-    public BetterBlockBreaking() {
-        super("BetterBlockBreaking", "Renders better block breaking animations", ModuleType.RENDER);
+public class BlockHighlighting extends Module {
+    public BlockHighlighting() {
+        super("BlockHighlighting", "Renders better block breaking animations", ModuleType.RENDER);
+        Events.registerEventHandler(EventType.PACKET_RECEIVE, p -> {
+            if(!this.isEnabled()) return;
+            PacketEvent event = (PacketEvent)p;
+            if(event.getPacket() instanceof BlockUpdateS2CPacket packet){
+                BlockPos real = packet.getPos();
+                Renderer.R3D.renderFadingBlock(Renderer.Util.modify(Utils.getCurrentRGB(), -1, -1, -1, 255),Renderer.Util.modify(Utils.getCurrentRGB(), -1, -1, -1, 100).darker(),Vec3d.of(real),new Vec3d(1,1,1), 1000);
+            }
+        });
     }
 
     @Override

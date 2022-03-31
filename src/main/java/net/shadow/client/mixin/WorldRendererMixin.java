@@ -10,7 +10,7 @@ import net.minecraft.client.render.BlockBreakingInfo;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.shadow.client.feature.module.ModuleRegistry;
-import net.shadow.client.feature.module.impl.render.BetterBlockBreaking;
+import net.shadow.client.feature.module.impl.render.BlockHighlighting;
 import net.shadow.client.feature.module.impl.render.Freecam;
 import net.shadow.client.feature.module.impl.world.XRAY;
 import org.spongepowered.asm.mixin.Debug;
@@ -37,7 +37,7 @@ public class WorldRendererMixin {
             target="Lit/unimi/dsi/fastutil/longs/Long2ObjectMap;long2ObjectEntrySet()Lit/unimi/dsi/fastutil/objects/ObjectSet;"
     ))
     ObjectSet<Long2ObjectMap.Entry<SortedSet<BlockBreakingInfo>>> a(Long2ObjectMap<SortedSet<BlockBreakingInfo>> instance, MatrixStack matrices) {
-        BetterBlockBreaking bbr = ModuleRegistry.getByClass(BetterBlockBreaking.class);
+        BlockHighlighting bbr = ModuleRegistry.getByClass(BlockHighlighting.class);
         if (bbr.isEnabled()) {
 //            for (Long2ObjectMap.Entry<SortedSet<BlockBreakingInfo>> sortedSetEntry : instance.long2ObjectEntrySet()) {
 //                bbr.renderEntry(matrices, sortedSetEntry);
