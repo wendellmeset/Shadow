@@ -8,6 +8,7 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.render.BlockBreakingInfo;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.network.packet.s2c.play.BlockUpdateS2CPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
@@ -15,10 +16,6 @@ import net.minecraft.util.shape.VoxelShape;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
-import net.minecraft.network.packet.s2c.play.BlockEventS2CPacket;
-import net.minecraft.network.packet.s2c.play.BlockUpdateS2CPacket;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.PacketEvent;
@@ -33,11 +30,11 @@ public class BlockHighlighting extends Module {
     public BlockHighlighting() {
         super("BlockHighlighting", "Renders better block breaking animations", ModuleType.RENDER);
         Events.registerEventHandler(EventType.PACKET_RECEIVE, p -> {
-            if(!this.isEnabled()) return;
-            PacketEvent event = (PacketEvent)p;
-            if(event.getPacket() instanceof BlockUpdateS2CPacket packet){
+            if (!this.isEnabled()) return;
+            PacketEvent event = (PacketEvent) p;
+            if (event.getPacket() instanceof BlockUpdateS2CPacket packet) {
                 BlockPos real = packet.getPos();
-                Renderer.R3D.renderFadingBlock(Renderer.Util.modify(Utils.getCurrentRGB(), -1, -1, -1, 255),Renderer.Util.modify(Utils.getCurrentRGB(), -1, -1, -1, 100).darker(),Vec3d.of(real),new Vec3d(1,1,1), 1000);
+                Renderer.R3D.renderFadingBlock(Renderer.Util.modify(Utils.getCurrentRGB(), -1, -1, -1, 255), Renderer.Util.modify(Utils.getCurrentRGB(), -1, -1, -1, 100).darker(), Vec3d.of(real), new Vec3d(1, 1, 1), 1000);
             }
         });
     }

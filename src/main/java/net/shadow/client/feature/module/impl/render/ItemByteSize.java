@@ -21,6 +21,7 @@ public class ItemByteSize extends Module {
             if (!this.isEnabled()) {
                 return;
             }
+
             LoreQueryEvent e = (LoreQueryEvent) event;
             ByteCounter inst = ByteCounter.instance();
             inst.reset();

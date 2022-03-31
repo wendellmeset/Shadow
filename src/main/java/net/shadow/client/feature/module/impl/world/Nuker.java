@@ -38,6 +38,7 @@ public class Nuker extends Module {
             .name("Mode")
             .description("How to break block")
             .get());
+
     public Nuker() {
         super("Nuker", "The nuke", ModuleType.WORLD);
     }
