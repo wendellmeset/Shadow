@@ -4,7 +4,6 @@
 
 package net.shadow.client.feature.module.impl.world;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;

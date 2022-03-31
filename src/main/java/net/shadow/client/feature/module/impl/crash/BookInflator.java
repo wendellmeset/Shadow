@@ -18,14 +18,15 @@ import org.apache.commons.lang3.RandomStringUtils;
 
 public class BookInflator extends Module {
     int slot = 5;
+
     public BookInflator() {
         super("BookInflater", "Writes a book thats big", ModuleType.CRASH);
     }
 
     @Override
     public void tick() {
-        for(int i = 0; i < 5; i++){
-            if(slot > 36 + 9){
+        for (int i = 0; i < 5; i++) {
+            if (slot > 36 + 9) {
                 slot = 0;
                 return;
             }
@@ -34,7 +35,7 @@ public class BookInflator extends Module {
             NbtCompound tag = new NbtCompound();
             NbtList list = new NbtList();
             for (int j = 0; j < 99; j++) {
-                list.add(NbtString.of("{\"text\":"+ RandomStringUtils.randomAlphabetic(200) + "\"}"));
+                list.add(NbtString.of("{\"text\":" + RandomStringUtils.randomAlphabetic(200) + "\"}"));
             }
             tag.put("author", NbtString.of(RandomStringUtils.randomAlphabetic(9000)));
             tag.put("title", NbtString.of(RandomStringUtils.randomAlphabetic(25564)));

@@ -6,7 +6,8 @@ package net.shadow.client.feature.module;
 
 
 import net.shadow.client.feature.module.impl.combat.*;
-import net.shadow.client.feature.module.impl.crash.*;
+import net.shadow.client.feature.module.impl.crash.AnimationCrash;
+import net.shadow.client.feature.module.impl.crash.BookInflator;
 import net.shadow.client.feature.module.impl.exploit.*;
 import net.shadow.client.feature.module.impl.grief.*;
 import net.shadow.client.feature.module.impl.misc.*;

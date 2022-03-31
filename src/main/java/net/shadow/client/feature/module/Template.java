@@ -5,8 +5,6 @@
 package net.shadow.client.feature.module;
 
 import net.minecraft.client.util.math.MatrixStack;
-import net.shadow.client.feature.module.Module;
-import net.shadow.client.feature.module.ModuleType;
 
 public class Template extends Module {
 

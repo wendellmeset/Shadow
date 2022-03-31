@@ -5,6 +5,11 @@
 package net.shadow.client.feature.module.impl.world;
 
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.item.Items;
+import net.minecraft.network.packet.c2s.play.PlayerInteractItemC2SPacket;
+import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.Hand;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.module.Module;
@@ -13,11 +18,6 @@ import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.PacketEvent;
 import net.shadow.client.helper.util.Utils;
-import net.minecraft.item.Items;
-import net.minecraft.network.packet.c2s.play.PlayerInteractItemC2SPacket;
-import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.Hand;
 
 import java.util.Random;
 
@@ -29,7 +29,7 @@ public class AutoFish extends Module {
     public AutoFish() {
         super("Autofish", "auto catch fish", ModuleType.WORLD);
         Events.registerEventHandler(EventType.PACKET_RECEIVE, packete -> {
-            PacketEvent event = (PacketEvent)packete;
+            PacketEvent event = (PacketEvent) packete;
             if (event.getPacket() instanceof PlaySoundS2CPacket packet) {
                 if (packet.getSound().equals(SoundEvents.ENTITY_FISHING_BOBBER_SPLASH)) {
                     new Thread(() -> {
@@ -93,6 +93,7 @@ public class AutoFish extends Module {
     private void click() {
         ShadowMain.client.player.networkHandler.sendPacket(new PlayerInteractItemC2SPacket(Hand.MAIN_HAND));
     }
+
     public int getFishingRod() {
         if (ShadowMain.client.player.getMainHandStack().getItem().equals(Items.FISHING_ROD)) {
             return ShadowMain.client.player.getInventory().selectedSlot;

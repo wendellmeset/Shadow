@@ -198,7 +198,7 @@ public class Utils {
     }
 
     public static class Packet {
-        public static void placeBlock(BlockPos block){
+        public static void placeBlock(BlockPos block) {
             ShadowMain.client.player.networkHandler.sendPacket(new PlayerInteractBlockC2SPacket(Hand.MAIN_HAND, new BlockHitResult(new Vec3d(block.getX() + 0.5, block.getY() + 0.5, block.getZ() + 0.5), Direction.UP, block, false)));
         }
     }

@@ -6,15 +6,14 @@ package net.shadow.client.feature.module.impl.world;
 
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.MouseEvent;
-import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
 
 public class AirPlace extends Module {
 
@@ -23,13 +22,14 @@ public class AirPlace extends Module {
     public AirPlace() {
         super("AirPlace", "template", ModuleType.MISC);
         Events.registerEventHandler(EventType.MOUSE_EVENT, event -> {
-            if(enabled && ((MouseEvent)event).getButton() == 1 && ((MouseEvent)event).getAction() == 1){
-                if(ShadowMain.client.currentScreen != null) return;
+            if (enabled && ((MouseEvent) event).getButton() == 1 && ((MouseEvent) event).getAction() == 1) {
+                if (ShadowMain.client.currentScreen != null) return;
                 try {
                     ShadowMain.client.player.networkHandler.sendPacket(new PlayerInteractBlockC2SPacket(Hand.MAIN_HAND, (BlockHitResult) ShadowMain.client.crosshairTarget));
                     ShadowMain.client.player.swingHand(Hand.MAIN_HAND);
                     event.setCancelled(true);
-                } catch (Exception ignored) {}
+                } catch (Exception ignored) {
+                }
             }
         });
     }
