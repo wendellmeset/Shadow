@@ -23,10 +23,12 @@ public class AirPlace extends Module {
     public AirPlace() {
         super("AirPlace", "template", ModuleType.MISC);
         Events.registerEventHandler(EventType.MOUSE_EVENT, event -> {
-            if(enabled && ((MouseEvent)event).getButton() == 0 && ((MouseEvent)event).getAction() == 1){
+            if(enabled && ((MouseEvent)event).getButton() == 1 && ((MouseEvent)event).getAction() == 1){
+                if(ShadowMain.client.currentScreen != null) return;
                 try {
                     ShadowMain.client.player.networkHandler.sendPacket(new PlayerInteractBlockC2SPacket(Hand.MAIN_HAND, (BlockHitResult) ShadowMain.client.crosshairTarget));
                     ShadowMain.client.player.swingHand(Hand.MAIN_HAND);
+                    event.setCancelled(true);
                 } catch (Exception ignored) {}
             }
         });

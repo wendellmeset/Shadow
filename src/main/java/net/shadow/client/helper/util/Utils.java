@@ -13,10 +13,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.StringNbtReader;
+import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.TextColor;
+import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
@@ -190,6 +194,12 @@ public class Utils {
             Objects.requireNonNull(ShadowMain.client.interactionManager).clickSlot(0, slotIdFrom, 0, SlotActionType.PICKUP, ShadowMain.client.player); // pick up item from stack
             ShadowMain.client.interactionManager.clickSlot(0, slotIdTo, 0, SlotActionType.PICKUP, ShadowMain.client.player); // put item to target
             ShadowMain.client.interactionManager.clickSlot(0, slotIdFrom, 0, SlotActionType.PICKUP, ShadowMain.client.player); // (in case target slot had item) put item from target back to from
+        }
+    }
+
+    public static class Packet {
+        public static void placeBlock(BlockPos block){
+            ShadowMain.client.player.networkHandler.sendPacket(new PlayerInteractBlockC2SPacket(Hand.MAIN_HAND, new BlockHitResult(new Vec3d(block.getX() + 0.5, block.getY() + 0.5, block.getZ() + 0.5), Direction.UP, block, false)));
         }
     }
 

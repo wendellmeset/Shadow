@@ -27,6 +27,6 @@ public class Vclip extends Command {
 
         ClientPlayerEntity player = ShadowMain.client.player;
         player.updatePosition(player.getX(),
-                player.getY() + new DoubleArgumentParser().parse(args[1]), player.getZ());
+                player.getY() + new DoubleArgumentParser().parse(args[0]), player.getZ());
     }
 }
