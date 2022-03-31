@@ -40,6 +40,7 @@ public class Renderer {
         public static void renderFadingBlocks(MatrixStack stack) {
             fades.removeIf(FadingBlock::isDead);
             for (FadingBlock fade : new ArrayList<>(fades)) {
+                if (fade == null) continue;
                 long lifetimeLeft = fade.getLifeTimeLeft();
                 double progress = lifetimeLeft / (double) fade.lifeTime;
                 Color out = Util.modify(fade.outline, -1, -1, -1, (int) (fade.outline.getAlpha() * progress));
