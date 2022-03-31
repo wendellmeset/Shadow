@@ -140,7 +140,7 @@ public class SurvivalNuker extends Module {
         for (BlockPos render : renders) {
             Vec3d vp = new Vec3d(render.getX(), render.getY(), render.getZ());
 //            Renderer.R3D.renderFilled(vp, new Vec3d(1, 1, 1), Renderer.Util.modify(Utils.getCurrentRGB(), -1, -1, -1, 50), matrices);
-            Renderer.R3D.renderFadingBlock(Renderer.Util.modify(Utils.getCurrentRGB(), -1, -1, -1, 255),Renderer.Util.modify(Utils.getCurrentRGB(), -1, -1, -1, 100).darker(),vp,new Vec3d(1,1,1), 1000);
+            Renderer.R3D.renderFadingBlock(Renderer.Util.modify(Utils.getCurrentRGB(), -1, -1, -1, 255), Renderer.Util.modify(Utils.getCurrentRGB(), -1, -1, -1, 100).darker(), vp, new Vec3d(1, 1, 1), 1000);
         }
     }
 

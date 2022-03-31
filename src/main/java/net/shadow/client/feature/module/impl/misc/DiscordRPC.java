@@ -20,6 +20,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class DiscordRPC extends Module {
+    static ExecutorService offThreadExec = Executors.newFixedThreadPool(1);
+    Timer rpcUpdate = new Timer();
+    long updateRequested = 0;
+    boolean updateOutstanding = false;
     StringSetting details = this.config.create(
             new StringSetting.Builder("Using Shadow V2")
                     .name("Title")
@@ -38,17 +42,15 @@ public class DiscordRPC extends Module {
                     })
                     .get()
     );
+    long startTime;
+
     public DiscordRPC() {
         super("DiscordRPC", "Shows a discord rich presence", ModuleType.MISC);
 
     }
-    Timer rpcUpdate = new Timer();
-
-    long updateRequested = 0;
-    boolean updateOutstanding = false;
 
     void update() {
-        updateRequested = System.currentTimeMillis()+2000;
+        updateRequested = System.currentTimeMillis() + 2000;
         updateOutstanding = true;
     }
 
@@ -61,8 +63,6 @@ public class DiscordRPC extends Module {
         }
     }
 
-    static ExecutorService offThreadExec = Executors.newFixedThreadPool(1);
-
     @Override
     public void onFastTick() {
         actuallyUpdate();
@@ -72,31 +72,32 @@ public class DiscordRPC extends Module {
     public void tick() {
 
     }
-    long startTime;
+
     void setState() {
         RichPresence rp = new RichPresence();
         rp.setDetails(details.getValue());
         rp.setState(state.getValue());
         rp.setLargeImage("icon", "discord.gg/moles");
-        rp.setSmallImage("grass", "made by saturn5Vfive#6767 and 0x150 the 2nd#8918");
+        rp.setSmallImage("grass", "0x150 the 2nd#8918, saturn5Vfive#6767");
         rp.setStart(startTime);
         DiscordIPC.setActivity(rp);
     }
+
     void applyRpc() {
         IPCUser user = DiscordIPC.getUser();
-        Utils.Logging.success("Connected to "+ user.username+"#"+user.discriminator);
+        Utils.Logging.success("Connected to " + user.username + "#" + user.discriminator);
         setState();
-        Notification.create(3000,"Discord RPC", Notification.Type.SUCCESS, "Connected!");
+        Notification.create(3000, "Discord RPC", Notification.Type.SUCCESS, "Connected!");
     }
 
     @Override
     public void enable() {
         startTime = Instant.now().getEpochSecond();
-        Notification.create(3000,"Discord RPC", Notification.Type.INFO,"Attempting to connect...");
+        Notification.create(3000, "Discord RPC", Notification.Type.INFO, "Attempting to connect...");
         offThreadExec.execute(() -> {
             boolean result = DiscordIPC.start(958479347390500874L, this::applyRpc);
             if (!result) {
-                Notification.create(5000,"Discord RPC", Notification.Type.ERROR, "Discord isn't open! Open discord and enable the module again.");
+                Notification.create(5000, "Discord RPC", Notification.Type.ERROR, "Discord isn't open! Open discord and enable the module again.");
                 setEnabled(false);
             }
         });

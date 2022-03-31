@@ -7,6 +7,8 @@ package net.shadow.client.feature.module.impl.world;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.BlockItem;
 import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
@@ -36,7 +38,8 @@ public class AirPlace extends Module {
                     if((client.player.getMainHandStack().getItem() instanceof BlockItem)) Renderer.R3D.renderFadingBlock(Renderer.Util.modify(Utils.getCurrentRGB(), -1, -1, -1, 255),Renderer.Util.modify(Utils.getCurrentRGB(), -1, -1, -1, 100).darker(),Vec3d.of(((BlockHitResult) ShadowMain.client.crosshairTarget).getBlockPos()),new Vec3d(1,1,1), 1000);
                     ShadowMain.client.player.swingHand(Hand.MAIN_HAND);
                     event.setCancelled(true);
-                } catch (Exception ignored) {}
+                } catch (Exception ignored) {
+                }
             }
         });
     }

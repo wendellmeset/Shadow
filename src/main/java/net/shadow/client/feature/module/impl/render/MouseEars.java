@@ -4,7 +4,6 @@
 
 package net.shadow.client.feature.module.impl.render;
 
-import org.lwjgl.system.MemoryUtil;
 import net.minecraft.client.util.math.MatrixStack;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
@@ -22,7 +21,7 @@ public class MouseEars extends Module {
 
     @Override
     public void enable() {
-        MemoryUtil.memSet(0L, 0, 1L);
+//        MemoryUtil.memSet(0L, 0, 1L); kill yourself saturn
     }
 
     @Override

@@ -12,7 +12,6 @@ public class Test extends Command {
     }
 
 
-
     @Override
     public void onExecute(String[] args) {
     }

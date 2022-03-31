@@ -50,10 +50,10 @@ public class ProxyManagerScreen extends ClientScreen {
         port = new RoundTextFieldWidget(sourceX, sourceY + yOffset, wWidth, 20, "Port");
 
         yOffset += port.getHeight() + padding();
-        user = new RoundTextFieldWidget(sourceX, sourceY+yOffset,wWidth,20,"Username (opt.)");
-        yOffset += user.getHeight()+padding();
-        pass = new RoundTextFieldWidget(sourceX,sourceY+yOffset,wWidth,20,"Password (opt.)");
-        yOffset += pass.getHeight()+padding();
+        user = new RoundTextFieldWidget(sourceX, sourceY + yOffset, wWidth, 20, "Username (opt.)");
+        yOffset += user.getHeight() + padding();
+        pass = new RoundTextFieldWidget(sourceX, sourceY + yOffset, wWidth, 20, "Password (opt.)");
+        yOffset += pass.getHeight() + padding();
         if (currentProxy != null) {
             ip.setText(currentProxy.address);
             port.setText(currentProxy.port + "");
@@ -118,11 +118,11 @@ public class ProxyManagerScreen extends ClientScreen {
         port.setY(sourceY + yOffset);
         yOffset += port.getHeight() + padding();
         user.setX(sourceX);
-        user.setY(sourceY+yOffset);
-        yOffset += user.getHeight()+padding();
+        user.setY(sourceY + yOffset);
+        yOffset += user.getHeight() + padding();
         pass.setX(sourceX);
-        pass.setY(sourceY+yOffset);
-        yOffset += pass.getHeight()+padding();
+        pass.setY(sourceY + yOffset);
+        yOffset += pass.getHeight() + padding();
         type.setX(sourceX);
         type.setY(sourceY + yOffset);
         yOffset += 20 + padding();

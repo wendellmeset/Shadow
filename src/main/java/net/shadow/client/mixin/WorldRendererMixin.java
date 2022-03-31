@@ -19,8 +19,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import java.util.Iterator;
-import java.util.List;
 import java.util.SortedSet;
 
 @Debug(export = true)
@@ -32,9 +30,9 @@ public class WorldRendererMixin {
         return ModuleRegistry.getByClass(Freecam.class).isEnabled() || ModuleRegistry.getByClass(XRAY.class).isEnabled() || spectator;
     }
 
-    @Redirect(method="render",at=@At(
-            value="INVOKE",
-            target="Lit/unimi/dsi/fastutil/longs/Long2ObjectMap;long2ObjectEntrySet()Lit/unimi/dsi/fastutil/objects/ObjectSet;"
+    @Redirect(method = "render", at = @At(
+            value = "INVOKE",
+            target = "Lit/unimi/dsi/fastutil/longs/Long2ObjectMap;long2ObjectEntrySet()Lit/unimi/dsi/fastutil/objects/ObjectSet;"
     ))
     ObjectSet<Long2ObjectMap.Entry<SortedSet<BlockBreakingInfo>>> a(Long2ObjectMap<SortedSet<BlockBreakingInfo>> instance, MatrixStack matrices) {
         BlockHighlighting bbr = ModuleRegistry.getByClass(BlockHighlighting.class);

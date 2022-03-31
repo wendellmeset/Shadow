@@ -7,7 +7,7 @@ package net.shadow.client.feature.module.impl.render;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.render.BlockBreakingInfo;
-import net.minecraft.client.render.WorldRenderer;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
@@ -15,6 +15,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
+<<<<<<< HEAD:src/main/java/net/shadow/client/feature/module/impl/render/BlockHighlighting.java
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
 import net.minecraft.network.packet.s2c.play.BlockEventS2CPacket;
@@ -22,6 +23,8 @@ import net.minecraft.network.packet.s2c.play.BlockUpdateS2CPacket;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.PacketEvent;
+=======
+>>>>>>> ded843d309829ef17bfd65c24b2c2338f4db5b3b:src/main/java/net/shadow/client/feature/module/impl/render/BetterBlockBreaking.java
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Utils;
 import net.shadow.client.mixin.WorldRendererAccessor;
@@ -53,22 +56,22 @@ public class BlockHighlighting extends Module {
 
         long k = e.getLongKey();
         BlockPos kv = BlockPos.fromLong(k);
-        int stage = bbrs.last().getStage()+1;
-        double stageProg = stage/10d;
+        int stage = bbrs.last().getStage() + 1;
+        double stageProg = stage / 10d;
         BlockState bs = ShadowMain.client.world.getBlockState(kv);
-        VoxelShape vs = bs.getOutlineShape(ShadowMain.client.world,kv);
+        VoxelShape vs = bs.getOutlineShape(ShadowMain.client.world, kv);
         if (vs.isEmpty()) return;
         Box bb = vs.getBoundingBox();
-        double invProg = 1-stageProg;
+        double invProg = 1 - stageProg;
         double lenX = bb.getXLength();
         double lenY = bb.getYLength();
         double lenZ = bb.getZLength();
-        bb = bb.shrink(bb.getXLength()*invProg,bb.getYLength()*invProg,bb.getZLength()*invProg);
-        Vec3d start = new Vec3d(bb.minX, bb.minY, bb.minZ).add(Vec3d.of(kv)).add(lenX*invProg/2d,lenY*invProg/2d,lenZ*invProg/2d);
-        Vec3d len = new Vec3d(bb.getXLength(),bb.getYLength(),bb.getZLength());
-        Color outline = new Color(50,50,50,255);
-        Color fill = new Color(20,20,20,100);
-        Renderer.R3D.renderEdged(stack,start,len,fill,outline);
+        bb = bb.shrink(bb.getXLength() * invProg, bb.getYLength() * invProg, bb.getZLength() * invProg);
+        Vec3d start = new Vec3d(bb.minX, bb.minY, bb.minZ).add(Vec3d.of(kv)).add(lenX * invProg / 2d, lenY * invProg / 2d, lenZ * invProg / 2d);
+        Vec3d len = new Vec3d(bb.getXLength(), bb.getYLength(), bb.getZLength());
+        Color outline = new Color(50, 50, 50, 255);
+        Color fill = new Color(20, 20, 20, 100);
+        Renderer.R3D.renderEdged(stack, start, len, fill, outline);
 //        Renderer.R3D.renderFilled(start,len,fill,stack);
 //        Renderer.R3D.renderOutline(start,len,outline,stack);
 
