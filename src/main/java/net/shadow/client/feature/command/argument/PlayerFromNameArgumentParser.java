@@ -9,6 +9,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.exception.CommandException;
 
+@SuppressWarnings("ClassCanBeRecord")
 public class PlayerFromNameArgumentParser implements ArgumentParser<PlayerEntity> {
     final boolean ignoreCase;
 

@@ -18,6 +18,6 @@ public class Template extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) throws CommandException {
+    public void onExecute(String[] args) {
     }
 }

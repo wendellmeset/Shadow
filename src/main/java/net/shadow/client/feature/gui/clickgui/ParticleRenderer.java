@@ -184,21 +184,6 @@ public class ParticleRenderer {
             stack.push();
             double radToUse = pk * circleRad;
             Renderer.R2D.renderCircle(stack, Renderer.Util.lerp(theme.getAccent(), DYING, pk), x - radToUse / 2d, y - radToUse / 2d, radToUse, 30);
-//            double maxDist = 100;
-//            for (Particle particle : others.stream().filter(particle -> particle != this).toList()) {
-//                double px = particle.x;
-//                double py = particle.y;
-//                double dist = Math.sqrt(Math.pow((px - this.x), 2) + Math.pow((py - this.y), 2));
-//                if (dist < maxDist) {
-//                    long sd1 = Math.min(particle.origLife - particle.life, fadeTime);
-//                    long ed1 = Math.min(particle.life, fadeTime);
-//                    long do1 = Math.min(sd1, ed1);
-//                    double pk1 = (do1 / (double) fadeTime);
-//                    double p = 1 - (dist / maxDist);
-//                    p = Math.min(p, Math.min(pk1, pk));
-//                    Renderer.R2D.renderLine(stack, Renderer.Util.lerp(theme.getAccent(), DYING, p), this.x, this.y, px, py);
-//                }
-//            }
             stack.pop();
         }
 

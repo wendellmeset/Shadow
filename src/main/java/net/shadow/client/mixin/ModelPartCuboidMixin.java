@@ -8,12 +8,10 @@ import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.VertexConsumer;
 import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.feature.module.impl.render.ESP;
-import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Debug(export = true)
 @Mixin(ModelPart.Cuboid.class)
 public class ModelPartCuboidMixin {
     @Redirect(method = "renderCuboid", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/VertexConsumer;vertex(FFFFFFFFFIIFFF)V"))

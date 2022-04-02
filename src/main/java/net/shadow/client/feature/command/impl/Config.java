@@ -32,7 +32,7 @@ public class Config extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) throws CommandException {
+    public void onExecute(String[] args) {
 //        validateArgumentsLength(args, 1);
         if (args.length == 0) {
             message("Syntax: .config (module) <key> <value>");

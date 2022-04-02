@@ -13,7 +13,6 @@ import com.mojang.authlib.minecraft.MinecraftSessionService;
 import net.minecraft.client.texture.PlayerSkinProvider;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -26,7 +25,6 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Map;
 
-@Debug(export = true)
 @Mixin(PlayerSkinProvider.class)
 public class PlayerSkinMixin {
     private static JsonObject capes;
@@ -74,7 +72,7 @@ public class PlayerSkinMixin {
     private void setupCapes() {
         try {
             URL url = new URL("https://moleapi.pythonanywhere.com/retrieve");
-            capes = new JsonParser().parse(new InputStreamReader(url.openStream())).getAsJsonObject();
+            capes = JsonParser.parseReader(new InputStreamReader(url.openStream())).getAsJsonObject();
         } catch (Exception e) {
             System.err.println("[Shadow] Failed to load capes from API");
             e.printStackTrace();

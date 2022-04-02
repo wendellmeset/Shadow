@@ -153,9 +153,6 @@ public class NotificationRenderer {
             double notificationWidth = texPadding + iconDimensions + texPadding + Math.max(minWidth, contentWidth) + texPadding; // take padding for the icon into account as well
             double notificationX = notification.posX = bottomRightStartX - notificationWidth;
             double notificationY = bottomRightStartY - notificationHeight - yOffset;
-//            notification.renderPosX = notification.posX = bottomRightStartX-notificationWidth;
-//            notification.posY = bottomRightStartY-notificationHeight-yOffset;
-//            if (notification.renderPosY < 0) notification.renderPosY = notification.posY;
             double interpolatedAnimProgress = Transitions.easeOutExpo(notification.animationProgress);
             Renderer.R2D.renderRoundedQuad(ms, new Color(20, 20, 20, (int) Math.min(255, 255 * interpolatedAnimProgress)), notificationX, notificationY, notificationX + notificationWidth, notificationY + notificationHeight, 5, 20);
             RenderSystem.setShaderTexture(0, notification.type.getI());

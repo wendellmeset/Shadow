@@ -8,12 +8,10 @@ import net.minecraft.entity.AreaEffectCloudEntity;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.impl.misc.AntiCrash;
 import net.shadow.client.mixinUtil.ParticleManagerDuck;
-import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-@Debug(export = true)
 @Mixin(AreaEffectCloudEntity.class)
 public class AreaEffectCloudEntityMixin {
     @ModifyVariable(method = "tick", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/util/math/MathHelper;ceil(F)I"), index = 4)

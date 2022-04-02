@@ -39,7 +39,7 @@ public class Test extends Module {
         });
     }
 
-    Timer timer = new Timer();
+    final Timer timer = new Timer();
     @Override
     public void tick() {
         if (timer.hasExpired(500)) {

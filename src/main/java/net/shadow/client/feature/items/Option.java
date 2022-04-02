@@ -37,6 +37,7 @@ public class Option<T> {
         getValueRef().set(value);
     }
 
+    @SuppressWarnings("unchecked")
     public void accept(Object o) {
         getValueRef().set((T) o);
     }

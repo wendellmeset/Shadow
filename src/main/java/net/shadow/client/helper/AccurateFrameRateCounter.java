@@ -9,7 +9,7 @@ import java.util.List;
 
 public class AccurateFrameRateCounter {
     public static final AccurateFrameRateCounter globalInstance = new AccurateFrameRateCounter();
-    List<Long> records = new ArrayList<>();
+    final List<Long> records = new ArrayList<>();
 
     public void recordFrame() {
         long c = System.currentTimeMillis();

@@ -66,7 +66,8 @@ public class Taco extends Command {
         } catch (Exception ignored) {
 
         }
-        if (!gifPath.exists()) gifPath.mkdir();
+        if (!gifPath.exists()) //noinspection ResultOfMethodCallIgnored
+            gifPath.mkdir();
         try {
             if (!storage.isFile()) {
                 //noinspection ResultOfMethodCallIgnored
@@ -95,7 +96,7 @@ public class Taco extends Command {
         }
     }
 
-    static void initFrames() throws Exception {
+    static void initFrames() {
         checkGifPath();
         for (Frame frame : frames) {
             ShadowMain.client.getTextureManager().destroyTexture(frame.getI());

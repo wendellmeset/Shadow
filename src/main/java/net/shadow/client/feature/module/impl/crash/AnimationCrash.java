@@ -34,7 +34,7 @@ public class AnimationCrash extends Module {
             for (int i = 0; i < power.getValue(); i++) {
                 Objects.requireNonNull(ShadowMain.client.player.networkHandler).sendPacket(new HandSwingC2SPacket(Hand.MAIN_HAND));
             }
-        } catch (NullPointerException e) {
+        } catch (NullPointerException ignored) {
 
         }
     }

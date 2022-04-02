@@ -29,7 +29,7 @@ public abstract class SettingBase<V> {
      */
     V value;
 
-    Consumer<V> onChanged;
+    final Consumer<V> onChanged;
 
     /**
      * Constructs a new Setting

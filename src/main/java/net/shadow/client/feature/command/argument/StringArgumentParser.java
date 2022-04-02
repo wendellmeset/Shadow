@@ -8,7 +8,7 @@ import net.shadow.client.feature.command.exception.CommandException;
 
 public class StringArgumentParser implements ArgumentParser<String> {
     @Override
-    public String parse(String argument) throws CommandException {
+    public String parse(String argument) {
         return argument;
     }
 }
