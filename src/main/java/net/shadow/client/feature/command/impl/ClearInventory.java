@@ -8,9 +8,9 @@ import net.minecraft.screen.slot.SlotActionType;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 
-public class Void extends Command {
-    public Void() {
-        super("Void", "clear your inventory", "void", "clear");
+public class ClearInventory extends Command {
+    public ClearInventory() {
+        super("ClearInventory", "Clear your inventory the cool way", "clear", "clearInv");
     }
 
     @Override

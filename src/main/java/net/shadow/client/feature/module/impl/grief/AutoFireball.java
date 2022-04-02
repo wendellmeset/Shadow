@@ -32,8 +32,8 @@ public class AutoFireball extends Module {
 
     final DoubleSetting radius = this.config.create(new DoubleSetting.Builder(15).max(100).min(10).name("Radius").description("The radius to search in").get());
     final Block[] blocks = new Block[]{Blocks.COBBLESTONE, Blocks.GLASS, Blocks.GLASS_PANE, Blocks.OAK_DOOR, Blocks.IRON_DOOR, Blocks.BRICKS, Blocks.OAK_PLANKS, Blocks.DARK_OAK_PLANKS, Blocks.WHITE_WOOL, Blocks.BLACK_WOOL, Blocks.BARREL, Blocks.CHEST, Blocks.CRAFTING_TABLE, Blocks.FURNACE};
-    BlockPos walkman = new BlockPos(0, 0, 0);
-    List<BlockPos> targets = new ArrayList<>();
+    final BlockPos walkman = new BlockPos(0, 0, 0);
+    final List<BlockPos> targets = new ArrayList<>();
 
     public AutoFireball() {
         super("AutoFireball", "auto nuke shit using fireballs", ModuleType.MISC);

@@ -19,7 +19,7 @@ import java.util.Objects;
 
 public class Ban extends Command {
     public Ban() {
-        super("Ban", "ban people from joining the server again", "ban");
+        super("Ban", "Ban people from re-joining the server", "ban", "block");
     }
 
     @Override

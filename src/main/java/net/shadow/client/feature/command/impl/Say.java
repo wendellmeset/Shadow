@@ -13,7 +13,7 @@ import java.util.Objects;
 public class Say extends Command {
 
     public Say() {
-        super("Say", "Says something in chat", "say", "tell");
+        super("Say", "Says something in chat (use when scripting or to say the prefix in chat)", "say", "tell");
     }
 
     @Override

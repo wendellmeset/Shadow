@@ -12,7 +12,7 @@ import java.awt.*;
 public class Help extends Command {
 
     public Help() {
-        super("Help", "Shows all commands", "help", "h", "?", "cmds", "commands", "manual", "man");
+        super("Help", "Shows all commands", "help", "h", "?", "cmds", "commands");
     }
 
     @Override

@@ -15,7 +15,7 @@ import net.shadow.client.feature.command.exception.CommandException;
 
 public class ItemSpoof extends Command {
     public ItemSpoof() {
-        super("ItemSpoof", "spoof give yourself items", "ispoof", "itemspoof", "ghostitem", "ghostgive");
+        super("ItemSpoof", "Give yourself an item client side", "iSpoof", "itemSpoof", "ghostItem", "clientGive");
     }
 
     @Override

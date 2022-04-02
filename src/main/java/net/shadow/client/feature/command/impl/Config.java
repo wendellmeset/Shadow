@@ -5,7 +5,6 @@
 package net.shadow.client.feature.command.impl;
 
 import net.shadow.client.feature.command.Command;
-import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.feature.config.SettingBase;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleRegistry;
@@ -32,8 +31,7 @@ public class Config extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) throws CommandException {
-//        validateArgumentsLength(args, 1);
+    public void onExecute(String[] args) {
         if (args.length == 0) {
             message("Syntax: .config (module) <key> <value>");
             message("For a module or key with spaces, use - as a separator");

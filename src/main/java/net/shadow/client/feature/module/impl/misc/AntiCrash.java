@@ -35,11 +35,13 @@ public class AntiCrash extends Module {
             .description("Prevents an abnormal sized velocity packet from going through")
             .get());
     @Getter
+    final
     BooleanSetting capParticles = this.config.create(new BooleanSetting.Builder(true)
             .name("Cap particles")
             .description("Prevents too many particles from being rendered")
             .get());
     @Getter
+    final
     DoubleSetting particleMax = this.config.create(new DoubleSetting.Builder(1000)
             .name("Particle max")
             .description("How many particles to allow at once")
@@ -48,11 +50,13 @@ public class AntiCrash extends Module {
             .precision(0)
             .get());
     @Getter
+    final
     BooleanSetting capNames = this.config.create(new BooleanSetting.Builder(true)
             .name("Cap entity names")
             .description("Cap the max size an entity name can be")
             .get());
     @Getter
+    final
     DoubleSetting nameMax = this.config.create(new DoubleSetting.Builder(64)
             .name("Name max")
             .description("How long a name should be allowed to be")

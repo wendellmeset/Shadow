@@ -18,7 +18,7 @@ import java.util.Objects;
 
 public class ForceOP extends Command {
     public ForceOP() {
-        super("ForceOP", "get op on cracked servers", "forceop", "crackedop");
+        super("ForceOP", "Get op on cracked servers", "forceOp", "crackedOp");
     }
 
     private static void authUsername(String username) {

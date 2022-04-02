@@ -22,7 +22,7 @@ import java.util.Objects;
 
 public class FakeItem extends Command {
     public FakeItem() {
-        super("FakeItem", "Fakes a person holding a specific item", "spoofitem", "fakeitem");
+        super("FakeItem", "Fakes a person holding a specific item", "fakeItem");
     }
 
     @Override

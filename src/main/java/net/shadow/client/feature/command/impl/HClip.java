@@ -13,7 +13,7 @@ import net.shadow.client.feature.command.exception.CommandException;
 
 public class HClip extends Command {
     public HClip() {
-        super("HClip", "go horizontal through walls", "hclip");
+        super("HClip", "Teleport horizontally", "hclip");
     }
 
     @Override

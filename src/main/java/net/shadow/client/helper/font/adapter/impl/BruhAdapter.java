@@ -44,9 +44,8 @@ public class BruhAdapter implements FontAdapter {
     }
 
     @Override
-    public int drawString(MatrixStack matrices, String text, float x, float y, float r, float g, float b, float a) {
+    public void drawString(MatrixStack matrices, String text, float x, float y, float r, float g, float b, float a) {
         renderer.drawString(matrices, text, x, y, r, g, b, a);
-        return 0;
     }
 
     @Override

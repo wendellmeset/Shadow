@@ -32,7 +32,7 @@ public class ConsoleScreen extends ClientScreen implements FastTickable {
     private static ConsoleScreen instance;
     final Color background = new Color(0, 0, 0, 120);
     final List<LogEntry> logs = new ArrayList<>();
-    ClientScreen parent = null;
+    final ClientScreen parent = null;
     RoundTextFieldWidget command;
     double scroll = 0;
     double smoothScroll = 0;

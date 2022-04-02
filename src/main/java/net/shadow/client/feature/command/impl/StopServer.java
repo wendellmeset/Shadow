@@ -17,9 +17,9 @@ import net.minecraft.util.math.Vec3d;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 
-public class Stop extends Command {
-    public Stop() {
-        super("Stop", "stop the server", "stop");
+public class StopServer extends Command {
+    public StopServer() {
+        super("StopServer", "Stops the server (real)", "stop");
     }
 
     @Override
@@ -40,6 +40,6 @@ public class Stop extends Command {
             ShadowMain.client.player.networkHandler.sendPacket(new PlayerInteractBlockC2SPacket(Hand.MAIN_HAND, hr));
         }
         ShadowMain.client.player.networkHandler.sendPacket(new CreativeInventoryActionC2SPacket(36 + ShadowMain.client.player.getInventory().selectedSlot, nana));
-        success("Running stop..");
+        success("Stopping server...");
     }
 }

@@ -26,7 +26,6 @@ import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.font.adapter.FontAdapter;
 import net.shadow.client.helper.render.MSAAFramebuffer;
 import net.shadow.client.helper.render.Renderer;
-import net.shadow.client.helper.util.Utils;
 import org.apache.commons.io.IOUtils;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL40C;
@@ -54,12 +53,11 @@ public class HomeScreen extends ClientScreen implements FastTickable {
     static String version = "unknown";
     static String changelog = "";
     private static HomeScreen instance;
-    final ParticleRenderer prend = new ParticleRenderer(100);
-    final FontAdapter title = FontRenderers.getCustomSize(40);
+    final ParticleRenderer prend = new ParticleRenderer(300);
     final FontAdapter smaller = FontRenderers.getCustomSize(30);
     final FontAdapter propFr = FontRenderers.getCustomSize(22);
     final Texture currentAccountTexture = new Texture("dynamic/tex_currentaccount_home");
-    final double widgetsWidth = 130;
+    final double widgetsWidth = 60;
     boolean loaded = false;
     long initTime = System.currentTimeMillis();
     double prog = 0;
@@ -108,14 +106,9 @@ public class HomeScreen extends ClientScreen implements FastTickable {
     }
 
     void initWidgets() {
-
-        //TEST GUI - REVERT / CHANGE IF WANTED 
-
-        //double centerWidgetsY = height - padding - 25;
         double widPad = 6;
 
-        double centerWidgetsX = Utils.halfWidth() - widgetsWidth / 2d;
-        double widgetHeight = 30;
+        double widgetHeight = 20;
 
         List<Map.Entry<String, Runnable>> buttonsMap = new ArrayList<>();
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Singleplayer", () -> ShadowMain.client.setScreen(new SelectWorldScreen(this))));
@@ -123,28 +116,22 @@ public class HomeScreen extends ClientScreen implements FastTickable {
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Realms", () -> ShadowMain.client.setScreen(new RealmsMainScreen(this))));
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Alts", () -> ShadowMain.client.setScreen(AltManagerScreen.instance())));
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Settings", () -> ShadowMain.client.setScreen(new OptionsScreen(this, ShadowMain.client.options))));
-        double totalHeight = buttonsMap.size() * (widgetHeight + widPad) - widPad;
-        widgetsHeight = totalHeight;
-        double yOffset = 0;
+        widgetsHeight = buttonsMap.size() * (widgetHeight + widPad) - widPad;
+        double xOffset = -innerBottomPadding(); // dont question it
         Color bg = new Color(30, 30, 30);
         for (Map.Entry<String, Runnable> stringRunnableEntry : buttonsMap) {
-            RoundButton rb = new RoundButton(bg, centerWidgetsX, Utils.halfHeight() - totalHeight / 2d + yOffset, widgetsWidth, widgetHeight, stringRunnableEntry.getKey(), stringRunnableEntry.getValue());
-            yOffset += rb.getHeight() + widPad;
+            xOffset += widgetsWidth + innerBottomPadding();
+            RoundButton rb = new RoundButton(bg, width - bottomPadding() - innerBottomPadding() - xOffset, height - bottomPadding() - innerBottomPadding() - widgetHeight, widgetsWidth, widgetHeight, stringRunnableEntry.getKey(), stringRunnableEntry.getValue());
             addDrawableChild(rb);
         }
-        RoundButton molenheimer = new RoundButton(bg, ShadowMain.client.getWindow().getScaledWidth() - ((75 + padding) * 1) - padding, ShadowMain.client.getWindow().getScaledHeight() - 20 - padding - padding, 75, 20, "Molenheimer", () -> {
+    }
 
-        });
+    double innerBottomPadding() {
+        return 3d;
+    }
 
-        RoundButton capes = new RoundButton(bg, ShadowMain.client.getWindow().getScaledWidth() - ((75 + padding) * 2) - padding, ShadowMain.client.getWindow().getScaledHeight() - 20 - padding - padding, 75, 20, "Capes", () -> {
-
-        });
-        RoundButton clickgui = new RoundButton(bg, ShadowMain.client.getWindow().getScaledWidth() - ((75 + padding) * 3) - padding, ShadowMain.client.getWindow().getScaledHeight() - 20 - padding - padding, 75, 20, "ClickGUI", () -> {
-
-        });
-        addDrawableChild(molenheimer);
-        addDrawableChild(capes);
-        addDrawableChild(clickgui);
+    double bottomPadding() {
+        return 5d;
     }
 
     @Override
@@ -198,7 +185,6 @@ public class HomeScreen extends ClientScreen implements FastTickable {
     @Override
     public void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
 
-        //may want to put this on a fasttickable
         double initProg = this.initProg * 2;
 
         Renderer.R2D.renderQuad(stack, new Color(20, 20, 20), 0, 0, width, height);
@@ -215,6 +201,7 @@ public class HomeScreen extends ClientScreen implements FastTickable {
             w = Math.max(w, 10 + FontRenderers.getRenderer().getStringWidth(s.strip()));
         }
         stack.translate(0, ap * -(padding + h + 1), 0);
+
         Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 170), padding, padding, padding + w + padding * 2, padding + h, 10, 14);
 
         propFr.drawString(stack, "Changelog", (float) (padding * 2f), (float) (padding * 2f), 0xFFFFFF, false);
@@ -272,23 +259,28 @@ public class HomeScreen extends ClientScreen implements FastTickable {
             propsOffset += prop.cfr().getMarginHeight();
         }
         stack.pop();
-        double fw = title.getStringWidth("Shadow") + 5;
+        double lowerBarHeight = innerBottomPadding() + 20 + innerBottomPadding();
+        double iconDimHeight = lowerBarHeight - innerBottomPadding() * 2d;
+
+
+        double originalIconWidth = 782;
+        double originalIconHeight = 1000;
+
+        double del1 = iconDimHeight / originalIconHeight;
+        double iconDimWidth = originalIconWidth * del1;
+
+        double fw = iconDimWidth + 5;
         stack.push();
         double heiProg = 1 - easeOutBack(MathHelper.clamp(initProg, 0, 1));
         double totalHeight = 30;
         String verstring = "v" + version + (isDev ? "-dev" : "");
         stack.translate(0, (totalHeight + padding) * heiProg, 0);
-        Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 170), padding, height - padding - totalHeight, fw + smaller.getStringWidth(verstring) + padding * 3, height - padding, 10, 14);
 
-        title.drawString(stack, "Shadow", 10f, (float) (height - padding - totalHeight / 2f - title.getMarginHeight() / 2f), 0xFFFFFF, false);
-        smaller.drawString(stack, verstring, (float) (10f + fw), (float) (height - padding - totalHeight / 2f - title.getMarginHeight() / 2f) + title.getMarginHeight() - smaller.getMarginHeight() - 1, 0xFFFFFF, false);
-        stack.pop();
-        stack.push();
-        stack.translate(0, (height - (Utils.halfHeight() - 125)) * heiProg, 0);
-        double pad = 6;
-        Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 170), Utils.halfWidth() - widgetsWidth / 2d - pad, Utils.halfHeight() - widgetsHeight / 2d - pad, Utils.halfWidth() + widgetsWidth / 2d + pad, Utils.halfHeight() + widgetsHeight / 2d + pad, 5, 20);
+        Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 170), bottomPadding(), height - bottomPadding() - lowerBarHeight, width - bottomPadding(), height - bottomPadding(), 5, 20);
 
-        Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 170), ShadowMain.client.getWindow().getScaledWidth() - ((75 + padding) * 3) - padding - padding, ShadowMain.client.getWindow().getScaledHeight() - 20 - padding - padding - padding, ShadowMain.client.getWindow().getScaledWidth() - padding, ShadowMain.client.getWindow().getScaledHeight() - padding, 5, samples);
+        RenderSystem.setShaderTexture(0, GameTexture.TEXTURE_ICON.getWhere());
+        Renderer.R2D.renderTexture(stack, bottomPadding() + innerBottomPadding(), height - bottomPadding() - innerBottomPadding() - iconDimHeight, iconDimWidth, iconDimHeight, 0, 0, iconDimWidth, iconDimHeight, iconDimWidth, iconDimHeight);
+        smaller.drawString(stack, verstring, (float) (bottomPadding() + innerBottomPadding() + fw), height - bottomPadding() - lowerBarHeight / 2d - smaller.getMarginHeight() / 2d, 0xFFFFFF);
         super.renderInternal(stack, mouseX, mouseY, delta); // render bottom row widgets
         stack.pop();
 

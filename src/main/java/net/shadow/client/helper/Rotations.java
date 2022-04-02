@@ -83,6 +83,7 @@ public class Rotations {
         FreeLook fl = ModuleRegistry.getByClass(FreeLook.class);
         double required = Math.toDegrees(Math.atan2(delZ, delX)) - 90, delta, add, speed;
         double sqrt1 = Math.sqrt(delX * delX + delZ * delZ);
+        double degTan = -Math.toDegrees(Math.atan2(delY, sqrt1));
         if (fl.isEnabled()) {
             // setting yaw
 
@@ -95,7 +96,7 @@ public class Rotations {
             fl.newyaw = (fl.newyaw + (float) add);
 
             // setting pitch
-            required = -Math.toDegrees(Math.atan2(delY, sqrt1));
+            required = degTan;
             delta = MathHelper.wrapDegrees(required - fl.newpitch);
             speed = Math.abs(delta / laziness);
             add = speed * (delta >= 0 ? 1 : -1);
@@ -114,7 +115,7 @@ public class Rotations {
             ShadowMain.client.player.setYaw(ShadowMain.client.player.getYaw() + (float) add);
 
             // setting pitch
-            required = -Math.toDegrees(Math.atan2(delY, sqrt1));
+            required = degTan;
             delta = MathHelper.wrapDegrees(required - ShadowMain.client.player.getPitch());
             speed = Math.abs(delta / laziness);
             add = speed * (delta >= 0 ? 1 : -1);

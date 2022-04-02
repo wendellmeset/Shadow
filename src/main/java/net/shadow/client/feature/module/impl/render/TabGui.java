@@ -28,6 +28,7 @@ import java.util.function.BooleanSupplier;
 
 public class TabGui extends Module {
     @Getter
+    final
     Stack<TabPane> tabStack = new Stack<>();
 
     public TabGui() {

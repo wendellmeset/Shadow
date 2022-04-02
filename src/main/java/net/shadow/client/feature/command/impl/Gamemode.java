@@ -14,7 +14,7 @@ import java.util.Arrays;
 public class Gamemode extends Command {
 
     public Gamemode() {
-        super("Gamemode", "Switch gamemodes client side", "gamemode", "gm", "gmode", "gamemodespoof", "gmspoof");
+        super("Gamemode", "Switch gamemodes client side", "gamemode", "gm", "gmode");
     }
 
     @Override

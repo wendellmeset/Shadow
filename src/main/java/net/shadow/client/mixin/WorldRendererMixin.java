@@ -13,7 +13,6 @@ import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.feature.module.impl.render.BlockHighlighting;
 import net.shadow.client.feature.module.impl.render.Freecam;
 import net.shadow.client.feature.module.impl.world.XRAY;
-import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
@@ -21,7 +20,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 import java.util.SortedSet;
 
-@Debug(export = true)
 @Mixin(WorldRenderer.class)
 public class WorldRendererMixin {
     @ModifyArg(method = "render",
@@ -37,9 +35,6 @@ public class WorldRendererMixin {
     ObjectSet<Long2ObjectMap.Entry<SortedSet<BlockBreakingInfo>>> a(Long2ObjectMap<SortedSet<BlockBreakingInfo>> instance, MatrixStack matrices) {
         BlockHighlighting bbr = ModuleRegistry.getByClass(BlockHighlighting.class);
         if (bbr.isEnabled()) {
-//            for (Long2ObjectMap.Entry<SortedSet<BlockBreakingInfo>> sortedSetEntry : instance.long2ObjectEntrySet()) {
-//                bbr.renderEntry(matrices, sortedSetEntry);
-//            }
             return ObjectSet.of();
         }
         return instance.long2ObjectEntrySet();

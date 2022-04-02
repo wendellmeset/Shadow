@@ -8,12 +8,7 @@ import net.minecraft.nbt.NbtCompound;
 
 import java.util.Arrays;
 
-public class NbtGroup {
-    final NbtElement[] elements;
-
-    public NbtGroup(NbtElement... elements) {
-        this.elements = elements;
-    }
+public record NbtGroup(NbtElement... elements) {
 
     @Override
     public String toString() {

@@ -11,7 +11,7 @@ public interface FontAdapter {
 
     void drawString(MatrixStack matrices, String text, double x, double y, int color);
 
-    int drawString(MatrixStack matrices, String text, float x, float y, float r, float g, float b, float a);
+    void drawString(MatrixStack matrices, String text, float x, float y, float r, float g, float b, float a);
 
     void drawCenteredString(MatrixStack matrices, String text, double x, double y, int color);
 

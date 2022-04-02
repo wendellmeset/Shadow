@@ -20,26 +20,22 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class DiscordRPC extends Module {
-    static ExecutorService offThreadExec = Executors.newFixedThreadPool(1);
+    static final ExecutorService offThreadExec = Executors.newFixedThreadPool(1);
     Timer rpcUpdate = new Timer();
     long updateRequested = 0;
     boolean updateOutstanding = false;
-    StringSetting details = this.config.create(
+    final StringSetting details = this.config.create(
             new StringSetting.Builder("Using Shadow V2")
                     .name("Title")
                     .description("What to put as the title of the rpc")
-                    .onChanged(s -> {
-                        update();
-                    })
+                    .onChanged(s -> update())
                     .get()
     );
-    StringSetting state = this.config.create(
+    final StringSetting state = this.config.create(
             new StringSetting.Builder("Obliterating minecraft")
                     .name("Description")
                     .description("What to put as the description of the rpc")
-                    .onChanged(s -> {
-                        update();
-                    })
+                    .onChanged(s -> update())
                     .get()
     );
     long startTime;

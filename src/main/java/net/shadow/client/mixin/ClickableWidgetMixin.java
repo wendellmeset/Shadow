@@ -15,6 +15,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Matrix4f;
 import net.shadow.client.feature.gui.DoesMSAA;
 import net.shadow.client.feature.gui.FastTickable;
+import net.shadow.client.feature.gui.clickgui.theme.ThemeManager;
 import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.render.Renderer;
 import org.spongepowered.asm.mixin.Mixin;
@@ -26,8 +27,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.awt.*;
 
 @Mixin(ClickableWidget.class)
-public abstract class ButtonWidgetMixin implements DoesMSAA, FastTickable {
-
+public abstract class ClickableWidgetMixin implements DoesMSAA, FastTickable {
     final Color c = new Color(30, 30, 30);
     final Color c1 = new Color(15, 15, 15);
     @Shadow
@@ -105,10 +105,31 @@ public abstract class ButtonWidgetMixin implements DoesMSAA, FastTickable {
 
     @Inject(method = "renderButton", at = @At("HEAD"), cancellable = true)
     void p(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if (((Object) this) instanceof SliderWidget || ((Object) this) instanceof TextFieldWidget) return;
+        if (((Object) this) instanceof TextFieldWidget) return;
         ci.cancel();
 
         Renderer.R2D.renderRoundedQuad(matrices, Renderer.Util.lerp(c1.brighter(), c1, anim), x, y, x + width, y + height, 5, 15);
+
+        if (((Object) this) instanceof SliderWidget wid) {
+            double indicatorWidth = 1.5;
+            double indicatorHeight = height;
+            double sliderValue = ((SliderWidgetAccessor) wid).getValue();
+            double indicatorYOffset = 0;
+            double indicatorXOffset = MathHelper.lerp(sliderValue, indicatorWidth / 2d, width - indicatorWidth / 2d);
+            if (indicatorXOffset < 5) {
+                double vDelta = indicatorXOffset / 5d * 90;
+                double cos = Math.cos(Math.toRadians(vDelta + 90)) * 5;
+                indicatorHeight -= cos + 5;
+                indicatorYOffset += cos + 5;
+            }
+            if (indicatorXOffset > width - 5) {
+                double vDelta = (width - indicatorXOffset) / 5d * 90;
+                double cos = Math.cos(Math.toRadians(vDelta + 90)) * 5;
+                indicatorHeight -= cos + 5;
+                indicatorYOffset += cos + 5;
+            }
+            Renderer.R2D.renderRoundedQuad(matrices, ThemeManager.getMainTheme().getAccent(), MathHelper.lerp(sliderValue, x, x + width - indicatorWidth), y + indicatorYOffset, MathHelper.lerp(sliderValue, x, x + width - indicatorWidth) + indicatorWidth, y + indicatorHeight, indicatorWidth / 2d, 10);
+        }
         renderRoundedQuadOutline(matrices, Renderer.Util.lerp(c.brighter(), c, anim), x, y, x + width, y + height, 5, 15);
         FontRenderers.getRenderer().drawCenteredString(matrices, getMessage().getString(), x + width / 2d, y + height / 2d - FontRenderers.getRenderer().getMarginHeight() / 2d, 1f, 1f, 1f, 1f);
     }

@@ -33,7 +33,7 @@ public class Image extends Command {
     boolean real;
 
     public Image() {
-        super("Image", "apply images to various text mediums", "image", "img");
+        super("Image", "Apply an image to various text mediums", "image", "img");
         Events.registerEventHandler(EventType.PACKET_RECEIVE, event -> {
             if (!real) return;
             PacketEvent pe = (PacketEvent) event;

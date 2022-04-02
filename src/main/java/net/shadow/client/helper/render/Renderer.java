@@ -40,6 +40,7 @@ public class Renderer {
         public static void renderFadingBlocks(MatrixStack stack) {
             fades.removeIf(FadingBlock::isDead);
             for (FadingBlock fade : new ArrayList<>(fades)) {
+                if (fade == null) continue;
                 long lifetimeLeft = fade.getLifeTimeLeft();
                 double progress = lifetimeLeft / (double) fade.lifeTime;
                 Color out = Util.modify(fade.outline, -1, -1, -1, (int) (fade.outline.getAlpha() * progress));
@@ -560,7 +561,7 @@ public class Renderer {
             setupRender();
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
             bufferBuilder.begin(VertexFormat.DrawMode.TRIANGLE_FAN, VertexFormats.POSITION_COLOR);
-            for (int i = 0; i < 360; i += (360 / segments)) {
+            for (int i = 0; i < 360; i += Math.min((360 / segments), 360 - i)) {
                 double radians = Math.toRadians(i);
                 double sin = Math.sin(radians) * rad;
                 double cos = Math.cos(radians) * rad;

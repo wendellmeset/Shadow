@@ -13,13 +13,13 @@ import net.shadow.client.feature.command.exception.CommandException;
 
 public class Damage extends Command {
     public Damage() {
-        super("Damage", "kys", "damage", "kms");
+        super("Damage", "Applies damage to your player", "damage", "kms");
     }
 
     @Override
     public String[] getSuggestions(String fullCommand, String[] args) {
         if (args.length == 1) {
-            return new String[]{"(strength)"};
+            return new String[]{"(amount)"};
         }
         return super.getSuggestions(fullCommand, args);
     }
@@ -28,13 +28,16 @@ public class Damage extends Command {
     public void onExecute(String[] args) throws CommandException {
         validateArgumentsLength(args, 1);
 
-        if (ShadowMain.client.interactionManager.hasCreativeInventory()) {
-            error("you cannot damage in creative mode");
+        if (ShadowMain.client.interactionManager.hasCreativeInventory() || ShadowMain.client.player.isSpectator()) {
+            error("You need to be in survival or adventure mode to damage yourself");
             return;
         }
 
         int amount = new IntegerArgumentParser().parse(args[0]);
-        if (amount == 0) return;
+        if (amount == 0) {
+            error("Listen I know you are scared to do it but heaven awaits you");
+            return;
+        }
         applyDamage(amount);
         message("Applied Damage");
     }

@@ -8,7 +8,6 @@ import io.netty.channel.Channel;
 import io.netty.handler.proxy.Socks4ProxyHandler;
 import io.netty.handler.proxy.Socks5ProxyHandler;
 import net.shadow.client.feature.gui.screen.ProxyManagerScreen;
-import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -17,7 +16,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.net.InetSocketAddress;
 
 @Mixin(targets = "net/minecraft/network/ClientConnection$1")
-@Debug(export = true)
 public class ClientConnection1Mixin {
 
     @Inject(method = "initChannel(Lio/netty/channel/Channel;)V", at = @At("HEAD"))

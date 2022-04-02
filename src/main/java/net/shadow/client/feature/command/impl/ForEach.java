@@ -29,7 +29,7 @@ public class ForEach extends Command {
     boolean recieving;
 
     public ForEach() {
-        super("ForEach", "Do something for each player", "foreach", "for", "fe");
+        super("ForEach", "Do something for each player", "forEach", "for", "fe");
         Events.registerEventHandler(EventType.PACKET_RECEIVE, event -> {
             if (!recieving) return;
             PacketEvent pe = (PacketEvent) event;

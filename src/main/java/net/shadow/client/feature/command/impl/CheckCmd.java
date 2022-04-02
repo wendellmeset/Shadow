@@ -12,7 +12,7 @@ import net.shadow.client.feature.command.Command;
 
 public class CheckCmd extends Command {
     public CheckCmd() {
-        super("CheckCmd", "check if command blocks are on", "checkcmd");
+        super("CheckCmd", "Check if command blocks are enabled", "checkCmd");
     }
 
     @Override

@@ -5,24 +5,21 @@
 package net.shadow.client.feature.module.impl.misc;
 
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.network.Packet;
 import net.minecraft.network.packet.c2s.play.ButtonClickC2SPacket;
 import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket;
-import net.minecraft.screen.slot.SlotActionType;
-import net.shadow.client.feature.config.ColorSetting;
+import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
+import net.shadow.client.feature.gui.notifications.Notification;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
+import net.shadow.client.helper.Timer;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.PacketEvent;
-import net.shadow.client.helper.util.Utils;
 
-import java.awt.*;
+import java.lang.reflect.Field;
 
 public class Test extends Module {
-    final ColorSetting color = this.config.create(new ColorSetting.Builder(Color.WHITE)
-            .name("REAL")
-            .description("REAL")
-            .get());
 
     public Test() {
         super("Test", "Testing stuff with the client, can be ignored", ModuleType.MISC);
@@ -36,17 +33,6 @@ public class Test extends Module {
             }
             if(event.getPacket() instanceof ButtonClickC2SPacket uwu){
                 System.out.println(uwu.getButtonId() + " <- Button id");
-            }
-        });
-    }
-
-    @Override
-    public void tick() {
-        for(int i = 0; i < 1; i++){
-            Utils.Inventory.moveStackToOther(3, 0);
-            client.interactionManager.clickButton(client.player.currentScreenHandler.syncId, 15);
-            client.interactionManager.clickSlot(client.player.currentScreenHandler.syncId, 3, 0, SlotActionType.PICKUP, client.player);
-            client.interactionManager.clickSlot(client.player.currentScreenHandler.syncId, 0, 0, SlotActionType.PICKUP, client.player);
         }
     }
 
@@ -54,7 +40,6 @@ public class Test extends Module {
     public void enable() {
 
     }
-
     @Override
     public void disable() {
 
@@ -67,11 +52,16 @@ public class Test extends Module {
 
     @Override
     public void onWorldRender(MatrixStack matrices) {
-
     }
 
     @Override
     public void onHudRender() {
 
+    }
+
+    @Override
+    public void tick() {
+        // TODO Auto-generated method stub
+        
     }
 }

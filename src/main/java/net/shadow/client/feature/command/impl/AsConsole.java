@@ -20,7 +20,7 @@ import net.shadow.client.feature.command.exception.CommandException;
 
 public class AsConsole extends Command {
     public AsConsole() {
-        super("AsConsole", "run commands as console", "asconsole");
+        super("AsConsole", "Run a command as console via command blocks", "asConsole", "runas");
     }
 
     @Override

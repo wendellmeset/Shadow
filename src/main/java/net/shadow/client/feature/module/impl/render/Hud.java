@@ -19,6 +19,7 @@ import net.shadow.client.feature.gui.notifications.NotificationRenderer;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.feature.module.ModuleType;
+import net.shadow.client.helper.AccurateFrameRateCounter;
 import net.shadow.client.helper.GameTexture;
 import net.shadow.client.helper.Timer;
 import net.shadow.client.helper.event.EventType;
@@ -30,7 +31,6 @@ import net.shadow.client.helper.util.Transitions;
 import net.shadow.client.helper.util.Utils;
 import net.shadow.client.mixin.IDebugHudAccessor;
 import net.shadow.client.mixin.IInGameHudAccessor;
-import net.shadow.client.mixin.IMinecraftClientAccessor;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -172,7 +172,7 @@ public class Hud extends Module {
         ms.translate(5, 5, 0);
         List<String> values = new ArrayList<>();
         if (this.fps.getValue()) {
-            values.add(((IMinecraftClientAccessor) ShadowMain.client).getCurrentFps() + " fps");
+            values.add(AccurateFrameRateCounter.globalInstance.getFps() + " fps");
         }
 
         if (this.tps.getValue()) {

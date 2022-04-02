@@ -18,7 +18,7 @@ import java.util.Objects;
 
 public class ItemData extends Command {
     public ItemData() {
-        super("ItemData", "get items from other ppl", "itemdata", "idata");
+        super("ItemData", "Show item data from other player's inventories", "itemData", "idata");
     }
 
     @Override
@@ -76,7 +76,7 @@ public class ItemData extends Command {
                 return player.getInventory().getArmorStack(0);
 
             default:
-                message("Please use the format >itemdata <player> <slot>");
+                message("Invalid slot");
                 return null;
         }
     }
