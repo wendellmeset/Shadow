@@ -26,9 +26,9 @@ import net.shadow.client.helper.util.Utils;
 
 import java.util.Objects;
 
-public class LinkPlayer extends Command {
-    public LinkPlayer() {
-        super("LinkPlayer", "link a wolf to a player", "linkplayer", "lplayer");
+public class LinkWolf extends Command {
+    public LinkWolf() {
+        super("LinkWolf", "Link a wolf to a player", "linkWolf", "lWolf");
     }
 
     @Override

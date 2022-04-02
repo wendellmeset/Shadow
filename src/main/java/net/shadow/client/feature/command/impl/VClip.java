@@ -4,30 +4,29 @@
 
 package net.shadow.client.feature.command.impl;
 
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
-import net.shadow.client.feature.command.argument.IntegerArgumentParser;
+import net.shadow.client.feature.command.argument.DoubleArgumentParser;
 import net.shadow.client.feature.command.exception.CommandException;
 
-public class CPerm extends Command {
-    public CPerm() {
-        super("ClientPermission", "set client permission levels", "clientpermission", "cperm");
+public class VClip extends Command {
+    public VClip() {
+        super("VClip", "Teleport vertically", "vclip");
     }
 
     @Override
     public String[] getSuggestions(String fullCommand, String[] args) {
-        if (args.length == 1) {
-            return new String[]{"(permission level)"};
-        }
+        if (args.length == 1) return new String[]{"(height)"};
         return super.getSuggestions(fullCommand, args);
     }
 
     @Override
     public void onExecute(String[] args) throws CommandException {
         validateArgumentsLength(args, 1);
-        IntegerArgumentParser iap = new IntegerArgumentParser();
-        int uwu = iap.parse(args[0]);
-        ShadowMain.client.player.setClientPermissionLevel(uwu);
-        message("Set the Permission level to [" + uwu + "]");
+
+        ClientPlayerEntity player = ShadowMain.client.player;
+        player.updatePosition(player.getX(),
+                player.getY() + new DoubleArgumentParser().parse(args[0]), player.getZ());
     }
 }

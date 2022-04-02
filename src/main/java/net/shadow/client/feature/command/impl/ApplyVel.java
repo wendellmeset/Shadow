@@ -9,10 +9,10 @@ import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.argument.DoubleArgumentParser;
 import net.shadow.client.feature.command.exception.CommandException;
 
-public class Apvel extends Command {
+public class ApplyVel extends Command {
 
-    public Apvel() {
-        super("Apvel", "apply velocity to your character", "velocity", "vel", "apvel");
+    public ApplyVel() {
+        super("ApplyVel", "Apply velocity to your player", "velocity", "vel", "applyVel", "yeet");
     }
 
     @Override

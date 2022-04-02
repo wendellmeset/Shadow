@@ -4,21 +4,20 @@
 
 package net.shadow.client.feature.command.impl;
 
-import net.minecraft.entity.Entity;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.argument.IntegerArgumentParser;
 import net.shadow.client.feature.command.exception.CommandException;
 
-public class EVclip extends Command {
-    public EVclip() {
-        super("EVclip", "VClip with an entity", "evc", "evclip", "entityVclip");
+public class PermissionLevel extends Command {
+    public PermissionLevel() {
+        super("PermissionLevel", "Sets the player's permission level client side", "permissionlevel", "permlevel");
     }
 
     @Override
     public String[] getSuggestions(String fullCommand, String[] args) {
         if (args.length == 1) {
-            return new String[]{"(amount)"};
+            return new String[]{"1", "2", "3", "4"};
         }
         return super.getSuggestions(fullCommand, args);
     }
@@ -26,16 +25,9 @@ public class EVclip extends Command {
     @Override
     public void onExecute(String[] args) throws CommandException {
         validateArgumentsLength(args, 1);
-
-        if (!ShadowMain.client.player.hasVehicle()) {
-            error("You're not riding an entity");
-            return;
-        }
-
-        int up = new IntegerArgumentParser().parse(args[0]);
-
-        Entity vehicle = ShadowMain.client.player.getVehicle();
-        vehicle.updatePosition(vehicle.getX(), vehicle.getY() + up, vehicle.getZ());
-        message("Teleported entity");
+        IntegerArgumentParser iap = new IntegerArgumentParser();
+        int newPermLevel = iap.parse(args[0]);
+        ShadowMain.client.player.setClientPermissionLevel(newPermLevel);
+        message("Set the Permission level to [" + newPermLevel + "]");
     }
 }

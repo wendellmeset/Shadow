@@ -21,7 +21,7 @@ import java.util.Objects;
 
 public class SpawnData extends Command {
     public SpawnData() {
-        super("SpawnData", "set pre-spawn conditions for spawn eggs", "prespawn", "spawndata");
+        super("SpawnData", "Set pre-spawn conditions for spawn eggs", "preSpawn", "spawnData");
     }
 
     @Override

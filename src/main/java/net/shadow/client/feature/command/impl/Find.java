@@ -35,7 +35,7 @@ public class Find extends Command {
     int bookSlot = -1;
 
     public Find() {
-        super("Find", "NoCom 2 (requires creative)", "find", "cfind");
+        super("Find", "Nocom 2 (requires creative)", "find", "findPlayer");
         Events.registerEventHandler(EventType.PACKET_RECEIVE, event -> {
             if (!pendingBook) {
                 return;

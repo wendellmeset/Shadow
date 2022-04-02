@@ -13,7 +13,7 @@ import net.shadow.client.feature.command.exception.CommandException;
 
 public class Author extends Command {
     public Author() {
-        super("Author", "set the author of a book in creative", "author");
+        super("Author", "Sets the author of a book", "author", "setAuthor");
     }
 
     @Override

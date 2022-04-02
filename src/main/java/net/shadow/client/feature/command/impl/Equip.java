@@ -11,7 +11,7 @@ import net.shadow.client.feature.command.exception.CommandException;
 
 public class Equip extends Command {
     public Equip() {
-        super("Equip", "equip items", "equip");
+        super("Equip", "Equips items", "equip");
     }
 
     @Override
@@ -28,21 +28,21 @@ public class Equip extends Command {
 
         switch (args[0].toLowerCase()) {
             case "head" -> {
-                //39 HEAD - 36 FEETw
+                // 39 HEAD - 36 FEET
                 ShadowMain.client.interactionManager.clickSlot(ShadowMain.client.player.currentScreenHandler.syncId, 36 + ShadowMain.client.player.getInventory().selectedSlot, 39, SlotActionType.SWAP, ShadowMain.client.player);
-                message("equipped item on head");
+                message("Equipped item on head");
             }
             case "chest" -> {
                 ShadowMain.client.interactionManager.clickSlot(ShadowMain.client.player.currentScreenHandler.syncId, 36 + ShadowMain.client.player.getInventory().selectedSlot, 39, SlotActionType.SWAP, ShadowMain.client.player);
-                message("equipped item on chest");
+                message("Equipped item on chest");
             }
             case "legs" -> {
                 ShadowMain.client.interactionManager.clickSlot(ShadowMain.client.player.currentScreenHandler.syncId, 36 + ShadowMain.client.player.getInventory().selectedSlot, 39, SlotActionType.SWAP, ShadowMain.client.player);
-                message("equipped item on legs");
+                message("Equipped item on legs");
             }
             case "feet" -> {
                 ShadowMain.client.interactionManager.clickSlot(ShadowMain.client.player.currentScreenHandler.syncId, 36 + ShadowMain.client.player.getInventory().selectedSlot, 39, SlotActionType.SWAP, ShadowMain.client.player);
-                message("equipped item on feet");
+                message("Equipped item on feet");
             }
             default -> error("Incorrect slot, slots are chest, legs, feet, and head");
         }

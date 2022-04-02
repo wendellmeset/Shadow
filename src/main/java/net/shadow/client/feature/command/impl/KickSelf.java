@@ -15,7 +15,7 @@ import net.shadow.client.feature.command.exception.CommandException;
 
 public class KickSelf extends Command {
     public KickSelf() {
-        super("KickSelf", "kick yourself from the server", "kickself");
+        super("KickSelf", "Kick yourself from the server", "kickSelf");
     }
 
     @Override

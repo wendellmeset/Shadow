@@ -5,7 +5,6 @@
 package net.shadow.client.feature.command;
 
 import net.shadow.client.feature.command.exception.CommandException;
-import net.shadow.client.feature.command.impl.Void;
 import net.shadow.client.feature.command.impl.*;
 import net.shadow.client.helper.util.Utils;
 
@@ -40,44 +39,41 @@ public class CommandRegistry {
         commands.add(new Kill());
         commands.add(new Invsee());
         commands.add(new RageQuit());
-        commands.add(new Plugins());
         commands.add(new Find());
         commands.add(new FakeItem());
         commands.add(new Taco());
         commands.add(new Bind());
-        commands.add(new SkinExploit());
         commands.add(new Test());
         commands.add(new Kickall());
         commands.add(new ItemExploit());
         commands.add(new Inject());
-        commands.add(new Apvel());
+        commands.add(new ApplyVel());
         commands.add(new AsConsole());
         commands.add(new Author());
         commands.add(new Ban());
         commands.add(new Boot());
         commands.add(new CheckCmd());
-        commands.add(new ClientFlood());
-        commands.add(new CPerm());
+        commands.add(new LogFlood());
+        commands.add(new PermissionLevel());
         commands.add(new Crash());
         commands.add(new Damage());
         commands.add(new Equip());
         commands.add(new EVclip());
-        commands.add(new FloodLP());
+        commands.add(new FloodLuckperms());
         commands.add(new ForceOP());
         commands.add(new ItemSpoof());
         commands.add(new HClip());
         commands.add(new Image());
         commands.add(new ItemData());
         commands.add(new KickSelf());
-        commands.add(new Lag());
-        commands.add(new LinkPlayer());
-        commands.add(new Open());
+        commands.add(new TitleLag());
+        commands.add(new LinkWolf());
         commands.add(new Poof());
         commands.add(new SpawnData());
-        commands.add(new Stop());
-        commands.add(new Vclip());
-        commands.add(new FSpam());
-        commands.add(new Void());
+        commands.add(new StopServer());
+        commands.add(new VClip());
+        commands.add(new MessageSpam());
+        commands.add(new ClearInventory());
     }
 
     public static List<Command> getCommands() {
