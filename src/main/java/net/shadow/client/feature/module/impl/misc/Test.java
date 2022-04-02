@@ -33,7 +33,8 @@ public class Test extends Module {
             }
             if(event.getPacket() instanceof ButtonClickC2SPacket uwu){
                 System.out.println(uwu.getButtonId() + " <- Button id");
-        }
+            }
+        });
     }
 
     @Override
@@ -61,7 +62,6 @@ public class Test extends Module {
 
     @Override
     public void tick() {
-        // TODO Auto-generated method stub
         
     }
 }
