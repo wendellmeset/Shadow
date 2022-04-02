@@ -10,6 +10,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.shadow.client.feature.gui.notifications.NotificationRenderer;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleRegistry;
+import net.shadow.client.helper.AccurateFrameRateCounter;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.base.NonCancellableEvent;
@@ -24,6 +25,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class AInGameHudMixin extends DrawableHelper {
     @Inject(method = "render", at = @At("RETURN"))
     public void atomic_postRender(MatrixStack matrices, float tickDelta, CallbackInfo ci) {
+        AccurateFrameRateCounter.globalInstance.recordFrame();
         MSAAFramebuffer.use(MSAAFramebuffer.MAX_SAMPLES, () -> {
             for (Module module : ModuleRegistry.getModules()) {
                 if (module.isEnabled()) {

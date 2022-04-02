@@ -8,7 +8,7 @@ import lombok.Getter;
 
 public enum GameTexture {
     TEXTURE_ICON(new Texture("tex/icon"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/icon.png"),
-    TEXTURE_BACKGROUND(new Texture("tex/background"), "https://github.com/Saturn5Vfive/shadow-fs/blob/main/bgfull.png?raw=true"),
+    TEXTURE_BACKGROUND(new Texture("tex/background"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/background.jpg?inline=false"),
     TEXTURE_LOGO(new Texture("tex/logo"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/shadow_logo.png"),
 
     NOTIF_ERROR(new Texture("notif/error"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/error.png"),

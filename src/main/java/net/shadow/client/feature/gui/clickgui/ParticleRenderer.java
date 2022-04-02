@@ -14,6 +14,7 @@ import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.gui.clickgui.theme.Theme;
 import net.shadow.client.feature.gui.clickgui.theme.ThemeManager;
 import net.shadow.client.helper.render.Renderer;
+import net.shadow.client.helper.util.Transitions;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -41,8 +42,9 @@ public class ParticleRenderer {
         Particle n = new Particle();
         n.x = ShadowMain.client.getWindow().getScaledWidth() * Math.random();
         n.y = ShadowMain.client.getWindow().getScaledHeight() * Math.random();
-        n.velY = (Math.random() - .5) / 4;
+//        n.velY = (Math.random() - .5) / 4;
         n.velX = (Math.random() - .5) / 4;
+        n.circleRad = Math.random() * 2;
         particles.add(n);
     }
 
@@ -75,7 +77,10 @@ public class ParticleRenderer {
         double x = 0;
         double y = 0;
         double velY = 0;
+        double accelX = 0;
+        double accelY = -0.1;
         long life = origLife;
+        double circleRad = 1.5;
 
         public static BufferBuilder renderPrepare(Color color) {
             float red = color.getRed() / 255f;
@@ -148,6 +153,10 @@ public class ParticleRenderer {
         void move() {
             life--;
             life = Math.max(0, life);
+            accelX /= 1.1;
+            accelY /= 1.1;
+            velX += accelX;
+            velY += accelY;
             x += velX;
             y += velY;
             double h = ShadowMain.client.getWindow().getScaledHeight();
@@ -155,11 +164,11 @@ public class ParticleRenderer {
             if (x > w || x < 0) {
                 velX *= -1;
             }
-            if (y > h || y < 0) {
+            if (y > h) {
                 velY *= -1;
             }
             x = MathHelper.clamp(x, 0, w);
-            y = MathHelper.clamp(y, 0, h);
+            y = Math.min(y, h);
         }
 
         void render(List<Particle> others, MatrixStack stack) {
@@ -168,29 +177,33 @@ public class ParticleRenderer {
             long endDelta = Math.min(life, fadeTime);
             long deltaOverall = Math.min(startDelta, endDelta);
             double pk = (deltaOverall / (double) fadeTime);
+
 //            ShadowMain.client.textRenderer.draw(stack,pk+"",(float)x,(float)y,0xFFFFFF);
+            pk = Transitions.easeOutExpo(pk);
             Theme theme = ThemeManager.getMainTheme();
             stack.push();
-            double maxDist = 100;
-            for (Particle particle : others.stream().filter(particle -> particle != this).toList()) {
-                double px = particle.x;
-                double py = particle.y;
-                double dist = Math.sqrt(Math.pow((px - this.x), 2) + Math.pow((py - this.y), 2));
-                if (dist < maxDist) {
-                    long sd1 = Math.min(particle.origLife - particle.life, fadeTime);
-                    long ed1 = Math.min(particle.life, fadeTime);
-                    long do1 = Math.min(sd1, ed1);
-                    double pk1 = (do1 / (double) fadeTime);
-                    double p = 1 - (dist / maxDist);
-                    p = Math.min(p, Math.min(pk1, pk));
-                    Renderer.R2D.renderLine(stack, Renderer.Util.lerp(theme.getAccent(), DYING, p), this.x, this.y, px, py);
-                }
-            }
+            double radToUse = pk * circleRad;
+            Renderer.R2D.renderCircle(stack, Renderer.Util.lerp(theme.getAccent(), DYING, pk), x - radToUse / 2d, y - radToUse / 2d, radToUse, 30);
+//            double maxDist = 100;
+//            for (Particle particle : others.stream().filter(particle -> particle != this).toList()) {
+//                double px = particle.x;
+//                double py = particle.y;
+//                double dist = Math.sqrt(Math.pow((px - this.x), 2) + Math.pow((py - this.y), 2));
+//                if (dist < maxDist) {
+//                    long sd1 = Math.min(particle.origLife - particle.life, fadeTime);
+//                    long ed1 = Math.min(particle.life, fadeTime);
+//                    long do1 = Math.min(sd1, ed1);
+//                    double pk1 = (do1 / (double) fadeTime);
+//                    double p = 1 - (dist / maxDist);
+//                    p = Math.min(p, Math.min(pk1, pk));
+//                    Renderer.R2D.renderLine(stack, Renderer.Util.lerp(theme.getAccent(), DYING, p), this.x, this.y, px, py);
+//                }
+//            }
             stack.pop();
         }
 
         boolean isDead() {
-            return life == 0;
+            return life == 0 || y < 0;
         }
     }
 }

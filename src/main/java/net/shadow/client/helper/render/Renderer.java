@@ -561,7 +561,7 @@ public class Renderer {
             setupRender();
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
             bufferBuilder.begin(VertexFormat.DrawMode.TRIANGLE_FAN, VertexFormats.POSITION_COLOR);
-            for (int i = 0; i < 360; i += (360 / segments)) {
+            for (int i = 0; i < 360; i += Math.min((360 / segments), 360 - i)) {
                 double radians = Math.toRadians(i);
                 double sin = Math.sin(radians) * rad;
                 double cos = Math.cos(radians) * rad;

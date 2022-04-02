@@ -51,8 +51,8 @@ public class Notification {
      */
     public static Notification create(long duration, String title, boolean topBar, Type type, String... contents) {
         Notification n = new Notification(duration, title, type, contents);
+        n.posY = n.renderPosY = -10;
         if (topBar) {
-            n.posY = n.renderPosY = -69;
             NotificationRenderer.topBarNotifications.add(0, n);
         } else {
             NotificationRenderer.notifications.add(0, n);
@@ -69,7 +69,7 @@ public class Notification {
         List<String> splitContent = new ArrayList<>();
         StringBuilder line = new StringBuilder();
         for (String c : split.split(" +")) {
-            if (FontRenderers.getRenderer().getStringWidth(line + " " + c) >= 145) {
+            if (FontRenderers.getRenderer().getStringWidth(line + " " + c) >= 150) {
                 splitContent.add(line.toString());
                 line = new StringBuilder();
             }
