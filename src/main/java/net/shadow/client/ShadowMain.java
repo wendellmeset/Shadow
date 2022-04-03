@@ -8,6 +8,7 @@ import coffeeprotect.SkipObfuscation;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Element;
+import net.shadow.client.feature.addon.AddonManager;
 import net.shadow.client.feature.command.CommandRegistry;
 import net.shadow.client.feature.gui.FastTickable;
 import net.shadow.client.feature.gui.notifications.NotificationRenderer;
@@ -61,6 +62,10 @@ public class ShadowMain implements ModInitializer {
         if (!BASE.exists()) {
             BASE.mkdir();
         }
+
+        log(Level.INFO, "Loading addons");
+        AddonManager.init();
+
         ConfigManager.loadState();
 
         log(Level.INFO, "Done initializing");

@@ -4,6 +4,7 @@
 
 package net.shadow.client.feature.command;
 
+import net.shadow.client.feature.addon.Addon;
 import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.feature.command.impl.*;
 import net.shadow.client.helper.util.Utils;
@@ -13,71 +14,98 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CommandRegistry {
+    private static final List<Command> vanillaCommands = new ArrayList<>();
+    private static final List<CustomCommandEntry> customCommands = new ArrayList<>();
+    private static final List<Command> sharedCommands = new ArrayList<>();
 
-    private static final List<Command> commands = new ArrayList<>();
+    public static void registerCustomCommand(Addon addon, Command command) {
+        for (CustomCommandEntry e : customCommands) {
+            if (e.command.getClass() == command.getClass()) {
+                throw new IllegalStateException("Command " + command.getClass().getSimpleName() + " already registered");
+            }
+        }
+        customCommands.add(new CustomCommandEntry(addon, command));
+        rebuildSharedCommands();
+    }
+
+    public static void clearCustomCommands(Addon addon) {
+        customCommands.removeIf(customCommandEntry -> customCommandEntry.addon == addon);
+        rebuildSharedCommands();
+    }
+
+    private static void rebuildSharedCommands() {
+        sharedCommands.clear();
+        sharedCommands.addAll(vanillaCommands);
+        for (CustomCommandEntry customCommand : customCommands) {
+            sharedCommands.add(customCommand.command);
+        }
+    }
+
+    public static void init() {
+        vanillaCommands.clear();
+        vanillaCommands.add(new Toggle());
+        vanillaCommands.add(new Config());
+        vanillaCommands.add(new Gamemode());
+        vanillaCommands.add(new Effect());
+        vanillaCommands.add(new Hologram());
+        vanillaCommands.add(new Help());
+        vanillaCommands.add(new ForEach());
+        vanillaCommands.add(new Drop());
+        vanillaCommands.add(new Panic());
+        vanillaCommands.add(new Rename());
+        vanillaCommands.add(new ViewNbt());
+        vanillaCommands.add(new Say());
+        vanillaCommands.add(new ConfigUtils());
+        vanillaCommands.add(new Kill());
+        vanillaCommands.add(new Invsee());
+        vanillaCommands.add(new RageQuit());
+        vanillaCommands.add(new Find());
+        vanillaCommands.add(new FakeItem());
+        vanillaCommands.add(new Taco());
+        vanillaCommands.add(new Bind());
+        vanillaCommands.add(new Test());
+        vanillaCommands.add(new Kickall());
+        vanillaCommands.add(new ItemExploit());
+        vanillaCommands.add(new Inject());
+        vanillaCommands.add(new ApplyVel());
+        vanillaCommands.add(new AsConsole());
+        vanillaCommands.add(new Author());
+        vanillaCommands.add(new Ban());
+        vanillaCommands.add(new Boot());
+        vanillaCommands.add(new CheckCmd());
+        vanillaCommands.add(new LogFlood());
+        vanillaCommands.add(new PermissionLevel());
+        vanillaCommands.add(new Crash());
+        vanillaCommands.add(new Damage());
+        vanillaCommands.add(new Equip());
+        vanillaCommands.add(new EVclip());
+        vanillaCommands.add(new FloodLuckperms());
+        vanillaCommands.add(new ForceOP());
+        vanillaCommands.add(new ItemSpoof());
+        vanillaCommands.add(new HClip());
+        vanillaCommands.add(new Image());
+        vanillaCommands.add(new ItemData());
+        vanillaCommands.add(new KickSelf());
+        vanillaCommands.add(new TitleLag());
+        vanillaCommands.add(new LinkWolf());
+        vanillaCommands.add(new Poof());
+        vanillaCommands.add(new SpawnData());
+        vanillaCommands.add(new StopServer());
+        vanillaCommands.add(new VClip());
+        vanillaCommands.add(new MessageSpam());
+        vanillaCommands.add(new ClearInventory());
+    }
 
     static {
         // TODO: 18.12.21 add commands
         init();
     }
 
-    public static void init() {
-        commands.clear();
-        commands.add(new Toggle());
-        commands.add(new Config());
-        commands.add(new Gamemode());
-        commands.add(new Effect());
-        commands.add(new Hologram());
-        commands.add(new Help());
-        commands.add(new ForEach());
-        commands.add(new Drop());
-        commands.add(new Panic());
-        commands.add(new Rename());
-        commands.add(new ViewNbt());
-        commands.add(new Say());
-        commands.add(new ConfigUtils());
-        commands.add(new Kill());
-        commands.add(new Invsee());
-        commands.add(new RageQuit());
-        commands.add(new Find());
-        commands.add(new FakeItem());
-        commands.add(new Taco());
-        commands.add(new Bind());
-        commands.add(new Test());
-        commands.add(new Kickall());
-        commands.add(new ItemExploit());
-        commands.add(new Inject());
-        commands.add(new ApplyVel());
-        commands.add(new AsConsole());
-        commands.add(new Author());
-        commands.add(new Ban());
-        commands.add(new Boot());
-        commands.add(new CheckCmd());
-        commands.add(new LogFlood());
-        commands.add(new PermissionLevel());
-        commands.add(new Crash());
-        commands.add(new Damage());
-        commands.add(new Equip());
-        commands.add(new EVclip());
-        commands.add(new FloodLuckperms());
-        commands.add(new ForceOP());
-        commands.add(new ItemSpoof());
-        commands.add(new HClip());
-        commands.add(new Image());
-        commands.add(new ItemData());
-        commands.add(new KickSelf());
-        commands.add(new TitleLag());
-        commands.add(new LinkWolf());
-        commands.add(new Poof());
-        commands.add(new SpawnData());
-        commands.add(new StopServer());
-        commands.add(new VClip());
-        commands.add(new MessageSpam());
-        commands.add(new ClearInventory());
+    public static List<Command> getCommands() {
+        return sharedCommands;
     }
 
-    public static List<Command> getCommands() {
-        return commands;
+    record CustomCommandEntry(Addon addon, Command command) {
     }
 
     public static void execute(String command) {

@@ -45,7 +45,7 @@ public abstract class Module {
         return this.debuggerEnabled.getValue();
     }
 
-    public ModuleType getModuleType() {
+    public final ModuleType getModuleType() {
         return moduleType;
     }
 
