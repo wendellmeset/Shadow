@@ -22,7 +22,7 @@ import java.util.List;
 public class ItemStackMixin {
 
     @Inject(method = "getTooltip", at = @At("RETURN"), cancellable = true)
-    void atomic_dispatchTooltipRender(PlayerEntity player, TooltipContext context, CallbackInfoReturnable<List<Text>> cir) {
+    void dispatchTooltipRender(PlayerEntity player, TooltipContext context, CallbackInfoReturnable<List<Text>> cir) {
         List<Text> cval = cir.getReturnValue();
         LoreQueryEvent event = new LoreQueryEvent((ItemStack) (Object) this, cval);
         Events.fireEvent(EventType.LORE_QUERY, event);

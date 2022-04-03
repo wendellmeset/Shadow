@@ -42,7 +42,7 @@ public abstract class AGenericContainerScreenMixin {
     }
 
     @Inject(method = "tick", at = @At("HEAD"))
-    public void atomic_preTick(CallbackInfo ci) {
+    public void preTick(CallbackInfo ci) {
         if (!ModuleRegistry.getByClass(InventoryWalk.class).isEnabled()) {
             return;
         }

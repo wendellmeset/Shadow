@@ -22,14 +22,14 @@ import java.util.Objects;
 public class BlockMixin {
 
     @Inject(method = "shouldDrawSide", at = @At("HEAD"), cancellable = true)
-    private static void atomic_overwriteShouldDrawSide(BlockState state, BlockView world, BlockPos pos, Direction side, BlockPos blockPos, CallbackInfoReturnable<Boolean> cir) {
+    private static void overwriteShouldDrawSide(BlockState state, BlockView world, BlockPos pos, Direction side, BlockPos blockPos, CallbackInfoReturnable<Boolean> cir) {
         if (Objects.requireNonNull(ModuleRegistry.getByClass(XRAY.class)).isEnabled()) {
             cir.setReturnValue(XRAY.blocks.contains(state.getBlock()));
         }
     }
 
     @Inject(method = "isTranslucent", at = @At("HEAD"), cancellable = true)
-    public void atomic_overwriteIsTranslucent(BlockState state, BlockView world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
+    public void overwriteIsTranslucent(BlockState state, BlockView world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
         if (Objects.requireNonNull(ModuleRegistry.getByClass(XRAY.class)).isEnabled()) {
             cir.setReturnValue(!XRAY.blocks.contains(state.getBlock()));
         }

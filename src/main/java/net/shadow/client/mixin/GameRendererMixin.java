@@ -39,7 +39,7 @@ public class GameRendererMixin {
     private boolean dis;
 
     @Inject(at = @At(value = "FIELD", target = "Lnet/minecraft/client/render/GameRenderer;renderHand:Z", opcode = Opcodes.GETFIELD, ordinal = 0), method = "renderWorld")
-    void atomic_dispatchWorldRender(float tickDelta, long limitTime, MatrixStack matrix, CallbackInfo ci) {
+    void dispatchWorldRender(float tickDelta, long limitTime, MatrixStack matrix, CallbackInfo ci) {
         if (vb) {
             ShadowMain.client.options.bobView = true;
             vb = false;
@@ -76,12 +76,12 @@ public class GameRendererMixin {
     }
 
     @Inject(at = @At("HEAD"), method = "renderWorld")
-    private void atomic_preRenderWorld(float tickDelta, long limitTime, MatrixStack matrix, CallbackInfo ci) {
+    private void preRenderWorld(float tickDelta, long limitTime, MatrixStack matrix, CallbackInfo ci) {
         dis = true;
     }
 
     @Inject(at = @At("HEAD"), method = "bobView", cancellable = true)
-    private void atomic_stopCursorBob(MatrixStack matrices, float f, CallbackInfo ci) {
+    private void stopCursorBob(MatrixStack matrices, float f, CallbackInfo ci) {
         if (ShadowMain.client.options.bobView && dis) {
             vb = true;
             ShadowMain.client.options.bobView = false;
@@ -91,7 +91,7 @@ public class GameRendererMixin {
     }
 
     @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;raycast(DFZ)Lnet/minecraft/util/hit/HitResult;"), method = "updateTargetedEntity")
-    HitResult atomic_replaceFreelookHitResult(Entity instance, double maxDistance, float tickDelta, boolean includeFluids) {
+    HitResult replaceFreelookHitResult(Entity instance, double maxDistance, float tickDelta, boolean includeFluids) {
         if (ModuleRegistry.getByClass(FreeLook.class).isEnabled()) {
             Vec3d vec3d = instance.getCameraPosVec(tickDelta);
             Vec3d vec3d2 = Utils.Math.getRotationVector(Rotations.getClientPitch(), Rotations.getClientYaw());
@@ -103,7 +103,7 @@ public class GameRendererMixin {
     }
 
     @Inject(method = "getFov", at = @At("RETURN"), cancellable = true)
-    public void atomic_overwriteFov(Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<Double> cir) {
+    public void overwriteFov(Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<Double> cir) {
         double zv = ModuleRegistry.getByClass(Zoom.class).getZoomValue(cir.getReturnValue());
         cir.setReturnValue(zv);
     }
