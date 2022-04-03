@@ -24,7 +24,7 @@ import java.util.Random;
 public class BlockRenderManagerMixin {
 
     @Inject(method = "renderBlock", at = @At("HEAD"), cancellable = true)
-    public void atomic_dispatchRenderBlock(BlockState state, BlockPos pos, BlockRenderView world, MatrixStack matrix, VertexConsumer vertexConsumer, boolean cull, Random random, CallbackInfoReturnable<Boolean> cir) {
+    public void dispatchRenderBlock(BlockState state, BlockPos pos, BlockRenderView world, MatrixStack matrix, VertexConsumer vertexConsumer, boolean cull, Random random, CallbackInfoReturnable<Boolean> cir) {
         if (Events.fireEvent(EventType.BLOCK_RENDER, new BlockRenderingEvent(matrix, pos, state))) {
             cir.setReturnValue(true);
         }

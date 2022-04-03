@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MouseMixin {
 
     @Inject(method = "onMouseButton", at = @At("HEAD"), cancellable = true)
-    public void atomic_dispatchMouseEvent(long window, int button, int action, int mods, CallbackInfo ci) {
+    public void dispatchMouseEvent(long window, int button, int action, int mods, CallbackInfo ci) {
         if (window == ShadowMain.client.getWindow().getHandle()) {
             if (Events.fireEvent(EventType.MOUSE_EVENT, new MouseEvent(button, action))) {
                 ci.cancel();

@@ -26,7 +26,7 @@ public abstract class EntityMixin {
     }
 
     @Redirect(method = "updateVelocity", at = @At(value = "INVOKE", target = "net/minecraft/entity/Entity.getYaw()F"))
-    float atomic_overwriteFreelookYaw(Entity instance) {
+    float overwriteFreelookYaw(Entity instance) {
         return instance.equals(ShadowMain.client.player) && ModuleRegistry.getByClass(FreeLook.class).isEnabled() ? ModuleRegistry.getByClass(FreeLook.class).newyaw : instance.getYaw();
     }
 }

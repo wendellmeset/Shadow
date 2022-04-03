@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class SharedConstantsMixin {
 
     @Inject(method = "isValidChar", at = @At("HEAD"), cancellable = true)
-    private static void atomic_replaceValidChar(char chr, CallbackInfoReturnable<Boolean> cir) {
+    private static void replaceValidChar(char chr, CallbackInfoReturnable<Boolean> cir) {
         if (ModuleRegistry.getByClass(AllowFormatCodes.class).isEnabled() && chr == '§') {
             cir.setReturnValue(true);
         }

@@ -23,7 +23,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin {
     @Redirect(method = "tick", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/player/PlayerEntity;noClip:Z", opcode = Opcodes.PUTFIELD))
-    void atomic_tickNoClip(PlayerEntity playerEntity, boolean value) {
+    void tickNoClip(PlayerEntity playerEntity, boolean value) {
         PlayerNoClipQueryEvent q = new PlayerNoClipQueryEvent(playerEntity);
         Events.fireEvent(EventType.NOCLIP_QUERY, q);
         playerEntity.noClip = q.getNoClip();
@@ -39,7 +39,7 @@ public class PlayerEntityMixin {
     }
 
     @Inject(method = "jump", at = @At("RETURN"))
-    void atomic_applyLongJump(CallbackInfo ci) {
+    void applyLongJump(CallbackInfo ci) {
         if (!this.equals(ShadowMain.client.player)) {
             return;
         }

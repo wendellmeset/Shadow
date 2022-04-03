@@ -22,21 +22,21 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ClientConnectionMixin {
 
     @Inject(method = "handlePacket", at = @At("HEAD"), cancellable = true)
-    private static <T extends PacketListener> void atomic_dispatchPacketGet(Packet<T> packet, PacketListener listener, CallbackInfo ci) {
+    private static <T extends PacketListener> void dispatchPacketGet(Packet<T> packet, PacketListener listener, CallbackInfo ci) {
         if (Events.fireEvent(EventType.PACKET_RECEIVE, new PacketEvent(packet))) {
             ci.cancel();
         }
     }
 
     @Inject(method = "exceptionCaught", at = @At("HEAD"), cancellable = true)
-    public void atomic_catchException(ChannelHandlerContext context, Throwable ex, CallbackInfo ci) {
+    public void catchException(ChannelHandlerContext context, Throwable ex, CallbackInfo ci) {
         if (ModuleRegistry.getByClass(AntiPacketKick.class).isEnabled()) {
             ci.cancel();
         }
     }
 
     @Inject(method = "send(Lnet/minecraft/network/Packet;)V", cancellable = true, at = @At("HEAD"))
-    public void atomic_dispatchPacketSend(Packet<?> packet, CallbackInfo ci) {
+    public void dispatchPacketSend(Packet<?> packet, CallbackInfo ci) {
         if (Events.fireEvent(EventType.PACKET_SEND, new PacketEvent(packet))) {
             ci.cancel();
         }

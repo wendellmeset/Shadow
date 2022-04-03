@@ -18,7 +18,7 @@ public class Deadmau5FeatureRendererMixin {
 
     @Redirect(method = "render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/client/network/AbstractClientPlayerEntity;FFFFFF)V",
             at = @At(value = "INVOKE", target = "Ljava/lang/String;equals(Ljava/lang/Object;)Z"))
-    boolean atomic_overwriteNameMatcher(String s, Object anObject) {
+    boolean overwriteNameMatcher(String s, Object anObject) {
         if (ModuleRegistry.getByClass(MouseEars.class).isEnabled()) {
             return true;
         }
@@ -27,7 +27,7 @@ public class Deadmau5FeatureRendererMixin {
 
     @Redirect(method = "render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/client/network/AbstractClientPlayerEntity;FFFFFF)V",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/AbstractClientPlayerEntity;hasSkinTexture()Z"))
-    boolean atomic_overwriteSkinTexture(AbstractClientPlayerEntity abstractClientPlayerEntity) {
+    boolean overwriteSkinTexture(AbstractClientPlayerEntity abstractClientPlayerEntity) {
         if (ModuleRegistry.getByClass(MouseEars.class).isEnabled()) {
             return true;
         }

@@ -28,7 +28,7 @@ import java.util.Objects;
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
     @Inject(method = "onAttacking", at = @At("HEAD"))
-    public void atomic_setLastAttacked(Entity target, CallbackInfo ci) {
+    public void setLastAttacked(Entity target, CallbackInfo ci) {
         if (this.equals(ShadowMain.client.player) && target instanceof LivingEntity entity) {
             AttackManager.registerLastAttacked(entity);
         }
@@ -39,7 +39,7 @@ public class LivingEntityMixin {
     //        instance.setVelocity(x,y,z);
     //    }
     @Inject(method = "canWalkOnFluid", at = @At("HEAD"), cancellable = true)
-    public void atomic_overwriteCanWalkOnFluid(FluidState fluidState, CallbackInfoReturnable<Boolean> cir) {
+    public void overwriteCanWalkOnFluid(FluidState fluidState, CallbackInfoReturnable<Boolean> cir) {
         if (ShadowMain.client.player == null) {
             return;
         }
@@ -53,7 +53,7 @@ public class LivingEntityMixin {
     }
 
     @Redirect(method = "travel", at = @At(value = "INVOKE", target = "net/minecraft/entity/LivingEntity.hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z"))
-    boolean atomic_stopLevitationEffect(LivingEntity instance, StatusEffect effect) {
+    boolean stopLevitationEffect(LivingEntity instance, StatusEffect effect) {
         if (instance.equals(ShadowMain.client.player) && ModuleRegistry.getByClass(NoLevitation.class).isEnabled() && effect == StatusEffects.LEVITATION) {
             return false;
         } else {
@@ -62,7 +62,7 @@ public class LivingEntityMixin {
     }
 
     @Inject(method = "pushAwayFrom", at = @At("HEAD"), cancellable = true)
-    public void atomic_cancelPush(Entity entity, CallbackInfo ci) {
+    public void cancelPush(Entity entity, CallbackInfo ci) {
         if (this.equals(ShadowMain.client.player)) {
             if (Objects.requireNonNull(ModuleRegistry.getByClass(NoPush.class)).isEnabled()) {
                 ci.cancel();
@@ -71,7 +71,7 @@ public class LivingEntityMixin {
     }
 
     @Redirect(method = "jump", at = @At(value = "INVOKE", target = "net/minecraft/entity/LivingEntity.getYaw()F"))
-    private float atomic_overwriteFreelookYaw(LivingEntity instance) {
+    private float overwriteFreelookYaw(LivingEntity instance) {
         if (instance.equals(ShadowMain.client.player) && ModuleRegistry.getByClass(FreeLook.class).isEnabled()) {
             return ModuleRegistry.getByClass(FreeLook.class).newyaw;
         }

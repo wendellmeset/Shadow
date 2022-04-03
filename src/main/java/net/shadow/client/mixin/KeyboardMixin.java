@@ -28,7 +28,7 @@ public class KeyboardMixin {
     private MinecraftClient client;
 
     @Inject(method = "onKey", at = @At("RETURN"))
-    void atomic_postKeyPressed(long window, int key, int scancode, int action, int modifiers, CallbackInfo ci) {
+    void postKeyPressed(long window, int key, int scancode, int action, int modifiers, CallbackInfo ci) {
         if (window == this.client.getWindow()
                 .getHandle() && ShadowMain.client.currentScreen == null && System.currentTimeMillis() - ShadowMain.lastScreenChange > 10) { // make sure we are in game and the screen has been there for at least 10 ms
             if (ShadowMain.client.player == null || ShadowMain.client.world == null) {

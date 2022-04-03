@@ -32,17 +32,17 @@ public class MinecraftClientMixin {
     }
 
     @Inject(method = "<init>", at = @At("TAIL"))
-    void atomic_postInit(RunArgs args, CallbackInfo ci) {
+    void postInit(RunArgs args, CallbackInfo ci) {
         ShadowMain.INSTANCE.postWindowInit();
     }
 
     @Inject(method = "setScreen", at = @At("HEAD"))
-    void atomic_preSetScreen(Screen screen, CallbackInfo ci) {
+    void preSetScreen(Screen screen, CallbackInfo ci) {
         ShadowMain.lastScreenChange = System.currentTimeMillis();
     }
 
     @Redirect(method = "handleInputEvents", at = @At(value = "FIELD", opcode = Opcodes.GETFIELD, target = "Lnet/minecraft/client/MinecraftClient;itemUseCooldown:I"))
-    public int atomic_replaceItemUseCooldown(MinecraftClient minecraftClient) {
+    public int replaceItemUseCooldown(MinecraftClient minecraftClient) {
         if (Objects.requireNonNull(ModuleRegistry.getByClass(FastUse.class)).isEnabled()) {
             return 0;
         } else {
