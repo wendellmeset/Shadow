@@ -162,9 +162,9 @@ public class ClickGUI extends Screen implements FastTickable {
             for (String s : text) {
                 width = Math.max(width, FontRenderers.getRenderer().getStringWidth(s));
             }
-            if (descX + width > ShadowMain.client.getWindow().getScaledWidth()) {
-                descX -= (descX + width - ShadowMain.client.getWindow().getScaledWidth()) + 4;
-            }
+//            if (descX + width > ShadowMain.client.getWindow().getScaledWidth()) {
+//                descX -= (descX + width - ShadowMain.client.getWindow().getScaledWidth()) + 4;
+//            }
             Vec2f root = Renderer.R2D.renderTooltip(matrices, descX, descY, width + 4, FontRenderers.getRenderer().getMarginHeight() + 4, tooltipColor);
             float yOffset = 2;
             for (String s : text) {
