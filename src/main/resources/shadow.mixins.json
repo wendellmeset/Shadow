@@ -25,6 +25,7 @@
     "EntityRenderDispatcherMixin",
     "EntityRendererMixin",
     "EntryListWidgetMixin",
+    "GameMenuMixin",
     "GameRendererMixin",
     "IClientPlayerInteractionManagerAccessor",
     "ICustomPayloadC2SPacketAccessor",

@@ -19,11 +19,18 @@ import net.shadow.client.feature.module.impl.world.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class ModuleRegistry {
     static final List<Module> vanillaModules = new ArrayList<>();
     static final List<AddonModuleEntry> customModules = new ArrayList<>();
     static final List<Module> sharedModuleList = new ArrayList<>();
+    static final AtomicBoolean reloadInProgress = new AtomicBoolean(false);
+
+    public static List<AddonModuleEntry> getCustomModules() {
+        return customModules;
+    }
 
     public static void registerAddonModule(Addon source, Module module) {
         for (AddonModuleEntry customModule : customModules) {
@@ -37,16 +44,21 @@ public class ModuleRegistry {
     static final AtomicBoolean initialized = new AtomicBoolean(false);
 
     public static void clearCustomModules(Addon addon) {
+        for (AddonModuleEntry customModule : customModules) {
+            if (customModule.addon == addon && customModule.module.isEnabled()) customModule.module.setEnabled(false);
+        }
         customModules.removeIf(addonModuleEntry -> addonModuleEntry.addon == addon);
         rebuildSharedModuleList();
     }
 
     private static void rebuildSharedModuleList() {
+        reloadInProgress.set(true);
         sharedModuleList.clear();
         sharedModuleList.addAll(vanillaModules);
         for (AddonModuleEntry customModule : customModules) {
             sharedModuleList.add(customModule.module);
         }
+        reloadInProgress.set(false);
     }
 
     public static void init() {
@@ -174,7 +186,13 @@ public class ModuleRegistry {
         return sharedModuleList;
     }
 
-    record AddonModuleEntry(Addon addon, Module module) {
+    public record AddonModuleEntry(Addon addon, Module module) {
+    }
+
+    private static void awaitLockOpen() {
+        while(reloadInProgress.get()) {
+            Thread.onSpinWait();
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -182,6 +200,7 @@ public class ModuleRegistry {
         if (!initialized.get()) {
             init();
         }
+        awaitLockOpen();
         for (Module module : getModules()) {
             if (module.getClass() == clazz) {
                 return (T) module;
@@ -194,6 +213,7 @@ public class ModuleRegistry {
         if (!initialized.get()) {
             init();
         }
+        awaitLockOpen();
         for (Module module : getModules()) {
             if (module.getName().equalsIgnoreCase(n)) {
                 return module;

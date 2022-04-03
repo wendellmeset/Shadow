@@ -4,20 +4,24 @@
 
 package net.shadow.client.feature.addon;
 
+import net.minecraft.entity.passive.AbstractDonkeyEntity;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.CommandRegistry;
+import net.shadow.client.feature.config.ModuleConfig;
+import net.shadow.client.feature.config.SettingBase;
+import net.shadow.client.feature.gui.clickgui.ClickGUI;
+import net.shadow.client.feature.gui.clickgui.theme.impl.Shadow;
 import net.shadow.client.feature.module.AddonModule;
+import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.helper.ClassLoaderAddendum;
 import org.apache.logging.log4j.Level;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
@@ -28,8 +32,8 @@ public class AddonManager {
             0xCA, 0xFE, 0xBA, 0xBE
     };
     public static AddonManager INSTANCE;
-    private final ClassLoaderAddendum classLoader = new ClassLoaderAddendum(AddonManager.class.getClassLoader());
-    private final List<Addon> loadedAddons = new ArrayList<>();
+    record AddonEntry(File sourceFile, String name, String description, String[] devs, Addon registeredAddon) {}
+    private final List<AddonEntry> loadedAddons = new ArrayList<>();
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private AddonManager() {
@@ -39,6 +43,10 @@ public class AddonManager {
         initializeAddons();
     }
 
+    public List<Addon> getLoadedAddons() {
+        return loadedAddons.stream().map(addonEntry -> addonEntry.registeredAddon).toList();
+    }
+
     public static void init() {
         new AddonManager();
     }
@@ -46,26 +54,32 @@ public class AddonManager {
     void initializeAddons() {
         for (File file : Objects.requireNonNull(ADDON_DIRECTORY.listFiles())) {
             if (file.getName().endsWith(".jar")) {
-                ShadowMain.log(Level.INFO, "Attempting to load addon " + file.getName());
-                try {
-                    loadAddon(file);
-                } catch (Throwable e) {
-                    ShadowMain.log(Level.ERROR, "Failed to load " + file.getName());
-                    e.printStackTrace();
-                    if (e instanceof NoClassDefFoundError noClassDefFoundError) {
-                        ShadowMain.log(Level.INFO, "This error is in releation to the class file being remapped for the wrong dev environment. If you're running this in a dev environment, this is on you. In this case, please ask the developer(s) for a \"dev\" jar, and use that instead. If not, please report this error to the addon developer(s).");
-                        ShadowMain.log(Level.INFO, "(Some additional information about the error: ERR:CLASS_MISSING, class " + noClassDefFoundError.getMessage() + " not found)");
-                    }
-                    if (e instanceof IncompatibleClassChangeError) {
-                        ShadowMain.log(Level.INFO, "This error either occurs because the addon is heavily obfuscated and the obfuscator is bad, or because the addon is built on an outdated shadow SDK. Please report this error to the addon developer(s).");
-                    }
-                    if (e instanceof ClassCastException) {
-                        ShadowMain.log(Level.INFO, "This error probably occurs because of an outdated shadow SDK. Please report this error to the addon developer(s).");
-                    }
-                }
+                safeLoadAddon(file);
             }
         }
         dispatchEnable();
+    }
+
+    Addon safeLoadAddon(File file) {
+        ShadowMain.log(Level.INFO, "Attempting to load addon " + file.getName());
+        try {
+
+            return loadAddon(file);
+        } catch (Throwable e) {
+            ShadowMain.log(Level.ERROR, "Failed to load " + file.getName());
+            e.printStackTrace();
+            if (e instanceof NoClassDefFoundError noClassDefFoundError) {
+                ShadowMain.log(Level.INFO, "This error is in releation to the class file being remapped for the wrong dev environment. If you're running this in a dev environment, this is on you. In this case, please ask the developer(s) for a \"dev\" jar, and use that instead. If not, please report this error to the addon developer(s).");
+                ShadowMain.log(Level.INFO, "(Some additional information about the error: ERR:CLASS_MISSING, class " + noClassDefFoundError.getMessage() + " not found)");
+            }
+            if (e instanceof IncompatibleClassChangeError) {
+                ShadowMain.log(Level.INFO, "This error either occurs because the addon is heavily obfuscated and the obfuscator is bad, or because the addon is built on an outdated shadow SDK. Please report this error to the addon developer(s).");
+            }
+            if (e instanceof ClassCastException) {
+                ShadowMain.log(Level.INFO, "This error probably occurs because of an outdated shadow SDK. Please report this error to the addon developer(s).");
+            }
+        }
+        return null;
     }
 
     public void reload() {
@@ -75,9 +89,65 @@ public class AddonManager {
         initializeAddons();
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    public void discoverNewAddons() {
+        for (File file : Objects.requireNonNull(ADDON_DIRECTORY.listFiles())) {
+            if (loadedAddons.stream().anyMatch(addonEntry -> addonEntry.sourceFile.getAbsoluteFile().equals(file.getAbsoluteFile()))) continue;
+            if (file.getName().endsWith(".jar")) {
+                if (safeLoadAddon(file) == null) {
+                    ShadowMain.log(Level.WARN, "Renaming addon to prevent re-discovery because it failed to load");
+                    file.renameTo(new File(file.getAbsolutePath()+".disabled"));
+                }
+            }
+        }
+    }
+
+    public void reload(Addon addon) {
+        addon.reloaded();
+        Map<String, ModuleConfig> storedConfig = new ConcurrentHashMap<>();
+        for (ModuleRegistry.AddonModuleEntry customModule : ModuleRegistry.getCustomModules()) {
+            if (customModule.addon() == addon) {
+                storedConfig.put(customModule.module().getName(), customModule.module().config);
+            }
+        }
+//        if (addon.getAdditionalModules() != null) for (AddonModule additionalModule : addon.getAdditionalModules()) {
+//            storedConfig.put(additionalModule.getName(), additionalModule.config);
+//        }
+        if (addon.isEnabled()) disableAddon(addon);
+        AddonEntry meant = null;
+        for (AddonEntry loadedAddon : loadedAddons) {
+            if (loadedAddon.registeredAddon == addon) {
+                meant = loadedAddon;
+            }
+        }
+        if (meant != null) {
+            loadedAddons.remove(meant);
+            Addon loadedAddon = safeLoadAddon(meant.sourceFile);
+            if (loadedAddon != null) {
+                enableAddon(loadedAddon);
+                for (ModuleRegistry.AddonModuleEntry customModule : ModuleRegistry.getCustomModules()) {
+                    if (customModule.addon() == loadedAddon) {
+                        Module additionalModule = customModule.module();
+                        if (storedConfig.containsKey(additionalModule.getName())) {
+                            List<SettingBase<?>> amog = additionalModule.config.getSettings(); // new config
+                            for (SettingBase<?> setting : storedConfig.get(additionalModule.getName()).getSettings()) { // old saved config
+                                for (SettingBase<?> settingBase : amog) { // merge
+                                    if (settingBase.name.equals(setting.name)) { // if new name equals old name of setting
+                                        settingBase.accept(setting.getConfigSave()); // set val
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     void dispatchReload() {
-        for (Addon loadedAddon : loadedAddons) {
-            loadedAddon.reloaded();
+        for (AddonEntry loadedAddon : loadedAddons) {
+            loadedAddon.registeredAddon.reloaded();
         }
     }
 
@@ -94,33 +164,36 @@ public class AddonManager {
         List<AddonModule> customModules = addon.getAdditionalModules();
         List<Command> customCommands = addon.getAdditionalCommands();
         if (customModules != null) for (AddonModule additionalModule : customModules) {
-            ShadowMain.log(Level.INFO, "Loading module " + additionalModule.getName() + " from addon " + addon.getName());
+            ShadowMain.log(Level.INFO, "Loading module " + additionalModule.getName() + " from addon " + addon.name);
             ModuleRegistry.registerAddonModule(addon, additionalModule);
         }
         if (customCommands != null) for (Command customCommand : customCommands) {
-            ShadowMain.log(Level.INFO, "Loading command " + customCommand.getName() + " from addon " + addon.getName());
+            ShadowMain.log(Level.INFO, "Loading command " + customCommand.getName() + " from addon " + addon.name);
             CommandRegistry.registerCustomCommand(addon, customCommand);
         }
     }
 
     void dispatchDisable() {
-        for (Addon loadedAddon : loadedAddons) {
-            disableAddon(loadedAddon);
+        for (AddonEntry loadedAddon : loadedAddons) {
+            disableAddon(loadedAddon.registeredAddon);
         }
+        ClickGUI.reInit();
     }
 
     void dispatchEnable() {
-        for (Addon loadedAddon : loadedAddons) {
-            enableAddon(loadedAddon);
+        for (AddonEntry loadedAddon : loadedAddons) {
+            enableAddon(loadedAddon.registeredAddon);
         }
+        ClickGUI.reInit();
     }
 
-    void loadAddon(File location) throws Exception {
+    Addon loadAddon(File location) throws Exception {
+        ClassLoaderAddendum classLoader = new ClassLoaderAddendum(AddonManager.class.getClassLoader());
         JarFile jf = new JarFile(location);
         Addon mainClass = null;
         for (JarEntry jarEntry : jf.stream().toList()) {
             if (jarEntry.getName().endsWith(".class")) {
-                System.out.println(jarEntry.getName());
+//                System.out.println(jarEntry.getName());
                 InputStream stream = jf.getInputStream(jarEntry);
                 byte[] classBytes = stream.readAllBytes();
                 stream.close();
@@ -142,16 +215,21 @@ public class AddonManager {
                 if (Addon.class.isAssignableFrom(loadedClass)) {
                     if (mainClass != null)
                         throw new IllegalStateException("Jarfile " + location.getName() + " has multiple main classes");
-                    mainClass = (Addon) loadedClass.getDeclaredConstructor().newInstance();
-                    System.out.println("Found main class " + loadedClass.getName());
+                    try {
+                        mainClass = (Addon) loadedClass.getDeclaredConstructor().newInstance();
+                    } catch (NoSuchMethodException e) {
+                        throw new IllegalStateException("Jarfile "+location.getName()+" has invalid main class: No constructor without arguments");
+                    }
+//                    System.out.println("Found main class " + loadedClass.getName());
                 }
 
             }
         }
         if (mainClass == null)
             throw new IllegalStateException("Jarfile " + location.getName() + " does not have a main class");
-        System.out.println("Discovered addon " + mainClass.getName() + " by " + String.join(", ", mainClass.getAuthors()));
-        loadedAddons.add(mainClass);
+        ShadowMain.log(Level.INFO, "Discovered addon " + mainClass.name + " by " + String.join(", ", mainClass.developers));
+        loadedAddons.add(new AddonEntry(location,mainClass.name,mainClass.description,mainClass.developers,mainClass));
+        return mainClass;
     }
 }
 

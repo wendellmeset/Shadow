@@ -62,6 +62,10 @@ public class ClickGUI extends Screen implements FastTickable {
         return instance;
     }
 
+    public static void reInit() {
+        if (instance != null) instance.initElements();
+    }
+
     @Override
     protected void init() {
 

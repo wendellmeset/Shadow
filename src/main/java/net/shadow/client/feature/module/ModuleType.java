@@ -14,7 +14,7 @@ public enum ModuleType {
     WORLD("World", GameTexture.ICONS_WORLD.getWhere()),
     EXPLOIT("Exploit", GameTexture.ICONS_EXPLOIT.getWhere()),
     CRASH("Crash", GameTexture.ICONS_CRASH.getWhere()),
-    ADDON_PROVIDED("Addons", GameTexture.ICONS_ITEMS.getWhere()),
+    ADDON_PROVIDED("Addons", GameTexture.ICONS_ADDON_PROVIDED.getWhere()),
     GRIEF("Grief", GameTexture.ICONS_GRIEF.getWhere()),
     COMBAT("Combat", GameTexture.ICONS_COMBAT.getWhere());
 

@@ -5,6 +5,7 @@
 package net.shadow.client.feature.module.impl.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import lombok.val;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket;
@@ -34,10 +35,8 @@ import net.shadow.client.mixin.IInGameHudAccessor;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Hud extends Module {
     public static double currentTps = 0;
@@ -48,7 +47,8 @@ public class Hud extends Module {
     final BooleanSetting coords = this.config.create(new BooleanSetting.Builder(true).name("Coordinates").description("Whether to show current coordinates").get());
     final BooleanSetting ping = this.config.create(new BooleanSetting.Builder(true).name("Ping").description("Whether to show current ping").get());
     final BooleanSetting modules = this.config.create(new BooleanSetting.Builder(true).name("Array list").description("Whether to show currently enabled modules").get());
-    final List<ModuleEntry> moduleList = new ArrayList<>();
+    Map<Module, ModuleEntry> entryList = new ConcurrentHashMap<>();
+//    final List<ModuleEntry> moduleList = new ArrayList<>();
     final Timer tpsUpdateTimer = new Timer();
     final List<Double> last5SecondTpsAverage = new ArrayList<>();
     long lastTimePacketReceived;
@@ -116,7 +116,7 @@ public class Hud extends Module {
 
     @Override
     public void postInit() {
-        makeSureIsInitialized();
+
         super.postInit();
     }
 
@@ -128,6 +128,7 @@ public class Hud extends Module {
         if (ShadowMain.client.player == null) {
             return;
         }
+        makeSureIsInitialized();
         MatrixStack ms = Renderer.R3D.getEmptyMatrixStack();
         double heightOffsetLeft = 0, heightOffsetRight = 0;
         if (ShadowMain.client.options.debugEnabled) {
@@ -214,23 +215,23 @@ public class Hud extends Module {
     void drawModuleList(MatrixStack ms) {
         double width = ShadowMain.client.getWindow().getScaledWidth();
         double y = 0;
-        for (ModuleEntry moduleEntry : moduleList.stream().sorted(Comparator.comparingDouble(value -> -value.getRenderWidth())).toList()) {
-            double prog = moduleEntry.getAnimProg() * 2;
+        for (Map.Entry<Module, ModuleEntry> moduleEntry : this.entryList.entrySet().stream().sorted(Comparator.comparingDouble(value -> -value.getValue().getRenderWidth())).toList()) {
+            double prog = moduleEntry.getValue().getAnimProg() * 2;
             if (prog == 0) {
                 continue;
             }
             double expandProg = MathHelper.clamp(prog, 0, 1); // 0-1 as 0-1 from 0-2
             double slideProg = MathHelper.clamp(prog - 1, 0, 1); // 1-2 as 0-1 from 0-2
             double hei = (FontRenderers.getRenderer().getMarginHeight() + 2);
-            double wid = moduleEntry.getRenderWidth() + 2;
+            double wid = moduleEntry.getValue().getRenderWidth() + 2;
             Renderer.R2D.renderQuad(ms, ThemeManager.getMainTheme().getActive(), width - (wid + 1), y, width, y + hei * expandProg);
             ms.push();
             ms.translate((1 - slideProg) * wid, 0, 0);
             Renderer.R2D.renderQuad(ms, ThemeManager.getMainTheme().getModule(), width - wid, y, width, y + hei * expandProg);
-            double nameW = FontRenderers.getRenderer().getStringWidth(moduleEntry.module.getName());
-            FontRenderers.getRenderer().drawString(ms, moduleEntry.module.getName(), width - wid + 1, y + 1, 0xFFFFFF);
-            if (moduleEntry.module.getContext() != null && !moduleEntry.module.getContext().isEmpty()) {
-                FontRenderers.getRenderer().drawString(ms, " " + moduleEntry.module.getContext(), width - wid + 1 + nameW, y + 1, 0xAAAAAA);
+            double nameW = FontRenderers.getRenderer().getStringWidth(moduleEntry.getKey().getName());
+            FontRenderers.getRenderer().drawString(ms, moduleEntry.getKey().getName(), width - wid + 1, y + 1, 0xFFFFFF);
+            if (moduleEntry.getKey().getContext() != null && !moduleEntry.getKey().getContext().isEmpty()) {
+                FontRenderers.getRenderer().drawString(ms, " " + moduleEntry.getKey().getContext(), width - wid + 1 + nameW, y + 1, 0xAAAAAA);
             }
             ms.pop();
             y += hei * expandProg;
@@ -239,13 +240,17 @@ public class Hud extends Module {
     }
 
     void makeSureIsInitialized() {
-        if (moduleList.isEmpty()) {
-            for (Module module : ModuleRegistry.getModules()) {
+        for (Module module : ModuleRegistry.getModules()) {
+            if (!entryList.containsKey(module)) {
                 ModuleEntry me = new ModuleEntry();
                 me.module = module;
-                moduleList.add(me);
+                entryList.put(module, me);
             }
-            moduleList.sort(Comparator.comparingDouble(value -> -FontRenderers.getRenderer().getStringWidth(value.module.getName())));
+        }
+        for (Map.Entry<Module, ModuleEntry> moduleModuleEntryEntry : entryList.entrySet()) {
+            if (!ModuleRegistry.getModules().contains(moduleModuleEntryEntry.getKey()) && moduleModuleEntryEntry.getValue().animationProgress == 0) {
+                entryList.remove(moduleModuleEntryEntry.getKey());
+            }
         }
     }
 
@@ -253,7 +258,7 @@ public class Hud extends Module {
     public void onFastTick() {
         rNoConnectionPosY = Transitions.transition(rNoConnectionPosY, shouldNoConnectionDropDown() ? 10 : -10, 10);
         HudRenderer.getInstance().fastTick();
-        for (ModuleEntry moduleEntry : new ArrayList<>(moduleList)) {
+        for (ModuleEntry moduleEntry : entryList.values()) {
             moduleEntry.animate();
         }
     }

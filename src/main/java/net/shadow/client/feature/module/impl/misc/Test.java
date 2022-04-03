@@ -9,6 +9,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.packet.c2s.play.ButtonClickC2SPacket;
 import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
+import net.minecraft.screen.slot.SlotActionType;
 import net.shadow.client.feature.gui.notifications.Notification;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
@@ -62,6 +63,6 @@ public class Test extends Module {
 
     @Override
     public void tick() {
-        
+        client.interactionManager.clickSlot(0,0,0, SlotActionType.QUICK_MOVE,client.player);
     }
 }
