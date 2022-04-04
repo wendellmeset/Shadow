@@ -11,7 +11,7 @@ import net.shadow.client.feature.command.exception.CommandException;
 
 public class PermissionLevel extends Command {
     public PermissionLevel() {
-        super("PermissionLevel", "Sets the player's permission level client side", "permissionlevel", "permlevel");
+        super("PermissionLevel", "Sets the player's permission level client side", "permissionlevel", "permlevel", "cperm");
     }
 
     @Override

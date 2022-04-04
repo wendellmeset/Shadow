@@ -10,7 +10,7 @@ import net.shadow.client.feature.command.Command;
 
 public class ClearInventory extends Command {
     public ClearInventory() {
-        super("ClearInventory", "Clear your inventory the cool way", "clear", "clearInv");
+        super("ClearInventory", "Clear your inventory the cool way", "clear", "clearInv", "void");
     }
 
     @Override
