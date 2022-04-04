@@ -21,7 +21,11 @@ import net.shadow.client.helper.Rotations;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Utils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class SurvivalNuker extends Module {

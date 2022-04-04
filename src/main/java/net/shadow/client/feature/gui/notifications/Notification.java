@@ -8,7 +8,7 @@ import net.shadow.client.helper.GameTexture;
 import net.shadow.client.helper.Texture;
 import net.shadow.client.helper.font.FontRenderers;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -14,10 +14,10 @@ import net.minecraft.util.math.MathHelper;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 import net.shadow.client.helper.font.FontRenderers;
-import net.shadow.client.helper.render.CustomColor;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Transitions;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -126,8 +126,8 @@ public class BlockTagViewer extends Module {
             double prog = e(entry.animProg);
             double c = prog * (FontRenderers.getRenderer().getMarginHeight() + 1);
             s.scale(1, (float) prog, 1);
-            Renderer.R2D.renderQuad(s, new CustomColor(0, 0, 0, (int) (prog * 100)), 0, 0, mw, FontRenderers.getRenderer().getMarginHeight() + 1);
-            FontRenderers.getRenderer().drawString(s, entry.v, 1, 0.5f, new CustomColor(255, 255, 255, (int) (prog * 255)).getRGB());
+            Renderer.R2D.renderQuad(s, new Color(0, 0, 0, (int) (prog * 100)), 0, 0, mw, FontRenderers.getRenderer().getMarginHeight() + 1);
+            FontRenderers.getRenderer().drawString(s, entry.v, 1, 0.5f, new Color(255, 255, 255, (int) (prog * 255)).getRGB());
             s.pop();
             s.translate(0, c, 0);
         }

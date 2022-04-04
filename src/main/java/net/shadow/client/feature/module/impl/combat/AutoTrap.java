@@ -20,7 +20,7 @@ import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 import net.shadow.client.helper.render.Renderer;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Arrays;
 import java.util.Objects;
 

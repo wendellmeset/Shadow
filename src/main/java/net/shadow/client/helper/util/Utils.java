@@ -34,7 +34,7 @@ import net.shadow.client.mixin.IRenderTickCounterAccessor;
 import org.lwjgl.BufferUtils;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -44,8 +44,12 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.ByteBuffer;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.*;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Utils {
@@ -55,14 +59,6 @@ public class Utils {
             Thread.sleep(ms);
         } catch (Exception ignored) {
         }
-    }
-
-    public static int halfHeight() {
-        return ShadowMain.client.getWindow().getScaledHeight() / 2;
-    }
-
-    public static int halfWidth() {
-        return ShadowMain.client.getWindow().getScaledWidth() / 2;
     }
 
     public static void setClientTps(float tps) {
@@ -193,12 +189,6 @@ public class Utils {
             Objects.requireNonNull(ShadowMain.client.interactionManager).clickSlot(0, slotIdFrom, 0, SlotActionType.PICKUP, ShadowMain.client.player); // pick up item from stack
             ShadowMain.client.interactionManager.clickSlot(0, slotIdTo, 0, SlotActionType.PICKUP, ShadowMain.client.player); // put item to target
             ShadowMain.client.interactionManager.clickSlot(0, slotIdFrom, 0, SlotActionType.PICKUP, ShadowMain.client.player); // (in case target slot had item) put item from target back to from
-        }
-    }
-
-    public static class Packet {
-        public static void placeBlock(BlockPos block) {
-            ShadowMain.client.player.networkHandler.sendPacket(new PlayerInteractBlockC2SPacket(Hand.MAIN_HAND, new BlockHitResult(new Vec3d(block.getX() + 0.5, block.getY() + 0.5, block.getZ() + 0.5), Direction.UP, block, false)));
         }
     }
 

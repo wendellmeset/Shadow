@@ -14,7 +14,7 @@ import net.shadow.client.helper.font.adapter.FontAdapter;
 import net.shadow.client.helper.render.MSAAFramebuffer;
 import net.shadow.client.helper.render.Renderer;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class ProxyManagerScreen extends ClientScreen {
     static final double widgetWidth = 300;

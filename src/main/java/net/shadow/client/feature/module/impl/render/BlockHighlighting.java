@@ -23,7 +23,7 @@ import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Utils;
 import net.shadow.client.mixin.WorldRendererAccessor;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.SortedSet;
 
 public class BlockHighlighting extends Module {

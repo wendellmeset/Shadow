@@ -5,10 +5,22 @@
 package net.shadow.client.feature.gui.clickgui.element.impl;
 
 import net.minecraft.client.util.math.MatrixStack;
-import net.shadow.client.feature.config.*;
+import net.shadow.client.feature.config.BooleanSetting;
+import net.shadow.client.feature.config.ColorSetting;
+import net.shadow.client.feature.config.DoubleSetting;
+import net.shadow.client.feature.config.EnumSetting;
+import net.shadow.client.feature.config.ModuleConfig;
+import net.shadow.client.feature.config.SettingBase;
+import net.shadow.client.feature.config.StringSetting;
 import net.shadow.client.feature.gui.clickgui.ClickGUI;
 import net.shadow.client.feature.gui.clickgui.element.Element;
-import net.shadow.client.feature.gui.clickgui.element.impl.config.*;
+import net.shadow.client.feature.gui.clickgui.element.impl.config.BooleanSettingEditor;
+import net.shadow.client.feature.gui.clickgui.element.impl.config.ColorSettingEditor;
+import net.shadow.client.feature.gui.clickgui.element.impl.config.ConfigBase;
+import net.shadow.client.feature.gui.clickgui.element.impl.config.DoubleSettingEditor;
+import net.shadow.client.feature.gui.clickgui.element.impl.config.EnumSettingEditor;
+import net.shadow.client.feature.gui.clickgui.element.impl.config.KeybindEditor;
+import net.shadow.client.feature.gui.clickgui.element.impl.config.StringSettingEditor;
 import net.shadow.client.feature.gui.clickgui.theme.Theme;
 import net.shadow.client.feature.gui.clickgui.theme.ThemeManager;
 import net.shadow.client.helper.render.Renderer;

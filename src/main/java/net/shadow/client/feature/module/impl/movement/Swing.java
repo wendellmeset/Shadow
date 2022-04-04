@@ -21,7 +21,7 @@ import net.shadow.client.helper.event.events.PacketEvent;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Utils;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Objects;
 
 public class Swing extends Module {

@@ -10,7 +10,7 @@ import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.render.Renderer;
 import org.lwjgl.glfw.GLFW;
 
-import java.awt.*;
+import java.awt.Color;
 import java.lang.reflect.Field;
 
 public class KeybindEditor extends ConfigBase<DoubleSetting> {

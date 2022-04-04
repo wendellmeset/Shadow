@@ -11,7 +11,6 @@
     "AreaEffectCloudEntityMixin",
     "BlockEntityRenderDispatcherMixin",
     "BlockMixin",
-    "BlockRenderManagerMixin",
     "CameraMixin",
     "ClickableWidgetMixin",
     "ClientConnection1Mixin",

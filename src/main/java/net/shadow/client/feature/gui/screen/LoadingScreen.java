@@ -20,7 +20,7 @@ import net.shadow.client.helper.util.Utils;
 import org.apache.logging.log4j.Level;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;

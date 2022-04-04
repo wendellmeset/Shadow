@@ -23,7 +23,7 @@ import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.render.Scroller;
 import org.lwjgl.opengl.GL40C;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 

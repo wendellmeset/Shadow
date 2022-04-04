@@ -9,7 +9,7 @@ import net.shadow.client.feature.gui.clickgui.element.Element;
 import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.render.Renderer;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class PanelButton extends Element {
     static final double h = FontRenderers.getRenderer().getFontHeight() + 2;
