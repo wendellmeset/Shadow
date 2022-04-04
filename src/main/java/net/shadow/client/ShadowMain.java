@@ -40,7 +40,7 @@ public class ShadowMain implements ModInitializer {
     public static final String MOD_NAME = "Shadow";
     public static final Logger LOGGER = LogManager.getLogger();
     public static final MinecraftClient client = MinecraftClient.getInstance();
-    public static final File BASE = new File(MinecraftClient.getInstance().runDirectory, "sip");
+    public static final File BASE = new File(MinecraftClient.getInstance().runDirectory, "shadow");
     public static long lastScreenChange = System.currentTimeMillis();
     public static ShadowMain INSTANCE;
     public static Thread MODULE_FTTICKER;

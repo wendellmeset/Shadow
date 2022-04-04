@@ -39,6 +39,7 @@ public class BlocksmcFlight extends Module {
             circles.add(ac);
             jumpTimeout = 5;
         }
+        yStart -= 0.02;
     }
 
     @Override
