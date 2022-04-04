@@ -20,14 +20,13 @@ import net.shadow.client.feature.module.impl.world.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class ModuleRegistry {
     static final List<Module> vanillaModules = new ArrayList<>();
     static final List<AddonModuleEntry> customModules = new ArrayList<>();
     static final List<Module> sharedModuleList = new ArrayList<>();
     static final AtomicBoolean reloadInProgress = new AtomicBoolean(false);
+    static final AtomicBoolean initialized = new AtomicBoolean(false);
 
     public static List<AddonModuleEntry> getCustomModules() {
         return customModules;
@@ -42,7 +41,6 @@ public class ModuleRegistry {
         customModules.add(new AddonModuleEntry(source, module));
         rebuildSharedModuleList();
     }
-    static final AtomicBoolean initialized = new AtomicBoolean(false);
 
     public static void clearCustomModules(Addon addon) {
         for (AddonModuleEntry customModule : customModules) {
@@ -188,11 +186,8 @@ public class ModuleRegistry {
         return sharedModuleList;
     }
 
-    public record AddonModuleEntry(Addon addon, Module module) {
-    }
-
     private static void awaitLockOpen() {
-        while(reloadInProgress.get()) {
+        while (reloadInProgress.get()) {
             Thread.onSpinWait();
         }
     }
@@ -222,5 +217,8 @@ public class ModuleRegistry {
             }
         }
         return null;
+    }
+
+    public record AddonModuleEntry(Addon addon, Module module) {
     }
 }

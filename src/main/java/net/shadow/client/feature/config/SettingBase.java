@@ -24,12 +24,11 @@ public abstract class SettingBase<V> {
      */
     final V defaultValue;
     final List<BooleanSupplier> suppliers = new ArrayList<>();
+    final Consumer<V> onChanged;
     /**
      * The current value of this setting
      */
     V value;
-
-    final Consumer<V> onChanged;
 
     /**
      * Constructs a new Setting

@@ -5,7 +5,6 @@
 package net.shadow.client.feature.module.impl.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import lombok.val;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket;
@@ -47,10 +46,10 @@ public class Hud extends Module {
     final BooleanSetting coords = this.config.create(new BooleanSetting.Builder(true).name("Coordinates").description("Whether to show current coordinates").get());
     final BooleanSetting ping = this.config.create(new BooleanSetting.Builder(true).name("Ping").description("Whether to show current ping").get());
     final BooleanSetting modules = this.config.create(new BooleanSetting.Builder(true).name("Array list").description("Whether to show currently enabled modules").get());
-    Map<Module, ModuleEntry> entryList = new ConcurrentHashMap<>();
-//    final List<ModuleEntry> moduleList = new ArrayList<>();
+    //    final List<ModuleEntry> moduleList = new ArrayList<>();
     final Timer tpsUpdateTimer = new Timer();
     final List<Double> last5SecondTpsAverage = new ArrayList<>();
+    Map<Module, ModuleEntry> entryList = new ConcurrentHashMap<>();
     long lastTimePacketReceived;
     double rNoConnectionPosY = -10d;
     Notification serverNotResponding = null;
