@@ -99,7 +99,8 @@ public class CommandRegistry {
     static {
         // TODO: 18.12.21 add commands
         init();
-    }
+        rebuildSharedCommands();
+    } 
 
     public static List<Command> getCommands() {
         return sharedCommands;
