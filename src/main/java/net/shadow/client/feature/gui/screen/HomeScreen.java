@@ -86,7 +86,7 @@ public class HomeScreen extends ClientScreen implements FastTickable {
             isDev = execF.isDirectory();
             HomeScreen.version = IOUtils.toString(Objects.requireNonNull(HomeScreen.class.getClassLoader().getResourceAsStream("version.txt")), StandardCharsets.UTF_8);
             HomeScreen.changelog = IOUtils.toString(Objects.requireNonNull(HomeScreen.class.getClassLoader().getResourceAsStream("changelogLatest.txt")), StandardCharsets.UTF_8);
-            System.out.println("updating acc");
+//            System.out.println("updating acc");
             updateCurrentAccount(() -> {
 
             });
@@ -170,7 +170,7 @@ public class HomeScreen extends ClientScreen implements FastTickable {
                 ByteBuffer data = BufferUtils.createByteBuffer(bytes.length).put(bytes);
                 data.flip();
                 NativeImage img = NativeImage.read(data);
-                System.out.println(img);
+//                System.out.println(img);
                 NativeImageBackedTexture texture = new NativeImageBackedTexture(img);
 
                 ShadowMain.client.execute(() -> {

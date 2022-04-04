@@ -16,6 +16,7 @@ import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.base.NonCancellableEvent;
 import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.Level;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -72,10 +73,10 @@ public class ConfigManager {
      */
     public static void saveState() {
         if (!loaded || !enabled) {
-            System.out.println("Not saving config because we didn't load it yet");
+            ShadowMain.log(Level.INFO, "Not saving config because we didn't load it yet");
             return;
         }
-        System.out.println("Saving state");
+        ShadowMain.log(Level.INFO, "Saving state");
         JsonObject base = new JsonObject();
         JsonArray enabled = new JsonArray();
         JsonArray config = new JsonArray();
@@ -101,7 +102,7 @@ public class ConfigManager {
             FileUtils.writeByteArrayToFile(CONFIG_FILE, compress(base.toString().getBytes(StandardCharsets.UTF_8)));
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Failed to save config!");
+            ShadowMain.log(Level.ERROR, "Failed to save config!");
         }
         Events.fireEvent(EventType.CONFIG_SAVE, new NonCancellableEvent());
     }

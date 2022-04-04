@@ -54,6 +54,7 @@
     "PlayerEntityRendererMixin",
     "PlayerInteractEntityC2SPacketAccessor",
     "PlayerSkinMixin",
+    "RebuildTaskMixin",
     "ScreenMixin",
     "SelectWorldScreenMixin",
     "SessionAccessor",

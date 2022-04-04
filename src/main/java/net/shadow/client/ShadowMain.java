@@ -148,7 +148,7 @@ public class ShadowMain implements ModInitializer {
         FAST_TICKER.start();
         //        ModuleRegistry.sortModulesPostInit();
         CommandRegistry.init();
-        System.out.println("sending post init");
+        log(Level.INFO, "Sending post window init");
         Events.fireEvent(EventType.POST_INIT, new PostInitEvent());
         for (Module module : ModuleRegistry.getModules()) {
             module.postInit();

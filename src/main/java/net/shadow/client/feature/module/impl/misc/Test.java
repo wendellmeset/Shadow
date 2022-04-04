@@ -4,32 +4,43 @@
 
 package net.shadow.client.feature.module.impl.misc;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.network.packet.c2s.play.ButtonClickC2SPacket;
-import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket;
-import net.minecraft.screen.slot.SlotActionType;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
+import net.shadow.client.helper.event.EventListener;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
-import net.shadow.client.helper.event.events.PacketEvent;
+import net.shadow.client.helper.event.events.BlockRenderingEvent;
+import net.shadow.client.helper.render.Renderer;
+import net.shadow.client.helper.util.Utils;
+
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Test extends Module {
+    static final Block searchTerm = Blocks.NETHER_PORTAL;
+    CopyOnWriteArrayList<BlockPos> discovered = new CopyOnWriteArrayList<>();
 
     public Test() {
         super("Test", "Testing stuff with the client, can be ignored", ModuleType.MISC);
-        Events.registerEventHandler(EventType.PACKET_SEND, e -> {
-            if (!this.isEnabled()) return;
-            PacketEvent event = (PacketEvent) e;
-            System.out.println(event.getPacket());
-            if (event.getPacket() instanceof ClickSlotC2SPacket uwu) {
-                System.out.println(uwu.getSlot() + " <- slot");
-                System.out.println(uwu.getButton() + " <- button");
+        Events.registerEventHandlerClass(this);
+    }
+
+    @EventListener(type = EventType.BLOCK_RENDER)
+    void onBlockRender(BlockRenderingEvent event) {
+        if (!this.isEnabled()) return;
+        BlockPos b = new BlockPos(event.getPosition());
+        boolean listContains = discovered.stream().anyMatch(blockPos -> blockPos.equals(b));
+        if (event.getBlockState().getBlock() == searchTerm) {
+            if (!listContains) {
+                discovered.add(b);
             }
-            if (event.getPacket() instanceof ButtonClickC2SPacket uwu) {
-                System.out.println(uwu.getButtonId() + " <- Button id");
-            }
-        });
+        } else if (listContains) {
+            discovered.removeIf(blockPos -> blockPos.equals(b));
+        }
     }
 
     @Override
@@ -49,6 +60,12 @@ public class Test extends Module {
 
     @Override
     public void onWorldRender(MatrixStack matrices) {
+        for (BlockPos bruh : discovered) {
+            Renderer.R3D.renderEdged(matrices, Vec3d.of(bruh), new Vec3d(1, 1, 1), Renderer.Util.modify(Utils.getCurrentRGB(), -1, -1, -1, 100).darker(), Renderer.Util.modify(Utils.getCurrentRGB(), -1, -1, -1, 255));
+        }
+//        for (BlockPos bruh : bruhs.pop()) {
+//            Renderer.R3D.renderEdged(matrices, Vec3d.of(bruh), new Vec3d(1,1,1), Renderer.Util.modify(Utils.getCurrentRGB(), -1, -1, -1, 100).darker(), Renderer.Util.modify(Utils.getCurrentRGB(), -1, -1, -1, 255));
+//        }
     }
 
     @Override
@@ -58,6 +75,7 @@ public class Test extends Module {
 
     @Override
     public void tick() {
-        client.interactionManager.clickSlot(0, 0, 0, SlotActionType.QUICK_MOVE, client.player);
+        discovered.removeIf(blockPos -> client.world.getBlockState(blockPos).getBlock() != searchTerm);
+//        client.interactionManager.clickSlot(0, 0, 0, SlotActionType.QUICK_MOVE, client.player);
     }
 }

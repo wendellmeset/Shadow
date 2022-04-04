@@ -29,17 +29,23 @@ public class Renderer {
     public static class R3D {
 
         static final MatrixStack empty = new MatrixStack();
-        static final List<FadingBlock> fades = new ArrayList<>();
+        static List<FadingBlock> fades = new ArrayList<>();
 
         public static void renderFadingBlock(Color outlineColor, Color fillColor, Vec3d start, Vec3d dimensions, long lifeTimeMs) {
             FadingBlock fb = new FadingBlock(outlineColor, fillColor, start, dimensions, System.currentTimeMillis(), lifeTimeMs);
-            fades.removeIf(fadingBlock -> fadingBlock.start.equals(start) && fadingBlock.dimensions.equals(dimensions));
-            fades.add(fb);
+
+            // concurrentmodexception fuckaround
+            ArrayList<FadingBlock> clone = new ArrayList<>(fades);
+            clone.removeIf(fadingBlock -> fadingBlock.start.equals(start) && fadingBlock.dimensions.equals(dimensions));
+            clone.add(fb);
+            fades = clone;
         }
 
         public static void renderFadingBlocks(MatrixStack stack) {
-            fades.removeIf(FadingBlock::isDead);
-            for (FadingBlock fade : new ArrayList<>(fades)) {
+            // concurrentmodexception fuckaround, locks didnt work for some fucking reason
+            ArrayList<FadingBlock> clone = new ArrayList<>(fades);
+            clone.removeIf(FadingBlock::isDead);
+            for (FadingBlock fade : clone) {
                 if (fade == null) continue;
                 long lifetimeLeft = fade.getLifeTimeLeft();
                 double progress = lifetimeLeft / (double) fade.lifeTime;
@@ -47,6 +53,7 @@ public class Renderer {
                 Color fill = Util.modify(fade.fill, -1, -1, -1, (int) (fade.fill.getAlpha() * progress));
                 Renderer.R3D.renderEdged(stack, fade.start, fade.dimensions, fill, out);
             }
+            fades = clone;
         }
 
         public static void renderCircleOutline(MatrixStack stack, Color c, Vec3d start, double rad, double width, double segments) {

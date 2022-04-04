@@ -92,7 +92,6 @@ public class Utils {
             NativeImageBackedTexture tex = new NativeImageBackedTexture(NativeImage.read(data));
             ShadowMain.client.execute(() -> ShadowMain.client.getTextureManager().registerTexture(i, tex));
         } catch (Exception e) {
-            System.out.println("failed to register");
             e.printStackTrace();
         }
     }
@@ -359,7 +358,6 @@ public class Utils {
         }
 
         public static void message0(String n, Color c) {
-            System.out.println(n);
             LiteralText t = new LiteralText(n);
             t.setStyle(t.getStyle().withColor(TextColor.fromRgb(c.getRGB())));
             if (ShadowMain.client.player != null) ShadowMain.client.player.sendMessage(t, false);
