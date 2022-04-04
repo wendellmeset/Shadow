@@ -20,9 +20,9 @@ public class GameMenuMixin extends Screen {
         super(title);
     }
 
-    @Inject(method="initWidgets",at=@At("RETURN"))
+    @Inject(method = "initWidgets", at = @At("RETURN"))
     void addAddons(CallbackInfo ci) {
-        addDrawableChild(new RoundButton(RoundButton.STANDARD,5,5,60,20,"Addons",() -> {
+        addDrawableChild(new RoundButton(RoundButton.STANDARD, 5, 5, 60, 20, "Addons", () -> {
             assert client != null;
             client.setScreen(new AddonManagerScreen());
         }));

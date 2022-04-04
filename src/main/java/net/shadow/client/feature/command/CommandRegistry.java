@@ -18,6 +18,11 @@ public class CommandRegistry {
     private static final List<CustomCommandEntry> customCommands = new ArrayList<>();
     private static final List<Command> sharedCommands = new ArrayList<>();
 
+    static {
+        // TODO: 18.12.21 add commands
+        init();
+    }
+
     public static void registerCustomCommand(Addon addon, Command command) {
         for (CustomCommandEntry e : customCommands) {
             if (e.command.getClass() == command.getClass()) {
@@ -106,9 +111,6 @@ public class CommandRegistry {
         return sharedCommands;
     }
 
-    record CustomCommandEntry(Addon addon, Command command) {
-    }
-
     public static void execute(String command) {
         String[] spl = command.split(" +");
         String cmd = spl[0].toLowerCase();
@@ -139,5 +141,8 @@ public class CommandRegistry {
             }
         }
         return null;
+    }
+
+    record CustomCommandEntry(Addon addon, Command command) {
     }
 }

@@ -4,8 +4,6 @@
 
 package net.shadow.client.feature.command.argument;
 
-import net.shadow.client.feature.command.exception.CommandException;
-
 public class StringArgumentParser implements ArgumentParser<String> {
     @Override
     public String parse(String argument) {
