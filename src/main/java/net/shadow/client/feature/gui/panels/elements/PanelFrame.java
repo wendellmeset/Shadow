@@ -11,7 +11,7 @@ import net.shadow.client.helper.render.Rectangle;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Transitions;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.HashMap;
 
 public class PanelFrame extends Element implements FastTickable {

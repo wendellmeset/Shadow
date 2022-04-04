@@ -21,7 +21,7 @@ import net.shadow.client.helper.event.events.PacketEvent;
 import net.shadow.client.helper.util.Utils;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.net.HttpURLConnection;

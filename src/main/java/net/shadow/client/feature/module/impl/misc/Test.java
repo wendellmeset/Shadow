@@ -30,6 +30,7 @@ public class Test extends Module {
     }
 
     @EventListener(type = EventType.BLOCK_RENDER)
+    @SuppressWarnings("unused")
     void onBlockRender(BlockRenderingEvent event) {
         if (!this.isEnabled()) return;
         BlockPos b = new BlockPos(event.getPosition());

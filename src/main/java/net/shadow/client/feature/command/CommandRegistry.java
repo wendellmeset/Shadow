@@ -6,7 +6,57 @@ package net.shadow.client.feature.command;
 
 import net.shadow.client.feature.addon.Addon;
 import net.shadow.client.feature.command.exception.CommandException;
-import net.shadow.client.feature.command.impl.*;
+import net.shadow.client.feature.command.impl.ApplyVel;
+import net.shadow.client.feature.command.impl.AsConsole;
+import net.shadow.client.feature.command.impl.Author;
+import net.shadow.client.feature.command.impl.Ban;
+import net.shadow.client.feature.command.impl.Bind;
+import net.shadow.client.feature.command.impl.Boot;
+import net.shadow.client.feature.command.impl.CheckCmd;
+import net.shadow.client.feature.command.impl.ClearInventory;
+import net.shadow.client.feature.command.impl.Config;
+import net.shadow.client.feature.command.impl.ConfigUtils;
+import net.shadow.client.feature.command.impl.Crash;
+import net.shadow.client.feature.command.impl.Damage;
+import net.shadow.client.feature.command.impl.Drop;
+import net.shadow.client.feature.command.impl.EVclip;
+import net.shadow.client.feature.command.impl.Effect;
+import net.shadow.client.feature.command.impl.Equip;
+import net.shadow.client.feature.command.impl.FakeItem;
+import net.shadow.client.feature.command.impl.Find;
+import net.shadow.client.feature.command.impl.FloodLuckperms;
+import net.shadow.client.feature.command.impl.ForEach;
+import net.shadow.client.feature.command.impl.ForceOP;
+import net.shadow.client.feature.command.impl.Gamemode;
+import net.shadow.client.feature.command.impl.HClip;
+import net.shadow.client.feature.command.impl.Help;
+import net.shadow.client.feature.command.impl.Hologram;
+import net.shadow.client.feature.command.impl.Image;
+import net.shadow.client.feature.command.impl.Inject;
+import net.shadow.client.feature.command.impl.Invsee;
+import net.shadow.client.feature.command.impl.ItemData;
+import net.shadow.client.feature.command.impl.ItemExploit;
+import net.shadow.client.feature.command.impl.ItemSpoof;
+import net.shadow.client.feature.command.impl.KickSelf;
+import net.shadow.client.feature.command.impl.Kickall;
+import net.shadow.client.feature.command.impl.Kill;
+import net.shadow.client.feature.command.impl.LinkWolf;
+import net.shadow.client.feature.command.impl.LogFlood;
+import net.shadow.client.feature.command.impl.MessageSpam;
+import net.shadow.client.feature.command.impl.Panic;
+import net.shadow.client.feature.command.impl.PermissionLevel;
+import net.shadow.client.feature.command.impl.Poof;
+import net.shadow.client.feature.command.impl.RageQuit;
+import net.shadow.client.feature.command.impl.Rename;
+import net.shadow.client.feature.command.impl.Say;
+import net.shadow.client.feature.command.impl.SpawnData;
+import net.shadow.client.feature.command.impl.StopServer;
+import net.shadow.client.feature.command.impl.Taco;
+import net.shadow.client.feature.command.impl.Test;
+import net.shadow.client.feature.command.impl.TitleLag;
+import net.shadow.client.feature.command.impl.Toggle;
+import net.shadow.client.feature.command.impl.VClip;
+import net.shadow.client.feature.command.impl.ViewNbt;
 import net.shadow.client.helper.util.Utils;
 
 import java.util.ArrayList;
@@ -21,6 +71,12 @@ public class CommandRegistry {
     static {
         // TODO: 18.12.21 add commands
         init();
+    }
+
+    static {
+        // TODO: 18.12.21 add commands
+        init();
+        rebuildSharedCommands();
     }
 
     public static void registerCustomCommand(Addon addon, Command command) {
@@ -100,12 +156,6 @@ public class CommandRegistry {
         vanillaCommands.add(new MessageSpam());
         vanillaCommands.add(new ClearInventory());
     }
-
-    static {
-        // TODO: 18.12.21 add commands
-        init();
-        rebuildSharedCommands();
-    } 
 
     public static List<Command> getCommands() {
         return sharedCommands;

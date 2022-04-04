@@ -19,7 +19,7 @@ import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Transitions;
 import org.lwjgl.glfw.GLFW;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;

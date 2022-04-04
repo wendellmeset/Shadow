@@ -20,7 +20,7 @@ import net.shadow.client.helper.render.Renderer;
 import org.apache.commons.lang3.SystemUtils;
 import org.lwjgl.glfw.GLFW;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class RoundTextFieldWidget implements Element, Drawable, Selectable, DoesMSAA {
     protected final String suggestion;

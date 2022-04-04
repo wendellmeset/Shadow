@@ -7,7 +7,7 @@ package net.shadow.client.feature.command.impl;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.CommandRegistry;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class Help extends Command {
 

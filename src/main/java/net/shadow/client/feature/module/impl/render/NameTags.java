@@ -15,7 +15,7 @@ import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Utils;
 
-import java.awt.*;
+import java.awt.Color;
 
 import static net.shadow.client.feature.module.impl.render.TargetHud.GREEN;
 import static net.shadow.client.feature.module.impl.render.TargetHud.RED;
