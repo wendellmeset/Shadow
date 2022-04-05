@@ -518,6 +518,49 @@ public class Renderer {
             renderTexturedQuad(matrices.peek()
                     .getPositionMatrix(), x0, x1, y0, y1, z, (u + 0.0F) / (float) textureWidth, (u + (float) regionWidth) / (float) textureWidth, (v + 0.0F) / (float) textureHeight, (v + (float) regionHeight) / (float) textureHeight);
         }
+        static Vec2f lerp(Vec2f p1, Vec2f p2, float delta) {
+            float x = MathHelper.lerp(delta,p1.x,p2.x);
+            float y = MathHelper.lerp(delta,p1.y,p2.y);
+            return new Vec2f(x,y);
+        }
+        static Vec2f getMultiBezPoint(Vec2f[] vertecies, float delta) {
+            List<Vec2f> verts = new ArrayList<>(List.of(vertecies));
+            while(verts.size() > 1) {
+                for(int i = 0;i<verts.size()-1;i++) {
+                    Vec2f current = verts.get(i);
+                    Vec2f next = verts.get(i+1);
+                    verts.set(i, lerp(current, next, delta));
+                }
+                verts.remove(verts.size()-1);
+            }
+            return verts.get(0);
+        }
+        static Vec2f getTriBezierPoint(Vec2f p1, Vec2f p2, Vec2f p3, float delta) {
+            Vec2f p1inner = lerp(p1,p2,delta);
+            Vec2f p2inner = lerp(p2,p3,delta);
+            return lerp(p1inner,p2inner,delta);
+        }
+        public static void renderBezierCurve(MatrixStack stack, Vec2f[] points, float r, float g, float b, float a, float laziness) {
+            if (points.length < 2) return;
+            float minIncr = 0.0001f;
+            laziness = MathHelper.clamp(laziness,minIncr,1);
+            Vec2f prev = null;
+//            for (int i = 1; i < points.length; i++) {
+//                Vec2f prev1 = points[i-1];
+//                Vec2f c = points[i];
+//                renderLine(stack,Color.RED,prev1.x,prev1.y,c.x,c.y);
+//            }
+            for(float d = 0;d<=1;d+=Math.min(laziness,Math.max(minIncr,1-d))) {
+                Vec2f pos = getMultiBezPoint(points,d);
+                if (prev == null) {
+                    prev = pos;
+                    continue;
+                }
+                renderLine(stack,new Color(r,g,b,a),prev.x,prev.y,pos.x,pos.y);
+                prev = pos;
+            }
+
+        }
 
         public static void renderLoadingSpinner(MatrixStack stack, float alpha, double x, double y, double rad, double width, double segments) {
             stack.push();
