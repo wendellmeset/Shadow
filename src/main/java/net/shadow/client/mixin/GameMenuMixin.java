@@ -25,8 +25,8 @@ public class GameMenuMixin extends Screen {
     void addAddons(CallbackInfo ci) {
         addDrawableChild(new RoundButton(RoundButton.STANDARD, 5, 5, 60, 20, "Addons", () -> {
             assert client != null;
-//            client.setScreen(new AddonManagerScreen());
-            client.setScreen(new StatsScreen());
+            client.setScreen(new AddonManagerScreen());
+//            client.setScreen(new StatsScreen());
         }));
     }
 }
