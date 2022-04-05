@@ -62,7 +62,8 @@
     "SliderWidgetMixin",
     "TitleScreenMixin",
     "WorldRendererAccessor",
-    "WorldRendererMixin"
+    "WorldRendererMixin",
+    "BeaconScreenMixin"
   ],
   "client": [],
   "server": [],
