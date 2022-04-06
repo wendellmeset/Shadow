@@ -5,30 +5,35 @@
 package net.shadow.client.feature.gui.screen;
 
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.math.Vec2f;
-import net.shadow.client.helper.GifPlayer;
-import net.shadow.client.helper.render.Renderer;
+import net.shadow.client.feature.gui.FastTickable;
+import net.shadow.client.feature.gui.widget.DataVisualizerWidget;
+import net.shadow.client.helper.Timer;
 
-import java.io.File;
+import java.awt.Color;
 
-public class TestScreen extends ClientScreen {
+public class TestScreen extends ClientScreen implements FastTickable {
+    DataVisualizerWidget v;
+    Timer u = new Timer();
+
     @Override
     protected void init() {
         super.init();
+        v = new DataVisualizerWidget(Color.WHITE, true, 50, 1, height - 10, width - 10, 5, 5);
+        addDrawableChild(v);
+    }
+
+    @Override
+    public void onFastTick() {
+        if (u.hasExpired(500)) {
+            u.reset();
+            v.addDataPoint(Math.random() * 10 - 5);
+        }
     }
 
     @Override
     public void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
         renderBackground(stack);
-        Vec2f[] points = new Vec2f[] {
-            new Vec2f(0,0),
-            new Vec2f(100,100),
-            new Vec2f(mouseX,mouseY),
-                new Vec2f(500,300),
-                new Vec2f(200,200),
-                new Vec2f(600,200)
-        };
-        Renderer.R2D.renderBezierCurve(stack,points,1f,1f,1f,1f,0.01f);
+
         super.renderInternal(stack, mouseX, mouseY, delta);
     }
 

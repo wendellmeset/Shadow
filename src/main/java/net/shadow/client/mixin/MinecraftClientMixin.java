@@ -10,6 +10,9 @@ import net.minecraft.client.gui.screen.Screen;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.feature.module.impl.world.FastUse;
+import net.shadow.client.helper.event.EventType;
+import net.shadow.client.helper.event.Events;
+import net.shadow.client.helper.event.events.base.NonCancellableEvent;
 import net.shadow.client.helper.manager.ConfigManager;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
@@ -29,6 +32,7 @@ public class MinecraftClientMixin {
     @Inject(method = "stop", at = @At("HEAD"))
     void real(CallbackInfo ci) {
         ConfigManager.saveState();
+        Events.fireEvent(EventType.GAME_EXIT, new NonCancellableEvent());
     }
 
     @Inject(method = "<init>", at = @At("TAIL"))

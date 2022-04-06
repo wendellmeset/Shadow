@@ -83,7 +83,7 @@ public class AddonManagerScreen extends ClientScreen implements FastTickable {
         double yOffset = 0;
         double xRoot = width / 2d - WIDGET_WIDTH / 2d + 5;
         double yRoot = height / 2d - WIDGET_HEIGHT / 2d + 5;
-        for (AddonViewer addonViewer : viewerList) {
+        for (AddonViewer addonViewer : new ArrayList<>(viewerList)) {
             addonViewer.render(stack, xRoot, yRoot + yOffset + scroller.getScroll(), mouseX, mouseY);
             yOffset += addonViewer.getHeight() + 5;
         }
@@ -97,6 +97,11 @@ public class AddonManagerScreen extends ClientScreen implements FastTickable {
             addonViewer.clicked(mouseX, mouseY, button);
         }
         return super.mouseClicked(mouseX, mouseY, button);
+    }
+
+    @Override
+    public boolean shouldPause() {
+        return false;
     }
 
     class AddonViewer implements FastTickable {
@@ -140,7 +145,7 @@ public class AddonManagerScreen extends ClientScreen implements FastTickable {
             RenderSystem.blendFunc(GL40C.GL_DST_ALPHA, GL40C.GL_ONE_MINUS_DST_ALPHA);
             Identifier icon = addon.getIcon();
             if (icon == null) icon = GameTexture.ICONS_ADDON_PROVIDED.getWhere();
-            RenderSystem.setShaderTexture(0, addon.getIcon());
+            RenderSystem.setShaderTexture(0, icon);
             if (!addon.isEnabled()) RenderSystem.setShaderColor(0.6f, 0.6f, 0.6f, 1f);
             Renderer.R2D.renderTexture(stack, x + padding, y + padding, iconDimensions, iconDimensions, 0, 0, iconDimensions, iconDimensions, iconDimensions, iconDimensions);
             RenderSystem.defaultBlendFunc();
