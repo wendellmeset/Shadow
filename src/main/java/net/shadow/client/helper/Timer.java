@@ -18,4 +18,8 @@ public class Timer {
     public boolean hasExpired(long timeout) {
         return System.currentTimeMillis() - lastReset > timeout;
     }
+
+    public long getLastReset() {
+        return lastReset;
+    }
 }

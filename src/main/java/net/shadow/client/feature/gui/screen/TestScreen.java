@@ -5,27 +5,30 @@
 package net.shadow.client.feature.gui.screen;
 
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.math.Vec2f;
 import net.shadow.client.helper.GifPlayer;
+import net.shadow.client.helper.render.Renderer;
 
 import java.io.File;
 
 public class TestScreen extends ClientScreen {
-    private static final GifPlayer gp = GifPlayer.createFromFile(new File("/home/x150/Downloads/img.gif"), 30);
-
-    public TestScreen() {
-
-    }
-
     @Override
     protected void init() {
-        gp.setGifFile(new File("/home/x150/Downloads/img.gif"));
         super.init();
     }
 
     @Override
     public void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
         renderBackground(stack);
-        gp.renderFrame(stack, 10, 10, 300, 300);
+        Vec2f[] points = new Vec2f[] {
+            new Vec2f(0,0),
+            new Vec2f(100,100),
+            new Vec2f(mouseX,mouseY),
+                new Vec2f(500,300),
+                new Vec2f(200,200),
+                new Vec2f(600,200)
+        };
+        Renderer.R2D.renderBezierCurve(stack,points,1f,1f,1f,1f,0.01f);
         super.renderInternal(stack, mouseX, mouseY, delta);
     }
 

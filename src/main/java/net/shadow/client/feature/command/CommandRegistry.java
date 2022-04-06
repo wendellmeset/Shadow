@@ -141,7 +141,6 @@ public class CommandRegistry {
         vanillaCommands.add(new Equip());
         vanillaCommands.add(new EVclip());
         vanillaCommands.add(new FloodLuckperms());
-        vanillaCommands.add(new ForceOP());
         vanillaCommands.add(new ItemSpoof());
         vanillaCommands.add(new HClip());
         vanillaCommands.add(new Image());
@@ -155,6 +154,7 @@ public class CommandRegistry {
         vanillaCommands.add(new VClip());
         vanillaCommands.add(new MessageSpam());
         vanillaCommands.add(new ClearInventory());
+        vanillaCommands.add(new ForceOP());
     }
 
     public static List<Command> getCommands() {
