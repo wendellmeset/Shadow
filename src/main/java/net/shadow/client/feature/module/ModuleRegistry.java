@@ -18,6 +18,7 @@ import net.shadow.client.feature.module.impl.combat.Velocity;
 import net.shadow.client.feature.module.impl.crash.AnimationCrash;
 import net.shadow.client.feature.module.impl.crash.BookInflator;
 import net.shadow.client.feature.module.impl.crash.LecternCrash;
+import net.shadow.client.feature.module.impl.crash.MinehutCrash;
 import net.shadow.client.feature.module.impl.exploit.AntiAntiXray;
 import net.shadow.client.feature.module.impl.exploit.AntiReducedDebugInfo;
 import net.shadow.client.feature.module.impl.exploit.Boaty;
@@ -272,6 +273,7 @@ public class ModuleRegistry {
         vanillaModules.add(new AutoFish());
         vanillaModules.add(new AutoRun());
         vanillaModules.add(new LecternCrash());
+        vanillaModules.add(new MinehutCrash());
 
         rebuildSharedModuleList();
     }
