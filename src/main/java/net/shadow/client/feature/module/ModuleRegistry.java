@@ -16,16 +16,18 @@ import net.shadow.client.feature.module.impl.combat.ShulkerDeflector;
 import net.shadow.client.feature.module.impl.combat.TpRange;
 import net.shadow.client.feature.module.impl.combat.Velocity;
 import net.shadow.client.feature.module.impl.crash.AnimationCrash;
+import net.shadow.client.feature.module.impl.crash.ArmorStandCrash;
 import net.shadow.client.feature.module.impl.crash.BookInflator;
 import net.shadow.client.feature.module.impl.crash.LecternCrash;
+import net.shadow.client.feature.module.impl.crash.LoominaCrash;
 import net.shadow.client.feature.module.impl.crash.MinehutCrash;
+import net.shadow.client.feature.module.impl.crash.OOBCrash;
 import net.shadow.client.feature.module.impl.exploit.AntiAntiXray;
 import net.shadow.client.feature.module.impl.exploit.AntiReducedDebugInfo;
 import net.shadow.client.feature.module.impl.exploit.Boaty;
 import net.shadow.client.feature.module.impl.exploit.CarpetBomb;
 import net.shadow.client.feature.module.impl.exploit.InstaBow;
 import net.shadow.client.feature.module.impl.exploit.NoComCrash;
-import net.shadow.client.feature.module.impl.exploit.OOBCrash;
 import net.shadow.client.feature.module.impl.exploit.OffhandCrash;
 import net.shadow.client.feature.module.impl.exploit.PingSpoof;
 import net.shadow.client.feature.module.impl.exploit.VanillaSpoof;
@@ -274,6 +276,8 @@ public class ModuleRegistry {
         vanillaModules.add(new AutoRun());
         vanillaModules.add(new LecternCrash());
         vanillaModules.add(new MinehutCrash());
+        vanillaModules.add(new ArmorStandCrash());
+        vanillaModules.add(new LoominaCrash());
 
         rebuildSharedModuleList();
     }

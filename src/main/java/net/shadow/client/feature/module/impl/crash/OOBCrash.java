@@ -2,7 +2,7 @@
  * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
  */
 
-package net.shadow.client.feature.module.impl.exploit;
+package net.shadow.client.feature.module.impl.crash;
 
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
@@ -84,10 +84,6 @@ public class OOBCrash extends Module {
 
     @Override
     public void onHudRender() {
-        if (current != null) {
-            FontRenderers.getRenderer().drawCenteredString(Renderer.R3D.getEmptyMatrixStack(), current.t, ShadowMain.client.getWindow().getScaledWidth() / 2f, ShadowMain.client.getWindow()
-                    .getScaledHeight() / 2f, 0xFFFFFF);
-        }
     }
 
     record Step(String t, long takes) {

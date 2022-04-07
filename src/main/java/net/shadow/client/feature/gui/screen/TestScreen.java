@@ -6,10 +6,7 @@ package net.shadow.client.feature.gui.screen;
 
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Vec2f;
-import net.shadow.client.helper.GifPlayer;
 import net.shadow.client.helper.render.Renderer;
-
-import java.io.File;
 
 public class TestScreen extends ClientScreen {
     @Override
