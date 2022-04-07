@@ -13,11 +13,22 @@ import net.shadow.client.feature.gui.clickgui.ClickGUI;
 import net.shadow.client.feature.module.AddonModule;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleRegistry;
-import net.shadow.client.helper.ClassLoaderAddendum;
+import net.shadow.client.helper.AddonClassLoader;
+import net.shadow.client.helper.event.EventListener;
+import net.shadow.client.helper.event.EventType;
+import net.shadow.client.helper.event.Events;
+import net.shadow.client.helper.event.events.base.Event;
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.Level;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.FileVisitResult;
+import java.nio.file.FileVisitor;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,6 +41,7 @@ import java.util.stream.Collectors;
 
 public class AddonManager {
     public static final File ADDON_DIRECTORY = new File(ShadowMain.BASE, "addons");
+    public static final File ADDON_RESOURCE_CACHE = new File(ADDON_DIRECTORY, ".res_cache");
     private static final int[] EXPECTED_CLASS_SIGNATURE = new int[]{
             0xCA, 0xFE, 0xBA, 0xBE
     };
@@ -41,7 +53,42 @@ public class AddonManager {
         INSTANCE = this;
         if (!ADDON_DIRECTORY.isDirectory()) ADDON_DIRECTORY.delete();
         if (!ADDON_DIRECTORY.exists()) ADDON_DIRECTORY.mkdir();
+        if (!ADDON_RESOURCE_CACHE.isDirectory()) ADDON_RESOURCE_CACHE.delete();
+        if (!ADDON_RESOURCE_CACHE.exists()) ADDON_RESOURCE_CACHE.mkdir();
         initializeAddons();
+
+        Events.registerEventHandlerClass(this);
+    }
+
+    @EventListener(type = EventType.GAME_EXIT)
+    @SuppressWarnings("unused")
+    void saveConfig(Event event) {
+        try {
+            Files.walkFileTree(ADDON_RESOURCE_CACHE.toPath(), new FileVisitor<>() {
+                @Override
+                public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
+                    return FileVisitResult.CONTINUE;
+                }
+
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
+                    file.toFile().delete();
+                    return FileVisitResult.CONTINUE;
+                }
+
+                @Override
+                public FileVisitResult visitFileFailed(Path file, IOException exc) {
+                    return FileVisitResult.CONTINUE;
+                }
+
+                @Override
+                public FileVisitResult postVisitDirectory(Path dir, IOException exc) {
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void init() {
@@ -187,15 +234,21 @@ public class AddonManager {
     }
 
     Addon loadAddon(File location) throws Exception {
-        ClassLoaderAddendum classLoader = new ClassLoaderAddendum(AddonManager.class.getClassLoader());
+        for (File file : Objects.requireNonNull(ADDON_RESOURCE_CACHE.listFiles())) {
+            if (file.getName().startsWith(Math.abs(location.getName().hashCode()) + "-")) {
+                // noinspection ResultOfMethodCallIgnored
+                file.delete();
+            }
+        }
+        AddonClassLoader classLoader = new AddonClassLoader(AddonManager.class.getClassLoader());
         JarFile jf = new JarFile(location);
-        Addon mainClass = null;
+        Class<Addon> mainClass = null;
         for (JarEntry jarEntry : jf.stream().toList()) {
+            if (jarEntry.isDirectory()) continue;
+            InputStream stream = jf.getInputStream(jarEntry);
             if (jarEntry.getName().endsWith(".class")) {
-//                System.out.println(jarEntry.getName());
-                InputStream stream = jf.getInputStream(jarEntry);
                 byte[] classBytes = stream.readAllBytes();
-                stream.close();
+
                 byte[] cSig = Arrays.copyOfRange(classBytes, 0, 4);
                 int[] cSigP = new int[4];
                 for (int i = 0; i < cSig.length; i++) {
@@ -214,21 +267,29 @@ public class AddonManager {
                 if (Addon.class.isAssignableFrom(loadedClass)) {
                     if (mainClass != null)
                         throw new IllegalStateException("Jarfile " + location.getName() + " has multiple main classes");
-                    try {
-                        mainClass = (Addon) loadedClass.getDeclaredConstructor().newInstance();
-                    } catch (NoSuchMethodException e) {
-                        throw new IllegalStateException("Jarfile " + location.getName() + " has invalid main class: No constructor without arguments");
-                    }
-//                    System.out.println("Found main class " + loadedClass.getName());
-                }
 
+                    // noinspection unchecked
+                    mainClass = (Class<Addon>) loadedClass;
+
+                }
+            } else {
+                File cacheFile = new File(ADDON_RESOURCE_CACHE, Math.abs(location.getName().hashCode()) + "-" + Integer.toHexString((int) Math.floor(Math.random() * 0xFFFFFF)));
+                FileUtils.writeByteArrayToFile(cacheFile, stream.readAllBytes());
+                classLoader.defineResource(jarEntry.getName(), cacheFile.toURI().toURL());
             }
+            stream.close();
         }
         if (mainClass == null)
             throw new IllegalStateException("Jarfile " + location.getName() + " does not have a main class");
-        ShadowMain.log(Level.INFO, "Discovered addon " + mainClass.name + " by " + String.join(", ", mainClass.developers));
-        loadedAddons.add(new AddonEntry(location, mainClass.name, mainClass.description, mainClass.developers, mainClass));
-        return mainClass;
+        Addon mainClassA;
+        try {
+            mainClassA = mainClass.getDeclaredConstructor().newInstance();
+        } catch (NoSuchMethodException e) {
+            throw new IllegalStateException("Jarfile " + location.getName() + " has invalid main class: No constructor without arguments");
+        }
+        ShadowMain.log(Level.INFO, "Discovered addon " + mainClassA.name + " by " + String.join(", ", mainClassA.developers));
+        loadedAddons.add(new AddonEntry(location, mainClassA.name, mainClassA.description, mainClassA.developers, mainClassA));
+        return mainClassA;
     }
 
     record AddonEntry(File sourceFile, String name, String description, String[] devs, Addon registeredAddon) {
