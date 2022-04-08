@@ -16,18 +16,29 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class Events {
+    record ListenerEntry(int id, EventType type, Consumer<? extends Event> eventListener) {}
+    static final List<ListenerEntry> entries = new CopyOnWriteArrayList<>();
 
-    static final Map<EventType, List<Consumer<? extends Event>>> HANDLERS = new HashMap<>();
-
-    public static void registerEventHandler(EventType event, Consumer<? extends Event> handler) {
-        if (!HANDLERS.containsKey(event)) {
-            HANDLERS.put(event, new ArrayList<>());
+    public static ListenerEntry registerEventHandler(int uniqueId, EventType event, Consumer<? extends Event> handler) {
+        if (entries.stream().noneMatch(listenerEntry -> listenerEntry.id == uniqueId)) {
+            ListenerEntry le = new ListenerEntry(uniqueId, event, handler);
+            entries.add(le);
+            return le;
+        } else {
+            ShadowMain.log(Level.WARN, uniqueId+" tried to register "+event.name()+" multiple times");
+            return entries.stream().filter(listenerEntry -> listenerEntry.id == uniqueId).findFirst().orElseThrow();
         }
-        HANDLERS.get(event).add(handler);
+    }
+    public static void unregister(int id) {
+        entries.removeIf(listenerEntry -> listenerEntry.id == id);
+    }
+    public static ListenerEntry registerEventHandler(EventType event, Consumer<? extends Event> handler) {
+        return registerEventHandler((int) Math.floor(Math.random()*0xFFFFFF),event,handler);
     }
 
     public static void registerEventHandlerClass(Object instance) {
@@ -40,13 +51,15 @@ public class Events {
                         ShadowMain.log(Level.ERROR, "Event handler " + declaredMethod.getName() + "(" + Arrays.stream(params).map(Class::getSimpleName).collect(Collectors.joining(", ")) + ") -> " + declaredMethod.getReturnType().getName() + " from " + instance.getClass().getName() + " is malformed, skipping");
                     } else {
                         declaredMethod.setAccessible(true);
-                        registerEventHandler(ev.type(), event -> {
+
+                        ListenerEntry l = registerEventHandler((instance.getClass().getName()+declaredMethod.getName()).hashCode(), ev.type(), event -> {
                             try {
                                 declaredMethod.invoke(instance, event);
                             } catch (IllegalAccessException | InvocationTargetException e) {
                                 e.printStackTrace();
                             }
                         });
+                        ShadowMain.log(Level.INFO, "Registered event handler "+declaredMethod.toString()+" with id "+l.id);
                     }
 
 
@@ -57,9 +70,9 @@ public class Events {
 
     @SuppressWarnings("unchecked")
     public static boolean fireEvent(EventType event, Event argument) {
-        if (HANDLERS.containsKey(event)) {
-            for (Consumer handler : HANDLERS.get(event)) {
-                handler.accept(argument);
+        for (ListenerEntry entry : entries) {
+            if (entry.type == event) {
+                ((Consumer) entry.eventListener()).accept(argument);
             }
         }
         return argument.isCancelled();

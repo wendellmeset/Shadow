@@ -535,21 +535,60 @@ public class Renderer {
             }
             return verts.get(0);
         }
-        static Vec2f getTriBezierPoint(Vec2f p1, Vec2f p2, Vec2f p3, float delta) {
-            Vec2f p1inner = lerp(p1,p2,delta);
-            Vec2f p2inner = lerp(p2,p3,delta);
-            return lerp(p1inner,p2inner,delta);
+        public static void renderRoundedShadowInternal(Matrix4f matrix, float cr, float cg, float cb, float ca, double fromX, double fromY, double toX, double toY, double rad, double samples, double wid) {
+            BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
+            bufferBuilder.begin(VertexFormat.DrawMode.TRIANGLE_STRIP, VertexFormats.POSITION_COLOR);
+
+            double toX1 = toX - rad;
+            double toY1 = toY - rad;
+            double fromX1 = fromX + rad;
+            double fromY1 = fromY + rad;
+            double[][] map = new double[][]{new double[]{toX1, toY1}, new double[]{toX1, fromY1}, new double[]{fromX1, fromY1}, new double[]{fromX1, toY1}};
+            for (int i = 0; i < map.length; i++) {
+                double[] current = map[i];
+                for (double r = i * 90d; r < (360 / 4d + i * 90d); r += (90 / samples)) {
+                    float rad1 = (float) Math.toRadians(r);
+                    float sin = (float) (Math.sin(rad1) * rad);
+                    float cos = (float) (Math.cos(rad1) * rad);
+                    bufferBuilder.vertex(matrix, (float) current[0] + sin, (float) current[1] + cos, 0.0F).color(cr, cg, cb, ca).next();
+                    float sin1 = (float) (sin + Math.sin(rad1)*wid);
+                    float cos1 = (float) (cos + Math.cos(rad1)*wid);
+                    bufferBuilder.vertex(matrix, (float) current[0] + sin1, (float) current[1] + cos1, 0.0F).color(cr, cg, cb, 0f).next();
+                }
+            }
+            {
+                double[] current = map[0];
+                float rad1 = (float) Math.toRadians(0);
+                float sin = (float) (Math.sin(rad1) * rad);
+                float cos = (float) (Math.cos(rad1) * rad);
+                bufferBuilder.vertex(matrix, (float) current[0] + sin, (float) current[1] + cos, 0.0F).color(cr, cg, cb, ca).next();
+                float sin1 = (float) (sin + Math.sin(rad1)*wid);
+                float cos1 = (float) (cos + Math.cos(rad1)*wid);
+                bufferBuilder.vertex(matrix, (float) current[0] + sin1, (float) current[1] + cos1, 0.0F).color(cr, cg, cb, 0f).next();
+            }
+            bufferBuilder.end();
+            BufferRenderer.draw(bufferBuilder);
+        }
+
+        public static void renderRoundedShadow(MatrixStack matrices, Color innerColor, double fromX, double fromY, double toX, double toY, double rad, double samples, double shadowWidth) {
+            //            RenderSystem.defaultBlendFunc();
+
+            int color = innerColor.getRGB();
+            Matrix4f matrix = matrices.peek().getPositionMatrix();
+            float f = (float) (color >> 24 & 255) / 255.0F;
+            float g = (float) (color >> 16 & 255) / 255.0F;
+            float h = (float) (color >> 8 & 255) / 255.0F;
+            float k = (float) (color & 255) / 255.0F;
+            setupRender();
+            RenderSystem.setShader(GameRenderer::getPositionColorShader);
+
+            renderRoundedShadowInternal(matrix, g, h, k, f, fromX, fromY, toX, toY, rad, samples, shadowWidth);
         }
         public static void renderBezierCurve(MatrixStack stack, Vec2f[] points, float r, float g, float b, float a, float laziness) {
             if (points.length < 2) return;
             float minIncr = 0.0001f;
             laziness = MathHelper.clamp(laziness,minIncr,1);
             Vec2f prev = null;
-//            for (int i = 1; i < points.length; i++) {
-//                Vec2f prev1 = points[i-1];
-//                Vec2f c = points[i];
-//                renderLine(stack,Color.RED,prev1.x,prev1.y,c.x,c.y);
-//            }
             for(float d = 0;d<=1;d+=Math.min(laziness,Math.max(minIncr,1-d))) {
                 Vec2f pos = getMultiBezPoint(points,d);
                 if (prev == null) {
@@ -745,7 +784,22 @@ public class Renderer {
             bufferBuilder.end();
             BufferRenderer.draw(bufferBuilder);
         }
+        public static void renderRoundedQuadWithShadow(MatrixStack matrices, Color c, double fromX, double fromY, double toX, double toY, double rad, double samples) {
+            //            RenderSystem.defaultBlendFunc();
 
+            int color = c.getRGB();
+            Matrix4f matrix = matrices.peek().getPositionMatrix();
+            float f = (float) (color >> 24 & 255) / 255.0F;
+            float g = (float) (color >> 16 & 255) / 255.0F;
+            float h = (float) (color >> 8 & 255) / 255.0F;
+            float k = (float) (color & 255) / 255.0F;
+            setupRender();
+            RenderSystem.setShader(GameRenderer::getPositionColorShader);
+
+            renderRoundedQuadInternal(matrix, g, h, k, f, fromX, fromY, toX, toY, rad, samples);
+
+            renderRoundedShadow(matrices, new Color(10,10,10,100),fromX,fromY,toX,toY,rad,samples,3);
+        }
         public static void renderRoundedQuad(MatrixStack matrices, Color c, double fromX, double fromY, double toX, double toY, double rad, double samples) {
             //            RenderSystem.defaultBlendFunc();
 

@@ -70,12 +70,7 @@ public class CommandRegistry {
 
     static {
         // TODO: 18.12.21 add commands
-        init();
-    }
-
-    static {
-        // TODO: 18.12.21 add commands
-        init();
+//        init();
         rebuildSharedCommands();
     }
 

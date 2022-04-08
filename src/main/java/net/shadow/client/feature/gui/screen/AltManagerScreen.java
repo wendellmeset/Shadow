@@ -316,7 +316,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
         add.render(stack, mouseX, mouseY);
         exit.render(stack, mouseX, mouseY);
 
-        ClipStack.globalInstance.addWindow(stack, new Rectangle(getPadding(), getHeaderHeight(), getPadding() + (width - (getPadding() + leftWidth + getPadding() * 2)), height));
+        ClipStack.globalInstance.addWindow(stack, new Rectangle(getPadding()-5, getHeaderHeight(), getPadding() + (width - (getPadding() + leftWidth + getPadding() * 2))+5, height));
         //Renderer.R2D.beginScissor(stack, getPadding(), getHeaderHeight(), getPadding() + (width - (getPadding() + leftWidth + getPadding() * 2)), height);
         stack.push();
         stack.translate(0, -scrollSmooth, 0);
@@ -1018,7 +1018,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
             stack.translate(renderX + width / 2d, renderY + getHeight() / 2d, 0);
             float animProgress = (float) easeInOutQuint(this.animProgress);
             stack.scale(MathHelper.lerp(animProgress, 1f, 0.99f), MathHelper.lerp(animProgress, 1f, 0.99f), 1f);
-            Renderer.R2D.renderRoundedQuad(stack, pillColor, originX, originY, originX + width, originY + getHeight(), 5, 20);
+            Renderer.R2D.renderRoundedQuadWithShadow(stack, pillColor, originX, originY, originX + width, originY + getHeight(), 5, 20);
             double padding = 5;
             double texWidth = getHeight() - padding * 2;
             double texHeight = getHeight() - padding * 2;

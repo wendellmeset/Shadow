@@ -20,9 +20,11 @@ import net.minecraft.util.math.Vec3d;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.exception.CommandException;
+import net.shadow.client.helper.event.EventListener;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.PacketEvent;
+import net.shadow.client.helper.event.events.base.Event;
 import net.shadow.client.helper.util.Utils;
 
 import java.util.Objects;
@@ -36,19 +38,24 @@ public class Find extends Command {
 
     public Find() {
         super("Find", "Nocom 2 (requires creative)", "find", "findPlayer");
-        Events.registerEventHandler(EventType.PACKET_RECEIVE, event -> {
-            if (!pendingBook) {
-                return;
-            }
-            PacketEvent pe = (PacketEvent) event;
-            handlePacket(pe);
-        });
-        Events.registerEventHandler(EventType.NOCLIP_QUERY, event -> { // this also functions as a tick thing so eh
-            if (pendingBook && bookSlot != -1) {
-                assert ShadowMain.client.player != null;
-                ShadowMain.client.player.getInventory().selectedSlot = bookSlot;
-            }
-        });
+        System.out.println("instanced");
+        Events.registerEventHandlerClass(this);
+    }
+
+    @EventListener(type=EventType.PACKET_RECEIVE)
+    void pRecv(PacketEvent pe) {
+        if (!pendingBook) {
+            return;
+        }
+        handlePacket(pe);
+    }
+
+    @EventListener(type=EventType.NOCLIP_QUERY)
+    void tick(Event e) {
+        if (pendingBook && bookSlot != -1) {
+            assert ShadowMain.client.player != null;
+            ShadowMain.client.player.getInventory().selectedSlot = bookSlot;
+        }
     }
 
     void handlePacket(PacketEvent pe) {
