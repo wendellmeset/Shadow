@@ -86,7 +86,7 @@ public class LoadingScreen extends ClientScreen implements FastTickable {
             opacity -= 0.01;
             opacity = MathHelper.clamp(opacity, 0.001, 1);
         }
-        HomeScreen.instance().onFastTick();
+//        HomeScreen.instance().onFastTick();
     }
 
     void load() {
@@ -167,6 +167,8 @@ public class LoadingScreen extends ClientScreen implements FastTickable {
                 return;
             }
         }
+        stack.push();
+        stack.translate(0,0,5);
         Renderer.R2D.renderQuad(stack, new Color(0, 0, 0, (float) opacity), 0, 0, width, height);
         String shadow = "Loading Shadow...";
         double pad = 5;
@@ -204,6 +206,7 @@ public class LoadingScreen extends ClientScreen implements FastTickable {
             yOffset += FontRenderers.getRenderer().getFontHeight();
         }
         super.renderInternal(stack, mouseX, mouseY, delta);
+        stack.pop();
     }
 
     @Data

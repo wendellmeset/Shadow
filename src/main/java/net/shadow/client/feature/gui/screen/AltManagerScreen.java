@@ -1055,7 +1055,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
             }
             PropEntry[] props = new PropEntry[]{
                     new PropEntry(this.storage.type == AddScreenOverlay.AccountType.CRACKED ? this.storage.email : this.storage.cachedName, FontRenderers.getCustomSize(22), storage.valid ? 0xFFFFFF : 0xFF3333),
-                    new PropEntry("Email: " + mail, FontRenderers.getRenderer(), 0xAAAAAA), new PropEntry("Type: " + this.storage.type.s, FontRenderers.getRenderer(), 0xAAAAAA)};
+                    new PropEntry("Email: " + mail, FontRenderers.getRenderer(), 0xAAAAAA)/*, new PropEntry("Type: " + this.storage.type.s, FontRenderers.getRenderer(), 0xAAAAAA)*/};
             float propsOffset = (float) (getHeight() - (texHeight)) / 2f;
             for (PropEntry prop : props) {
                 prop.cfr.drawString(stack, prop.name, (float) (originX + padding + texWidth + padding), (float) (originY + propsOffset), prop.color, false);
@@ -1066,21 +1066,19 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
                 Renderer.R2D.renderLoadingSpinner(stack, 1f, originX + width - fromTop, originY + fromTop, 10, 1, 10);
             }
             double xOff = 0;
-            if (!storage.tags.isEmpty()) {
-                for (String s : storage.tags.split(",")) {
-                    String v = s.trim();
-                    if (v.isEmpty()) {
-                        continue;
-                    }
-                    float w = FontRenderers.getRenderer().getStringWidth(v) + 2;
-                    float h = FontRenderers.getRenderer().getMarginHeight();
-                    float pad = 2;
-                    w += pad * 2;
-                    Renderer.R2D.renderRoundedQuad(stack, RoundButton.STANDARD, originX + padding + texWidth + padding + xOff, originY + getHeight() - h - pad * 2 - padding, originX + padding + texWidth + padding + xOff + w, originY + getHeight() - padding, 5, 10);
-                    FontRenderers.getRenderer()
-                            .drawString(stack, v, originX + padding + texWidth + padding + xOff + pad, originY + getHeight() - pad - FontRenderers.getRenderer().getMarginHeight() - padding, 0xFFFFFF);
-                    xOff += w + 2;
+            for (String s : (storage.tags.isEmpty()?"No tags":storage.tags).split(",")) {
+                String v = s.trim();
+                if (v.isEmpty()) {
+                    continue;
                 }
+                float w = FontRenderers.getRenderer().getStringWidth(v);
+                float h = FontRenderers.getRenderer().getMarginHeight();
+                float pad = 2;
+                w += pad * 2;
+                Renderer.R2D.renderRoundedQuad(stack, RoundButton.STANDARD, originX + padding + texWidth + padding + xOff, originY + getHeight() - h - pad * 2 - padding, originX + padding + texWidth + padding + xOff + w, originY + getHeight() - padding, 5, 10);
+                FontRenderers.getRenderer()
+                        .drawString(stack, v, originX + padding + texWidth + padding + xOff + pad, originY + getHeight() - pad - FontRenderers.getRenderer().getMarginHeight() - padding, 0xFFFFFF);
+                xOff += w + 2;
             }
 
             stack.pop();

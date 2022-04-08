@@ -4,6 +4,7 @@
 
 package net.shadow.client.feature.gui.screen;
 
+import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
@@ -15,9 +16,7 @@ import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.minecraft.client.util.DefaultSkinHelper;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.math.MathHelper;
 import net.shadow.client.ShadowMain;
-import net.shadow.client.feature.gui.FastTickable;
 import net.shadow.client.feature.gui.clickgui.ParticleRenderer;
 import net.shadow.client.feature.gui.widget.RoundButton;
 import net.shadow.client.helper.GameTexture;
@@ -49,27 +48,22 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
-public class HomeScreen extends ClientScreen implements FastTickable {
-    static final double padding = 5;
+public class HomeScreen extends ClientScreen {
+    static final double padding = 6;
     static final Texture background = GameTexture.TEXTURE_BACKGROUND.getWhere();
     static final HttpClient downloader = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(3)).build();
     static boolean isDev = false;
     static String version = "unknown";
     static String changelog = "";
     private static HomeScreen instance;
-    final ParticleRenderer prend = new ParticleRenderer(300);
-    final FontAdapter smaller = FontRenderers.getCustomSize(30);
+    final ParticleRenderer prend = new ParticleRenderer(600);
     final FontAdapter propFr = FontRenderers.getCustomSize(22);
     final Texture currentAccountTexture = new Texture("dynamic/tex_currentaccount_home");
-    final double widgetsWidth = 60;
     boolean loaded = false;
     long initTime = System.currentTimeMillis();
-    double prog = 0;
     boolean fadeOut = false;
-    double initProg = 0;
     boolean currentAccountTextureLoaded = false;
     UUID previousChecked = null;
-    double widgetsHeight = 0;
 
     private HomeScreen() {
         super(MSAAFramebuffer.MAX_SAMPLES);
@@ -110,46 +104,44 @@ public class HomeScreen extends ClientScreen implements FastTickable {
     }
 
     void initWidgets() {
-        double widPad = 6;
-
-        double widgetHeight = 20;
-
         List<Map.Entry<String, Runnable>> buttonsMap = new ArrayList<>();
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Singleplayer", () -> ShadowMain.client.setScreen(new SelectWorldScreen(this))));
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Multiplayer", () -> ShadowMain.client.setScreen(new MultiplayerScreen(this))));
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Realms", () -> ShadowMain.client.setScreen(new RealmsMainScreen(this))));
-        buttonsMap.add(new AbstractMap.SimpleEntry<>("Alts", () -> ShadowMain.client.setScreen(
-            AltManagerScreen.instance()
-//                new TestScreen()
-        )));
+        buttonsMap.add(new AbstractMap.SimpleEntry<>("Alts", () -> ShadowMain.client.setScreen(AltManagerScreen.instance())));
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Settings", () -> ShadowMain.client.setScreen(new OptionsScreen(this, ShadowMain.client.options))));
-        widgetsHeight = buttonsMap.size() * (widgetHeight + widPad) - widPad;
-        double xOffset = -innerBottomPadding(); // dont question it
-        Color bg = new Color(30, 30, 30);
-        for (Map.Entry<String, Runnable> stringRunnableEntry : buttonsMap) {
-            xOffset += widgetsWidth + innerBottomPadding();
-            RoundButton rb = new RoundButton(bg, width - bottomPadding() - innerBottomPadding() - xOffset, height - bottomPadding() - innerBottomPadding() - widgetHeight, widgetsWidth, widgetHeight, stringRunnableEntry.getKey(), stringRunnableEntry.getValue());
-            addDrawableChild(rb);
+        buttonsMap.add(new AbstractMap.SimpleEntry<>("Quit", ShadowMain.client::scheduleStop));
+//        buttonsMap.add(new AbstractMap.SimpleEntry<>("reinit", this::init));
+        double rowWidth = 150;
+        double rowHeight = 30;
+        double padding = 5;
+        int entriesPerRow = 2;
+        double rootX = width/2d;
+        double rootY = height/2d;
+        List<List<Map.Entry<String, Runnable>>> part = Lists.partition(buttonsMap, entriesPerRow);
+        for (int ii = 0; ii < part.size(); ii++) {
+            double currentY = ii*(rowHeight+padding);
+            List<Map.Entry<String, Runnable>> entries = part.get(ii);
+            double oneButtonWidth = (rowWidth-padding)/entries.size();
+            for (int i = 0; i < entries.size(); i++) {
+                Map.Entry<String, Runnable> e = entries.get(i);
+                double currentX = i*oneButtonWidth+i*padding;
+                RoundButton btn = new RoundButton(RoundButton.STANDARD,rootX-rowWidth/2d+currentX,rootY+currentY,oneButtonWidth,rowHeight,e.getKey(),e.getValue());
+                addDrawableChild(btn);
+            }
         }
-    }
-
-    double innerBottomPadding() {
-        return 3d;
-    }
-
-    double bottomPadding() {
-        return 5d;
     }
 
     @Override
     protected void init() {
         super.init();
+
         initTime = System.currentTimeMillis();
         initWidgets();
         if (loaded) {
             updateCurrentAccount(() -> {
             }); // already loaded this instance, refresh on the fly
-        }
+        } else load();
     }
 
     void complete() {
@@ -192,146 +184,50 @@ public class HomeScreen extends ClientScreen implements FastTickable {
     @Override
     public void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
 
-        double initProg = this.initProg * 2;
-
         Renderer.R2D.renderQuad(stack, new Color(20, 20, 20), 0, 0, width, height);
 
         RenderSystem.setShaderTexture(0, background);
         Renderer.R2D.renderTexture(stack, 0, 0, width, height, 0, 0, width, height, width, height);
         RenderSystem.defaultBlendFunc();
         prend.render(stack);
-        stack.push();
-        double ap = 1 - easeOutBack(MathHelper.clamp(initProg, .5, 1.5) - .5);
-        double h = padding + propFr.getMarginHeight() + 2 + changelog.split("\n").length * FontRenderers.getRenderer().getMarginHeight() + padding;
-        double w = 100;
-        for (String s : changelog.split("\n")) {
-            w = Math.max(w, 10 + FontRenderers.getRenderer().getStringWidth(s.strip()));
-        }
-        stack.translate(0, ap * -(padding + h + 1), 0);
 
-        Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 170), padding, padding, padding + w + padding * 2, padding + h, 10, 14);
-
-        propFr.drawString(stack, "Changelog", (float) (padding * 2f), (float) (padding * 2f), 0xFFFFFF, false);
-        double yoff = padding * 2 + propFr.getMarginHeight() + 2;
+        propFr.drawString(stack, "Changelog", 6, 6, 0xFFFFFF, false);
+        double yoff = 6 + propFr.getMarginHeight();
         for (String s : changelog.split("\n")) {
-            FontRenderers.getRenderer().drawString(stack, s, (float) (padding * 2 + padding), (float) yoff, 0xAAAAAA, false);
+            FontRenderers.getRenderer().drawString(stack, s, 6, (float) yoff, 0xAAAAAA, false);
             yoff += FontRenderers.getRenderer().getMarginHeight();
         }
-        stack.pop();
 
-        stack.push();
-        double widRHeight = 50 + padding * 2;
-        double ap1 = 1 - easeOutBack(MathHelper.clamp(initProg, 1, 2) - 1);
-        stack.translate(0, ap1 * -(padding + widRHeight + 1), 0);
+        double originalWidth = 2888;
+        double originalHeight = 1000;
+        double newWidth = 150;
+        double per = newWidth/originalWidth;
+        double newHeight = originalHeight*per;
+        RenderSystem.setShaderTexture(0, GameTexture.TEXTURE_LOGO.getWhere());
+        Renderer.R2D.renderTexture(stack, width/2d-newWidth/2d, height/2d-newHeight-padding, newWidth, newHeight, 0, 0, newWidth,newHeight,newWidth,newHeight);
+        super.renderInternal(stack, mouseX, mouseY, delta); // render bottom row widgets
 
-        double fromX = width - (200 + padding);
-        double toX = width - padding;
-        double fromY;
-        double toY;
-        toY = padding + widRHeight;
-        fromY = toY - widRHeight;
-        Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 170), fromX, fromY, toX, toY, 10, 10);
-        double texDim = widRHeight - padding * 2;
-
+        double texDim = 20;
         RenderSystem.enableBlend();
         RenderSystem.colorMask(false, false, false, true);
         RenderSystem.clearColor(0.0F, 0.0F, 0.0F, 0.0F);
         RenderSystem.clear(GL40C.GL_COLOR_BUFFER_BIT, false);
         RenderSystem.colorMask(true, true, true, true);
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
-        Renderer.R2D.renderRoundedQuadInternal(stack.peek().getPositionMatrix(), 0, 0, 0, 1, fromX + padding, fromY + padding, fromX + padding + texDim, fromY + padding + texDim, 6, 10);
+        Renderer.R2D.renderRoundedQuadInternal(stack.peek().getPositionMatrix(), 0, 0, 0, 1, width-padding-texDim, padding, width-padding, padding+texDim, 3, 10);
 
         RenderSystem.blendFunc(GL40C.GL_DST_ALPHA, GL40C.GL_ONE_MINUS_DST_ALPHA);
         RenderSystem.setShaderTexture(0, currentAccountTextureLoaded ? currentAccountTexture : DefaultSkinHelper.getTexture());
         if (currentAccountTextureLoaded) {
-            Renderer.R2D.renderTexture(stack, fromX + padding, fromY + padding, texDim, texDim, 0, 0, 64, 64, 64, 64);
+            Renderer.R2D.renderTexture(stack, width-padding-texDim, padding, texDim, texDim, 0, 0, 64, 64, 64, 64);
         } else {
-            Renderer.R2D.renderTexture(stack, fromX + padding, fromY + padding, texDim, texDim, 8, 8, 8, 8, 64, 64);
+            Renderer.R2D.renderTexture(stack, width-padding-texDim, padding, texDim, texDim, 8, 8, 8, 8, 64, 64);
         }
+        FontAdapter fa = FontRenderers.getRenderer();
         RenderSystem.defaultBlendFunc();
-        String uuid = ShadowMain.client.getSession().getUuid();
-        double uuidWid = FontRenderers.getRenderer().getStringWidth(uuid);
-        double maxWid = 200 - texDim - padding * 3;
-        if (uuidWid > maxWid) {
-            double threeDotWidth = FontRenderers.getRenderer().getStringWidth("...");
-            uuid = FontRenderers.getRenderer().trimStringToWidth(uuid, maxWid - 1 - threeDotWidth);
-            uuid += "...";
-        }
-        AltManagerScreen.AltContainer.PropEntry[] props = new AltManagerScreen.AltContainer.PropEntry[]{
-                new AltManagerScreen.AltContainer.PropEntry(ShadowMain.client.getSession().getUsername(), FontRenderers.getCustomSize(22), 0xFFFFFF),
-                new AltManagerScreen.AltContainer.PropEntry(uuid, FontRenderers.getRenderer(), 0xAAAAAA)};
-        float propsOffset = (float) (fromY + padding);
-        for (AltManagerScreen.AltContainer.PropEntry prop : props) {
-            prop.cfr().drawString(stack, prop.name(), (float) (fromX + padding + texDim + padding), propsOffset, prop.color(), false);
-            propsOffset += prop.cfr().getMarginHeight();
-        }
-        stack.pop();
-        double lowerBarHeight = innerBottomPadding() + 20 + innerBottomPadding();
-        double iconDimHeight = lowerBarHeight - innerBottomPadding() * 2d;
-
-
-        double originalIconWidth = 782;
-        double originalIconHeight = 1000;
-
-        double del1 = iconDimHeight / originalIconHeight;
-        double iconDimWidth = originalIconWidth * del1;
-
-        double fw = iconDimWidth + 5;
-        stack.push();
-        double heiProg = 1 - easeOutBack(MathHelper.clamp(initProg, 0, 1));
-        double totalHeight = 30;
-        String verstring = "v" + version + (isDev ? "-dev" : "");
-        stack.translate(0, (totalHeight + padding) * heiProg, 0);
-
-        Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 170), bottomPadding(), height - bottomPadding() - lowerBarHeight, width - bottomPadding(), height - bottomPadding(), 5, 20);
-
-        RenderSystem.setShaderTexture(0, GameTexture.TEXTURE_ICON.getWhere());
-        Renderer.R2D.renderTexture(stack, bottomPadding() + innerBottomPadding(), height - bottomPadding() - innerBottomPadding() - iconDimHeight, iconDimWidth, iconDimHeight, 0, 0, iconDimWidth, iconDimHeight, iconDimWidth, iconDimHeight);
-        smaller.drawString(stack, verstring, (float) (bottomPadding() + innerBottomPadding() + fw), height - bottomPadding() - lowerBarHeight / 2d - smaller.getMarginHeight() / 2d, 0xFFFFFF);
-        super.renderInternal(stack, mouseX, mouseY, delta); // render bottom row widgets
-        stack.pop();
-
-
-        double spinnerProg = prog;
-        spinnerProg = MathHelper.clamp(spinnerProg, 0, 1); // fucking floating point precision istg
-        float fadeProg = fadeOut ? (float) prog : 1f;
-        fadeProg = MathHelper.clamp(fadeProg, 0, 1);
-        Renderer.R2D.renderQuad(stack, new Color(0, 0, 0, fadeProg * 0.8f), 0, 0, width, height);
-        Renderer.R2D.renderLoadingSpinner(stack, (float) spinnerProg, width - 25, height - 25, 20, 1d, 20);
+        String uname = ShadowMain.client.getSession().getUsername();
+        double unameWidth = fa.getStringWidth(uname);
+        fa.drawString(stack,uname,width-padding-texDim-padding-unameWidth,padding+texDim/2d-fa.getFontHeight()/2d,0xFFFFFF);
     }
 
-    @Override
-    public void onFastTick() {
-        if (ShadowMain.client.getOverlay() == null && ShadowMain.client.currentScreen == this && System.currentTimeMillis() - initTime > 1000 && !loaded) {
-            load();
-        }
-        double delta = 10 / 600d;
-        if (fadeOut) {
-            delta *= -1;
-        }
-        prog += delta;
-        prog = MathHelper.clamp(prog, 0, 1);
-
-        if (loaded && prog == 0 && fadeOut) {
-            double d = 0.01;
-            initProg += d;
-            initProg = MathHelper.clamp(initProg, 0, 1);
-        }
-    }
-
-    @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (prog != 0 || !fadeOut) {
-            return false;
-        }
-        return super.mouseClicked(mouseX, mouseY, button);
-    }
-
-    double easeOutBack(double x) {
-        double c1 = 1.70158;
-        double c3 = c1 + 1;
-
-        return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
-
-    }
 }
