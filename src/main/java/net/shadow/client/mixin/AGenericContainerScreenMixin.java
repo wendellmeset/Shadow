@@ -43,7 +43,6 @@ public abstract class AGenericContainerScreenMixin {
 
     @Inject(method = "tick", at = @At("HEAD"))
     public void preTick(CallbackInfo ci) {
-        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         if (!ModuleRegistry.getByClass(InventoryWalk.class).isEnabled()) {
             return;
         }

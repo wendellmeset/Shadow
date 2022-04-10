@@ -24,7 +24,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class PlayerEntityMixin {
     @Redirect(method = "tick", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/player/PlayerEntity;noClip:Z", opcode = Opcodes.PUTFIELD))
     void tickNoClip(PlayerEntity playerEntity, boolean value) {
-        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         PlayerNoClipQueryEvent q = new PlayerNoClipQueryEvent(playerEntity);
         Events.fireEvent(EventType.NOCLIP_QUERY, q);
         playerEntity.noClip = q.getNoClip();
@@ -32,7 +31,6 @@ public class PlayerEntityMixin {
 
     @Inject(method = "getMovementSpeed", at = @At("RETURN"), cancellable = true)
     void a(CallbackInfoReturnable<Float> cir) {
-        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         Hyperspeed hs = ModuleRegistry.getByClass(Hyperspeed.class);
         if (!hs.isEnabled() || !equals(ShadowMain.client.player)) {
             return;
@@ -42,7 +40,6 @@ public class PlayerEntityMixin {
 
     @Inject(method = "jump", at = @At("RETURN"))
     void applyLongJump(CallbackInfo ci) {
-        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         if (!this.equals(ShadowMain.client.player)) {
             return;
         }

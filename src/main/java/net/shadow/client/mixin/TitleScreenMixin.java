@@ -23,7 +23,6 @@ public class TitleScreenMixin extends Screen {
 
     @Inject(method = "init", at = @At("RETURN"))
     void real(CallbackInfo ci) {
-        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         Objects.requireNonNull(client).setScreen(LoadingScreen.instance());
     }
 }

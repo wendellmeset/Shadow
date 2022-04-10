@@ -11,13 +11,13 @@ import net.shadow.client.feature.module.ModuleType;
 
 public class AutoSign extends Module {
 
-    final StringSetting ss1 = this.config.create(new StringSetting.Builder("discord.gg/moles").name("Line 1").description("the text for line 1").get());
-    final StringSetting ss2 = this.config.create(new StringSetting.Builder("discord.gg/moles").name("Line 2").description("the text for line 2").get());
-    final StringSetting ss3 = this.config.create(new StringSetting.Builder("discord.gg/moles").name("Line 3").description("the text for line 3").get());
-    final StringSetting ss4 = this.config.create(new StringSetting.Builder("discord.gg/moles").name("Line 4").description("the text for line 4").get());
+    final StringSetting ss1 = this.config.create(new StringSetting.Builder("discord.gg/moles").name("Line 1").description("The text for line 1").get());
+    final StringSetting ss2 = this.config.create(new StringSetting.Builder("discord.gg/moles").name("Line 2").description("The text for line 2").get());
+    final StringSetting ss3 = this.config.create(new StringSetting.Builder("discord.gg/moles").name("Line 3").description("The text for line 3").get());
+    final StringSetting ss4 = this.config.create(new StringSetting.Builder("discord.gg/moles").name("Line 4").description("The text for line 4").get());
 
     public AutoSign() {
-        super("AutoSign", "automatically write signs", ModuleType.WORLD);
+        super("AutoSign", "Automatically write signs when looking at them", ModuleType.WORLD);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class AutoSign extends Module {
 
     }
 
-    public String[] getText(){
+    public String[] getText() {
         return new String[]{ss1.getValue(), ss2.getValue(), ss3.getValue(), ss4.getValue()};
     }
 }

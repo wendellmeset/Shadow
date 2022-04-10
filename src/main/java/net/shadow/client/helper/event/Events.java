@@ -11,17 +11,13 @@ import org.apache.logging.log4j.Level;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class Events {
-    record ListenerEntry(int id, EventType type, Consumer<? extends Event> eventListener) {}
     static final List<ListenerEntry> entries = new CopyOnWriteArrayList<>();
 
     public static ListenerEntry registerEventHandler(int uniqueId, EventType event, Consumer<? extends Event> handler) {
@@ -30,15 +26,17 @@ public class Events {
             entries.add(le);
             return le;
         } else {
-            ShadowMain.log(Level.WARN, uniqueId+" tried to register "+event.name()+" multiple times");
+            ShadowMain.log(Level.WARN, uniqueId + " tried to register " + event.name() + " multiple times");
             return entries.stream().filter(listenerEntry -> listenerEntry.id == uniqueId).findFirst().orElseThrow();
         }
     }
+
     public static void unregister(int id) {
         entries.removeIf(listenerEntry -> listenerEntry.id == id);
     }
+
     public static ListenerEntry registerEventHandler(EventType event, Consumer<? extends Event> handler) {
-        return registerEventHandler((int) Math.floor(Math.random()*0xFFFFFF),event,handler);
+        return registerEventHandler((int) Math.floor(Math.random() * 0xFFFFFF), event, handler);
     }
 
     public static void registerEventHandlerClass(Object instance) {
@@ -52,14 +50,14 @@ public class Events {
                     } else {
                         declaredMethod.setAccessible(true);
 
-                        ListenerEntry l = registerEventHandler((instance.getClass().getName()+declaredMethod.getName()).hashCode(), ev.type(), event -> {
+                        ListenerEntry l = registerEventHandler((instance.getClass().getName() + declaredMethod.getName()).hashCode(), ev.type(), event -> {
                             try {
                                 declaredMethod.invoke(instance, event);
                             } catch (IllegalAccessException | InvocationTargetException e) {
                                 e.printStackTrace();
                             }
                         });
-                        ShadowMain.log(Level.INFO, "Registered event handler "+declaredMethod.toString()+" with id "+l.id);
+                        ShadowMain.log(Level.INFO, "Registered event handler " + declaredMethod + " with id " + l.id);
                     }
 
 
@@ -76,5 +74,8 @@ public class Events {
             }
         }
         return argument.isCancelled();
+    }
+
+    record ListenerEntry(int id, EventType type, Consumer<? extends Event> eventListener) {
     }
 }

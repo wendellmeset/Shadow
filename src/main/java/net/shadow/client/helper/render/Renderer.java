@@ -518,23 +518,26 @@ public class Renderer {
             renderTexturedQuad(matrices.peek()
                     .getPositionMatrix(), x0, x1, y0, y1, z, (u + 0.0F) / (float) textureWidth, (u + (float) regionWidth) / (float) textureWidth, (v + 0.0F) / (float) textureHeight, (v + (float) regionHeight) / (float) textureHeight);
         }
+
         static Vec2f lerp(Vec2f p1, Vec2f p2, float delta) {
-            float x = MathHelper.lerp(delta,p1.x,p2.x);
-            float y = MathHelper.lerp(delta,p1.y,p2.y);
-            return new Vec2f(x,y);
+            float x = MathHelper.lerp(delta, p1.x, p2.x);
+            float y = MathHelper.lerp(delta, p1.y, p2.y);
+            return new Vec2f(x, y);
         }
+
         static Vec2f getMultiBezPoint(Vec2f[] vertecies, float delta) {
             List<Vec2f> verts = new ArrayList<>(List.of(vertecies));
-            while(verts.size() > 1) {
-                for(int i = 0;i<verts.size()-1;i++) {
+            while (verts.size() > 1) {
+                for (int i = 0; i < verts.size() - 1; i++) {
                     Vec2f current = verts.get(i);
-                    Vec2f next = verts.get(i+1);
+                    Vec2f next = verts.get(i + 1);
                     verts.set(i, lerp(current, next, delta));
                 }
-                verts.remove(verts.size()-1);
+                verts.remove(verts.size() - 1);
             }
             return verts.get(0);
         }
+
         public static void renderRoundedShadowInternal(Matrix4f matrix, float cr, float cg, float cb, float ca, double fromX, double fromY, double toX, double toY, double rad, double samples, double wid) {
             BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
             bufferBuilder.begin(VertexFormat.DrawMode.TRIANGLE_STRIP, VertexFormats.POSITION_COLOR);
@@ -551,8 +554,8 @@ public class Renderer {
                     float sin = (float) (Math.sin(rad1) * rad);
                     float cos = (float) (Math.cos(rad1) * rad);
                     bufferBuilder.vertex(matrix, (float) current[0] + sin, (float) current[1] + cos, 0.0F).color(cr, cg, cb, ca).next();
-                    float sin1 = (float) (sin + Math.sin(rad1)*wid);
-                    float cos1 = (float) (cos + Math.cos(rad1)*wid);
+                    float sin1 = (float) (sin + Math.sin(rad1) * wid);
+                    float cos1 = (float) (cos + Math.cos(rad1) * wid);
                     bufferBuilder.vertex(matrix, (float) current[0] + sin1, (float) current[1] + cos1, 0.0F).color(cr, cg, cb, 0f).next();
                 }
             }
@@ -562,8 +565,8 @@ public class Renderer {
                 float sin = (float) (Math.sin(rad1) * rad);
                 float cos = (float) (Math.cos(rad1) * rad);
                 bufferBuilder.vertex(matrix, (float) current[0] + sin, (float) current[1] + cos, 0.0F).color(cr, cg, cb, ca).next();
-                float sin1 = (float) (sin + Math.sin(rad1)*wid);
-                float cos1 = (float) (cos + Math.cos(rad1)*wid);
+                float sin1 = (float) (sin + Math.sin(rad1) * wid);
+                float cos1 = (float) (cos + Math.cos(rad1) * wid);
                 bufferBuilder.vertex(matrix, (float) current[0] + sin1, (float) current[1] + cos1, 0.0F).color(cr, cg, cb, 0f).next();
             }
             bufferBuilder.end();
@@ -584,18 +587,19 @@ public class Renderer {
 
             renderRoundedShadowInternal(matrix, g, h, k, f, fromX, fromY, toX, toY, rad, samples, shadowWidth);
         }
+
         public static void renderBezierCurve(MatrixStack stack, Vec2f[] points, float r, float g, float b, float a, float laziness) {
             if (points.length < 2) return;
             float minIncr = 0.0001f;
-            laziness = MathHelper.clamp(laziness,minIncr,1);
+            laziness = MathHelper.clamp(laziness, minIncr, 1);
             Vec2f prev = null;
-            for(float d = 0;d<=1;d+=Math.min(laziness,Math.max(minIncr,1-d))) {
-                Vec2f pos = getMultiBezPoint(points,d);
+            for (float d = 0; d <= 1; d += Math.min(laziness, Math.max(minIncr, 1 - d))) {
+                Vec2f pos = getMultiBezPoint(points, d);
                 if (prev == null) {
                     prev = pos;
                     continue;
                 }
-                renderLine(stack,new Color(r,g,b,a),prev.x,prev.y,pos.x,pos.y);
+                renderLine(stack, new Color(r, g, b, a), prev.x, prev.y, pos.x, pos.y);
                 prev = pos;
             }
 
@@ -784,9 +788,8 @@ public class Renderer {
             bufferBuilder.end();
             BufferRenderer.draw(bufferBuilder);
         }
-        public static void renderRoundedQuadWithShadow(MatrixStack matrices, Color c, double fromX, double fromY, double toX, double toY, double rad, double samples) {
-            //            RenderSystem.defaultBlendFunc();
 
+        public static void renderRoundedQuadWithShadow(MatrixStack matrices, Color c, double fromX, double fromY, double toX, double toY, double rad, double samples) {
             int color = c.getRGB();
             Matrix4f matrix = matrices.peek().getPositionMatrix();
             float f = (float) (color >> 24 & 255) / 255.0F;
@@ -798,11 +801,10 @@ public class Renderer {
 
             renderRoundedQuadInternal(matrix, g, h, k, f, fromX, fromY, toX, toY, rad, samples);
 
-            renderRoundedShadow(matrices, new Color(10,10,10,100),fromX,fromY,toX,toY,rad,samples,3);
+            renderRoundedShadow(matrices, new Color(10, 10, 10, 100), fromX, fromY, toX, toY, rad, samples, 3);
         }
-        public static void renderRoundedQuad(MatrixStack matrices, Color c, double fromX, double fromY, double toX, double toY, double rad, double samples) {
-            //            RenderSystem.defaultBlendFunc();
 
+        public static void renderRoundedQuad(MatrixStack matrices, Color c, double fromX, double fromY, double toX, double toY, double rad, double samples) {
             int color = c.getRGB();
             Matrix4f matrix = matrices.peek().getPositionMatrix();
             float f = (float) (color >> 24 & 255) / 255.0F;

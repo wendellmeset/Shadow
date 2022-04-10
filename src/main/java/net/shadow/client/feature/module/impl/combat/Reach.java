@@ -10,8 +10,9 @@ import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 
 public class Reach extends Module {
+    // TODO: 10.04.22 finish this
 
-    final DoubleSetting reachDist = this.config.create(new DoubleSetting.Builder(0).min(3).max(10).name("Distance").description("how far to reach").get());
+    final DoubleSetting reachDist = this.config.create(new DoubleSetting.Builder(3).min(3).max(10).precision(1).name("Distance").description("How far to reach").get());
 
     public Reach() {
         super("Reach", "reach stuff", ModuleType.COMBAT);
@@ -45,7 +46,7 @@ public class Reach extends Module {
 
     }
 
-    public double getReachDistance(){
+    public double getReachDistance() {
         return reachDist.getValue();
     }
 }

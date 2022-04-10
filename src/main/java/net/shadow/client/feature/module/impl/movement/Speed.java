@@ -4,7 +4,6 @@
 
 package net.shadow.client.feature.module.impl.movement;
 
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.shadow.client.feature.config.DoubleSetting;
@@ -16,18 +15,17 @@ public class Speed extends Module {
     static float fovEffectScal = 0;
     static int ticksonground = 0;
     static int ticksjustsneaking = 0;
-    final EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<Mode>(Mode.OnGround).name("Mode").description("the way to apply speed").get());
+    final EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<Mode>(Mode.OnGround).name("Mode").description("How to apply the speed").get());
     final DoubleSetting speed = this.config.create(new DoubleSetting.Builder(20).min(5).max(50).name("Speed").description("How fast to go").get());
 
     public Speed() {
-        super("Speed", "gotta go fast", ModuleType.MOVEMENT);
+        super("Speed", "Nyooom", ModuleType.MOVEMENT);
     }
 
     @Override
     public void tick() {
         fovEffectScal = client.options.fovEffectScale;
         if (client.player == null) return;
-        ClientPlayerEntity player = client.player;
         switch (mode.getValue()) {
             case OnGround:
                 client.player.setSprinting(true);

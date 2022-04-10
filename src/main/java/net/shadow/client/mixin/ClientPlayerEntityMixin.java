@@ -26,7 +26,6 @@ import java.util.Objects;
 public class ClientPlayerEntityMixin {
     @Inject(method = "tick", at = @At("HEAD"))
     public void preTick(CallbackInfo ci) {
-        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         Utils.TickManager.tick();
         if (!ConfigManager.enabled) {
             ConfigManager.enableModules();
@@ -40,13 +39,11 @@ public class ClientPlayerEntityMixin {
 
     @Redirect(method = "updateNausea", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/Screen;shouldPause()Z"))
     public boolean overwriteIsPauseScreen(Screen screen) {
-        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return screen.shouldPause();
         return Objects.requireNonNull(ModuleRegistry.getByClass(PortalGUI.class)).isEnabled() || screen.shouldPause();
     }
 
     @Inject(method = "pushOutOfBlocks", at = @At("HEAD"), cancellable = true)
     public void preventPushOutFromBlocks(double x, double z, CallbackInfo ci) {
-        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         if (Objects.requireNonNull(ModuleRegistry.getByClass(Freecam.class)).isEnabled() || Objects.requireNonNull(ModuleRegistry.getByClass(NoPush.class))
                 .isEnabled() || Objects.requireNonNull(ModuleRegistry.getByClass(Phase.class)).isEnabled()) {
             ci.cancel();

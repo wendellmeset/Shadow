@@ -116,17 +116,17 @@ public class HomeScreen extends ClientScreen {
         double rowHeight = 30;
         double padding = 5;
         int entriesPerRow = 2;
-        double rootX = width/2d;
-        double rootY = height/2d;
+        double rootX = width / 2d;
+        double rootY = height / 2d;
         List<List<Map.Entry<String, Runnable>>> part = Lists.partition(buttonsMap, entriesPerRow);
         for (int ii = 0; ii < part.size(); ii++) {
-            double currentY = ii*(rowHeight+padding);
+            double currentY = ii * (rowHeight + padding);
             List<Map.Entry<String, Runnable>> entries = part.get(ii);
-            double oneButtonWidth = (rowWidth-padding)/entries.size();
+            double oneButtonWidth = (rowWidth - padding) / entries.size();
             for (int i = 0; i < entries.size(); i++) {
                 Map.Entry<String, Runnable> e = entries.get(i);
-                double currentX = i*oneButtonWidth+i*padding;
-                RoundButton btn = new RoundButton(RoundButton.STANDARD,rootX-rowWidth/2d+currentX,rootY+currentY,oneButtonWidth,rowHeight,e.getKey(),e.getValue());
+                double currentX = i * oneButtonWidth + i * padding;
+                RoundButton btn = new RoundButton(RoundButton.STANDARD, rootX - rowWidth / 2d + currentX, rootY + currentY, oneButtonWidth, rowHeight, e.getKey(), e.getValue());
                 addDrawableChild(btn);
             }
         }
@@ -201,10 +201,10 @@ public class HomeScreen extends ClientScreen {
         double originalWidth = 2888;
         double originalHeight = 1000;
         double newWidth = 150;
-        double per = newWidth/originalWidth;
-        double newHeight = originalHeight*per;
+        double per = newWidth / originalWidth;
+        double newHeight = originalHeight * per;
         RenderSystem.setShaderTexture(0, GameTexture.TEXTURE_LOGO.getWhere());
-        Renderer.R2D.renderTexture(stack, width/2d-newWidth/2d, height/2d-newHeight-padding, newWidth, newHeight, 0, 0, newWidth,newHeight,newWidth,newHeight);
+        Renderer.R2D.renderTexture(stack, width / 2d - newWidth / 2d, height / 2d - newHeight - padding, newWidth, newHeight, 0, 0, newWidth, newHeight, newWidth, newHeight);
         super.renderInternal(stack, mouseX, mouseY, delta); // render bottom row widgets
 
         double texDim = 20;
@@ -214,20 +214,20 @@ public class HomeScreen extends ClientScreen {
         RenderSystem.clear(GL40C.GL_COLOR_BUFFER_BIT, false);
         RenderSystem.colorMask(true, true, true, true);
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
-        Renderer.R2D.renderRoundedQuadInternal(stack.peek().getPositionMatrix(), 0, 0, 0, 1, width-padding-texDim, padding, width-padding, padding+texDim, 3, 10);
+        Renderer.R2D.renderRoundedQuadInternal(stack.peek().getPositionMatrix(), 0, 0, 0, 1, width - padding - texDim, padding, width - padding, padding + texDim, 3, 10);
 
         RenderSystem.blendFunc(GL40C.GL_DST_ALPHA, GL40C.GL_ONE_MINUS_DST_ALPHA);
         RenderSystem.setShaderTexture(0, currentAccountTextureLoaded ? currentAccountTexture : DefaultSkinHelper.getTexture());
         if (currentAccountTextureLoaded) {
-            Renderer.R2D.renderTexture(stack, width-padding-texDim, padding, texDim, texDim, 0, 0, 64, 64, 64, 64);
+            Renderer.R2D.renderTexture(stack, width - padding - texDim, padding, texDim, texDim, 0, 0, 64, 64, 64, 64);
         } else {
-            Renderer.R2D.renderTexture(stack, width-padding-texDim, padding, texDim, texDim, 8, 8, 8, 8, 64, 64);
+            Renderer.R2D.renderTexture(stack, width - padding - texDim, padding, texDim, texDim, 8, 8, 8, 8, 64, 64);
         }
         FontAdapter fa = FontRenderers.getRenderer();
         RenderSystem.defaultBlendFunc();
         String uname = ShadowMain.client.getSession().getUsername();
         double unameWidth = fa.getStringWidth(uname);
-        fa.drawString(stack,uname,width-padding-texDim-padding-unameWidth,padding+texDim/2d-fa.getFontHeight()/2d,0xFFFFFF);
+        fa.drawString(stack, uname, width - padding - texDim - padding - unameWidth, padding + texDim / 2d - fa.getFontHeight() / 2d, 0xFFFFFF);
     }
 
 }

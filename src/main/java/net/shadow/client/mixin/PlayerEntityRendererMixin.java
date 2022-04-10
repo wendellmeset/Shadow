@@ -21,7 +21,6 @@ public class PlayerEntityRendererMixin {
     @Inject(method = "renderLabelIfPresent(Lnet/minecraft/client/network/AbstractClientPlayerEntity;Lnet/minecraft/text/Text;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V",
             at = @At("HEAD"), cancellable = true)
     void real(AbstractClientPlayerEntity abstractClientPlayerEntity, Text text, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci) {
-        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         NameTags nt = ModuleRegistry.getByClass(NameTags.class);
         if (nt.isEnabled()) {
             nt.render(matrixStack, abstractClientPlayerEntity, text);

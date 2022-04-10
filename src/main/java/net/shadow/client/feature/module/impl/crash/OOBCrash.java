@@ -14,8 +14,6 @@ import net.minecraft.util.math.Vec3d;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
-import net.shadow.client.helper.font.FontRenderers;
-import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Utils;
 
 import java.util.Objects;

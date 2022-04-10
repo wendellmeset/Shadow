@@ -5,8 +5,9 @@
 package net.shadow.client.feature.module.impl.misc;
 
 
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.StringNbtReader;
+import net.minecraft.item.Items;
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractItemC2SPacket;
@@ -15,23 +16,23 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.client.util.math.MatrixStack;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
+import net.shadow.client.helper.util.Utils;
 
 public class SuperCrossbow extends Module {
 
     public static final String inbt = "{Enchantments:[{id:\"minecraft:quick_charge\",lvl:5s}],ChargedProjectiles:[{},{id:\"minecraft:arrow\",Count:1b},{}],Charged:1b}";
-    private static ItemStack stack;
+    private static final ItemStack stack = Utils.generateItemStackWithMeta(inbt, Items.CROSSBOW);
     ItemStack before = new ItemStack(Registry.ITEM.get(new Identifier("air")), 1);
 
     public SuperCrossbow() {
-        super("SuperCrossbow", "shoot arrows really quickly (press middle mouse)", ModuleType.MISC);
+        super("SuperCrossbow", "Shoot arrows really quickly (Press your middle mouse key)", ModuleType.MISC);
     }
 
     @Override
     public void tick() {
-        if (!getItemNameFromStack(client.player.getMainHandStack()).equals(getItemNameFromStack(stack))) {
+        if (client.player.getMainHandStack().getItem() != stack.getItem()) {
             before = client.player.getMainHandStack();
         }
         if (client.options.pickItemKey.isPressed()) {
@@ -44,19 +45,7 @@ public class SuperCrossbow extends Module {
 
     @Override
     public void enable() {
-        if (stack == null) {
-            stack = new ItemStack(Registry.ITEM.get(new Identifier("crossbow")), 1);
-            try {
-                stack.setNbt(StringNbtReader.parse(inbt));
-            } catch (Exception ignored) {
 
-            }
-        }
-    }
-    private String getItemNameFromStack(ItemStack hstack) {
-        String hs = hstack.getItem().getTranslationKey();
-        hs = hs.replace("minecraft.", "").replace("block.", "").replace("item.", "");
-        return hs;
     }
 
     @Override

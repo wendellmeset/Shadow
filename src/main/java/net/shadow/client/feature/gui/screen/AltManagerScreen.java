@@ -316,7 +316,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
         add.render(stack, mouseX, mouseY);
         exit.render(stack, mouseX, mouseY);
 
-        ClipStack.globalInstance.addWindow(stack, new Rectangle(getPadding()-5, getHeaderHeight(), getPadding() + (width - (getPadding() + leftWidth + getPadding() * 2))+5, height));
+        ClipStack.globalInstance.addWindow(stack, new Rectangle(getPadding() - 5, getHeaderHeight(), getPadding() + (width - (getPadding() + leftWidth + getPadding() * 2)) + 5, height));
         //Renderer.R2D.beginScissor(stack, getPadding(), getHeaderHeight(), getPadding() + (width - (getPadding() + leftWidth + getPadding() * 2)), height);
         stack.push();
         stack.translate(0, -scrollSmooth, 0);
@@ -1066,7 +1066,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
                 Renderer.R2D.renderLoadingSpinner(stack, 1f, originX + width - fromTop, originY + fromTop, 10, 1, 10);
             }
             double xOff = 0;
-            for (String s : (storage.tags.isEmpty()?"No tags":storage.tags).split(",")) {
+            for (String s : (storage.tags.isEmpty() ? "No tags" : storage.tags).split(",")) {
                 String v = s.trim();
                 if (v.isEmpty()) {
                     continue;

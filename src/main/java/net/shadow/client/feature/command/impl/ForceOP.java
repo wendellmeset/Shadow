@@ -28,7 +28,7 @@ public class ForceOP extends Command {
     public void onExecute(String[] args) throws CommandException {
         validateArgumentsLength(args, 1);
         HitResult view = ShadowMain.client.crosshairTarget;
-        String command = String.join(" ",args);
+        String command = String.join(" ", args);
         if (view == null || view.getType() == HitResult.Type.MISS) {
             error("Look at a command block or command block minecart");
         } else if (view instanceof EntityHitResult ehr) {

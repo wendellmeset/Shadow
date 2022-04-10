@@ -7,8 +7,14 @@ package net.shadow.client.feature.module.impl.world;
 
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.Packet;
+import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
+import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket.Action;
 import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractItemC2SPacket;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.config.EnumSetting;
 import net.shadow.client.feature.module.Module;
@@ -17,13 +23,6 @@ import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.PacketEvent;
 import net.shadow.client.helper.util.Utils;
-import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
-import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket.Action;
-import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +31,7 @@ import java.util.Random;
 
 public class MassUse extends Module {
     final List<Packet<?>> dontRepeat = new ArrayList<>();
-    //    SliderValue     uses       = (SliderValue) this.config.create("Uses", 3, 1, 100, 0).description("How many times to use the item");
-    final EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.Interact).name("Mode").description("How to mass use").get());
+    final EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.Interact).name("Mode").description("How to use the item").get());
     final DoubleSetting uses = this.config.create(new DoubleSetting.Builder(3).name("Uses").description("How many times to use the item").min(1).max(100).precision(0).get());
 
     public MassUse() {
@@ -47,7 +45,7 @@ public class MassUse extends Module {
                 dontRepeat.remove(pe.getPacket());
                 return;
             }
-            switch(mode.getValue()){
+            switch (mode.getValue()) {
                 case Interact -> {
                     if (pe.getPacket() instanceof PlayerInteractBlockC2SPacket p1) {
                         PlayerInteractBlockC2SPacket pp = new PlayerInteractBlockC2SPacket(p1.getHand(), p1.getBlockHitResult());
@@ -64,10 +62,10 @@ public class MassUse extends Module {
                     }
                 }
 
-                case Block -> {
+                case MassPlace -> {
                     BlockHitResult r = (BlockHitResult) client.crosshairTarget;
                     BlockPos p = r.getBlockPos();
-                    if (pe.getPacket() instanceof PlayerInteractBlockC2SPacket p1) {
+                    if (pe.getPacket() instanceof PlayerInteractBlockC2SPacket) {
                         for (int i = 0; i < uses.getValue(); i++) {
                             PlayerInteractBlockC2SPacket pp = new PlayerInteractBlockC2SPacket(Hand.MAIN_HAND, r);
                             dontRepeat.add(pp);
@@ -78,14 +76,14 @@ public class MassUse extends Module {
                     }
                 }
 
-                case Random -> {
-                    if (pe.getPacket() instanceof PlayerInteractBlockC2SPacket p1) {
+                case RandomPlace -> {
+                    if (pe.getPacket() instanceof PlayerInteractBlockC2SPacket) {
                         Random random = new Random();
 
                         for (int i = 0; i < uses.getValue(); i++) {
                             BlockPos pos = new BlockPos(client.player.getPos()).add(
-                                random.nextInt(13) - 6, random.nextInt(13) - 6,
-                                random.nextInt(13) - 6);
+                                    random.nextInt(13) - 6, random.nextInt(13) - 6,
+                                    random.nextInt(13) - 6);
                             PlayerInteractBlockC2SPacket pp = Utils.Packets.generatePlace(pos);
                             dontRepeat.add(pp);
                             client.player.networkHandler.sendPacket(pp);
@@ -126,10 +124,10 @@ public class MassUse extends Module {
 
     }
 
-    enum Mode {
+    public enum Mode {
         Interact,
-        Block,
-        Random
+        MassPlace,
+        RandomPlace
     }
 }
 

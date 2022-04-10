@@ -24,13 +24,13 @@ public class MinehutCrash extends Module {
     }
 
     @EventListener(type = EventType.PACKET_RECEIVE)
-    void blockBounces(PacketEvent event){
-        if(this.isEnabled() && this.bb.getValue()) event.setCancelled(true);
+    void blockBounces(PacketEvent event) {
+        if (this.isEnabled() && this.bb.getValue()) event.setCancelled(true);
     }
 
     @Override
     public void tick() {
-        for(int i = 0; i < ds.getValue(); i++){
+        for (int i = 0; i < ds.getValue(); i++) {
             client.player.networkHandler.sendPacket(PlayerInteractEntityC2SPacket.attack(client.player, false)); //bungee blaster!!!
         }
     }

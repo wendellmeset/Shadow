@@ -168,7 +168,7 @@ public class LoadingScreen extends ClientScreen implements FastTickable {
             }
         }
         stack.push();
-        stack.translate(0,0,5);
+        stack.translate(0, 0, 5);
         Renderer.R2D.renderQuad(stack, new Color(0, 0, 0, (float) opacity), 0, 0, width, height);
         String shadow = "Loading Shadow...";
         double pad = 5;

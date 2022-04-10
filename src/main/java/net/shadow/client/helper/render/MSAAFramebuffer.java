@@ -4,7 +4,6 @@
 
 package net.shadow.client.helper.render;
 
-import com.google.common.collect.Queues;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
@@ -16,9 +15,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ConcurrentMap;
 
 public class MSAAFramebuffer extends Framebuffer {
     public static final int MIN_SAMPLES = 2;
@@ -26,7 +22,6 @@ public class MSAAFramebuffer extends Framebuffer {
 
     private static final Map<Integer, MSAAFramebuffer> INSTANCES = new HashMap<>();
     private static final List<MSAAFramebuffer> ACTIVE_INSTANCES = new ArrayList<>();
-    private static final ConcurrentMap<Integer, ConcurrentLinkedQueue<Runnable>> RENDER_CALLS = new ConcurrentHashMap<>();
 
     private final int samples;
     private int rboColor;
@@ -77,38 +72,6 @@ public class MSAAFramebuffer extends Framebuffer {
 
         msaaBuffer.clear(true);
         mainBuffer.beginWrite(false);
-
-        executeDelayedRenderCalls(samples);
-    }
-
-    public static void renderAfterUsage(int samples, Runnable renderCall) {
-        if (getInstance(samples).isInUse() || !RenderSystem.isOnRenderThreadOrInit()) {
-            RENDER_CALLS.computeIfAbsent(samples, x -> Queues.newConcurrentLinkedQueue()).add(renderCall);
-            return;
-        }
-
-        renderCall.run();
-    }
-
-    public static void renderAfterUsage(Runnable renderCall) {
-        if (!RenderSystem.isOnRenderThreadOrInit()) {
-            RenderSystem.recordRenderCall(() -> renderAfterUsage(renderCall));
-        }
-
-        if (ACTIVE_INSTANCES.size() != 0) {
-            RENDER_CALLS.computeIfAbsent(ACTIVE_INSTANCES.get(0).samples, x -> Queues.newConcurrentLinkedQueue()).add(renderCall);
-            return;
-        }
-
-        renderCall.run();
-    }
-
-    private static void executeDelayedRenderCalls(int samples) {
-        RenderSystem.assertOnRenderThreadOrInit();
-        ConcurrentLinkedQueue<Runnable> queue = RENDER_CALLS.getOrDefault(samples, Queues.newConcurrentLinkedQueue());
-        while (!queue.isEmpty()) {
-            queue.poll().run();
-        }
     }
 
     @Override
@@ -190,10 +153,6 @@ public class MSAAFramebuffer extends Framebuffer {
             ACTIVE_INSTANCES.add(this);
             this.inUse = true;
         }
-    }
-
-    public boolean isInUse() {
-        return this.inUse;
     }
 
     @Override

@@ -20,12 +20,12 @@ import java.util.Objects;
 public class StatsScreen extends ClientScreen implements FastTickable {
     static List<Float> packetIn = Util.make(() -> {
         List<Float> f = new ArrayList<>();
-        for(int i = 0;i<100;i++) f.add(0f);
+        for (int i = 0; i < 100; i++) f.add(0f);
         return f;
     });
     static List<Float> packetOut = Util.make(() -> {
         List<Float> f = new ArrayList<>();
-        for(int i = 0;i<100;i++) f.add(0f);
+        for (int i = 0; i < 100; i++) f.add(0f);
         return f;
     });
     Timer packetUpdater = new Timer();
@@ -38,10 +38,10 @@ public class StatsScreen extends ClientScreen implements FastTickable {
             packetIn.add(in);
             float out = ShadowMain.client.getNetworkHandler().getConnection().getAveragePacketsSent();
             packetOut.add(out);
-            while(packetIn.size() > 100) {
+            while (packetIn.size() > 100) {
                 packetIn.remove(0);
             }
-            while(packetOut.size() > 100) packetOut.remove(0);
+            while (packetOut.size() > 100) packetOut.remove(0);
         }
     }
 
@@ -57,24 +57,24 @@ public class StatsScreen extends ClientScreen implements FastTickable {
         float highest = Math.max(pIn.stream().max(Comparator.comparingDouble(value -> (double) value)).orElse(0f),
                 pOut.stream().max(Comparator.comparingDouble(value -> (double) value)).orElse(0f));
         double maxHeight = 300;
-        float scaleFactor = (float) Math.min(1,maxHeight/highest);
+        float scaleFactor = (float) Math.min(1, maxHeight / highest);
         for (int i = 0; i < pIn.size(); i++) {
-            double prog = (i)/(double)(pIn.size()-3);
-            float x = (float) (prog*contentWidth-((System.currentTimeMillis()-packetUpdater.getLastReset())/500f*(1f/(pIn.size()-1)*contentWidth)));
-            float y = (float) height-pIn.get(i)*scaleFactor;
-            Vec2f a = new Vec2f(x,y);
+            double prog = (i) / (double) (pIn.size() - 3);
+            float x = (float) (prog * contentWidth - ((System.currentTimeMillis() - packetUpdater.getLastReset()) / 500f * (1f / (pIn.size() - 1) * contentWidth)));
+            float y = (float) height - pIn.get(i) * scaleFactor;
+            Vec2f a = new Vec2f(x, y);
             bezPositions.add(a);
         }
-        Renderer.R2D.renderBezierCurve(stack,bezPositions.toArray(new Vec2f[0]), 1f,1f,0f,1f,0.01f);
+        Renderer.R2D.renderBezierCurve(stack, bezPositions.toArray(new Vec2f[0]), 1f, 1f, 0f, 1f, 0.01f);
         bezPositions.clear();
         for (int i = 0; i < pOut.size(); i++) {
-            double prog = (i)/(double)(pOut.size()-3);
-            float x = (float) (prog*contentWidth-((System.currentTimeMillis()-packetUpdater.getLastReset())/500f*(1f/(pOut.size()-1)*contentWidth)));
-            float y = (float) height-pOut.get(i)*scaleFactor;
-            Vec2f a = new Vec2f(x,y);
+            double prog = (i) / (double) (pOut.size() - 3);
+            float x = (float) (prog * contentWidth - ((System.currentTimeMillis() - packetUpdater.getLastReset()) / 500f * (1f / (pOut.size() - 1) * contentWidth)));
+            float y = (float) height - pOut.get(i) * scaleFactor;
+            Vec2f a = new Vec2f(x, y);
             bezPositions.add(a);
         }
-        Renderer.R2D.renderBezierCurve(stack,bezPositions.toArray(new Vec2f[0]), 0f,1f,1f,1f,0.01f);
+        Renderer.R2D.renderBezierCurve(stack, bezPositions.toArray(new Vec2f[0]), 0f, 1f, 1f, 1f, 0.01f);
 
         super.renderInternal(stack, mouseX, mouseY, delta);
     }

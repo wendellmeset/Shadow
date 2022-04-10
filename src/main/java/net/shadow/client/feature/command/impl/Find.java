@@ -42,7 +42,7 @@ public class Find extends Command {
         Events.registerEventHandlerClass(this);
     }
 
-    @EventListener(type=EventType.PACKET_RECEIVE)
+    @EventListener(type = EventType.PACKET_RECEIVE)
     void pRecv(PacketEvent pe) {
         if (!pendingBook) {
             return;
@@ -50,7 +50,7 @@ public class Find extends Command {
         handlePacket(pe);
     }
 
-    @EventListener(type=EventType.NOCLIP_QUERY)
+    @EventListener(type = EventType.NOCLIP_QUERY)
     void tick(Event e) {
         if (pendingBook && bookSlot != -1) {
             assert ShadowMain.client.player != null;

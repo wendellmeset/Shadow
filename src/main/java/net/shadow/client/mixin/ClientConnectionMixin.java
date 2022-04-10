@@ -23,7 +23,6 @@ public class ClientConnectionMixin {
 
     @Inject(method = "handlePacket", at = @At("HEAD"), cancellable = true)
     private static <T extends PacketListener> void dispatchPacketGet(Packet<T> packet, PacketListener listener, CallbackInfo ci) {
-        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         if (Events.fireEvent(EventType.PACKET_RECEIVE, new PacketEvent(packet))) {
             ci.cancel();
         }
@@ -31,7 +30,6 @@ public class ClientConnectionMixin {
 
     @Inject(method = "exceptionCaught", at = @At("HEAD"), cancellable = true)
     public void catchException(ChannelHandlerContext context, Throwable ex, CallbackInfo ci) {
-        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         if (ModuleRegistry.getByClass(AntiPacketKick.class).isEnabled()) {
             ci.cancel();
         }
@@ -39,7 +37,6 @@ public class ClientConnectionMixin {
 
     @Inject(method = "send(Lnet/minecraft/network/Packet;)V", cancellable = true, at = @At("HEAD"))
     public void dispatchPacketSend(Packet<?> packet, CallbackInfo ci) {
-        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         if (Events.fireEvent(EventType.PACKET_SEND, new PacketEvent(packet))) {
             ci.cancel();
         }

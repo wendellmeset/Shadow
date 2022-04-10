@@ -19,7 +19,6 @@ public class AbstractBlockStateMixin {
 
     @Inject(method = "getLuminance", at = @At("HEAD"), cancellable = true)
     public void shadow_luminateBlock(CallbackInfoReturnable<Integer> cir) {
-        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         if (Objects.requireNonNull(ModuleRegistry.getByClass(XRAY.class)).isEnabled()) {
             cir.setReturnValue(15);
         }

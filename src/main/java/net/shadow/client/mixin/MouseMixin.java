@@ -19,7 +19,6 @@ public class MouseMixin {
 
     @Inject(method = "onMouseButton", at = @At("HEAD"), cancellable = true)
     public void dispatchMouseEvent(long window, int button, int action, int mods, CallbackInfo ci) {
-        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         if (window == ShadowMain.client.getWindow().getHandle()) {
             if (Events.fireEvent(EventType.MOUSE_EVENT, new MouseEvent(button, action))) {
                 ci.cancel();

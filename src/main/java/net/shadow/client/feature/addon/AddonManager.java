@@ -60,6 +60,10 @@ public class AddonManager {
         Events.registerEventHandlerClass(this);
     }
 
+    public static void init() {
+        new AddonManager();
+    }
+
     @EventListener(type = EventType.GAME_EXIT)
     @SuppressWarnings("unused")
     void saveConfig(Event event) {
@@ -89,10 +93,6 @@ public class AddonManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public static void init() {
-        new AddonManager();
     }
 
     public List<Addon> getLoadedAddons() {

@@ -28,7 +28,6 @@ public abstract class BeaconScreenMixin extends HandledScreen<BeaconScreenHandle
     @Inject(method = "init", at = @At("TAIL"))
     protected void init(CallbackInfo ci) {
         if (ModuleRegistry.getByClass(BeaconSpoofer.class).isEnabled()) {
-            if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
             this.addDrawableChild(new ButtonWidget(1,
                     1, 100, 20, new LiteralText("Apply Custom"),
                     b -> {

@@ -32,7 +32,6 @@ public class ParticleManagerMixin implements ParticleManagerDuck {
 
     @Inject(method = "addParticle(Lnet/minecraft/client/particle/Particle;)V", at = @At("HEAD"), cancellable = true)
     void tick(CallbackInfo ci) {
-        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         AntiCrash ac = AntiCrash.instance();
         if (ac.isEnabled()) {
             if (ac.getCapParticles().getValue()) {

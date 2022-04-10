@@ -18,7 +18,6 @@ public class SharedConstantsMixin {
 
     @Inject(method = "isValidChar", at = @At("HEAD"), cancellable = true)
     private static void replaceValidChar(char chr, CallbackInfoReturnable<Boolean> cir) {
-        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         if (ModuleRegistry.getByClass(AllowFormatCodes.class).isEnabled() && chr == '§') {
             cir.setReturnValue(true);
         }

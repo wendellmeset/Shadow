@@ -5,9 +5,9 @@ import net.minecraft.client.gui.screen.ingame.SignEditScreen;
 import net.minecraft.text.Text;
 import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.feature.module.impl.world.AutoSign;
-
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -16,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(SignEditScreen.class)
 public class SignEditScreenMixin extends Screen {
 
+    @Mutable
     @Shadow
     @Final
     private String[] text;
@@ -26,7 +27,6 @@ public class SignEditScreenMixin extends Screen {
 
     @Inject(at = {@At("HEAD")}, method = {"init()V"})
     private void onInit(CallbackInfo ci) {
-        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         if (ModuleRegistry.getByClass(AutoSign.class).isEnabled()) {
             text = ModuleRegistry.getByClass(AutoSign.class).getText();
             finishEditing();

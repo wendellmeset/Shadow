@@ -19,7 +19,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class EntityModelMixin {
     @Inject(method = "render", at = @At("HEAD"))
     void preRender(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green, float blue, float alpha, CallbackInfo ci) {
-        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         // shut up retard
         //noinspection ConstantConditions
         ModuleRegistry.getByClass(ESP.class).recording = ModuleRegistry.getByClass(ESP.class)
@@ -29,7 +28,6 @@ public class EntityModelMixin {
 
     @Inject(method = "render", at = @At("TAIL"))
     void postRender(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green, float blue, float alpha, CallbackInfo ci) {
-        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         ModuleRegistry.getByClass(ESP.class).recording = false;
     }
 }
