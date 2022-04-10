@@ -22,9 +22,9 @@ import net.shadow.client.helper.util.Utils;
 public class Fling extends Module {
 
 
-    boolean not = false;
     final DoubleSetting delay = this.config.create(new DoubleSetting.Builder(250).min(1).max(500).precision(0).name("Delay").description("The delay before going back down").get());
     final DoubleSetting updist = this.config.create(new DoubleSetting.Builder(3).min(1).max(3).precision(2).name("Power").description("The power of the fling").get());
+    boolean not = false;
 
 
     public Fling() {
@@ -63,10 +63,10 @@ public class Fling extends Module {
     @EventListener(type = EventType.PACKET_SEND)
     void sendPacket(PacketEvent event) {
         if (!this.isEnabled()) return;
-        if(!not) return;
+        if (!not) return;
         if (event.getPacket() instanceof PlayerInteractItemC2SPacket) {
             if (client.player.getInventory().getMainHandStack().getItem() == Items.FISHING_ROD && (client.player.fishHook != null)) {
-                if(client.player.fishHook.isRemoved()) return;
+                if (client.player.fishHook.isRemoved()) return;
                 client.player.setVelocity(Vec3d.ZERO);
                 event.setCancelled(true);
                 new Thread(() -> {

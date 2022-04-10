@@ -37,6 +37,11 @@ public class Renderer {
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
     }
 
+    public static void endRender() {
+        RenderSystem.enableCull();
+        RenderSystem.disableBlend();
+    }
+
     public static class R3D {
 
         static final MatrixStack empty = new MatrixStack();
@@ -101,6 +106,7 @@ public class Renderer {
             RenderSystem.enableTexture();
             RenderSystem.disableBlend();
             stack.pop();
+            endRender();
         }
 
         //you can call renderOutlineIntern multiple times to save performance
@@ -161,6 +167,7 @@ public class Renderer {
             buffer.end();
             BufferRenderer.draw(buffer);
             GL11.glDepthFunc(GL11.GL_LEQUAL);
+            endRender();
         }
 
         public static void renderFilled(Vec3d start, Vec3d dimensions, Color color, MatrixStack stack) {
@@ -269,6 +276,7 @@ public class Renderer {
 
             BufferRenderer.draw(buffer);
             GL11.glDepthFunc(GL11.GL_LEQUAL);
+            endRender();
         }
 
         public static void renderFilled(Vec3d start, Vec3d dimensions, Color color, MatrixStack stack, int GLMODE) {
@@ -327,6 +335,7 @@ public class Renderer {
 
             BufferRenderer.draw(buffer);
             GL11.glDepthFunc(GL11.GL_LEQUAL);
+            endRender();
         }
 
         public static void renderShape(Vec3d start, VoxelShape shape, MatrixStack matrices, Color color) {
@@ -357,6 +366,7 @@ public class Renderer {
 
             BufferRenderer.draw(buffer);
             GL11.glDepthFunc(GL11.GL_LEQUAL);
+            endRender();
         }
 
         public static void renderLine(Vec3d start, Vec3d end, Color color, MatrixStack matrices) {
@@ -389,6 +399,7 @@ public class Renderer {
 
             BufferRenderer.draw(buffer);
             GL11.glDepthFunc(GL11.GL_LEQUAL);
+            endRender();
         }
 
         public static Vec3d getCrosshairVector() {
@@ -493,7 +504,7 @@ public class Renderer {
                         .color(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f).next();
             }
             t.draw();
-
+            endRender();
             return new Vec2f((float) roundStartX, (float) roundStartY);
         }
 
@@ -586,6 +597,7 @@ public class Renderer {
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
             renderRoundedShadowInternal(matrix, g, h, k, f, fromX, fromY, toX, toY, rad, samples, shadowWidth);
+            endRender();
         }
 
         public static void renderBezierCurve(MatrixStack stack, Vec2f[] points, float r, float g, float b, float a, float laziness) {
@@ -638,6 +650,7 @@ public class Renderer {
             bufferBuilder.end();
             BufferRenderer.draw(bufferBuilder);
             stack.pop();
+            endRender();
         }
 
         private static void renderTexturedQuad(Matrix4f matrix, double x0, double x1, double y0, double y1, double z, float u0, float u1, float v0, float v1) {
@@ -727,6 +740,7 @@ public class Renderer {
             bufferBuilder.vertex(matrix, (float) x1, (float) y1, 0.0F).color(g, h, k, f).next();
             bufferBuilder.end();
             BufferRenderer.draw(bufferBuilder);
+            endRender();
         }
 
         public static void renderQuadGradient(MatrixStack matrices, Color c2, Color c1, double x1, double y1, double x2, double y2) {
@@ -764,7 +778,7 @@ public class Renderer {
             bufferBuilder.vertex(matrix, (float) x2, (float) y1, 0.0F).color(r2, g2, b2, a2).next();
             bufferBuilder.end();
             BufferRenderer.draw(bufferBuilder);
-
+            endRender();
         }
 
         public static void renderRoundedQuadInternal(Matrix4f matrix, float cr, float cg, float cb, float ca, double fromX, double fromY, double toX, double toY, double rad, double samples) {
@@ -802,6 +816,7 @@ public class Renderer {
             renderRoundedQuadInternal(matrix, g, h, k, f, fromX, fromY, toX, toY, rad, samples);
 
             renderRoundedShadow(matrices, new Color(10, 10, 10, 100), fromX, fromY, toX, toY, rad, samples, 3);
+            endRender();
         }
 
         public static void renderRoundedQuad(MatrixStack matrices, Color c, double fromX, double fromY, double toX, double toY, double rad, double samples) {
@@ -815,6 +830,7 @@ public class Renderer {
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
             renderRoundedQuadInternal(matrix, g, h, k, f, fromX, fromY, toX, toY, rad, samples);
+            endRender();
         }
 
         public static void renderLine(MatrixStack stack, Color c, double x, double y, double x1, double y1) {
@@ -831,6 +847,7 @@ public class Renderer {
             bufferBuilder.vertex(m, (float) x1, (float) y1, 0f).color(g, h, k, f).next();
             bufferBuilder.end();
             BufferRenderer.draw(bufferBuilder);
+            endRender();
         }
 
     }

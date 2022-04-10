@@ -32,8 +32,9 @@ public abstract class AInGameHudMixin extends DrawableHelper {
                     module.onHudRender();
                 }
             }
-            NotificationRenderer.render();
             Utils.TickManager.render();
+            NotificationRenderer.render();
+
             Events.fireEvent(EventType.HUD_RENDER, new NonCancellableEvent());
         });
         for (Module module : ModuleRegistry.getModules()) {
