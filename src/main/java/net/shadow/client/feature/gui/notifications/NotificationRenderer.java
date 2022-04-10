@@ -157,9 +157,11 @@ public class NotificationRenderer {
             Renderer.R2D.renderRoundedQuad(ms, new Color(20, 20, 20, (int) Math.min(255, 255 * interpolatedAnimProgress)), notificationX, notificationY, notificationX + notificationWidth, notificationY + notificationHeight, 5, 20);
             RenderSystem.setShaderTexture(0, notification.type.getI());
             Color notifTheme = notification.type.getC();
+            Renderer.setupRender();
             RenderSystem.setShaderColor(notifTheme.getRed() / 255f, notifTheme.getGreen() / 255f, notifTheme.getBlue() / 255f, (float) interpolatedAnimProgress);
             Renderer.R2D.renderTexture(ms, notificationX + texPadding, notificationY + notificationHeight / 2d - iconDimensions / 2d, iconDimensions, iconDimensions, 0, 0, iconDimensions, iconDimensions, iconDimensions, iconDimensions);
             RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+            Renderer.endRender();
 
             double contentHeightAbsolved = 0;
             for (String s : content) {
