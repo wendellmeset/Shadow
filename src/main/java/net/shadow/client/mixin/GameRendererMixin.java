@@ -40,6 +40,7 @@ public class GameRendererMixin {
 
     @Inject(at = @At(value = "FIELD", target = "Lnet/minecraft/client/render/GameRenderer;renderHand:Z", opcode = Opcodes.GETFIELD, ordinal = 0), method = "renderWorld")
     void dispatchWorldRender(float tickDelta, long limitTime, MatrixStack matrix, CallbackInfo ci) {
+        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         if (vb) {
             ShadowMain.client.options.bobView = true;
             vb = false;

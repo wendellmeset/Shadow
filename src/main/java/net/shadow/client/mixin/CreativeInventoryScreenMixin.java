@@ -25,6 +25,7 @@ public class CreativeInventoryScreenMixin extends Screen {
 
     @Inject(method = "init", at = @At("RETURN"))
     void postInit(CallbackInfo ci) {
+        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         RoundButton nbtEdit = new RoundButton(RoundButton.STANDARD, 5, 5, 64, 20, "NBT editor", () -> {
             if (ShadowMain.client.player.getInventory().getMainHandStack().isEmpty()) {
                 Utils.Logging.error("You need to hold an item!");

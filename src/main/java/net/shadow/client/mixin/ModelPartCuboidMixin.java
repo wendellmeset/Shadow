@@ -16,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public class ModelPartCuboidMixin {
     @Redirect(method = "renderCuboid", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/VertexConsumer;vertex(FFFFFFFFFIIFFF)V"))
     void bruh(VertexConsumer instance, float x, float y, float z, float red, float green, float blue, float alpha, float u, float v, int overlay, int light, float normalX, float normalY, float normalZ) {
+        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         instance.vertex(x, y, z, red, green, blue, alpha, u, v, overlay, light, normalX, normalY, normalZ);
         if (ModuleRegistry.getByClass(ESP.class).recording) {
             ModuleRegistry.getByClass(ESP.class).vertexDumps.add(new double[]{x, y, z});

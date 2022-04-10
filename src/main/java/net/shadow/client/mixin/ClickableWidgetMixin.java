@@ -110,6 +110,7 @@ public abstract class ClickableWidgetMixin implements DoesMSAA, FastTickable {
 
     @Inject(method = "renderButton", at = @At("HEAD"), cancellable = true)
     void p(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         if (((Object) this) instanceof TextFieldWidget) return;
         ci.cancel();
 

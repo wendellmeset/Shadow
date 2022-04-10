@@ -18,6 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ModelPartMixin {
     @Inject(method = "renderCuboids", at = @At("HEAD"))
     void renderCub(MatrixStack.Entry entry, VertexConsumer vertexConsumer, int light, int overlay, float red, float green, float blue, float alpha, CallbackInfo ci) {
+        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         if (ModuleRegistry.getByClass(ESP.class).recording) {
             ModuleRegistry.getByClass(ESP.class).vertexDumps.add(new double[0]);
         }

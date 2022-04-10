@@ -22,6 +22,7 @@ public class BlockEntityRenderDispatcherMixin {
     @Inject(method = "render(Lnet/minecraft/block/entity/BlockEntity;FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;)V", at = @At("HEAD"),
             cancellable = true)
     public <E extends BlockEntity> void preRender(E blockEntity, float tickDelta, MatrixStack matrix, VertexConsumerProvider vertexConsumerProvider, CallbackInfo ci) {
+        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         if (Events.fireEvent(EventType.BLOCK_ENTITY_RENDER, new BlockEntityRenderEvent(matrix, blockEntity))) {
             ci.cancel();
         }

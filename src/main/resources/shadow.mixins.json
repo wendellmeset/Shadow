@@ -63,7 +63,8 @@
     "TitleScreenMixin",
     "WorldRendererAccessor",
     "WorldRendererMixin",
-    "BeaconScreenMixin"
+    "BeaconScreenMixin",
+    "SignEditScreenMixin"
   ],
   "client": [],
   "server": [],

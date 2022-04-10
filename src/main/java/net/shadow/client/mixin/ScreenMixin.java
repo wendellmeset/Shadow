@@ -30,6 +30,7 @@ public class ScreenMixin {
 
     @Inject(method = "renderBackgroundTexture", at = @At("HEAD"), cancellable = true)
     void real(int vOffset, CallbackInfo ci) {
+        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         float r = c.getRed() / 255f;
         float g = c.getGreen() / 255f;
         float b = c.getBlue() / 255f;

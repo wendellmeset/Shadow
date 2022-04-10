@@ -20,6 +20,7 @@ public class SelectWorldScreenMixin extends Screen {
 
     @Inject(method = "render", at = @At("HEAD"))
     void a(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         renderBackground(matrices);
     }
 }

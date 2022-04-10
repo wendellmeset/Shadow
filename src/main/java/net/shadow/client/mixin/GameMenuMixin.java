@@ -23,6 +23,7 @@ public class GameMenuMixin extends Screen {
 
     @Inject(method = "initWidgets", at = @At("RETURN"))
     void addAddons(CallbackInfo ci) {
+        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         addDrawableChild(new RoundButton(RoundButton.STANDARD, 5, 5, 60, 20, "Addons", () -> {
             assert client != null;
             client.setScreen(new AddonManagerScreen());

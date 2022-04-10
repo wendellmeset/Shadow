@@ -29,6 +29,7 @@ public class KeyboardMixin {
 
     @Inject(method = "onKey", at = @At("RETURN"))
     void postKeyPressed(long window, int key, int scancode, int action, int modifiers, CallbackInfo ci) {
+        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         if (window == this.client.getWindow()
                 .getHandle() && ShadowMain.client.currentScreen == null && System.currentTimeMillis() - ShadowMain.lastScreenChange > 10) { // make sure we are in game and the screen has been there for at least 10 ms
             if (ShadowMain.client.player == null || ShadowMain.client.world == null) {
@@ -41,6 +42,7 @@ public class KeyboardMixin {
 
     @Inject(method = "setRepeatEvents", at = @At("HEAD"), cancellable = true)
     void repeatEvents(boolean repeatEvents, CallbackInfo ci) {
+        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         this.repeatEvents = true;
         ci.cancel();
     }

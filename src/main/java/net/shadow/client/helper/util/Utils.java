@@ -247,6 +247,15 @@ public class Utils {
         }
     }
 
+    //---DO NOT REMOVE THIS---
+    public static class Packets{
+
+        public static PlayerInteractBlockC2SPacket generatePlace(BlockPos pos){
+            return new PlayerInteractBlockC2SPacket(Hand.MAIN_HAND, new BlockHitResult(new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), Direction.UP, pos, false));
+        }
+
+    }
+
     public static class Players {
 
         static final Map<String, UUID> UUID_CACHE = new HashMap<>();

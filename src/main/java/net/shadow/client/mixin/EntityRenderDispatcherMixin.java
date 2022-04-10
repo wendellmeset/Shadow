@@ -21,6 +21,7 @@ public class EntityRenderDispatcherMixin {
 
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     public <E extends Entity> void dispatchEntityRender(E entity, double x, double y, double z, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
+        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         if (Events.fireEvent(EventType.ENTITY_RENDER, new EntityRenderEvent(matrices, entity))) {
             ci.cancel();
         }

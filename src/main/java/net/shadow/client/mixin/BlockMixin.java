@@ -23,6 +23,7 @@ public class BlockMixin {
 
     @Inject(method = "shouldDrawSide", at = @At("HEAD"), cancellable = true)
     private static void overwriteShouldDrawSide(BlockState state, BlockView world, BlockPos pos, Direction side, BlockPos blockPos, CallbackInfoReturnable<Boolean> cir) {
+        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         if (Objects.requireNonNull(ModuleRegistry.getByClass(XRAY.class)).isEnabled()) {
             cir.setReturnValue(XRAY.blocks.contains(state.getBlock()));
         }
@@ -30,6 +31,7 @@ public class BlockMixin {
 
     @Inject(method = "isTranslucent", at = @At("HEAD"), cancellable = true)
     public void overwriteIsTranslucent(BlockState state, BlockView world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
+        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         if (Objects.requireNonNull(ModuleRegistry.getByClass(XRAY.class)).isEnabled()) {
             cir.setReturnValue(!XRAY.blocks.contains(state.getBlock()));
         }

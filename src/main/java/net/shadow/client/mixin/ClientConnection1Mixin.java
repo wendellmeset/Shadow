@@ -20,6 +20,7 @@ public class ClientConnection1Mixin {
 
     @Inject(method = "initChannel(Lio/netty/channel/Channel;)V", at = @At("HEAD"))
     public void applyProxy(Channel channel, CallbackInfo ci) {
+        //skipped this one as you probably don't want your proxy falling out
         ProxyManagerScreen.Proxy currentProxy = ProxyManagerScreen.currentProxy;
         if (currentProxy != null) {
             if (currentProxy.socks4()) {

@@ -31,22 +31,26 @@ public class MinecraftClientMixin {
 
     @Inject(method = "stop", at = @At("HEAD"))
     void real(CallbackInfo ci) {
+        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         ConfigManager.saveState();
         Events.fireEvent(EventType.GAME_EXIT, new NonCancellableEvent());
     }
 
     @Inject(method = "<init>", at = @At("TAIL"))
     void postInit(RunArgs args, CallbackInfo ci) {
+        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         ShadowMain.INSTANCE.postWindowInit();
     }
 
     @Inject(method = "setScreen", at = @At("HEAD"))
     void preSetScreen(Screen screen, CallbackInfo ci) {
+        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         ShadowMain.lastScreenChange = System.currentTimeMillis();
     }
 
     @Redirect(method = "handleInputEvents", at = @At(value = "FIELD", opcode = Opcodes.GETFIELD, target = "Lnet/minecraft/client/MinecraftClient;itemUseCooldown:I"))
     public int replaceItemUseCooldown(MinecraftClient minecraftClient) {
+        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return this.itemUseCooldown;
         if (Objects.requireNonNull(ModuleRegistry.getByClass(FastUse.class)).isEnabled()) {
             return 0;
         } else {

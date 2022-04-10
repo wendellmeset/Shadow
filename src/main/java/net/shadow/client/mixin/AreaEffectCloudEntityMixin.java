@@ -16,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public class AreaEffectCloudEntityMixin {
     @ModifyVariable(method = "tick", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/util/math/MathHelper;ceil(F)I"), index = 4)
     int re(int value) {
+        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return value;
         AntiCrash ac = AntiCrash.instance();
         if (ac.isEnabled() && ac.getCapParticles().getValue()) {
             int partTotal = ((ParticleManagerDuck) ShadowMain.client.particleManager).getTotalParticles();

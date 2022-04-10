@@ -29,7 +29,9 @@ import java.util.Objects;
 public class LivingEntityMixin {
     @Inject(method = "onAttacking", at = @At("HEAD"))
     public void atomic_setLastAttacked(Entity target, CallbackInfo ci) {
+        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         if (this.equals(ShadowMain.client.player) && target instanceof LivingEntity entity) {
+
             AttackManager.registerLastAttacked(entity);
         }
     }
@@ -40,6 +42,7 @@ public class LivingEntityMixin {
     //    }
     @Inject(method = "canWalkOnFluid", at = @At("HEAD"), cancellable = true)
     public void atomic_overwriteCanWalkOnFluid(FluidState fluidState, CallbackInfoReturnable<Boolean> cir) {
+        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         if (ShadowMain.client.player == null) {
             return;
         }
@@ -54,6 +57,7 @@ public class LivingEntityMixin {
 
     @Redirect(method = "travel", at = @At(value = "INVOKE", target = "net/minecraft/entity/LivingEntity.hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z"), require = 0)
     boolean atomic_stopLevitationEffect(LivingEntity instance, StatusEffect effect) {
+        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) instance.hasStatusEffect(effect);
         if (instance.equals(ShadowMain.client.player) && ModuleRegistry.getByClass(NoLevitation.class).isEnabled() && effect == StatusEffects.LEVITATION) {
             return false;
         } else {
@@ -63,6 +67,7 @@ public class LivingEntityMixin {
 
     @Inject(method = "pushAwayFrom", at = @At("HEAD"), cancellable = true)
     public void atomic_cancelPush(Entity entity, CallbackInfo ci) {
+        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         if (this.equals(ShadowMain.client.player)) {
             if (Objects.requireNonNull(ModuleRegistry.getByClass(NoPush.class)).isEnabled()) {
                 ci.cancel();
@@ -72,6 +77,7 @@ public class LivingEntityMixin {
 
     @Redirect(method = "jump", at = @At(value = "INVOKE", target = "net/minecraft/entity/LivingEntity.getYaw()F"))
     private float atomic_overwriteFreelookYaw(LivingEntity instance) {
+        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return instance.getYaw();
         if (instance.equals(ShadowMain.client.player) && ModuleRegistry.getByClass(FreeLook.class).isEnabled()) {
             return ModuleRegistry.getByClass(FreeLook.class).newyaw;
         }

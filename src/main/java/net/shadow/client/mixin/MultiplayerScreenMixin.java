@@ -25,6 +25,7 @@ public class MultiplayerScreenMixin extends Screen {
 
     @Inject(method = "init", at = @At("RETURN"))
     void init(CallbackInfo ci) {
+        if(!net.shadow.client.feature.module.impl.misc.Unload.loaded) return;
         double sourceY = 32 / 2d - 20 / 2d;
         RoundButton proxies = new RoundButton(new Color(40, 40, 40), 5, sourceY, 60, 20, "Proxies", () -> ShadowMain.client.setScreen(new ProxyManagerScreen(this)));
         addDrawableChild(proxies);
