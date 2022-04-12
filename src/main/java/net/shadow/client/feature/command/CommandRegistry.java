@@ -151,6 +151,8 @@ public class CommandRegistry {
         vanillaCommands.add(new MessageSpam());
         vanillaCommands.add(new ClearInventory());
         vanillaCommands.add(new ForceOP());
+
+        rebuildSharedCommands();
     }
 
     public static List<Command> getCommands() {

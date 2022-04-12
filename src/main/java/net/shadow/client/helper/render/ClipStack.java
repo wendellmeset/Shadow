@@ -8,8 +8,11 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vector4f;
+import net.shadow.client.feature.module.ModuleRegistry;
+import net.shadow.client.feature.module.impl.render.ClickGUI;
 import net.shadow.client.mixin.MatrixStackAccessor;
 
+import java.awt.Color;
 import java.util.Deque;
 import java.util.Stack;
 
@@ -31,7 +34,7 @@ public class ClipStack {
         Rectangle r = new Rectangle(x, y, endX, endY);
         if (clipStack.empty()) {
             clipStack.push(new TransformationEntry(r, stack.peek()));
-//            Renderer.R2D.renderLine(stack,Color.RED,r.getX(),r.getY(),r.getX1(),r.getY1());
+//            renderDebug(r.getX(),r.getY(),r.getX1(),r.getY1());
 
             Renderer.R2D.beginScissor(r.getX(), r.getY(), r.getX1(), r.getY1());
         } else {
@@ -45,14 +48,30 @@ public class ClipStack {
             double nstx = MathHelper.clamp(r.getX1(), nsx, lstx);
             double nsty = MathHelper.clamp(r.getY1(), nsy, lsty); // totally intended varname
             clipStack.push(new TransformationEntry(new Rectangle(nsx, nsy, nstx, nsty), stack.peek()));
-//            Renderer.R2D.renderLine(stack,Color.RED,nsx,nsy,nstx,nsty);
+
+
+//            renderDebug(nsx,nsy,nstx,nsty);
+
             Renderer.R2D.beginScissor(nsx, nsy, nstx, nsty);
         }
     }
 
+    void renderDebug(double x, double y, double x1, double y1) {
+        MatrixStack stack = Renderer.R3D.getEmptyMatrixStack();
+        Renderer.R2D.renderLine(stack, Color.RED, x, y, x1, y);
+        Renderer.R2D.renderLine(stack, Color.RED, x1, y, x1, y1);
+        Renderer.R2D.renderLine(stack, Color.RED, x1, y1, x, y1);
+        Renderer.R2D.renderLine(stack, Color.RED, x, y1, x, y);
+
+        Renderer.R2D.renderLine(stack, Color.RED, x, y, x1, y1);
+
+    }
+
     public void popWindow() {
 
-        clipStack.pop();
+        TransformationEntry e = clipStack.pop();
+        if (ModuleRegistry.getByClass(ClickGUI.class).isDebuggerEnabled())
+            renderDebug(e.rect.getX(), e.rect.getY(), e.rect.getX1(), e.rect.getY1());
         if (clipStack.empty()) {
             Renderer.R2D.endScissor();
         } else {
