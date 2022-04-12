@@ -34,10 +34,11 @@ public class Poof extends Command {
 
     @Override
     public void onExecute(String[] args) {
-        // on the note of that why did you just make 50 drops instead of just dropping the item with count 50
-        ItemStack crashme = new ItemStack(Items.SALMON, 50);
+        // on the note of that why did you just make 50 drops instead of just dropping the item with count 50 - retard because then it fills all their inv slots (spas moment)
+        ItemStack crashme = new ItemStack(Items.IRON_HOE, 1);
         try {
-            crashme.setNbt(StringNbtReader.parse("{display:{Name:'{\"text\":\"Sam the salmon\",\"hoverEvent\":{\"action\":\"show_entity\",\"contents\":{\"id\":\"AMONG US\",\"type\":\"minecraft:player\"}}}'}}"));
+            //i hate your shitty salmon
+            crashme.setNbt(StringNbtReader.parse("{display:{Name:'{\"text\":\"\",\"hoverEvent\":{\"action\":\"show_entity\",\"contents\":{\"id\":\"AMONG US\",\"type\":\"minecraft:player\"}}}'}}"));
         } catch (CommandSyntaxException e) {
             e.printStackTrace();
         }
