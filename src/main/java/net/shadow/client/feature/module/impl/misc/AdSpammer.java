@@ -14,7 +14,7 @@ public class AdSpammer extends Module {
     final StringSetting message = this.config.create(new StringSetting.Builder("/ad randomserver its so good").name("Message").get());
 
     public AdSpammer() {
-        super("AdSpammer", "spam minehut ads", ModuleType.MISC);
+        super("AdSpammer", "Spams minehut ads", ModuleType.MISC);
     }
 
     @Override

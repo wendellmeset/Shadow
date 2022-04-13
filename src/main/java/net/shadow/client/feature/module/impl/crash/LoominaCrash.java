@@ -23,7 +23,7 @@ public class LoominaCrash extends Module {
     Notification expl = null;
 
     public LoominaCrash() {
-        super("Loomina", "make infinitely big items with a loom", ModuleType.CRASH);
+        super("LoominaCrash", "Create infinitely big items with a loom", ModuleType.CRASH);
     }
 
     @Override

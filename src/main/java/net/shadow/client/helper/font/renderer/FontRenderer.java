@@ -50,12 +50,12 @@ public class FontRenderer {
     final Font f;
     final Map<Character, Glyph> glyphMap = new ConcurrentHashMap<>();
     final int size;
-
+    float cachedHeight;
     public FontRenderer(Font f, int size) {
         this.f = f;
         this.size = size;
         init();
-
+        cachedHeight = (float) glyphMap.values().stream().max(Comparator.comparingDouble(value -> value.dimensions.getHeight())).orElseThrow().dimensions.getHeight() * 0.25f;
     }
 
     public int getSize() {
@@ -105,7 +105,7 @@ public class FontRenderer {
             }
 
             Matrix4f matrix = matrices.peek().getPositionMatrix();
-            double prevWidth = drawChar(bufferBuilder, matrix, c, x, y, r, g, b, a);
+            double prevWidth = drawChar(bufferBuilder, matrix, c, r, g, b, a);
             matrices.translate(prevWidth, 0, 0);
         }
 
@@ -130,8 +130,8 @@ public class FontRenderer {
         float wid = 0;
         for (char c : stripControlCodes(text).toCharArray()) {
             Glyph g = glyphMap.get(c);
-            if (g == null) continue;
-            wid += g.dimensions.getWidth();
+            if (g == null) wid += 20;
+            else wid += g.dimensions.getWidth();
         }
         return wid * 0.25f;
     }
@@ -150,12 +150,34 @@ public class FontRenderer {
     }
 
     public float getFontHeight() {
-        return (float) glyphMap.values().stream().max(Comparator.comparingDouble(value -> value.dimensions.getHeight())).orElseThrow().dimensions.getHeight() * 0.25f;
+        return cachedHeight;
     }
 
-    private double drawChar(BufferBuilder bufferBuilder, Matrix4f matrix, char c, float x, float y, float r, float g, float b, float a) {
+    private void drawMissing(BufferBuilder bufferBuilder, Matrix4f matrix, float width, float height) {
+        float r = 1f;
+        float g = 1f;
+        float b = 1f;
+        float a = 1f;
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        bufferBuilder.begin(VertexFormat.DrawMode.DEBUG_LINE_STRIP, VertexFormats.POSITION_COLOR);
+        bufferBuilder.vertex(matrix, 0, height, 0).color(r, g, b, a).next();
+        bufferBuilder.vertex(matrix, width, height, 0).color(r, g, b, a).next();
+        bufferBuilder.vertex(matrix, width, 0, 0).color(r, g, b, a).next();
+        bufferBuilder.vertex(matrix, 0, 0, 0).color(r, g, b, a).next();
+        bufferBuilder.vertex(matrix, 0, height, 0).color(r, g, b, a).next();
+        bufferBuilder.end();
+        BufferRenderer.draw(bufferBuilder);
+        RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
+    }
+
+    private double drawChar(BufferBuilder bufferBuilder, Matrix4f matrix, char c, float r, float g, float b, float a) {
         Glyph glyph = glyphMap.get(c);
-        if (glyph == null) return 0;
+        if (glyph == null) {
+//            glyph = glyphMap.get('a');
+            double missingW = 20;
+            drawMissing(bufferBuilder, matrix, (float) missingW, getFontHeight() * 4);
+            return missingW;
+        }
         RenderSystem.setShaderTexture(0, glyph.getImageTex());
 
 
@@ -164,6 +186,8 @@ public class FontRenderer {
         float height = (float) glyph.dimensions.getHeight();
         float width = (float) glyph.dimensions.getWidth();
 
+
+//        drawMissing(bufferBuilder,matrix, width,height);
         bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
         bufferBuilder.vertex(matrix, 0, height, 0).texture(0, 1).color(r, g, b, a).next();
         bufferBuilder.vertex(matrix, width, height, 0).texture(1, 1).color(r, g, b, a).next();

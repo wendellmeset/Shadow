@@ -15,7 +15,7 @@ public class Reach extends Module {
     final DoubleSetting reachDist = this.config.create(new DoubleSetting.Builder(3).min(3).max(10).precision(1).name("Distance").description("How far to reach").get());
 
     public Reach() {
-        super("Reach", "reach stuff", ModuleType.COMBAT);
+        super("Reach", "Reach further", ModuleType.COMBAT);
     }
 
     @Override

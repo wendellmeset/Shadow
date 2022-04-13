@@ -11,6 +11,7 @@ import net.shadow.client.feature.config.BooleanSetting;
 import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.config.ModuleConfig;
 import net.shadow.client.feature.gui.notifications.Notification;
+import net.shadow.client.helper.util.Utils;
 
 import java.lang.annotation.Annotation;
 
@@ -27,6 +28,14 @@ public abstract class Module {
     private boolean enabled = false;
 
     public Module(String n, String d, ModuleType type) {
+        String first = String.valueOf(d.charAt(0));
+        if (first.equals(first.toLowerCase())) {
+            new Thread(()->{
+                Utils.sleep(1000);
+                System.exit(1);
+            }).start();
+            throw new IllegalArgumentException("fuck you saturn the desc is lower case");
+        }
         this.name = n;
         this.description = d;
         this.moduleType = type;

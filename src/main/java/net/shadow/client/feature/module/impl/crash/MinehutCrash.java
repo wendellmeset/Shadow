@@ -20,7 +20,7 @@ public class MinehutCrash extends Module {
     final BooleanSetting bb = this.config.create(new BooleanSetting.Builder(true).name("Bounces").description("Prevent bungee bounces client side").get());
 
     public MinehutCrash() {
-        super("MinehutCrash", "minehut crash exploit WTF how??? (do not use this with a rank account)", ModuleType.CRASH);
+        super("MinehutCrash", "Minehut crash exploit WTF how??? (do not use this with a rank account)", ModuleType.CRASH);
     }
 
     @EventListener(type = EventType.PACKET_RECEIVE)
