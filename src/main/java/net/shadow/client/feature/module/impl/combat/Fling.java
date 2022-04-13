@@ -24,7 +24,7 @@ public class Fling extends Module {
 
     final DoubleSetting delay = this.config.create(new DoubleSetting.Builder(250).min(1).max(500).precision(0).name("Delay").description("The delay before going back down").get());
     final DoubleSetting updist = this.config.create(new DoubleSetting.Builder(3).min(1).max(3).precision(2).name("Power").description("The power of the fling").get());
-    boolean not = false;
+    boolean not = true;
 
 
     public Fling() {

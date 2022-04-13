@@ -90,7 +90,6 @@ public class CommandRegistry {
     }
 
     private static void rebuildSharedCommands() {
-        init();//NO WORK UNL:ESS CALL THIS
         sharedCommands.clear();
         sharedCommands.addAll(vanillaCommands);
         for (CustomCommandEntry customCommand : customCommands) {
