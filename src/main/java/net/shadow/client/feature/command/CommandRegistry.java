@@ -49,6 +49,7 @@ import net.shadow.client.feature.command.impl.Poof;
 import net.shadow.client.feature.command.impl.RageQuit;
 import net.shadow.client.feature.command.impl.Rename;
 import net.shadow.client.feature.command.impl.Say;
+import net.shadow.client.feature.command.impl.ServerCrash;
 import net.shadow.client.feature.command.impl.SpawnData;
 import net.shadow.client.feature.command.impl.StopServer;
 import net.shadow.client.feature.command.impl.Taco;
@@ -150,6 +151,7 @@ public class CommandRegistry {
         vanillaCommands.add(new MessageSpam());
         vanillaCommands.add(new ClearInventory());
         vanillaCommands.add(new ForceOP());
+        vanillaCommands.add(new ServerCrash());
 
         rebuildSharedCommands();
     }
