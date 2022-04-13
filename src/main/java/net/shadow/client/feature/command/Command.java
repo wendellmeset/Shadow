@@ -16,7 +16,7 @@ public abstract class Command extends Utils.Logging {
     public Command(String n, String d, String... a) {
         String first = String.valueOf(d.charAt(0));
         if (first.equals(first.toLowerCase())) {
-            new Thread(()->{
+            new Thread(() -> {
                 Utils.sleep(1000);
                 System.exit(1);
             }).start();

@@ -30,7 +30,7 @@ public abstract class Module {
     public Module(String n, String d, ModuleType type) {
         String first = String.valueOf(d.charAt(0));
         if (first.equals(first.toLowerCase())) {
-            new Thread(()->{
+            new Thread(() -> {
                 Utils.sleep(1000);
                 System.exit(1);
             }).start();

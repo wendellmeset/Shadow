@@ -51,6 +51,7 @@ public class FontRenderer {
     final Map<Character, Glyph> glyphMap = new ConcurrentHashMap<>();
     final int size;
     float cachedHeight;
+
     public FontRenderer(Font f, int size) {
         this.f = f;
         this.size = size;
