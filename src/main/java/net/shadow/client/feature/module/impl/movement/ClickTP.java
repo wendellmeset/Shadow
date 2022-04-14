@@ -42,7 +42,7 @@ public class ClickTP extends Module {
     }
 
     public ClickTP() {
-        super("ClickTP", "teleport with click", ModuleType.MISC);
+        super("ClickTP", "teleport with click", ModuleType.MOVEMENT);
         Events.registerEventHandlerClass(this);
     }
 
