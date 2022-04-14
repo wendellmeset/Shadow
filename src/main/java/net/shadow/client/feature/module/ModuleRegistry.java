@@ -21,6 +21,8 @@ import net.shadow.client.feature.module.impl.combat.Velocity;
 import net.shadow.client.feature.module.impl.crash.AnimationCrash;
 import net.shadow.client.feature.module.impl.crash.ArmorStandCrash;
 import net.shadow.client.feature.module.impl.crash.BookInflator;
+import net.shadow.client.feature.module.impl.crash.ChunkRender;
+import net.shadow.client.feature.module.impl.crash.InteractCrash;
 import net.shadow.client.feature.module.impl.crash.LecternCrash;
 import net.shadow.client.feature.module.impl.crash.LoominaCrash;
 import net.shadow.client.feature.module.impl.crash.MinehutCrash;
@@ -65,6 +67,7 @@ import net.shadow.client.feature.module.impl.movement.Blink;
 import net.shadow.client.feature.module.impl.movement.BlocksmcFlight;
 import net.shadow.client.feature.module.impl.movement.BoatPhase;
 import net.shadow.client.feature.module.impl.movement.Boost;
+import net.shadow.client.feature.module.impl.movement.ClickTP;
 import net.shadow.client.feature.module.impl.movement.EdgeJump;
 import net.shadow.client.feature.module.impl.movement.EdgeSneak;
 import net.shadow.client.feature.module.impl.movement.EntityFly;
@@ -294,6 +297,9 @@ public class ModuleRegistry {
         vanillaModules.add(new Speed());
         vanillaModules.add(new BoatFling());
         vanillaModules.add(new FilterBypass());
+        vanillaModules.add(new InteractCrash());
+        vanillaModules.add(new ChunkRender());
+        vanillaModules.add(new ClickTP());
 
         rebuildSharedModuleList();
     }
