@@ -114,7 +114,7 @@ public class Find extends Command {
 
     @Override
     public void onExecute(String[] args) throws CommandException {
-        validateArgumentsLength(args, 1);
+        validateArgumentsLength(args, 1, "Provide player username");
         if (!Objects.requireNonNull(ShadowMain.client.interactionManager).hasCreativeInventory()) {
             error("Cant find the player, need GMC");
             return;

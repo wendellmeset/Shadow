@@ -21,7 +21,7 @@ public class AnimationCrash extends Module {
     final DoubleSetting power = this.config.create(new DoubleSetting.Builder(3000).min(2000).max(10000).name("Power").description("the amount of packets to send to the server").get());
 
     public AnimationCrash() {
-        super("Animation", "Crash the server with animation packets", ModuleType.CRASH);
+        super("AnimationCrash", "Crash the server with animation packets", ModuleType.CRASH);
     }
 
     @Override

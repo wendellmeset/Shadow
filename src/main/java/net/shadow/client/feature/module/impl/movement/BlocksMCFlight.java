@@ -17,12 +17,12 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlocksmcFlight extends Module {
+public class BlocksMCFlight extends Module {
     final List<AnimatedCircle> circles = new ArrayList<>();
     int jumpTimeout = 0;
     double yStart = 0;
 
-    public BlocksmcFlight() {
+    public BlocksMCFlight() {
         super("BlocksMCFlight", "Bypasses the blocksmc anticheat and flies", ModuleType.MOVEMENT);
     }
 

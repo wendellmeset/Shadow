@@ -30,7 +30,7 @@ public class Gamemode extends Command {
         if (ShadowMain.client.interactionManager == null) {
             return;
         }
-        validateArgumentsLength(args, 1);
+        validateArgumentsLength(args, 1, "Provide gamemode");
         GameMode gm = GameMode.byName(args[0], null);
         if (gm == null) throw new CommandException("Invalid gamemode", "Specify a valid gamemode");
         ShadowMain.client.interactionManager.setGameMode(gm);

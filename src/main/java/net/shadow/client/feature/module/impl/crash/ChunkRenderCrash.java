@@ -4,7 +4,12 @@
 
 package net.shadow.client.feature.module.impl.crash;
 
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.network.Packet;
+import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
+import net.minecraft.network.packet.c2s.play.TeleportConfirmC2SPacket;
+import net.minecraft.util.math.Vec3d;
 import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
@@ -16,16 +21,8 @@ import net.shadow.client.helper.util.Utils;
 
 import java.util.Random;
 
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.network.Packet;
-import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
-import net.minecraft.network.packet.c2s.play.TeleportConfirmC2SPacket;
-import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
+public class ChunkRenderCrash extends Module {
 
-public class ChunkRender extends Module {
-    
     static boolean shouldfly;
     static int ppls;
     static int ticks;
@@ -35,8 +32,8 @@ public class ChunkRender extends Module {
     final DoubleSetting lockat = this.config.create(new DoubleSetting.Builder(200).min(20).max(500).name("LockAT").description("What height to start boosting at").get());
     boolean capture = true;
 
-    public ChunkRender() {
-        super("ChunkRender", "render chunks to crash the server", ModuleType.CRASH);
+    public ChunkRenderCrash() {
+        super("ChunkRenderCrash", "Generates a ton of chunks", ModuleType.CRASH);
         Events.registerEventHandlerClass(this);
     }
 
@@ -84,11 +81,11 @@ public class ChunkRender extends Module {
 
     }
 
-    @EventListener(type=EventType.PACKET_SEND)
-    void onSentPacket(PacketEvent event){
-        if(!this.isEnabled()) return;
-        if(!capture) return;
-        
+    @EventListener(type = EventType.PACKET_SEND)
+    void onSentPacket(PacketEvent event) {
+        if (!this.isEnabled()) return;
+        if (!capture) return;
+
         if (!(event.getPacket() instanceof PlayerMoveC2SPacket packet))
             return;
 

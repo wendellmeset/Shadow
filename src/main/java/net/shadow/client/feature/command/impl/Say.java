@@ -26,7 +26,7 @@ public class Say extends Command {
 
     @Override
     public void onExecute(String[] args) throws CommandException {
-        validateArgumentsLength(args, 1);
+        validateArgumentsLength(args, 1, "Provide message");
         Objects.requireNonNull(ShadowMain.client.player).sendChatMessage(String.join(" ", args));
     }
 }

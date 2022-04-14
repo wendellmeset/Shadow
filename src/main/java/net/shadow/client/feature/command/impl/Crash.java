@@ -28,7 +28,7 @@ public class Crash extends Command {
 
     @Override
     public void onExecute(String[] args) throws CommandException {
-        validateArgumentsLength(args, 1);
+        validateArgumentsLength(args, 1, "Provide player username");
         PlayerFromNameArgumentParser parser = new PlayerFromNameArgumentParser(true);
         PlayerEntity pe = parser.parse(args[0]);
         String player = pe.getGameProfile().getName();

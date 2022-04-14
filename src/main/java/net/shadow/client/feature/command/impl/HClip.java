@@ -26,7 +26,7 @@ public class HClip extends Command {
 
     @Override
     public void onExecute(String[] args) throws CommandException {
-        validateArgumentsLength(args, 1);
+        validateArgumentsLength(args, 1, "Provide distance");
 
         double brik = new DoubleArgumentParser().parse(args[0]);
         Vec3d forward = Vec3d.fromPolar(0, ShadowMain.client.player.getYaw()).normalize();

@@ -23,7 +23,7 @@ public class VClip extends Command {
 
     @Override
     public void onExecute(String[] args) throws CommandException {
-        validateArgumentsLength(args, 1);
+        validateArgumentsLength(args, 1, "Provide height");
 
         ClientPlayerEntity player = ShadowMain.client.player;
         player.updatePosition(player.getX(),

@@ -28,7 +28,7 @@ public class KickSelf extends Command {
 
     @Override
     public void onExecute(String[] args) throws CommandException {
-        validateArgumentsLength(args, 1);
+        validateArgumentsLength(args, 1, "Provide method");
 
         switch (args[0].toLowerCase()) {
             case "spam":

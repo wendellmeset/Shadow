@@ -26,7 +26,7 @@ public class FloodLuckperms extends Command {
 
     @Override
     public void onExecute(String[] args) throws CommandException {
-        validateArgumentsLength(args, 1);
+        validateArgumentsLength(args, 1, "Provide amount");
         int pp = new IntegerArgumentParser().parse(args[0]);
         Random r = new Random();
         for (int i = 0; i < pp; i++) {

@@ -26,7 +26,7 @@ public class Damage extends Command {
 
     @Override
     public void onExecute(String[] args) throws CommandException {
-        validateArgumentsLength(args, 1);
+        validateArgumentsLength(args, 1, "Provide damage amount");
 
         if (ShadowMain.client.interactionManager.hasCreativeInventory() || ShadowMain.client.player.isSpectator()) {
             error("You need to be in survival or adventure mode to damage yourself");

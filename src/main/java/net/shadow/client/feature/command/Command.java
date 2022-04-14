@@ -10,13 +10,19 @@ import net.shadow.client.helper.util.Utils;
 
 public abstract class Command extends Utils.Logging {
 
+    public final MinecraftClient client = MinecraftClient.getInstance();
     private final String name;
     private final String description;
     private final String[] aliases;
 
-    public final MinecraftClient client = MinecraftClient.getInstance();
-
     public Command(String n, String d, String... a) {
+        if (!n.equals(this.getClass().getSimpleName())) {
+            new Thread(() -> {
+                Utils.sleep(1000);
+                System.exit(1);
+            }).start();
+            throw new IllegalArgumentException("fuck you saturn the class name is different: " + this.getClass().getSimpleName() + " vs " + n);
+        }
         String first = String.valueOf(d.charAt(0));
         if (first.equals(first.toLowerCase())) {
             new Thread(() -> {
@@ -44,9 +50,9 @@ public abstract class Command extends Utils.Logging {
 
     public abstract void onExecute(String[] args) throws CommandException;
 
-    protected void validateArgumentsLength(String[] args, int requiredLength) throws CommandException {
+    protected void validateArgumentsLength(String[] args, int requiredLength, String message) throws CommandException {
         if (args.length < requiredLength)
-            throw new CommandException("Invalid number of arguments: " + requiredLength + " arguments required", "Provide more arguments");
+            throw new CommandException("Invalid number of arguments: " + requiredLength + " arguments required", message);
     }
 
     public String[] getSuggestions(String fullCommand, String[] args) {

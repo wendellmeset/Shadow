@@ -51,7 +51,7 @@ public class ConfigUtils extends Command {
 
     @Override
     public void onExecute(String[] args) throws CommandException {
-        validateArgumentsLength(args, 2);
+        validateArgumentsLength(args, 2, "Provide action and file");
         switch (args[0].toLowerCase()) {
             case "load" -> {
                 File f = new File(CONFIG_STORAGE.getAbsolutePath() + "/" + String.join(" ", Arrays.copyOfRange(args, 1, args.length)));

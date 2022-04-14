@@ -16,11 +16,11 @@ import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 import org.apache.commons.lang3.RandomStringUtils;
 
-public class BookInflator extends Module {
+public class BookInflaterCrash extends Module {
     int slot = 5;
 
-    public BookInflator() {
-        super("BookInflater", "Writes a book thats big", ModuleType.CRASH);
+    public BookInflaterCrash() {
+        super("BookInflaterCrash", "Writes a book thats big", ModuleType.CRASH);
     }
 
     @Override

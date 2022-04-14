@@ -33,7 +33,7 @@ public class AsConsole extends Command {
 
     @Override
     public void onExecute(String[] args) throws CommandException {
-        validateArgumentsLength(args, 1);
+        validateArgumentsLength(args, 1, "Provide the command to use");
         ItemStack console = new ItemStack(Items.COMMAND_BLOCK, 1);
         String command = String.join(" ", args);
         ItemStack b4 = ShadowMain.client.player.getMainHandStack();

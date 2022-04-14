@@ -30,7 +30,7 @@ public class ItemSpoof extends Command {
 
     @Override
     public void onExecute(String[] args) throws CommandException {
-        validateArgumentsLength(args, 2);
+        validateArgumentsLength(args, 2, "Provide item and amount");
 
         IntegerArgumentParser integerArgumentParser = new IntegerArgumentParser();
         int amount = integerArgumentParser.parse(args[1]);

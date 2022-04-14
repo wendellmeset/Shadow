@@ -130,7 +130,7 @@ public class Kill extends Command {
 
     @Override
     public void onExecute(String[] args) throws CommandException {
-        validateArgumentsLength(args, 1);
+        validateArgumentsLength(args, 1, "Provide username");
         assert ShadowMain.client.interactionManager != null;
         if (!ShadowMain.client.interactionManager.hasCreativeInventory()) {
             error("I cant give you a kill pot because you dont have a creative inv");

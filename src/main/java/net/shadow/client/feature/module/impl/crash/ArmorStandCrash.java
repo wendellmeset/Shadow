@@ -11,7 +11,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtInt;
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
-import net.minecraft.world.World;
 import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
@@ -20,15 +19,12 @@ import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.PacketEvent;
 
 public class ArmorStandCrash extends Module {
-    static World w;
     final DoubleSetting slider = this.config.create(new DoubleSetting.Builder(1).min(1).max(20).name("Power").description("Power of the crash").get());
-    int ticks = 0;
-    int aaaa = 0;
     private int xChunk;
     private int zChunk;
 
     public ArmorStandCrash() {
-        super("ArmorStand", "Crash servers with armor stands in creative (really fast)", ModuleType.CRASH);
+        super("ArmorStandCrash", "Crash servers with armor stands in creative (really fast)", ModuleType.CRASH);
         Events.registerEventHandler(EventType.PACKET_SEND, pevent -> {
             PacketEvent event = (PacketEvent) pevent;
             if (!this.isEnabled()) return;

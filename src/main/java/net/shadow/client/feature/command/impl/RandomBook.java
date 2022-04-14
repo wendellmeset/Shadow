@@ -3,11 +3,10 @@
  */
 
 package net.shadow.client.feature.command.impl;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.network.packet.c2s.play.BookUpdateC2SPacket;
 
+import net.minecraft.network.packet.c2s.play.BookUpdateC2SPacket;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.argument.IntegerArgumentParser;
 import net.shadow.client.feature.command.exception.CommandException;
 
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ import java.util.stream.IntStream;
 public class RandomBook extends Command {
 
     public RandomBook() {
-        super("RandomBook", "write random books", "RandomBook", "rbook");
+        super("RandomBook", "Writes random books", "RandomBook", "rbook");
     }
 
     @Override
@@ -28,27 +27,17 @@ public class RandomBook extends Command {
         if (args.length == 1) {
             return new String[]{"Ascii", "Raw", "Unicode"};
         }
-        if(args.length == 2){
+        if (args.length == 2) {
             return new String[]{"(pages)"};
         }
         return super.getSuggestions(fullCommand, args);
     }
 
     @Override
-    public void onExecute(String[] args) {
-        try {
-            validateArgumentsLength(args, 2);
-        } catch (CommandException e) {
-            error("Please use >RandomBook (mode) (pages)");
-        }
-        int size;
-        try {
-            size = Integer.parseInt(args[1]);
-        } catch (Exception e) {
-            error("Please use >RandomBook (mode) (pages)");
-            return;
-        }
-        switch(args[0].toLowerCase()){
+    public void onExecute(String[] args) throws CommandException {
+        validateArgumentsLength(args, 2, "Provide mode and pages");
+        int size = new IntegerArgumentParser().parse(args[1]);
+        switch (args[0].toLowerCase()) {
             case "raw" -> {
                 List<String> title = new ArrayList<>();
                 for (int i = 0; i < size; i++) {

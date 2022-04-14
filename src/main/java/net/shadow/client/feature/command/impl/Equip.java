@@ -24,7 +24,7 @@ public class Equip extends Command {
 
     @Override
     public void onExecute(String[] args) throws CommandException {
-        validateArgumentsLength(args, 1);
+        validateArgumentsLength(args, 1, "Provide slot");
 
         switch (args[0].toLowerCase()) {
             case "head" -> {

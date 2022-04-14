@@ -76,7 +76,7 @@ public class ServerCrash extends Command {
                     Notification.create(2000, "Server Crash", Notification.Type.ERROR, "Please provide a power (around 5000 is good)");
                     return;
                 }
-                for(int i = 0; i < size; i++){
+                for (int i = 0; i < size; i++) {
                     ItemStack crash = new ItemStack(Items.WRITTEN_BOOK, 1);
                     NbtCompound tag = new NbtCompound();
                     NbtList list = new NbtList();

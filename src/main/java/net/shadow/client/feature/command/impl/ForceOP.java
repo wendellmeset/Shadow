@@ -26,7 +26,7 @@ public class ForceOP extends Command {
 
     @Override
     public void onExecute(String[] args) throws CommandException {
-        validateArgumentsLength(args, 1);
+        validateArgumentsLength(args, 1, "Provide command");
         HitResult view = ShadowMain.client.crosshairTarget;
         String command = String.join(" ", args);
         if (view == null || view.getType() == HitResult.Type.MISS) {

@@ -34,7 +34,7 @@ public class Hologram extends Command {
 
     @Override
     public void onExecute(String[] args) throws CommandException {
-        validateArgumentsLength(args, 2);
+        validateArgumentsLength(args, 2, "Provide flags and text");
         String options = args[0].toLowerCase();
         boolean generateAsBaby = false;
         boolean generateAsEgg = false;

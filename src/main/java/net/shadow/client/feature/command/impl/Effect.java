@@ -36,10 +36,10 @@ public class Effect extends Command {
         if (ShadowMain.client.player == null) {
             return;
         }
-        validateArgumentsLength(args, 1);
+        validateArgumentsLength(args, 1, "Provide action");
         switch (args[0].toLowerCase()) {
             case "give" -> {
-                validateArgumentsLength(args, 4);
+                validateArgumentsLength(args, 4, "Provide id, duration and strength");
                 IntegerArgumentParser iap = new IntegerArgumentParser();
                 int id = iap.parse(args[1]);
                 int duration = iap.parse(args[2]);

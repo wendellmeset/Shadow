@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class AutoTnt extends Module {
+public class AutoTNT extends Module {
     final DoubleSetting placeDistance = this.config.create(new DoubleSetting.Builder(4)
             .name("Place distance")
             .description("How far to place the blocks apart")
@@ -40,7 +40,7 @@ public class AutoTnt extends Module {
             .get());
     boolean missingTntAck = false;
 
-    public AutoTnt() {
+    public AutoTNT() {
         super("AutoTNT", "Automatically places tnt in a grid", ModuleType.GRIEF);
     }
 

@@ -29,7 +29,7 @@ public class ApplyVel extends Command {
 
     @Override
     public void onExecute(String[] args) throws CommandException {
-        validateArgumentsLength(args, 3);
+        validateArgumentsLength(args, 3, "Provide X, Y and Z velocity");
 
         DoubleArgumentParser dap = new DoubleArgumentParser();
         Double vx = dap.parse(args[0]);

@@ -25,7 +25,7 @@ public class Toggle extends Command {
 
     @Override
     public void onExecute(String[] args) throws CommandException {
-        validateArgumentsLength(args, 1);
+        validateArgumentsLength(args, 1, "Provide module name");
         Module m = ModuleRegistry.getByName(String.join(" ", args));
         if (m == null) {
             throw new CommandException("Module not found", "Specify a module name that exists");

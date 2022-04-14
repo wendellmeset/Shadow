@@ -44,11 +44,11 @@ public class SpawnData extends Command {
 
     @Override
     public void onExecute(String[] args) throws CommandException {
-        validateArgumentsLength(args, 1);
+        validateArgumentsLength(args, 1, "Provide data point");
         DoubleArgumentParser dap = new DoubleArgumentParser();
         switch (args[0].toLowerCase()) {
             case "position" -> {
-                validateArgumentsLength(args, 4);
+                validateArgumentsLength(args, 4, "Provide X, Y and Z coordinates");
                 ItemStack stack = ShadowMain.client.player.getInventory().getMainHandStack();
                 if (!stack.hasNbt())
                     stack.setNbt(new NbtCompound());
@@ -68,7 +68,7 @@ public class SpawnData extends Command {
                 message("Changed Spawning Position");
             }
             case "velocity" -> {
-                validateArgumentsLength(args, 4);
+                validateArgumentsLength(args, 4, "Provide X, Y and Z velocity");
                 ItemStack stack = ShadowMain.client.player.getInventory().getMainHandStack();
                 if (!stack.hasNbt())
                     stack.setNbt(new NbtCompound());

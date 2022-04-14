@@ -23,7 +23,7 @@ public class Inject extends Command {
 
     @Override
     public void onExecute(String[] args) throws CommandException {
-        validateArgumentsLength(args, 1);
+        validateArgumentsLength(args, 1, "Provide NBT");
         ItemStack is = ShadowMain.client.player.getMainHandStack();
 
         String nString = String.join(" ", args);

@@ -26,7 +26,7 @@ import net.shadow.client.helper.util.Utils;
 import java.util.Arrays;
 import java.util.Random;
 
-public class ShadowScreen extends Module {
+public class ToolsScreen extends Module {
 
     String packetinputmode = "";
     int blocked = 0;
@@ -34,8 +34,8 @@ public class ShadowScreen extends Module {
     boolean alt = false;
     PanelsGui menu = null;
 
-    public ShadowScreen() {
-        super("Tools", "The tools screen", ModuleType.RENDER);
+    public ToolsScreen() {
+        super("ToolsScreen", "The tools screen", ModuleType.RENDER);
         Events.registerEventHandler(EventType.PACKET_RECEIVE, packet2 -> {
             if (!enabled) return;
             PacketEvent event = (PacketEvent) packet2;

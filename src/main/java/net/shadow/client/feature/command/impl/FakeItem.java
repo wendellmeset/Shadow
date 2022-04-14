@@ -39,7 +39,7 @@ public class FakeItem extends Command {
 
     @Override
     public void onExecute(String[] args) throws CommandException {
-        validateArgumentsLength(args, 2);
+        validateArgumentsLength(args, 2, "Provide player and source");
         PlayerEntity le = new PlayerFromNameArgumentParser(true).parse(args[0]);
         if (args[1].equalsIgnoreCase("hand")) {
             ItemStack main = Objects.requireNonNull(ShadowMain.client.player).getMainHandStack().copy();

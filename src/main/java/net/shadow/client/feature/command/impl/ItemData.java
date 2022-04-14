@@ -37,7 +37,7 @@ public class ItemData extends Command {
 
     @Override
     public void onExecute(String[] args) throws CommandException {
-        validateArgumentsLength(args, 2);
+        validateArgumentsLength(args, 2, "Provide username and slot");
 
         boolean onlyShow = args.length > 2 && args[2].equalsIgnoreCase("--onlyShow");
         PlayerEntity player = new PlayerFromNameArgumentParser(true).parse(args[0]);

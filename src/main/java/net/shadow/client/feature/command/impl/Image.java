@@ -61,7 +61,7 @@ public class Image extends Command {
 
     @Override
     public void onExecute(String[] args) throws CommandException {
-        validateArgumentsLength(args, 1);
+        validateArgumentsLength(args, 1, "Provide action");
         if (args[0].equalsIgnoreCase("help")) {
             message("Modes:");
             message(">image chat");
@@ -69,7 +69,7 @@ public class Image extends Command {
             message(">image lore");
             return;
         }
-        validateArgumentsLength(args, 3);
+        validateArgumentsLength(args, 3, "Provide action, url and size");
         switch (args[0].toLowerCase()) {
             case "chat" -> new Thread(() -> {
                 try {

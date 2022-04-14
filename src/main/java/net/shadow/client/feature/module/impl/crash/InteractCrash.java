@@ -5,10 +5,6 @@
 package net.shadow.client.feature.module.impl.crash;
 
 import net.minecraft.client.util.math.MatrixStack;
-import net.shadow.client.feature.config.DoubleSetting;
-import net.shadow.client.feature.config.EnumSetting;
-import net.shadow.client.feature.module.Module;
-import net.shadow.client.feature.module.ModuleType;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
@@ -16,6 +12,10 @@ import net.minecraft.network.packet.c2s.play.PlayerInteractItemC2SPacket;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
+import net.shadow.client.feature.config.DoubleSetting;
+import net.shadow.client.feature.config.EnumSetting;
+import net.shadow.client.feature.module.Module;
+import net.shadow.client.feature.module.ModuleType;
 
 public class InteractCrash extends Module {
 
@@ -23,18 +23,18 @@ public class InteractCrash extends Module {
     final DoubleSetting repeat = this.config.create(new DoubleSetting.Builder(5).min(1).max(100).name("Power").description("How much power to attack with").get());
 
     public InteractCrash() {
-        super("InteractCrash", "crash by using many interactions", ModuleType.CRASH);
+        super("InteractCrash", "Crash using interaction packets", ModuleType.CRASH);
     }
 
     @Override
     public void tick() {
-        switch(mode.getValue()){
+        switch (mode.getValue()) {
             case Block -> {
                 BlockHitResult bhr = (BlockHitResult) client.crosshairTarget;
                 if (client.world.getBlockState(bhr.getBlockPos()).isAir()) return;
                 for (int i = 0; i < repeat.getValue(); i++) {
                     client.player.networkHandler.sendPacket(new PlayerInteractBlockC2SPacket(Hand.MAIN_HAND, bhr));
-                }  
+                }
             }
 
             case Item -> {

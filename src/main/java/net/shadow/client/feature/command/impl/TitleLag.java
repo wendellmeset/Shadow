@@ -32,7 +32,7 @@ public class TitleLag extends Command {
 
     @Override
     public void onExecute(String[] args) throws CommandException {
-        validateArgumentsLength(args, 1);
+        validateArgumentsLength(args, 1, "Provide target player");
         PlayerEntity target = new PlayerFromNameArgumentParser(true).parse(args[0]);
         String targetName = target.getGameProfile().getName();
         ShadowMain.client.getNetworkHandler().sendPacket(new ChatMessageC2SPacket("/gamerule sendCommandFeedback false"));

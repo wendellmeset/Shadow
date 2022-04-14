@@ -30,7 +30,7 @@ public class Invsee extends Command {
 
     @Override
     public void onExecute(String[] args) throws CommandException {
-        validateArgumentsLength(args, 1);
+        validateArgumentsLength(args, 1, "Provide target username");
         PlayerEntity t = new PlayerFromNameArgumentParser(true).parse(args[0]);
         Utils.TickManager.runOnNextRender(() -> ShadowMain.client.setScreen(new InventoryScreen(t)));
     }

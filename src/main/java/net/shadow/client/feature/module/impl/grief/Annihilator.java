@@ -20,13 +20,13 @@ import net.shadow.client.helper.event.events.MouseEvent;
 
 import java.util.Objects;
 
-public class Annhilator extends Module {
+public class Annihilator extends Module {
 
     final DoubleSetting range = this.config.create(new DoubleSetting.Builder(5).name("Range").description("Range of the nuke").min(1).max(14).precision(0).get());
     final StringSetting block = this.config.create(new StringSetting.Builder("air").name("Block").description("The block to fill with").get());
 
 
-    public Annhilator() {
+    public Annihilator() {
         super("Annihilator", "Nukes whatever you click at, requires /fill permissions", ModuleType.GRIEF);
         Events.registerEventHandler(EventType.MOUSE_EVENT, event -> {
             if (!this.isEnabled()) {

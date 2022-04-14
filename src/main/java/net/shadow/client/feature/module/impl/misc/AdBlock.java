@@ -12,10 +12,10 @@ import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.PacketEvent;
 
-public class MinehutAdBlocker extends Module {
+public class AdBlock extends Module {
     long blocked = 0;
 
-    public MinehutAdBlocker() {
+    public AdBlock() {
         super("AdBlock", "Blocks the /ad command on minehut from sending to you", ModuleType.MISC);
         Events.registerEventHandler(EventType.PACKET_RECEIVE, event -> {
             if (!this.isEnabled()) {

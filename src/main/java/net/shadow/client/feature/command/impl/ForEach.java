@@ -61,7 +61,7 @@ public class ForEach extends Command {
 
     @Override
     public void onExecute(String[] args) throws CommandException {
-        validateArgumentsLength(args, 3);
+        validateArgumentsLength(args, 3, "Provide source, delay and message");
         int delay = new IntegerArgumentParser().parse(args[1]);
         switch (args[0]) {
             case "player" -> {

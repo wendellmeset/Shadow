@@ -4,7 +4,13 @@
 
 package net.shadow.client.feature.module.impl.movement;
 
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.config.BooleanSetting;
 import net.shadow.client.feature.config.EnumSetting;
@@ -16,19 +22,17 @@ import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.MouseEvent;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Utils;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
-import java.awt.*;
 
 public class ClickTP extends Module {
-    
+
     private static BlockPos targeted = new BlockPos(0, 0, 0);
     final EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.Normal).name("Mode").description("The way to teleport").get());
     final BooleanSetting onlyctrl = this.config.create(new BooleanSetting.Builder(false).name("Only Ctrl").description("Only teleport when the control key is pressed").get());
+
+    public ClickTP() {
+        super("ClickTP", "Teleport somewhere you clicked to", ModuleType.MOVEMENT);
+        Events.registerEventHandlerClass(this);
+    }
 
     private static int lengthTo(BlockPos p) {
         Vec3d v = new Vec3d(p.getX(), p.getY(), p.getZ());
@@ -39,11 +43,6 @@ public class ClickTP extends Module {
         if (n == 0) return Math.floor(x);
         double factor = Math.pow(10, n);
         return Math.round(x * factor) / factor;
-    }
-
-    public ClickTP() {
-        super("ClickTP", "teleport with click", ModuleType.MOVEMENT);
-        Events.registerEventHandlerClass(this);
     }
 
     @Override
@@ -65,10 +64,10 @@ public class ClickTP extends Module {
         return null;
     }
 
-    @EventListener(type=EventType.MOUSE_EVENT)
-    void onMouseEvent(MouseEvent event){
+    @EventListener(type = EventType.MOUSE_EVENT)
+    void onMouseEvent(MouseEvent event) {
         if (!this.isEnabled()) return;
-        if (((MouseEvent) event).getButton() == 1 && ((MouseEvent) event).getAction() == 1) {
+        if (event.getButton() == 1 && event.getAction() == 1) {
             if (ShadowMain.client.currentScreen != null) return;
             BlockHitResult ray = (BlockHitResult) client.player.raycast(200, client.getTickDelta(), true);
             int rd = lengthTo(ray.getBlockPos());
@@ -77,11 +76,11 @@ public class ClickTP extends Module {
             BlockPos d = new BlockPos(blockHitResult.getBlockPos());
             BlockPos dest = new BlockPos(d.getX() + 0.5, d.getY(), d.getZ() + 0.5);
             dest = dest.offset(Direction.UP, 1);
-    
+
             if (onlyctrl.getValue() && !client.options.sprintKey.isPressed())
                 return;
-    
-            switch(mode.getValue()){
+
+            switch (mode.getValue()) {
                 case Normal -> {
                     client.player.updatePosition(dest.getX(), dest.getY(), dest.getZ());
                 }
@@ -126,7 +125,7 @@ public class ClickTP extends Module {
                     }).start();
                 }
 
-                case Experimental -> { 
+                case Experimental -> {
                     new Thread(() -> {
                         int rdd = lengthTo(ray.getBlockPos());
                         BlockPos destt = new BlockPos(blockHitResult.getBlockPos());

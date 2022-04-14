@@ -26,7 +26,7 @@ public class Author extends Command {
 
     @Override
     public void onExecute(String[] args) throws CommandException {
-        validateArgumentsLength(args, 1);
+        validateArgumentsLength(args, 1, "Provide author username");
 
         if (!ShadowMain.client.interactionManager.hasCreativeInventory()) {
             error("You must be in creative mode to do this!");

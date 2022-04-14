@@ -24,7 +24,7 @@ public class PermissionLevel extends Command {
 
     @Override
     public void onExecute(String[] args) throws CommandException {
-        validateArgumentsLength(args, 1);
+        validateArgumentsLength(args, 1, "Provide permission level");
         IntegerArgumentParser iap = new IntegerArgumentParser();
         int newPermLevel = iap.parse(args[0]);
         ShadowMain.client.player.setClientPermissionLevel(newPermLevel);

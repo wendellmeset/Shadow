@@ -27,7 +27,7 @@ public class Bind extends Command {
 
     @Override
     public void onExecute(String[] args) throws CommandException {
-        validateArgumentsLength(args, 1);
+        validateArgumentsLength(args, 1, "Provide module name");
         String mn = args[0];
         Module module = ModuleRegistry.getByName(mn);
         if (module == null) {

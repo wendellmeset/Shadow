@@ -30,7 +30,7 @@ public class Rename extends Command {
 
     @Override
     public void onExecute(String[] args) throws CommandException {
-        validateArgumentsLength(args, 1);
+        validateArgumentsLength(args, 1, "Provide new name");
 
         if (Objects.requireNonNull(ShadowMain.client.player).getInventory().getMainHandStack().isEmpty()) {
             error("You're not holding anything");

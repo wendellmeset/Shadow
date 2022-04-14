@@ -27,7 +27,7 @@ public class AutoFish extends Module {
     boolean enabled = false;
 
     public AutoFish() {
-        super("Autofish", "Automatically catches fish for you", ModuleType.WORLD);
+        super("AutoFish", "Automatically catches fish for you", ModuleType.WORLD);
         Events.registerEventHandler(EventType.PACKET_RECEIVE, packete -> {
             PacketEvent event = (PacketEvent) packete;
             if (event.getPacket() instanceof PlaySoundS2CPacket packet) {

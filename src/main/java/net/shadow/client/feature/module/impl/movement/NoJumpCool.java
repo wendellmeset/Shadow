@@ -2,24 +2,26 @@
  * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
  */
 
-package net.shadow.client.feature.module.impl.exploit;
+package net.shadow.client.feature.module.impl.movement;
 
 import net.minecraft.client.util.math.MatrixStack;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
+import net.shadow.client.mixin.ILivingEntityAccessor;
 
-import java.util.Objects;
+public class NoJumpCool extends Module {
 
-public class AntiReducedDebugInfo extends Module {
-
-    public AntiReducedDebugInfo() {
-        super("AntiRDI", "Stops the \"reduced debug info\" gamerule from taking effect", ModuleType.EXPLOIT);
+    public NoJumpCool() {
+        super("NoJumpCool", "Removes the jump cooldown", ModuleType.MOVEMENT);
     }
 
     @Override
     public void tick() {
-
+        if (ShadowMain.client.player == null || ShadowMain.client.getNetworkHandler() == null) {
+            return;
+        }
+        ((ILivingEntityAccessor) ShadowMain.client.player).setJumpingCooldown(0);
     }
 
     @Override
@@ -34,8 +36,7 @@ public class AntiReducedDebugInfo extends Module {
 
     @Override
     public String getContext() {
-        boolean origDebugInfoReduce = Objects.requireNonNull(ShadowMain.client.player).hasReducedDebugInfo() || ShadowMain.client.options.reducedDebugInfo;
-        return origDebugInfoReduce ? "Active!" : null;
+        return null;
     }
 
     @Override

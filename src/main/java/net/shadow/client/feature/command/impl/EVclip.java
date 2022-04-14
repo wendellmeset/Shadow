@@ -25,7 +25,7 @@ public class EVclip extends Command {
 
     @Override
     public void onExecute(String[] args) throws CommandException {
-        validateArgumentsLength(args, 1);
+        validateArgumentsLength(args, 1, "Provide height");
 
         if (!ShadowMain.client.player.hasVehicle()) {
             error("You're not riding an entity");

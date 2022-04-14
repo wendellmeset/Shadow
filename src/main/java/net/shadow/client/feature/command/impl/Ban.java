@@ -32,7 +32,7 @@ public class Ban extends Command {
 
     @Override
     public void onExecute(String[] args) throws CommandException {
-        validateArgumentsLength(args, 1);
+        validateArgumentsLength(args, 1, "Provide ban target's username");
         PlayerFromNameArgumentParser parser = new PlayerFromNameArgumentParser(true);
         String name = Utils.Players.completeName(args[0]);
         int[] player = Utils.Players.decodeUUID(parser.parse(name).getUuid());

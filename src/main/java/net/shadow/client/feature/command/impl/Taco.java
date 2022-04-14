@@ -190,10 +190,10 @@ public class Taco extends Command {
 
     @Override
     public void onExecute(String[] args) throws CommandException {
-        validateArgumentsLength(args, 1);
+        validateArgumentsLength(args, 1, "Provide property");
         switch (args[0].toLowerCase()) {
             case "fps" -> {
-                validateArgumentsLength(args, 2);
+                validateArgumentsLength(args, 2, "Provide new FPS");
                 int i = Utils.Math.tryParseInt(args[1], -1);
                 if (i < 1 || i > 1000) {
                     throw new CommandException("Fps outside of bounds", "Specify fps count within 1-1000 fps");
@@ -202,7 +202,7 @@ public class Taco extends Command {
                 success("set fps to " + i);
             }
             case "play" -> {
-                validateArgumentsLength(args, 2);
+                validateArgumentsLength(args, 2, "Provide file name");
                 File f = new File(String.join(" ", Arrays.copyOfRange(args, 1, args.length)));
                 if (!f.exists()) {
                     throw new CommandException("File doesn't exist", "Provide valid gif file");

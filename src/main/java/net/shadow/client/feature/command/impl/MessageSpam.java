@@ -29,7 +29,7 @@ public class MessageSpam extends Command {
 
     @Override
     public void onExecute(String[] args) throws CommandException {
-        validateArgumentsLength(args, 2);
+        validateArgumentsLength(args, 2, "Provide amount and message");
         int amount = new IntegerArgumentParser().parse(args[0]);
         for (int i = 0; i < amount; i++) {
             ShadowMain.client.player.sendChatMessage(String.join("", Arrays.copyOfRange(args, 1, args.length)));
