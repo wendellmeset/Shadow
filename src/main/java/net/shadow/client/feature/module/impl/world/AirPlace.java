@@ -24,7 +24,7 @@ public class AirPlace extends Module {
     boolean enabled = false;
 
     public AirPlace() {
-        super("AirPlace", "template", ModuleType.MISC);
+        super("AirPlace", "Places blocks in the air", ModuleType.MISC);
         Events.registerEventHandler(EventType.MOUSE_EVENT, event -> {
             if (!this.isEnabled()) return;
             if (enabled && ((MouseEvent) event).getButton() == 1 && ((MouseEvent) event).getAction() == 1) {

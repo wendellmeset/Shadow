@@ -16,7 +16,7 @@ public class AutoRun extends Module {
     final StringSetting commands = this.config.create(new StringSetting.Builder("/say real;/say hacked").name("Commands").description("commands to run when opped, ; separated").get());
 
     public AutoRun() {
-        super("AutoRun", "automatically run stuff", ModuleType.GRIEF);
+        super("AutoRun", "Automatically runs a series of commands when you get op", ModuleType.GRIEF);
     }
 
     @Override

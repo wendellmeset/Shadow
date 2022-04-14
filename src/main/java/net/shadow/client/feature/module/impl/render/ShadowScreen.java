@@ -35,7 +35,7 @@ public class ShadowScreen extends Module {
     PanelsGui menu = null;
 
     public ShadowScreen() {
-        super("Tools", "tools screen", ModuleType.RENDER);
+        super("Tools", "The tools screen", ModuleType.RENDER);
         Events.registerEventHandler(EventType.PACKET_RECEIVE, packet2 -> {
             if (!enabled) return;
             PacketEvent event = (PacketEvent) packet2;

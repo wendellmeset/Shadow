@@ -162,8 +162,8 @@ public class ParticleRenderer {
             accelY /= 1.1;
             velX += accelX;
             velY += accelY;
-            //x += velX;
-            //y += velY;
+            x += velX;
+            y += velY;
             double h = ShadowMain.client.getWindow().getScaledHeight();
             double w = ShadowMain.client.getWindow().getScaledWidth();
             if (x > w || x < 0) {

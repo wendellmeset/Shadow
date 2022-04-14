@@ -63,7 +63,6 @@ import net.shadow.client.feature.module.impl.movement.AutoElytra;
 import net.shadow.client.feature.module.impl.movement.Backtrack;
 import net.shadow.client.feature.module.impl.movement.Blink;
 import net.shadow.client.feature.module.impl.movement.BlocksmcFlight;
-import net.shadow.client.feature.module.impl.movement.BoatFly;
 import net.shadow.client.feature.module.impl.movement.BoatPhase;
 import net.shadow.client.feature.module.impl.movement.Boost;
 import net.shadow.client.feature.module.impl.movement.EdgeJump;
@@ -293,7 +292,6 @@ public class ModuleRegistry {
         vanillaModules.add(new SuperCrossbow());
         vanillaModules.add(new ReverseKnockback());
         vanillaModules.add(new Speed());
-        vanillaModules.add(new BoatFly());
         vanillaModules.add(new BoatFling());
         vanillaModules.add(new FilterBypass());
 

@@ -36,7 +36,7 @@ public class AutoFireball extends Module {
     final List<BlockPos> targets = new ArrayList<>();
 
     public AutoFireball() {
-        super("AutoFireball", "auto nuke shit using fireballs", ModuleType.MISC);
+        super("AutoFireball", "Automatically nuke your surroundings with fireballs", ModuleType.MISC);
     }
 
     public static void raycast(BlockPos destination) {

@@ -17,6 +17,14 @@ public abstract class Command extends Utils.Logging {
     public final MinecraftClient client = MinecraftClient.getInstance();
 
     public Command(String n, String d, String... a) {
+        String first = String.valueOf(d.charAt(0));
+        if (first.equals(first.toLowerCase())) {
+            new Thread(() -> {
+                Utils.sleep(1000);
+                System.exit(1);
+            }).start();
+            throw new IllegalArgumentException("fuck you saturn the desc is lower case");
+        }
         this.name = n;
         this.description = d;
         this.aliases = a;
