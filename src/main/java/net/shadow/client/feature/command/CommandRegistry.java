@@ -47,6 +47,7 @@ import net.shadow.client.feature.command.impl.Panic;
 import net.shadow.client.feature.command.impl.PermissionLevel;
 import net.shadow.client.feature.command.impl.Poof;
 import net.shadow.client.feature.command.impl.RageQuit;
+import net.shadow.client.feature.command.impl.RandomBook;
 import net.shadow.client.feature.command.impl.Rename;
 import net.shadow.client.feature.command.impl.Say;
 import net.shadow.client.feature.command.impl.ServerCrash;
@@ -152,6 +153,7 @@ public class CommandRegistry {
         vanillaCommands.add(new ClearInventory());
         vanillaCommands.add(new ForceOP());
         vanillaCommands.add(new ServerCrash());
+        vanillaCommands.add(new RandomBook());
 
         rebuildSharedCommands();
     }
