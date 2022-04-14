@@ -30,6 +30,7 @@ import net.shadow.client.feature.module.impl.exploit.AntiReducedDebugInfo;
 import net.shadow.client.feature.module.impl.exploit.BoatFling;
 import net.shadow.client.feature.module.impl.exploit.Boaty;
 import net.shadow.client.feature.module.impl.exploit.CarpetBomb;
+import net.shadow.client.feature.module.impl.exploit.FilterBypass;
 import net.shadow.client.feature.module.impl.exploit.InstaBow;
 import net.shadow.client.feature.module.impl.exploit.NoComCrash;
 import net.shadow.client.feature.module.impl.exploit.OffhandCrash;
@@ -294,6 +295,7 @@ public class ModuleRegistry {
         vanillaModules.add(new Speed());
         vanillaModules.add(new BoatFly());
         vanillaModules.add(new BoatFling());
+        vanillaModules.add(new FilterBypass());
 
         rebuildSharedModuleList();
     }
