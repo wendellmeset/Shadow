@@ -41,7 +41,8 @@ public class FakeItem extends Command {
     @Override
     public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
         if (lookingAtArgIndex == 0) return ArgumentType.PLAYER;
-        if (lookingAtArgIndex == 1 || lookingAtArgIndex == 2) return ArgumentType.STRING; // fakeitem target custom:dogshit
+        if (lookingAtArgIndex == 1 || lookingAtArgIndex == 2)
+            return ArgumentType.STRING; // fakeitem target custom:dogshit
         if (args.length > 2) return ArgumentType.STRING; // nbt
         return null;
     }

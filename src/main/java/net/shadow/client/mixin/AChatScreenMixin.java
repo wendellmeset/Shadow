@@ -44,8 +44,9 @@ public class AChatScreenMixin extends Screen {
 
     @Shadow
     protected TextFieldWidget chatField;
-
-    @Shadow private CommandSuggestor commandSuggestor;
+    String previousSuggestionInput = "";
+    @Shadow
+    private CommandSuggestor commandSuggestor;
 
     protected AChatScreenMixin(Text title) {
         super(title);
@@ -174,7 +175,7 @@ public class AChatScreenMixin extends Screen {
             cir.setReturnValue(true);
         }
     }
-    String previousSuggestionInput = "";
+
     @Inject(method = {"init()V"}, at = @At("TAIL"))
     public void onInit(CallbackInfo ci) {
         chatField.setMaxLength((ModuleRegistry.getByClass(InfChatLength.class).isEnabled()) ? Integer.MAX_VALUE : 256);
@@ -183,9 +184,8 @@ public class AChatScreenMixin extends Screen {
             if (integer == 0) {
                 previousSuggestionInput = s;
                 t = s;
-            }
-            else {
-                t = previousSuggestionInput+s;
+            } else {
+                t = previousSuggestionInput + s;
             }
             if (t.isEmpty()) return OrderedText.empty();
             String p = getPrefix();
@@ -202,17 +202,18 @@ public class AChatScreenMixin extends Screen {
                     if (c1 == ' ') {
                         if (!countedSpaceBefore) countedGaps++;
                         countedSpaceBefore = true;
-                        if (i >= integer) texts.add(OrderedText.styledForwardsVisitedString(String.valueOf(c1),Style.EMPTY));
+                        if (i >= integer)
+                            texts.add(OrderedText.styledForwardsVisitedString(String.valueOf(c1), Style.EMPTY));
                     } else {
                         countedSpaceBefore = false;
                         if (i < integer) continue;
                         if (countedGaps >= 1) {
-                            ArgumentType current = c.getArgumentType(args,"",countedGaps-1);
+                            ArgumentType current = c.getArgumentType(args, "", countedGaps - 1);
                             int col = 0xFFFFFF;
                             if (current != null) col = current.getColor().getRGB();
-                            texts.add(OrderedText.styledForwardsVisitedString(String.valueOf(c1),Style.EMPTY.withColor(col)));
+                            texts.add(OrderedText.styledForwardsVisitedString(String.valueOf(c1), Style.EMPTY.withColor(col)));
                         } else {
-                            texts.add(OrderedText.styledForwardsVisitedString(String.valueOf(c1),Style.EMPTY));
+                            texts.add(OrderedText.styledForwardsVisitedString(String.valueOf(c1), Style.EMPTY));
                         }
                     }
                 }

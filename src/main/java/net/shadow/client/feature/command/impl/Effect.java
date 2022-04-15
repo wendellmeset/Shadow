@@ -36,8 +36,8 @@ public class Effect extends Command {
     public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
         if (lookingAtArgIndex == 0) return ArgumentType.STRING;
         if (args[0].equalsIgnoreCase("give")) {
-            return switch(lookingAtArgIndex) {
-                case 1,2,3 -> ArgumentType.NUMBER;
+            return switch (lookingAtArgIndex) {
+                case 1, 2, 3 -> ArgumentType.NUMBER;
                 default -> null;
             };
         }

@@ -10,7 +10,6 @@ import net.minecraft.nbt.StringNbtReader;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.coloring.ArgumentType;
-import net.shadow.client.feature.command.coloring.StaticArgumentServer;
 import net.shadow.client.feature.command.exception.CommandException;
 
 public class Inject extends Command {
