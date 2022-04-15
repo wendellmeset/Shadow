@@ -16,6 +16,8 @@ import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.coloring.ArgumentType;
+import net.shadow.client.feature.command.coloring.StaticArgumentServer;
 import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.feature.config.SettingBase;
 import net.shadow.client.feature.module.Module;
@@ -47,6 +49,11 @@ public class ConfigUtils extends Command {
             return Arrays.stream(Objects.requireNonNull(CONFIG_STORAGE.listFiles())).map(File::getName).toList().toArray(String[]::new);
         }
         return super.getSuggestions(fullCommand, args);
+    }
+
+    @Override
+    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
+        return StaticArgumentServer.serveFromStatic(lookingAtArgIndex, ArgumentType.STRING, ArgumentType.STRING);
     }
 
     @Override

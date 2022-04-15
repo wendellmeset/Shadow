@@ -9,6 +9,7 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtString;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.coloring.ArgumentType;
 import net.shadow.client.feature.command.exception.CommandException;
 
 public class Author extends Command {
@@ -22,6 +23,11 @@ public class Author extends Command {
             return new String[]{"(new author)"};
         }
         return super.getSuggestions(fullCommand, args);
+    }
+
+    @Override
+    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
+        return ArgumentType.STRING;
     }
 
     @Override

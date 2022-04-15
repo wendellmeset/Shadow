@@ -18,6 +18,8 @@ import net.minecraft.nbt.NbtLongArray;
 import net.minecraft.text.Text;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.coloring.ArgumentType;
+import net.shadow.client.feature.command.coloring.StaticArgumentServer;
 
 import java.util.Objects;
 
@@ -27,6 +29,11 @@ public class ViewNbt extends Command {
 
     public ViewNbt() {
         super("ViewNbt", "Views the nbt data of the current item", "viewnbt", "shownbt");
+    }
+
+    @Override
+    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
+        return StaticArgumentServer.serveFromStatic(lookingAtArgIndex, ArgumentType.STRING);
     }
 
     @Override

@@ -27,6 +27,8 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.coloring.ArgumentType;
+import net.shadow.client.feature.command.coloring.StaticArgumentServer;
 import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
@@ -67,6 +69,11 @@ public class Kill extends Command {
             return Objects.requireNonNull(ShadowMain.client.world).getPlayers().stream().map(abstractClientPlayerEntity -> abstractClientPlayerEntity.getGameProfile().getName()).toList().toArray(String[]::new);
         }
         return super.getSuggestions(fullCommand, args);
+    }
+
+    @Override
+    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
+        return StaticArgumentServer.serveFromStatic(lookingAtArgIndex, ArgumentType.PLAYER);
     }
 
     void handlePacket(PacketEvent pe) {

@@ -12,6 +12,8 @@ import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 import net.minecraft.screen.slot.SlotActionType;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.coloring.ArgumentType;
+import net.shadow.client.feature.command.coloring.StaticArgumentServer;
 
 import java.util.Objects;
 
@@ -22,6 +24,11 @@ public class Poof extends Command {
 
     public static void drop(int slot) {
         ShadowMain.client.interactionManager.clickSlot(ShadowMain.client.player.currentScreenHandler.syncId, slot, 1, SlotActionType.THROW, ShadowMain.client.player);
+    }
+
+    @Override
+    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
+        return StaticArgumentServer.serveFromStatic(lookingAtArgIndex, ArgumentType.PLAYER);
     }
 
     @Override

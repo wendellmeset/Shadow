@@ -161,7 +161,15 @@ public class CommandRegistry {
     public static List<Command> getCommands() {
         return sharedCommands;
     }
-
+    public static Command getCommand(String fullCommand) {
+        String[] spl = fullCommand.split(" +");
+        String cmd = spl[0].toLowerCase();
+        return CommandRegistry.getByAlias(cmd);
+    }
+    public static String[] getArgs(String command) {
+        String[] spl = command.split(" +");
+        return Arrays.copyOfRange(spl, 1, spl.length);
+    }
     public static void execute(String command) {
         String[] spl = command.split(" +");
         String cmd = spl[0].toLowerCase();
@@ -170,7 +178,6 @@ public class CommandRegistry {
         if (c == null) {
             Utils.Logging.error("Command \"" + cmd + "\" not found");
         } else {
-            //            CoffeeConsoleScreen.instance().log("> " + command, CoffeeConsoleScreen.CLIENT);
             try {
                 c.onExecute(args);
             } catch (CommandException cex) {

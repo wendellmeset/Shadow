@@ -14,6 +14,8 @@ import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
 import net.minecraft.util.hit.BlockHitResult;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.coloring.ArgumentType;
+import net.shadow.client.feature.command.coloring.StaticArgumentServer;
 import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
@@ -57,6 +59,11 @@ public class Image extends Command {
             return new String[]{"(size)"};
         }
         return super.getSuggestions(fullCommand, args);
+    }
+
+    @Override
+    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
+        return StaticArgumentServer.serveFromStatic(lookingAtArgIndex, ArgumentType.STRING, ArgumentType.STRING, ArgumentType.NUMBER);
     }
 
     @Override

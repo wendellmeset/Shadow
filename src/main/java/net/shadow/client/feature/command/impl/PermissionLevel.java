@@ -7,11 +7,18 @@ package net.shadow.client.feature.command.impl;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.argument.IntegerArgumentParser;
+import net.shadow.client.feature.command.coloring.ArgumentType;
+import net.shadow.client.feature.command.coloring.StaticArgumentServer;
 import net.shadow.client.feature.command.exception.CommandException;
 
 public class PermissionLevel extends Command {
     public PermissionLevel() {
         super("PermissionLevel", "Sets the player's permission level client side", "permissionlevel", "permlevel", "cperm");
+    }
+
+    @Override
+    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
+        return StaticArgumentServer.serveFromStatic(lookingAtArgIndex, ArgumentType.NUMBER);
     }
 
     @Override

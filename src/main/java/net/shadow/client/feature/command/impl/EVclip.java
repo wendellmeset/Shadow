@@ -8,6 +8,8 @@ import net.minecraft.entity.Entity;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.argument.IntegerArgumentParser;
+import net.shadow.client.feature.command.coloring.ArgumentType;
+import net.shadow.client.feature.command.coloring.StaticArgumentServer;
 import net.shadow.client.feature.command.exception.CommandException;
 
 public class EVclip extends Command {
@@ -21,6 +23,11 @@ public class EVclip extends Command {
             return new String[]{"(amount)"};
         }
         return super.getSuggestions(fullCommand, args);
+    }
+
+    @Override
+    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
+        return StaticArgumentServer.serveFromStatic(lookingAtArgIndex, ArgumentType.NUMBER);
     }
 
     @Override

@@ -7,6 +7,7 @@ package net.shadow.client.feature.command.impl;
 import net.minecraft.item.ItemStack;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.coloring.ArgumentType;
 import net.shadow.client.helper.nbt.NbtGroup;
 import net.shadow.client.helper.nbt.NbtObject;
 import net.shadow.client.helper.nbt.NbtProperty;
@@ -16,6 +17,10 @@ public class Test extends Command {
         super("Test", "REAL", "test");
     }
 
+    @Override
+    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
+        return null;
+    }
 
     @Override
     public void onExecute(String[] args) {

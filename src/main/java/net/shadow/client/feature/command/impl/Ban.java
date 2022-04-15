@@ -12,6 +12,8 @@ import net.minecraft.text.Text;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.argument.PlayerFromNameArgumentParser;
+import net.shadow.client.feature.command.coloring.ArgumentType;
+import net.shadow.client.feature.command.coloring.StaticArgumentServer;
 import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.helper.util.Utils;
 
@@ -20,6 +22,11 @@ import java.util.Objects;
 public class Ban extends Command {
     public Ban() {
         super("Ban", "Ban people from re-joining the server", "ban", "block");
+    }
+
+    @Override
+    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
+        return StaticArgumentServer.serveFromStatic(lookingAtArgIndex, ArgumentType.STRING);
     }
 
     @Override

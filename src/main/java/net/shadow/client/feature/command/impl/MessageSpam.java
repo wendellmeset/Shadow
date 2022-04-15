@@ -7,6 +7,8 @@ package net.shadow.client.feature.command.impl;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.argument.IntegerArgumentParser;
+import net.shadow.client.feature.command.coloring.ArgumentType;
+import net.shadow.client.feature.command.coloring.StaticArgumentServer;
 import net.shadow.client.feature.command.exception.CommandException;
 
 import java.util.Arrays;
@@ -14,6 +16,12 @@ import java.util.Arrays;
 public class MessageSpam extends Command {
     public MessageSpam() {
         super("MessageSpam", "Sends a large amount of messages quickly", "spam", "spamMessages");
+    }
+
+    @Override
+    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
+        if (lookingAtArgIndex == 0) return ArgumentType.NUMBER;
+        return ArgumentType.STRING;
     }
 
     @Override

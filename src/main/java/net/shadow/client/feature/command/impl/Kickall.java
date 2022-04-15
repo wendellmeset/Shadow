@@ -18,12 +18,18 @@ import net.minecraft.network.packet.s2c.login.LoginSuccessS2CPacket;
 import net.minecraft.text.Text;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.coloring.ArgumentType;
 
 import java.net.InetSocketAddress;
 
 public class Kickall extends Command {
     public Kickall() {
         super("Kickall", "Kicks every single person on an offline server", "kickall");
+    }
+
+    @Override
+    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
+        return null;
     }
 
     @Override

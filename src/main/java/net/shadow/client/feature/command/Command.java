@@ -5,6 +5,7 @@
 package net.shadow.client.feature.command;
 
 import net.minecraft.client.MinecraftClient;
+import net.shadow.client.feature.command.coloring.ArgumentType;
 import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.helper.util.Utils;
 
@@ -47,6 +48,8 @@ public abstract class Command extends Utils.Logging {
     public String[] getAliases() {
         return aliases;
     }
+
+    public abstract ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex);
 
     public abstract void onExecute(String[] args) throws CommandException;
 

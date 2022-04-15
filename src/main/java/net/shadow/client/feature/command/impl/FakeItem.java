@@ -15,6 +15,7 @@ import net.minecraft.util.registry.Registry;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.argument.PlayerFromNameArgumentParser;
+import net.shadow.client.feature.command.coloring.ArgumentType;
 import net.shadow.client.feature.command.exception.CommandException;
 
 import java.util.Arrays;
@@ -35,6 +36,14 @@ public class FakeItem extends Command {
             return new String[]{"(item nbt)"};
         }
         return super.getSuggestions(fullCommand, args);
+    }
+
+    @Override
+    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
+        if (lookingAtArgIndex == 0) return ArgumentType.PLAYER;
+        if (lookingAtArgIndex == 1 || lookingAtArgIndex == 2) return ArgumentType.STRING; // fakeitem target custom:dogshit
+        if (args.length > 2) return ArgumentType.STRING; // nbt
+        return null;
     }
 
     @Override

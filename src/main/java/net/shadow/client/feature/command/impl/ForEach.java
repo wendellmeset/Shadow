@@ -12,6 +12,8 @@ import net.minecraft.network.packet.s2c.play.CommandSuggestionsS2CPacket;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.argument.IntegerArgumentParser;
+import net.shadow.client.feature.command.coloring.ArgumentType;
+import net.shadow.client.feature.command.coloring.StaticArgumentServer;
 import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
@@ -57,6 +59,11 @@ public class ForEach extends Command {
             return new String[]{"(string)"};
         }
         return super.getSuggestions(fullCommand, args);
+    }
+
+    @Override
+    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
+        return StaticArgumentServer.serveFromStatic(lookingAtArgIndex, ArgumentType.STRING, ArgumentType.NUMBER, ArgumentType.STRING);
     }
 
     @Override
