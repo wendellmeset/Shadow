@@ -23,10 +23,6 @@ import java.util.Random;
 
 public class ChunkRenderCrash extends Module {
 
-    static boolean shouldfly;
-    static int ppls;
-    static int ticks;
-
     final DoubleSetting velocity = this.config.create(new DoubleSetting.Builder(7).min(1).max(10).name("Velocity").description("How fast to move").get());
     final DoubleSetting timer = this.config.create(new DoubleSetting.Builder(25).min(20).max(200).name("Timer").description("Timer boost speed").get());
     final DoubleSetting lockat = this.config.create(new DoubleSetting.Builder(200).min(20).max(500).name("LockAT").description("What height to start boosting at").get());
@@ -41,24 +37,13 @@ public class ChunkRenderCrash extends Module {
     public void tick() {
         Utils.setClientTps(timer.getValue().floatValue());
         ClientPlayerEntity player = client.player;
-        ticks++;
         client.player.setSprinting(true);
         Vec3d forward = Vec3d.fromPolar(0, player.getYaw()).normalize();
         if (client.player.getY() < lockat.getValue()) {
             player.setVelocity(0, 0.3, 0);
         } else {
-            if (shouldfly) {
-                client.options.forwardKey.setPressed(true);
-                player.setVelocity(forward.x * velocity.getValue(), 0, forward.z * velocity.getValue());
-            } else {
-                client.options.forwardKey.setPressed(true);
-            }
-        }
-        if (ticks % 5 == 0) {
-            client.player.networkHandler.sendPacket(new TeleportConfirmC2SPacket(ticks));
-        }
-        if (ticks % 200 == 0) {
-            ppls = 0;
+            client.options.forwardKey.setPressed(true);
+            player.setVelocity(forward.x * velocity.getValue(), 0, forward.z * velocity.getValue());
         }
     }
 

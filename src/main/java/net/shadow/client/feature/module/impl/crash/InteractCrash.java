@@ -9,6 +9,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractItemC2SPacket;
+import net.minecraft.network.packet.s2c.play.OpenScreenS2CPacket;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
@@ -16,6 +17,10 @@ import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.config.EnumSetting;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
+import net.shadow.client.helper.event.EventListener;
+import net.shadow.client.helper.event.EventType;
+import net.shadow.client.helper.event.Events;
+import net.shadow.client.helper.event.events.PacketEvent;
 
 public class InteractCrash extends Module {
 
@@ -24,6 +29,7 @@ public class InteractCrash extends Module {
 
     public InteractCrash() {
         super("InteractCrash", "Crash using interaction packets", ModuleType.CRASH);
+        Events.registerEventHandlerClass(this);
     }
 
     @Override
@@ -54,6 +60,15 @@ public class InteractCrash extends Module {
                     client.player.networkHandler.sendPacket(PlayerInteractEntityC2SPacket.interact(target, false, Hand.MAIN_HAND));
                 }
             }
+        }
+    }
+
+
+    @EventListener(type=EventType.PACKET_RECEIVE)
+    void onGotPacket(PacketEvent event){
+        if(!this.isEnabled()) return;
+        if(event.getPacket() instanceof OpenScreenS2CPacket packet){
+            event.setCancelled(true);
         }
     }
 
