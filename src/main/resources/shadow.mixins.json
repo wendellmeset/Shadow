@@ -18,6 +18,7 @@
     "ClientConnectionMixin",
     "ClientPlayerEntityMixin",
     "ClientPlayerInteractionManagerMixin",
+    "CommandSuggestorAccessor",
     "CreativeInventoryScreenMixin",
     "Deadmau5FeatureRendererMixin",
     "EntityMixin",

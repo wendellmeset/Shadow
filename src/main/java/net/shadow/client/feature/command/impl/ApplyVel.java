@@ -7,12 +7,20 @@ package net.shadow.client.feature.command.impl;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.argument.DoubleArgumentParser;
+import net.shadow.client.feature.command.coloring.ArgumentType;
+import net.shadow.client.feature.command.coloring.StaticArgumentServer;
 import net.shadow.client.feature.command.exception.CommandException;
 
 public class ApplyVel extends Command {
 
     public ApplyVel() {
         super("ApplyVel", "Apply velocity to your player", "velocity", "vel", "applyVel", "yeet");
+    }
+
+    @Override
+    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
+
+        return StaticArgumentServer.serveFromStatic(lookingAtArgIndex, ArgumentType.NUMBER, ArgumentType.NUMBER, ArgumentType.NUMBER);
     }
 
     @Override

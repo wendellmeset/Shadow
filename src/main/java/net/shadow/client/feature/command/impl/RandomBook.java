@@ -7,6 +7,8 @@ package net.shadow.client.feature.command.impl;
 import net.minecraft.network.packet.c2s.play.BookUpdateC2SPacket;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.argument.IntegerArgumentParser;
+import net.shadow.client.feature.command.coloring.ArgumentType;
+import net.shadow.client.feature.command.coloring.StaticArgumentServer;
 import net.shadow.client.feature.command.exception.CommandException;
 
 import java.util.ArrayList;
@@ -20,6 +22,11 @@ public class RandomBook extends Command {
 
     public RandomBook() {
         super("RandomBook", "Writes random books", "RandomBook", "rbook");
+    }
+
+    @Override
+    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
+        return StaticArgumentServer.serveFromStatic(lookingAtArgIndex, ArgumentType.STRING, ArgumentType.NUMBER);
     }
 
     @Override

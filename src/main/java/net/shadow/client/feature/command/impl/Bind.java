@@ -6,6 +6,8 @@ package net.shadow.client.feature.command.impl;
 
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.coloring.ArgumentType;
+import net.shadow.client.feature.command.coloring.StaticArgumentServer;
 import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.feature.gui.screen.BindScreen;
 import net.shadow.client.feature.module.Module;
@@ -23,6 +25,11 @@ public class Bind extends Command {
             return ModuleRegistry.getModules().stream().map(Module::getName).toList().toArray(String[]::new);
         }
         return super.getSuggestions(fullCommand, args);
+    }
+
+    @Override
+    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
+        return StaticArgumentServer.serveFromStatic(lookingAtArgIndex, ArgumentType.STRING);
     }
 
     @Override

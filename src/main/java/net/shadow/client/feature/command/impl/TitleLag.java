@@ -13,6 +13,8 @@ import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.argument.PlayerFromNameArgumentParser;
+import net.shadow.client.feature.command.coloring.ArgumentType;
+import net.shadow.client.feature.command.coloring.StaticArgumentServer;
 import net.shadow.client.feature.command.exception.CommandException;
 
 import java.util.Objects;
@@ -20,6 +22,11 @@ import java.util.Objects;
 public class TitleLag extends Command {
     public TitleLag() {
         super("TitleLag", "Lag players with big ass titles", "lag", "titleLag");
+    }
+
+    @Override
+    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
+        return StaticArgumentServer.serveFromStatic(lookingAtArgIndex, ArgumentType.PLAYER);
     }
 
     @Override

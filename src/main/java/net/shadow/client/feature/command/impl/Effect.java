@@ -9,6 +9,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.argument.IntegerArgumentParser;
+import net.shadow.client.feature.command.coloring.ArgumentType;
 import net.shadow.client.feature.command.exception.CommandException;
 
 public class Effect extends Command {
@@ -29,6 +30,18 @@ public class Effect extends Command {
             return new String[]{"(strength)"};
         }
         return super.getSuggestions(fullCommand, args);
+    }
+
+    @Override
+    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
+        if (lookingAtArgIndex == 0) return ArgumentType.STRING;
+        if (args[0].equalsIgnoreCase("give")) {
+            return switch(lookingAtArgIndex) {
+                case 1,2,3 -> ArgumentType.NUMBER;
+                default -> null;
+            };
+        }
+        return null;
     }
 
     @Override

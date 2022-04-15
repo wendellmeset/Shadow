@@ -4,14 +4,19 @@
 
 package net.shadow.client.mixin;
 
+import lombok.val;
 import net.minecraft.client.gui.screen.ChatScreen;
+import net.minecraft.client.gui.screen.CommandSuggestor;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.OrderedText;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.CommandRegistry;
+import net.shadow.client.feature.command.coloring.ArgumentType;
 import net.shadow.client.feature.gui.screen.ConsoleScreen;
 import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.feature.module.impl.misc.ClientSettings;
@@ -39,6 +44,8 @@ public class AChatScreenMixin extends Screen {
 
     @Shadow
     protected TextFieldWidget chatField;
+
+    @Shadow private CommandSuggestor commandSuggestor;
 
     protected AChatScreenMixin(Text title) {
         super(title);
@@ -153,7 +160,7 @@ public class AChatScreenMixin extends Screen {
         String t = chatField.getText();
         if (t.startsWith(p)) {
             String note = "If you need a bigger console, do \"" + p + "console\"";
-            double len = FontRenderers.getRenderer().getStringWidth(note) + 1;
+            double len = FontRenderers.getRenderer().getStringWidth(note);
             FontRenderers.getRenderer().drawString(matrices, note, width - len - 2, height - 15 - FontRenderers.getRenderer().getMarginHeight(), 0xFFFFFF);
             renderSuggestions(matrices);
         }
@@ -167,9 +174,52 @@ public class AChatScreenMixin extends Screen {
             cir.setReturnValue(true);
         }
     }
-
+    String previousSuggestionInput = "";
     @Inject(method = {"init()V"}, at = @At("TAIL"))
     public void onInit(CallbackInfo ci) {
         chatField.setMaxLength((ModuleRegistry.getByClass(InfChatLength.class).isEnabled()) ? Integer.MAX_VALUE : 256);
+        chatField.setRenderTextProvider((s, integer) -> {
+            String t;
+            if (integer == 0) {
+                previousSuggestionInput = s;
+                t = s;
+            }
+            else {
+                t = previousSuggestionInput+s;
+            }
+            if (t.isEmpty()) return OrderedText.empty();
+            String p = getPrefix();
+            String[] spl = t.substring(p.length()).split(" +");
+            Command c = CommandRegistry.getByAlias(spl[0]);
+            String[] args = Arrays.copyOfRange(spl, 1, spl.length);
+            if (c != null && t.startsWith(p) && args.length > 0) {
+                List<OrderedText> texts = new ArrayList<>();
+                int countedGaps = 0;
+                boolean countedSpaceBefore = false;
+                val chars = t.toCharArray();
+                for (int i = 0; i < chars.length; i++) {
+                    char c1 = chars[i];
+                    if (c1 == ' ') {
+                        if (!countedSpaceBefore) countedGaps++;
+                        countedSpaceBefore = true;
+                        if (i >= integer) texts.add(OrderedText.styledForwardsVisitedString(String.valueOf(c1),Style.EMPTY));
+                    } else {
+                        countedSpaceBefore = false;
+                        if (i < integer) continue;
+                        if (countedGaps >= 1) {
+                            ArgumentType current = c.getArgumentType(args,"",countedGaps-1);
+                            int col = 0xFFFFFF;
+                            if (current != null) col = current.getColor().getRGB();
+                            texts.add(OrderedText.styledForwardsVisitedString(String.valueOf(c1),Style.EMPTY.withColor(col)));
+                        } else {
+                            texts.add(OrderedText.styledForwardsVisitedString(String.valueOf(c1),Style.EMPTY));
+                        }
+                    }
+                }
+                return OrderedText.concat(texts);
+            } else {
+                return ((CommandSuggestorAccessor) this.commandSuggestor).invokeProvideRenderText(s, integer);
+            }
+        });
     }
 }

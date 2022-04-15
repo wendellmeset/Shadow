@@ -11,6 +11,7 @@ import net.minecraft.util.math.Vec3d;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.argument.DoubleArgumentParser;
+import net.shadow.client.feature.command.coloring.ArgumentType;
 import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.helper.nbt.NbtGroup;
 import net.shadow.client.helper.nbt.NbtList;
@@ -40,6 +41,17 @@ public class SpawnData extends Command {
             }
         }
         return super.getSuggestions(fullCommand, args);
+    }
+
+    @Override
+    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
+        if (lookingAtArgIndex == 0) return ArgumentType.STRING;
+        if (lookingAtArgIndex == 1 || lookingAtArgIndex == 2 || lookingAtArgIndex == 3) {
+            if (args[0].equalsIgnoreCase("position") || args[0].equals("velocity")) {
+                return ArgumentType.NUMBER;
+            }
+        }
+        return null;
     }
 
     @Override

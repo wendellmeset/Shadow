@@ -9,10 +9,16 @@ import net.minecraft.network.packet.c2s.play.UpdateCommandBlockC2SPacket;
 import net.minecraft.util.math.Direction;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.coloring.ArgumentType;
 
 public class CheckCmd extends Command {
     public CheckCmd() {
         super("CheckCmd", "Check if command blocks are enabled", "checkCmd");
+    }
+
+    @Override
+    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
+        return null;
     }
 
     @Override

@@ -13,6 +13,7 @@ import net.minecraft.nbt.NbtString;
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.coloring.ArgumentType;
 import net.shadow.client.helper.util.Utils;
 
 import java.util.Base64;
@@ -25,6 +26,11 @@ public class LogFlood extends Command {
 
     public LogFlood() {
         super("LogFlood", "Floods the log files of players in render distance", "logflood", "lflood");
+    }
+
+    @Override
+    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
+        return null;
     }
 
     @Override

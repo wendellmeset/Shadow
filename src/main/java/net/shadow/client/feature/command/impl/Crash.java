@@ -9,6 +9,8 @@ import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.argument.PlayerFromNameArgumentParser;
+import net.shadow.client.feature.command.coloring.ArgumentType;
+import net.shadow.client.feature.command.coloring.StaticArgumentServer;
 import net.shadow.client.feature.command.exception.CommandException;
 
 import java.util.Objects;
@@ -16,6 +18,11 @@ import java.util.Objects;
 public class Crash extends Command {
     public Crash() {
         super("Crash", "Crash surrounding players with particles", "crash");
+    }
+
+    @Override
+    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
+        return StaticArgumentServer.serveFromStatic(lookingAtArgIndex, ArgumentType.PLAYER);
     }
 
     @Override

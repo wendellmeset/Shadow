@@ -9,6 +9,7 @@ import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 import net.minecraft.text.Text;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.coloring.ArgumentType;
 import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.helper.util.Utils;
 
@@ -18,6 +19,11 @@ public class Rename extends Command {
 
     public Rename() {
         super("Rename", "Renames an item (requires creative)", "rename", "rn", "name");
+    }
+
+    @Override
+    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
+        return ArgumentType.STRING;
     }
 
     @Override

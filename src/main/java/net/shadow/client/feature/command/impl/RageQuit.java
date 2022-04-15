@@ -6,6 +6,7 @@ package net.shadow.client.feature.command.impl;
 
 import net.minecraft.client.util.GlfwUtil;
 import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.coloring.ArgumentType;
 import org.apache.commons.lang3.SystemUtils;
 
 import java.io.IOException;
@@ -14,6 +15,11 @@ public class RageQuit extends Command {
 
     public RageQuit() {
         super("RageQuit", "U mad?", "ragequit");
+    }
+
+    @Override
+    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
+        return null;
     }
 
     public static boolean shutdown(int time) throws IOException {
