@@ -11,6 +11,7 @@ import net.minecraft.util.math.Vec3d;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.argument.DoubleArgumentParser;
+import net.shadow.client.feature.command.argument.StreamlineArgumentParser;
 import net.shadow.client.feature.command.coloring.ArgumentType;
 import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.helper.nbt.NbtGroup;
@@ -57,8 +58,8 @@ public class SpawnData extends Command {
     @Override
     public void onExecute(String[] args) throws CommandException {
         validateArgumentsLength(args, 1, "Provide data point");
-        DoubleArgumentParser dap = new DoubleArgumentParser();
-        switch (args[0].toLowerCase()) {
+        StreamlineArgumentParser parser = new StreamlineArgumentParser(args);
+        switch (parser.consumeString().toLowerCase()) {
             case "position" -> {
                 validateArgumentsLength(args, 4, "Provide X, Y and Z coordinates");
                 ItemStack stack = ShadowMain.client.player.getInventory().getMainHandStack();
@@ -68,9 +69,9 @@ public class SpawnData extends Command {
                 NbtGroup ng = new NbtGroup(
                         new NbtObject("EntityTag",
                                 new NbtList("Pos",
-                                        new NbtProperty(dap.parse(args[1])),
-                                        new NbtProperty(dap.parse(args[2])),
-                                        new NbtProperty(dap.parse(args[3]))
+                                        new NbtProperty(parser.consumeDouble()),
+                                        new NbtProperty(parser.consumeDouble()),
+                                        new NbtProperty(parser.consumeDouble())
                                 )
                         )
                 );
@@ -87,9 +88,9 @@ public class SpawnData extends Command {
                 NbtGroup ng = new NbtGroup(
                         new NbtObject("EntityTag",
                                 new NbtList("Motion",
-                                        new NbtProperty(dap.parse(args[1])),
-                                        new NbtProperty(dap.parse(args[2])),
-                                        new NbtProperty(dap.parse(args[3]))
+                                        new NbtProperty(parser.consumeDouble()),
+                                        new NbtProperty(parser.consumeDouble()),
+                                        new NbtProperty(parser.consumeDouble())
                                 )
                         )
                 );

@@ -7,6 +7,7 @@ package net.shadow.client.feature.command.impl;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.argument.DoubleArgumentParser;
+import net.shadow.client.feature.command.argument.StreamlineArgumentParser;
 import net.shadow.client.feature.command.coloring.ArgumentType;
 import net.shadow.client.feature.command.coloring.StaticArgumentServer;
 import net.shadow.client.feature.command.exception.CommandException;
@@ -39,10 +40,10 @@ public class ApplyVel extends Command {
     public void onExecute(String[] args) throws CommandException {
         validateArgumentsLength(args, 3, "Provide X, Y and Z velocity");
 
-        DoubleArgumentParser dap = new DoubleArgumentParser();
-        Double vx = dap.parse(args[0]);
-        Double vy = dap.parse(args[1]);
-        Double vz = dap.parse(args[2]);
+        StreamlineArgumentParser dap = new StreamlineArgumentParser(args);
+        double vx = dap.consumeDouble();
+        double vy = dap.consumeDouble();
+        double vz = dap.consumeDouble();
 
         ShadowMain.client.player.addVelocity(vx, vy, vz);
     }
