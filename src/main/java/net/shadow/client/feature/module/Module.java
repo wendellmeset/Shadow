@@ -28,7 +28,7 @@ public abstract class Module {
     private boolean enabled = false;
 
     public Module(String n, String d, ModuleType type) {
-        if (!n.equals(n)) {
+        if (!n.equals(this.getClass().getSimpleName())) {
             new Thread(() -> {
                 Utils.sleep(1000);
                 System.exit(1);
