@@ -64,10 +64,10 @@ public class InteractCrash extends Module {
     }
 
 
-    @EventListener(type=EventType.PACKET_RECEIVE)
-    void onGotPacket(PacketEvent event){
-        if(!this.isEnabled()) return;
-        if(event.getPacket() instanceof OpenScreenS2CPacket packet){
+    @EventListener(type = EventType.PACKET_RECEIVE)
+    void onGotPacket(PacketEvent event) {
+        if (!this.isEnabled()) return;
+        if (event.getPacket() instanceof OpenScreenS2CPacket packet) {
             event.setCancelled(true);
         }
     }

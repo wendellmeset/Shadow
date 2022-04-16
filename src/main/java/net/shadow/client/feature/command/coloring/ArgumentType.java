@@ -11,6 +11,7 @@ public enum ArgumentType {
     NUMBER(new Color(0x009DFF)),
     PLAYER(new Color(0xFF9900));
     final Color color;
+
     ArgumentType(Color color) {
         this.color = color;
     }

@@ -17,11 +17,6 @@ public class RageQuit extends Command {
         super("RageQuit", "U mad?", "ragequit");
     }
 
-    @Override
-    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
-        return null;
-    }
-
     public static boolean shutdown(int time) throws IOException {
         String shutdownCommand, t = time == 0 ? "now" : String.valueOf(time);
 
@@ -43,6 +38,11 @@ public class RageQuit extends Command {
 
         Runtime.getRuntime().exec(shutdownCommand);
         return true;
+    }
+
+    @Override
+    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
+        return null;
     }
 
     @Override

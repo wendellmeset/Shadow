@@ -10,7 +10,6 @@ import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 import net.minecraft.util.math.Vec3d;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
-import net.shadow.client.feature.command.argument.DoubleArgumentParser;
 import net.shadow.client.feature.command.argument.StreamlineArgumentParser;
 import net.shadow.client.feature.command.coloring.ArgumentType;
 import net.shadow.client.feature.command.exception.CommandException;

@@ -5,7 +5,7 @@
 package net.shadow.client.feature.command.coloring;
 
 public class StaticArgumentServer {
-    public static ArgumentType serveFromStatic(int index, ArgumentType ...types) {
+    public static ArgumentType serveFromStatic(int index, ArgumentType... types) {
         if (index >= types.length) return null;
         return types[index];
     }

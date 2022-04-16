@@ -5,7 +5,6 @@
 package net.shadow.client.feature.command.impl;
 
 import com.google.gson.Gson;
-import net.minecraft.stat.Stat;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.coloring.ArgumentType;

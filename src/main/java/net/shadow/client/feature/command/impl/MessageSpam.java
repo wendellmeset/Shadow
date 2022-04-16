@@ -8,7 +8,6 @@ import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.argument.IntegerArgumentParser;
 import net.shadow.client.feature.command.coloring.ArgumentType;
-import net.shadow.client.feature.command.coloring.StaticArgumentServer;
 import net.shadow.client.feature.command.exception.CommandException;
 
 import java.util.Arrays;

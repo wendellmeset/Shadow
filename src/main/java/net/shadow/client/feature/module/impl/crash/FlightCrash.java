@@ -8,7 +8,6 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
-import net.minecraft.network.packet.c2s.play.TeleportConfirmC2SPacket;
 import net.minecraft.util.math.Vec3d;
 import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.module.Module;
