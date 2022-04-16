@@ -21,15 +21,15 @@ import net.shadow.client.helper.util.Utils;
 
 import java.util.Random;
 
-public class ChunkRenderCrash extends Module {
+public class FlightCrash extends Module {
 
     final DoubleSetting velocity = this.config.create(new DoubleSetting.Builder(7).min(1).max(10).name("Velocity").description("How fast to move").get());
     final DoubleSetting timer = this.config.create(new DoubleSetting.Builder(25).min(20).max(200).name("Timer").description("Timer boost speed").get());
     final DoubleSetting lockat = this.config.create(new DoubleSetting.Builder(200).min(20).max(500).name("LockAT").description("What height to start boosting at").get());
     boolean capture = true;
 
-    public ChunkRenderCrash() {
-        super("ChunkRenderCrash", "Generates a ton of chunks", ModuleType.CRASH);
+    public FlightCrash() {
+        super("FlightCrash", "Generates a ton of chunks", ModuleType.CRASH);
         Events.registerEventHandlerClass(this);
     }
 

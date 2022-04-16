@@ -21,7 +21,7 @@ import net.shadow.client.feature.module.impl.combat.Velocity;
 import net.shadow.client.feature.module.impl.crash.AnimationCrash;
 import net.shadow.client.feature.module.impl.crash.ArmorStandCrash;
 import net.shadow.client.feature.module.impl.crash.BookInflaterCrash;
-import net.shadow.client.feature.module.impl.crash.ChunkRenderCrash;
+import net.shadow.client.feature.module.impl.crash.FlightCrash;
 import net.shadow.client.feature.module.impl.crash.InteractCrash;
 import net.shadow.client.feature.module.impl.crash.LecternCrash;
 import net.shadow.client.feature.module.impl.crash.LoominaCrash;
@@ -298,7 +298,7 @@ public class ModuleRegistry {
         vanillaModules.add(new BoatFling());
         vanillaModules.add(new FilterBypass());
         vanillaModules.add(new InteractCrash());
-        vanillaModules.add(new ChunkRenderCrash());
+        vanillaModules.add(new FlightCrash());
         vanillaModules.add(new ClickTP());
 
         rebuildSharedModuleList();
