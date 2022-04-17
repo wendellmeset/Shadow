@@ -28,7 +28,6 @@ import net.shadow.client.feature.module.impl.crash.LecternCrash;
 import net.shadow.client.feature.module.impl.crash.LoominaCrash;
 import net.shadow.client.feature.module.impl.crash.MinehutCrash;
 import net.shadow.client.feature.module.impl.crash.OOBCrash;
-import net.shadow.client.feature.module.impl.crash.SplashCrash;
 import net.shadow.client.feature.module.impl.exploit.AntiAntiXray;
 import net.shadow.client.feature.module.impl.exploit.AntiRDI;
 import net.shadow.client.feature.module.impl.exploit.BoatCrash;
