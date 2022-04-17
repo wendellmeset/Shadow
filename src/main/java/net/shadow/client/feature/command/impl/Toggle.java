@@ -6,6 +6,7 @@ package net.shadow.client.feature.command.impl;
 
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.coloring.ArgumentType;
+import net.shadow.client.feature.command.coloring.PossibleArgument;
 import net.shadow.client.feature.command.coloring.StaticArgumentServer;
 import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.feature.module.Module;
@@ -18,16 +19,8 @@ public class Toggle extends Command {
     }
 
     @Override
-    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
-        return StaticArgumentServer.serveFromStatic(lookingAtArgIndex, ArgumentType.STRING);
-    }
-
-    @Override
-    public String[] getSuggestions(String fullCommand, String[] args) {
-        if (args.length == 1) {
-            return ModuleRegistry.getModules().stream().map(Module::getName).toList().toArray(String[]::new);
-        }
-        return super.getSuggestions(fullCommand, args);
+    public PossibleArgument getSuggestionsWithType(int index, String[] args) {
+        return StaticArgumentServer.serveFromStatic(index, new PossibleArgument(ArgumentType.STRING, ModuleRegistry.getModules().stream().map(Module::getName).toList().toArray(String[]::new)));
     }
 
     @Override

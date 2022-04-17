@@ -5,18 +5,12 @@
 package net.shadow.client.feature.command.impl;
 
 import net.shadow.client.feature.command.Command;
-import net.shadow.client.feature.command.coloring.ArgumentType;
 import net.shadow.client.helper.util.Utils;
 
 public class Drop extends Command {
 
     public Drop() {
         super("Drop", "Drops all items in your inventory", "drop", "d", "throw");
-    }
-
-    @Override
-    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
-        return null;
     }
 
     @Override

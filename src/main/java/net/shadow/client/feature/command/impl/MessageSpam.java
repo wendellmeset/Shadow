@@ -8,6 +8,8 @@ import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.argument.IntegerArgumentParser;
 import net.shadow.client.feature.command.coloring.ArgumentType;
+import net.shadow.client.feature.command.coloring.PossibleArgument;
+import net.shadow.client.feature.command.coloring.StaticArgumentServer;
 import net.shadow.client.feature.command.exception.CommandException;
 
 import java.util.Arrays;
@@ -18,20 +20,8 @@ public class MessageSpam extends Command {
     }
 
     @Override
-    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
-        if (lookingAtArgIndex == 0) return ArgumentType.NUMBER;
-        return ArgumentType.STRING;
-    }
-
-    @Override
-    public String[] getSuggestions(String fullCommand, String[] args) {
-        if (args.length == 1) {
-            return new String[]{"(amount)"};
-        }
-        if (args.length > 1) {
-            return new String[]{"(message)"};
-        }
-        return super.getSuggestions(fullCommand, args);
+    public PossibleArgument getSuggestionsWithType(int index, String[] args) {
+        return StaticArgumentServer.serveFromStatic(index, new PossibleArgument(ArgumentType.NUMBER, "(amount)"), new PossibleArgument(ArgumentType.STRING, "(message)"));
     }
 
     @Override

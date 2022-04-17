@@ -6,7 +6,6 @@ package net.shadow.client.feature.command.impl;
 
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.CommandRegistry;
-import net.shadow.client.feature.command.coloring.ArgumentType;
 
 import java.awt.Color;
 
@@ -14,11 +13,6 @@ public class Help extends Command {
 
     public Help() {
         super("Help", "Shows all commands", "help", "h", "?", "cmds", "commands");
-    }
-
-    @Override
-    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
-        return null;
     }
 
     @Override

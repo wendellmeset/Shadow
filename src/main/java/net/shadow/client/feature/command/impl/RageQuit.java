@@ -6,7 +6,6 @@ package net.shadow.client.feature.command.impl;
 
 import net.minecraft.client.util.GlfwUtil;
 import net.shadow.client.feature.command.Command;
-import net.shadow.client.feature.command.coloring.ArgumentType;
 import org.apache.commons.lang3.SystemUtils;
 
 import java.io.IOException;
@@ -38,11 +37,6 @@ public class RageQuit extends Command {
 
         Runtime.getRuntime().exec(shutdownCommand);
         return true;
-    }
-
-    @Override
-    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
-        return null;
     }
 
     @Override

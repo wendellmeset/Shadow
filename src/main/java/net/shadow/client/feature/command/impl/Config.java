@@ -6,7 +6,7 @@ package net.shadow.client.feature.command.impl;
 
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.coloring.ArgumentType;
-import net.shadow.client.feature.command.coloring.StaticArgumentServer;
+import net.shadow.client.feature.command.coloring.PossibleArgument;
 import net.shadow.client.feature.config.SettingBase;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleRegistry;
@@ -21,20 +21,18 @@ public class Config extends Command {
     }
 
     @Override
-    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
-        return StaticArgumentServer.serveFromStatic(lookingAtArgIndex, ArgumentType.STRING, ArgumentType.STRING, ArgumentType.STRING);
-    }
-
-    @Override
-    public String[] getSuggestions(String fullCommand, String[] args) {
-        if (args.length == 1) {
-            return ModuleRegistry.getModules().stream().map(mod -> mod.getName().replaceAll(" ", "-")).toList().toArray(String[]::new);
-        } else if (args.length == 2 && ModuleRegistry.getByName(args[0]) != null) {
-            return Objects.requireNonNull(ModuleRegistry.getByName(args[0].replaceAll("-", " "))).config.getSettings().stream().map(SettingBase::getName).toList().toArray(String[]::new);
-        } else if (args.length == 3) {
-            return new String[]{"(New value)"};
-        }
-        return super.getSuggestions(fullCommand, args);
+    public PossibleArgument getSuggestionsWithType(int index, String[] args) {
+        return switch (index) {
+            case 0 ->
+                    new PossibleArgument(ArgumentType.STRING, ModuleRegistry.getModules().stream().map(mod -> mod.getName().replaceAll(" ", "-")).toList().toArray(String[]::new));
+            case 1 -> {
+                if (ModuleRegistry.getByName(args[0]) != null) {
+                    yield new PossibleArgument(ArgumentType.STRING, Objects.requireNonNull(ModuleRegistry.getByName(args[0].replaceAll("-", " "))).config.getSettings().stream().map(SettingBase::getName).toList().toArray(String[]::new));
+                } else yield super.getSuggestionsWithType(index, args);
+            }
+            case 2 -> new PossibleArgument(ArgumentType.STRING, "(New value)");
+            default -> super.getSuggestionsWithType(index, args);
+        };
     }
 
     @Override

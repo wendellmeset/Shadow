@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.coloring.ArgumentType;
-import net.shadow.client.feature.command.coloring.StaticArgumentServer;
+import net.shadow.client.feature.command.coloring.PossibleArgument;
 import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.helper.Texture;
 import net.shadow.client.helper.event.EventType;
@@ -177,22 +177,19 @@ public class Taco extends Command {
     }
 
     @Override
-    public String[] getSuggestions(String fullCommand, String[] args) {
-        if (args.length == 1) {
-            return new String[]{"fps", "play", "toggle"};
-        } else if (args.length == 2) {
-            return switch (args[0].toLowerCase()) {
-                case "fps" -> new String[]{"(new fps)"};
-                case "play" -> new String[]{"(path to gif file)"};
-                default -> new String[0];
+    public PossibleArgument getSuggestionsWithType(int index, String[] args) {
+        if (index == 0) {
+            return new PossibleArgument(ArgumentType.STRING, "fps", "play", "toggle");
+        }
+        String a = args[0];
+        if (index == 1) {
+            return switch (a.toLowerCase()) {
+                case "fps" -> new PossibleArgument(ArgumentType.NUMBER, "(new fps)");
+                case "play" -> new PossibleArgument(ArgumentType.STRING, "(path to gif file)");
+                default -> super.getSuggestionsWithType(index, args);
             };
         }
-        return super.getSuggestions(fullCommand, args);
-    }
-
-    @Override
-    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
-        return StaticArgumentServer.serveFromStatic(lookingAtArgIndex, ArgumentType.STRING, ArgumentType.STRING);
+        return super.getSuggestionsWithType(index, args);
     }
 
     @Override

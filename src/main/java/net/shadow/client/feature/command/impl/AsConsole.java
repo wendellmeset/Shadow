@@ -17,6 +17,7 @@ import net.minecraft.util.math.Direction;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.coloring.ArgumentType;
+import net.shadow.client.feature.command.coloring.PossibleArgument;
 import net.shadow.client.feature.command.exception.CommandException;
 
 public class AsConsole extends Command {
@@ -25,16 +26,8 @@ public class AsConsole extends Command {
     }
 
     @Override
-    public String[] getSuggestions(String fullCommand, String[] args) {
-        if (args.length > 0) {
-            return new String[]{"(command)"};
-        }
-        return super.getSuggestions(fullCommand, args);
-    }
-
-    @Override
-    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
-        return ArgumentType.STRING;
+    public PossibleArgument getSuggestionsWithType(int index, String[] args) {
+        return new PossibleArgument(ArgumentType.STRING, "(command)");
     }
 
     @Override

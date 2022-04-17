@@ -29,6 +29,7 @@ import net.minecraft.util.math.Vec3d;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.argument.IntegerArgumentParser;
 import net.shadow.client.feature.command.coloring.ArgumentType;
+import net.shadow.client.feature.command.coloring.PossibleArgument;
 import net.shadow.client.feature.command.coloring.StaticArgumentServer;
 import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.feature.gui.notifications.Notification;
@@ -43,19 +44,9 @@ public class ServerCrash extends Command {
     }
 
     @Override
-    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
-        return StaticArgumentServer.serveFromStatic(lookingAtArgIndex, ArgumentType.STRING, ArgumentType.NUMBER);
-    }
-
-    @Override
-    public String[] getSuggestions(String fullCommand, String[] args) {
-        if (args.length == 1) {
-            return new String[]{"rider", "book", "malformednbt", "move", "papertest", "chunkoob", "mvcrash", "stackoverflow", "playtime", "playtimeold", "maptool", "fawe", "lag"};
-        }
-        if (args.length == 2) {
-            return new String[]{"(power)"};
-        }
-        return super.getSuggestions(fullCommand, args);
+    public PossibleArgument getSuggestionsWithType(int index, String[] args) {
+        return StaticArgumentServer.serveFromStatic(index, new PossibleArgument(ArgumentType.STRING, "rider", "book", "malformednbt", "move", "papertest", "chunkoob", "mvcrash", "stackoverflow", "playtime", "playtimeold", "maptool", "fawe", "lag"),
+                new PossibleArgument(ArgumentType.NUMBER, "(power)"));
     }
 
     @Override
@@ -153,7 +144,7 @@ public class ServerCrash extends Command {
             }
 
             case "lag" -> {
-                for(int i = 0; i < 3000000; i++){
+                for (int i = 0; i < 3000000; i++) {
                     client.player.networkHandler.sendPacket(new RequestCommandCompletionsC2SPacket(0, "/"));
                 }
                 Notification.create(2000, "Server Crash", Notification.Type.SUCCESS, "Sent Quick Lag Crash");

@@ -10,6 +10,7 @@ import net.minecraft.nbt.NbtString;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.coloring.ArgumentType;
+import net.shadow.client.feature.command.coloring.PossibleArgument;
 import net.shadow.client.feature.command.exception.CommandException;
 
 public class Author extends Command {
@@ -18,16 +19,8 @@ public class Author extends Command {
     }
 
     @Override
-    public String[] getSuggestions(String fullCommand, String[] args) {
-        if (args.length > 0) {
-            return new String[]{"(new author)"};
-        }
-        return super.getSuggestions(fullCommand, args);
-    }
-
-    @Override
-    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
-        return ArgumentType.STRING;
+    public PossibleArgument getSuggestionsWithType(int index, String[] args) {
+        return new PossibleArgument(ArgumentType.STRING, "(new author)");
     }
 
     @Override

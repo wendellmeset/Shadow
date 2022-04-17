@@ -10,6 +10,7 @@ import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.argument.IntegerArgumentParser;
 import net.shadow.client.feature.command.coloring.ArgumentType;
+import net.shadow.client.feature.command.coloring.PossibleArgument;
 import net.shadow.client.feature.command.exception.CommandException;
 
 public class Effect extends Command {
@@ -19,29 +20,17 @@ public class Effect extends Command {
     }
 
     @Override
-    public String[] getSuggestions(String fullCommand, String[] args) {
-        if (args.length == 1) {
-            return new String[]{"give", "clear"};
-        } else if (args.length == 2 && args[0].equalsIgnoreCase("give")) {
-            return new String[]{"(effect id)"};
-        } else if (args.length == 3 && args[0].equalsIgnoreCase("give")) {
-            return new String[]{"(duration)"};
-        } else if (args.length == 4 && args[0].equalsIgnoreCase("give")) {
-            return new String[]{"(strength)"};
-        }
-        return super.getSuggestions(fullCommand, args);
-    }
-
-    @Override
-    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
-        if (lookingAtArgIndex == 0) return ArgumentType.STRING;
-        if (args[0].equalsIgnoreCase("give")) {
-            return switch (lookingAtArgIndex) {
-                case 1, 2, 3 -> ArgumentType.NUMBER;
-                default -> null;
+    public PossibleArgument getSuggestionsWithType(int index, String[] args) {
+        if (index == 0) return new PossibleArgument(ArgumentType.STRING, "give", "clear");
+        else if (args[0].equalsIgnoreCase("give")) {
+            return switch (index) {
+                case 1 -> new PossibleArgument(ArgumentType.NUMBER, "(effect id)");
+                case 2 -> new PossibleArgument(ArgumentType.NUMBER, "(duration)");
+                case 3 -> new PossibleArgument(ArgumentType.NUMBER, "(strength)");
+                default -> super.getSuggestionsWithType(index, args);
             };
         }
-        return null;
+        return super.getSuggestionsWithType(index, args);
     }
 
     @Override
