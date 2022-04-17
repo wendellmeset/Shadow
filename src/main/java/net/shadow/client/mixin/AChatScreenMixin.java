@@ -46,7 +46,7 @@ public class AChatScreenMixin extends Screen {
     protected TextFieldWidget chatField;
     String previousSuggestionInput = "";
     @Shadow
-    private CommandSuggestor commandSuggestor;
+    CommandSuggestor commandSuggestor;
 
     protected AChatScreenMixin(Text title) {
         super(title);

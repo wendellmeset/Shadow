@@ -19,9 +19,9 @@ public class Transitions {
     }
 
     public static double transition(double value, double goal, double speed, double skipSize) {
-        speed = speed < 1 ? 1 : speed;
+        double speed1 = speed < 1 ? 1 : speed;
         double diff = goal - value;
-        double diffCalc = diff / speed;
+        double diffCalc = diff / speed1;
         if (Math.abs(diffCalc) < skipSize) {
             diffCalc = diff;
         }

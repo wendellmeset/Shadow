@@ -69,8 +69,8 @@ public class AntiCrash extends Module {
 
     public AntiCrash() {
         super("AntiCrash", "Prevents you from being fucked", ModuleType.MISC);
-        nameMax.showIf(() -> capNames.getValue());
-        particleMax.showIf(() -> capParticles.getValue());
+        nameMax.showIf(capNames::getValue);
+        particleMax.showIf(capParticles::getValue);
         Events.registerEventHandler(EventType.PACKET_RECEIVE, this::handlePacketEvent);
     }
 

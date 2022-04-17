@@ -15,16 +15,17 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public class EntityRendererMixin {
     @ModifyVariable(method = "renderLabelIfPresent", at = @At("HEAD"), index = 2, argsOnly = true)
     Text real(Text text) {
+        Text text1 = text;
         AntiCrash ac = AntiCrash.instance();
         if (ac.isEnabled() && ac.getCapNames().getValue()) {
-            String t = text.getString();
+            String t = text1.getString();
             int maxlen = (int) Math.floor(ac.getNameMax().getValue());
             int len = t.length();
             if (len > maxlen) {
                 t = t.substring(0, maxlen) + "§r...";
             }
-            text = Text.of(t);
+            text1 = Text.of(t);
         }
-        return text;
+        return text1;
     }
 }

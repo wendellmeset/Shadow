@@ -28,11 +28,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AddonManagerScreen extends ClientScreen implements FastTickable {
-    Timer discoverTimer = new Timer();
-    Scroller scroller = new Scroller(0);
-    double WIDGET_WIDTH = 600;
-    double WIDGET_HEIGHT = 300;
-    List<AddonViewer> viewerList = new ArrayList<>();
+    final Timer discoverTimer = new Timer();
+    final Scroller scroller = new Scroller(0);
+    final double WIDGET_WIDTH = 600;
+    final double WIDGET_HEIGHT = 300;
+    final List<AddonViewer> viewerList = new ArrayList<>();
 
     @Override
     public void onFastTick() {
@@ -107,10 +107,11 @@ public class AddonManagerScreen extends ClientScreen implements FastTickable {
     class AddonViewer implements FastTickable {
         static final double iconDimensions = 64;
         static final double padding = 5;
-        Addon addon;
-        double width;
+        final Addon addon;
+        final double width;
+        final RoundButton reload;
         double lastX, lastY;
-        RoundButton disable, reload;
+        RoundButton disable;
 
         public AddonViewer(Addon addon, double width) {
             this.addon = addon;

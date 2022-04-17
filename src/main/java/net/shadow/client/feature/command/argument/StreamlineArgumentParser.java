@@ -8,7 +8,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.shadow.client.feature.command.exception.CommandException;
 
 public class StreamlineArgumentParser {
-    String[] args;
+    final String[] args;
     int index = 0;
 
     public StreamlineArgumentParser(String[] args) {

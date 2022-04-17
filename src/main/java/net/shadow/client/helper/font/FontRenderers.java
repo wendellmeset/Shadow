@@ -39,13 +39,14 @@ public class FontRenderers {
     }
 
     public static BruhAdapter getCustomSize(int size) {
-        size *= 2;
+        int size1 = size;
+        size1 *= 2;
         for (BruhAdapter fontRenderer : fontRenderers) {
-            if (fontRenderer.getSize() == size) {
+            if (fontRenderer.getSize() == size1) {
                 return fontRenderer;
             }
         }
-        int fsize = size;
+        int fsize = size1;
         try {
             BruhAdapter bruhAdapter = (new BruhAdapter(new FontRenderer(Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(FontRenderers.class.getClassLoader().getResourceAsStream("Font.ttf"))).deriveFont(Font.PLAIN, fsize), fsize)));
             fontRenderers.add(bruhAdapter);

@@ -22,11 +22,15 @@ import java.util.List;
 import java.util.Objects;
 
 public class DataVisualizerWidget implements Element, Drawable, Selectable, FastTickable, DoesMSAA {
-    List<Double> data = new ArrayList<>();
-    int maxSize;
-    double width, height, x, y, minDataHeight;
-    Color c;
-    boolean showScale;
+    final List<Double> data = new ArrayList<>();
+    final int maxSize;
+    final double width;
+    final double height;
+    final double x;
+    final double y;
+    final double minDataHeight;
+    final Color c;
+    final boolean showScale;
 
     public DataVisualizerWidget(Color dataColor, boolean showScale, int maxSize, double minDataScale, double height, double width, double x, double y, double... existingData) {
         for (double existingDatum : existingData) {

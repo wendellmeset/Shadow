@@ -66,7 +66,7 @@ public class Events {
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static boolean fireEvent(EventType event, Event argument) {
         for (ListenerEntry entry : entries) {
             if (entry.type == event) {

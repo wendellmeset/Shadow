@@ -22,7 +22,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Test extends Module {
     static final Block searchTerm = Blocks.NETHER_PORTAL;
-    CopyOnWriteArrayList<BlockPos> discovered = new CopyOnWriteArrayList<>();
+    final CopyOnWriteArrayList<BlockPos> discovered = new CopyOnWriteArrayList<>();
 
     public Test() {
         super("Test", "Testing stuff with the client, can be ignored", ModuleType.MISC);
@@ -44,11 +44,6 @@ public class Test extends Module {
         }
     }
 
-    /*@EventListener(type=EventType.PACKET_SEND)
-    void onPacketSend(PacketEvent pe){
-        if(this.isEnabled()) System.out.println("-> " + pe.getPacket().toString());
-    }*/
-
     @Override
     public void enable() {
 
@@ -69,9 +64,6 @@ public class Test extends Module {
         for (BlockPos bruh : discovered) {
             Renderer.R3D.renderEdged(matrices, Vec3d.of(bruh), new Vec3d(1, 1, 1), Renderer.Util.modify(Utils.getCurrentRGB(), -1, -1, -1, 100).darker(), Renderer.Util.modify(Utils.getCurrentRGB(), -1, -1, -1, 255));
         }
-//        for (BlockPos bruh : bruhs.pop()) {
-//            Renderer.R3D.renderEdged(matrices, Vec3d.of(bruh), new Vec3d(1,1,1), Renderer.Util.modify(Utils.getCurrentRGB(), -1, -1, -1, 100).darker(), Renderer.Util.modify(Utils.getCurrentRGB(), -1, -1, -1, 255));
-//        }
     }
 
     @Override

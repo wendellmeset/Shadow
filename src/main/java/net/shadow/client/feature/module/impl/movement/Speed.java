@@ -15,7 +15,7 @@ public class Speed extends Module {
     static float fovEffectScal = 0;
     static int ticksonground = 0;
     static int ticksjustsneaking = 0;
-    final EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<Mode>(Mode.OnGround).name("Mode").description("How to apply the speed").get());
+    final EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.OnGround).name("Mode").description("How to apply the speed").get());
     final DoubleSetting speed = this.config.create(new DoubleSetting.Builder(20).min(5).max(50).name("Speed").description("How fast to go").get());
 
     public Speed() {

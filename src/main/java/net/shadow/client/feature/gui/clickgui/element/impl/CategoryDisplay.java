@@ -137,7 +137,9 @@ public class CategoryDisplay extends Element {
 
     @Override
     public void render(MatrixStack matrices, double mouseX, double mouseY, double scrollBeingUsed) {
-        scroll(mouseX, mouseY, 0);
+        double mouseX1 = mouseX;
+        double mouseY1 = mouseY;
+        scroll(mouseX1, mouseY1, 0);
         Theme theme = ThemeManager.getMainTheme();
         double openAnim = this.openAnim < 0.5
                 ? (1 - sqrt(1 - pow(2 * this.openAnim, 2))) / 2
@@ -181,16 +183,16 @@ public class CategoryDisplay extends Element {
             double y = headerHeight();
             matrices.push();
             matrices.translate(0, scroller.getScroll(), 0);
-            if (!(mouseX >= x && mouseX < x + width && mouseY >= this.y + headerHeight() && mouseY < this.y + this.height - (modHeight != 0 ? r : 0))) {
-                mouseX = -1000;
-                mouseY = -1000;
+            if (!(mouseX1 >= x && mouseX1 < x + width && mouseY1 >= this.y + headerHeight() && mouseY1 < this.y + this.height - (modHeight != 0 ? r : 0))) {
+                mouseX1 = -1000;
+                mouseY1 = -1000;
             }
             for (ModuleDisplay moduleDisplay : getModules()) {
                 moduleDisplay.setX(this.x);
                 moduleDisplay.setY(this.y + y);
                 if (moduleDisplay.getY() + scroller.getScroll() > this.y + height) continue;
 
-                moduleDisplay.render(matrices, mouseX, mouseY - scroller.getScroll(), scrollBeingUsed);
+                moduleDisplay.render(matrices, mouseX1, mouseY1 - scroller.getScroll(), scrollBeingUsed);
                 y += moduleDisplay.getHeight();
             }
             matrices.pop();

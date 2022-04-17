@@ -128,7 +128,8 @@ public class Killaura extends Module {
                 p = new Vec3d(p.x, 0, p.z).normalize().multiply(1.5);
                 updatePos = e.getPos().add(p.multiply(-1));
             }
-            case TP -> updatePos = new Vec3d(e.getX() + (Math.random() * 4 - 2), e.getY(), e.getZ() + (Math.random() * 4 - 2));
+            case TP ->
+                    updatePos = new Vec3d(e.getX() + (Math.random() * 4 - 2), e.getY(), e.getZ() + (Math.random() * 4 - 2));
             case Circle -> {
                 circleProg += 20;
                 circleProg %= 360;
@@ -336,4 +337,3 @@ public class Killaura extends Module {
         TP, Behind, Circle
     }
 }
-

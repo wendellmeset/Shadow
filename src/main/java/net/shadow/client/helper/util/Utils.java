@@ -293,15 +293,15 @@ public class Utils {
         }
 
         public static UUID getUUIDFromName(String name) {
-            name = completeName(name); // this really helps trust me
-            if (!isPlayerNameValid(name)) {
+            String name1 = completeName(name); // this really helps trust me
+            if (!isPlayerNameValid(name1)) {
                 return null;
             }
-            if (UUID_CACHE.containsKey(name.toLowerCase())) {
-                return UUID_CACHE.get(name.toLowerCase());
+            if (UUID_CACHE.containsKey(name1.toLowerCase())) {
+                return UUID_CACHE.get(name1.toLowerCase());
             }
             try {
-                HttpRequest req = HttpRequest.newBuilder().GET().uri(URI.create("https://api.mojang.com/users/profiles/minecraft/" + name)).build();
+                HttpRequest req = HttpRequest.newBuilder().GET().uri(URI.create("https://api.mojang.com/users/profiles/minecraft/" + name1)).build();
                 HttpResponse<String> response = client.send(req, HttpResponse.BodyHandlers.ofString());
                 if (response.statusCode() == 204 || response.statusCode() == 400) {
                     return null; // no user / invalid username
@@ -310,7 +310,7 @@ public class Utils {
                 String id = root.get("id").getAsString();
                 String uuid = id.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})", "$1-$2-$3-$4-$5");
                 UUID u = UUID.fromString(uuid);
-                UUID_CACHE.put(name.toLowerCase(), u);
+                UUID_CACHE.put(name1.toLowerCase(), u);
                 return u;
             } catch (Exception ignored) {
                 return null;

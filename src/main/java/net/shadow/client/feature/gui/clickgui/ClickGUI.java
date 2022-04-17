@@ -134,6 +134,7 @@ public class ClickGUI extends Screen implements FastTickable {
     }
 
     void renderIntern(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+        int mouseY1 = mouseY;
         double wid = width / 2d;
         double hei = height / 2d;
         FontAdapter bigAssFr = FontRenderers.getCustomSize(70);
@@ -154,25 +155,22 @@ public class ClickGUI extends Screen implements FastTickable {
         matrices.translate((1 - intp) * width / 2, (1 - intp) * height / 2, 0);
         matrices.scale((float) intp, (float) intp, 1);
         matrices.translate(0, -trackedScroll, 0);
-        mouseY += trackedScroll;
+        mouseY1 += trackedScroll;
         List<Element> rev = new ArrayList<>(elements);
         Collections.reverse(rev);
         for (Element element : rev) {
-            element.render(matrices, mouseX, mouseY, trackedScroll);
+            element.render(matrices, mouseX, mouseY1, trackedScroll);
         }
         matrices.pop();
-        super.render(matrices, mouseX, mouseY, delta);
+        super.render(matrices, mouseX, mouseY1, delta);
         if (desc != null) {
 
             //            double width = FontRenderers.getNormal().getStringWidth(desc);
             double width = 0;
-            List<String> text = Arrays.stream(desc.split("\n")).map(s -> s = s.trim()).toList();
+            List<String> text = Arrays.stream(desc.split("\n")).map(String::trim).toList();
             for (String s : text) {
                 width = Math.max(width, FontRenderers.getRenderer().getStringWidth(s));
             }
-//            if (descX + width > ShadowMain.client.getWindow().getScaledWidth()) {
-//                descX -= (descX + width - ShadowMain.client.getWindow().getScaledWidth()) + 4;
-//            }
             Vec2f root = Renderer.R2D.renderTooltip(matrices, descX, descY, width + 4, FontRenderers.getRenderer().getMarginHeight() + 4, tooltipColor);
             float yOffset = 2;
             for (String s : text) {
@@ -186,35 +184,38 @@ public class ClickGUI extends Screen implements FastTickable {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        mouseY += trackedScroll;
+        double mouseY1 = mouseY;
+        mouseY1 += trackedScroll;
         for (Element element : new ArrayList<>(elements)) {
-            if (element.clicked(mouseX, mouseY, button)) {
+            if (element.clicked(mouseX, mouseY1, button)) {
                 elements.remove(element);
                 elements.add(0, element); // put to front when clicked
                 return true;
             }
         }
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(mouseX, mouseY1, button);
     }
 
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        mouseY += trackedScroll;
+        double mouseY1 = mouseY;
+        mouseY1 += trackedScroll;
         for (Element element : elements) {
             element.released();
         }
-        return super.mouseReleased(mouseX, mouseY, button);
+        return super.mouseReleased(mouseX, mouseY1, button);
     }
 
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-        mouseY += trackedScroll;
+        double mouseY1 = mouseY;
+        mouseY1 += trackedScroll;
         for (Element element : elements) {
-            if (element.dragged(mouseX, mouseY, deltaX, deltaY, button)) {
+            if (element.dragged(mouseX, mouseY1, deltaX, deltaY, button)) {
                 return true;
             }
         }
-        return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+        return super.mouseDragged(mouseX, mouseY1, button, deltaX, deltaY);
     }
 
 

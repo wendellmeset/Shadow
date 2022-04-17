@@ -48,9 +48,7 @@ public class RandomBook extends Command {
             case "raw" -> {
                 List<String> title = new ArrayList<>();
                 for (int i = 0; i < size; i++) {
-                    StringBuilder page2 = new StringBuilder();
-                    page2.append(String.valueOf((char) 2048).repeat(266));
-                    title.add(page2.toString());
+                    title.add(String.valueOf((char) 2048).repeat(266));
                 }
 
                 Optional<String> pages = Optional.of("Raw");
@@ -75,7 +73,7 @@ public class RandomBook extends Command {
 
             case "unicode" -> {
                 IntStream chars = new Random().ints(0, 0x10FFFF + 1);
-                String text = chars.limit(210 * Math.round(size)).mapToObj(i -> String.valueOf((char) i)).collect(Collectors.joining());
+                String text = chars.limit(210L * Math.round(size)).mapToObj(i -> String.valueOf((char) i)).collect(Collectors.joining());
                 List<String> title2 = new ArrayList<>();
                 Optional<String> pages2 = Optional.of("Unicode");
 

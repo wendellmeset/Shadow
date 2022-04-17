@@ -30,6 +30,7 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 
+@SuppressWarnings("rawtypes")
 @Debug(export = true)
 @Mixin(targets = "net/minecraft/client/render/chunk/ChunkBuilder$BuiltChunk$RebuildTask")
 public class RebuildTaskMixin {

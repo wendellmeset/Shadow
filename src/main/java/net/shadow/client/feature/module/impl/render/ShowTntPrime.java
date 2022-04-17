@@ -57,11 +57,11 @@ public class ShowTntPrime extends Module {
     }
 
     static void semicircle(MatrixStack stack, Color c, double x, double y, double rad, double width, double segments, double toRad) {
-        toRad = MathHelper.clamp(toRad, 0, 360);
+        double toRad1 = MathHelper.clamp(toRad, 0, 360);
         stack.push();
         stack.translate(x, y, 0);
 //        stack.multiply(new Quaternion(0, 0, (System.currentTimeMillis() % 2000) / 2000f * 360f, true));
-        segments = MathHelper.clamp(segments, 2, 90);
+        double segments1 = MathHelper.clamp(segments, 2, 90);
         RenderSystem.setShaderColor(1, 1, 1, 1);
         int color = c.getRGB();
 
@@ -76,7 +76,7 @@ public class ShowTntPrime extends Module {
         RenderSystem.disableTexture();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         bufferBuilder.begin(VertexFormat.DrawMode.TRIANGLE_STRIP, VertexFormats.POSITION_COLOR);
-        for (double r = 0; r < toRad; r += Math.min(360 / segments, (toRad - r))) {
+        for (double r = 0; r < toRad1; r += Math.min(360 / segments1, (toRad1 - r))) {
             double rad1 = Math.toRadians(r);
             double sin = Math.sin(rad1);
             double cos = Math.cos(rad1);

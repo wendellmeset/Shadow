@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class LogFlood extends Command {
-    AtomicBoolean running = new AtomicBoolean(false);
+    final AtomicBoolean running = new AtomicBoolean(false);
 
     public LogFlood() {
         super("LogFlood", "Floods the log files of players in render distance", "logflood", "lflood");

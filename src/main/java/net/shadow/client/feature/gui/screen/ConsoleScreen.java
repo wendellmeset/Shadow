@@ -184,6 +184,7 @@ public class ConsoleScreen extends ClientScreen implements FastTickable {
         smoothScroll = Transitions.transition(smoothScroll, scroll, 7, 0);
     }
 
+    @SuppressWarnings("AssignmentToForLoopParameter")
     @Override
     public void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
 

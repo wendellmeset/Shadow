@@ -76,6 +76,7 @@ public class AddonManager {
 
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
+                    //noinspection ResultOfMethodCallIgnored
                     file.toFile().delete();
                     return FileVisitResult.CONTINUE;
                 }
@@ -295,4 +296,3 @@ public class AddonManager {
     record AddonEntry(File sourceFile, String name, String description, String[] devs, Addon registeredAddon) {
     }
 }
-

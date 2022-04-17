@@ -81,7 +81,7 @@ public class LoominaCrash extends Module {
     void simplePacketMove(int slotId) {
         //System.out.println(client.player.currentScreenHandler.getSlot(slotId).getStack().getName().getString());
         ScreenHandler screenHandler = client.player.currentScreenHandler;
-        Int2ObjectOpenHashMap<ItemStack> int2ObjectMap = new Int2ObjectOpenHashMap<ItemStack>();
+        Int2ObjectOpenHashMap<ItemStack> int2ObjectMap = new Int2ObjectOpenHashMap<>();
         int2ObjectMap.put(slotId, client.player.currentScreenHandler.getSlot(slotId).getStack().copy());
         client.player.networkHandler.sendPacket(new ClickSlotC2SPacket(client.player.currentScreenHandler.syncId, screenHandler.getRevision(), slotId, 0, SlotActionType.PICKUP, client.player.currentScreenHandler.getSlot(slotId).getStack().copy(), int2ObjectMap));
     }

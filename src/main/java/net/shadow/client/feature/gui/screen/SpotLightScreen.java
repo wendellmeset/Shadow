@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class QuickSelectScreen extends ClientScreen implements FastTickable {
+public class SpotLightScreen extends ClientScreen implements FastTickable {
     CommandTextField command;
     List<SuggestionsEntry> entries = new ArrayList<>();
     double anim = 0;
@@ -93,6 +93,11 @@ public class QuickSelectScreen extends ClientScreen implements FastTickable {
             }
         }
         this.entries = entries;
+    }
+
+    @Override
+    public boolean shouldPause() {
+        return false;
     }
 
     @Override
@@ -191,14 +196,15 @@ public class QuickSelectScreen extends ClientScreen implements FastTickable {
     }
 
     int makeSureInBounds(int index, int size) {
+        int indexCpy = index;
         if (size == 0) {
             return 0;
         }
-        index %= size;
-        if (index < 0) {
-            index = size + index;
+        indexCpy %= size;
+        if (indexCpy < 0) {
+            indexCpy = size + indexCpy;
         }
-        return index;
+        return indexCpy;
     }
 
     @Override
@@ -633,9 +639,7 @@ public class QuickSelectScreen extends ClientScreen implements FastTickable {
 
         private void runAction() {
             cursorChanged();
-            if (changeListener != null) {
-                changeListener.run();
-            }
+            changeListener.run();
         }
 
         private double textWidth() {
@@ -654,19 +658,14 @@ public class QuickSelectScreen extends ClientScreen implements FastTickable {
             }
 
             textStart = MathHelper.clamp(textStart, 0, Math.max(textWidth() - maxTextWidth(), 0));
-
-            onCursorChanged();
-        }
-
-        protected void onCursorChanged() {
         }
 
         protected double getTextWidth(int pos) {
             if (pos < 0) {
                 return 0;
             }
-            pos = Math.min(text.length(), pos);
-            return fa.getStringWidth(text.substring(0, pos)) + 1;
+            int pos1 = Math.min(text.length(), pos);
+            return fa.getStringWidth(text.substring(0, pos1)) + 1;
         }
 
         protected double getCursorTextWidth(int offset) {
@@ -696,16 +695,9 @@ public class QuickSelectScreen extends ClientScreen implements FastTickable {
         }
 
         public void setFocused(boolean focused) {
-
-            boolean wasJustFocused = focused && !this.focused;
-
             this.focused = focused;
 
             resetSelection();
-
-            if (wasJustFocused) {
-                onCursorChanged();
-            }
         }
 
         public void setCursorMax() {
@@ -775,7 +767,6 @@ public class QuickSelectScreen extends ClientScreen implements FastTickable {
 
         public void render(MatrixStack stack) {
             double yCenter = y + height() / 2d;
-            double xCenter = x + wid / 2d;
             double contentSize = height() - padUpDown * 2d;
             if (selected) {
                 Renderer.R2D.renderRoundedQuad(stack, new Color(40, 40, 40), x, y, x + wid, y + height(), 5, 20);

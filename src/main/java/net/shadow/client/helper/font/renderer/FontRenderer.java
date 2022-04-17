@@ -50,7 +50,7 @@ public class FontRenderer {
     final Font f;
     final Map<Character, Glyph> glyphMap = new ConcurrentHashMap<>();
     final int size;
-    float cachedHeight;
+    final float cachedHeight;
 
     public FontRenderer(Font f, int size) {
         this.f = f;
@@ -76,6 +76,9 @@ public class FontRenderer {
     }
 
     public void drawString(MatrixStack matrices, String s, float x, float y, float r, float g, float b, float a) {
+        float r1 = r;
+        float g1 = g;
+        float b1 = b;
         matrices.push();
         matrices.translate(x, y, 0);
         matrices.scale(0.25F, 0.25F, 1f);
@@ -94,9 +97,9 @@ public class FontRenderer {
             if (isInSelector) {
                 char upper = String.valueOf(c).toUpperCase().charAt(0);
                 int color = colorMap.getOrDefault(upper, 0xFFFFFF);
-                r = (float) (color >> 16 & 255) / 255.0F;
-                g = (float) (color >> 8 & 255) / 255.0F;
-                b = (float) (color & 255) / 255.0F;
+                r1 = (float) (color >> 16 & 255) / 255.0F;
+                g1 = (float) (color >> 8 & 255) / 255.0F;
+                b1 = (float) (color & 255) / 255.0F;
                 isInSelector = false;
                 continue;
             }
@@ -106,13 +109,14 @@ public class FontRenderer {
             }
 
             Matrix4f matrix = matrices.peek().getPositionMatrix();
-            double prevWidth = drawChar(bufferBuilder, matrix, c, r, g, b, a);
+            double prevWidth = drawChar(bufferBuilder, matrix, c, r1, g1, b1, a);
             matrices.translate(prevWidth, 0, 0);
         }
 
         matrices.pop();
     }
 
+    @SuppressWarnings("AssignmentToForLoopParameter")
     String stripControlCodes(String in) {
         char[] s = in.toCharArray();
         StringBuilder out = new StringBuilder();

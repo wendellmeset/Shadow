@@ -21,25 +21,27 @@ public class BruhAdapter implements FontAdapter {
 
     @Override
     public void drawString(MatrixStack matrices, String text, float x, float y, int color) {
-        if ((color & 0xfc000000) == 0) {
-            color |= 0xff000000;
+        int color1 = color;
+        if ((color1 & 0xfc000000) == 0) {
+            color1 |= 0xff000000;
         }
-        float alpha = (float) (color >> 24 & 255) / 255.0F;
-        float r = (float) (color >> 16 & 255) / 255.0F;
-        float g = (float) (color >> 8 & 255) / 255.0F;
-        float b = (float) (color & 255) / 255.0F;
+        float alpha = (float) (color1 >> 24 & 255) / 255.0F;
+        float r = (float) (color1 >> 16 & 255) / 255.0F;
+        float g = (float) (color1 >> 8 & 255) / 255.0F;
+        float b = (float) (color1 & 255) / 255.0F;
         renderer.drawString(matrices, text, x, y, r, g, b, alpha);
     }
 
     @Override
     public void drawString(MatrixStack matrices, String text, double x, double y, int color) {
-        if ((color & 0xfc000000) == 0) {
-            color |= 0xff000000;
+        int color1 = color;
+        if ((color1 & 0xfc000000) == 0) {
+            color1 |= 0xff000000;
         }
-        float alpha = (float) (color >> 24 & 255) / 255.0F;
-        float r = (float) (color >> 16 & 255) / 255.0F;
-        float g = (float) (color >> 8 & 255) / 255.0F;
-        float b = (float) (color & 255) / 255.0F;
+        float alpha = (float) (color1 >> 24 & 255) / 255.0F;
+        float r = (float) (color1 >> 16 & 255) / 255.0F;
+        float g = (float) (color1 >> 8 & 255) / 255.0F;
+        float b = (float) (color1 & 255) / 255.0F;
         renderer.drawString(matrices, text, (float) x, (float) y, r, g, b, alpha);
     }
 
@@ -50,13 +52,14 @@ public class BruhAdapter implements FontAdapter {
 
     @Override
     public void drawCenteredString(MatrixStack matrices, String text, double x, double y, int color) {
-        if ((color & 0xfc000000) == 0) {
-            color |= 0xff000000;
+        int color1 = color;
+        if ((color1 & 0xfc000000) == 0) {
+            color1 |= 0xff000000;
         }
-        float alpha = (float) (color >> 24 & 255) / 255.0F;
-        float r = (float) (color >> 16 & 255) / 255.0F;
-        float g = (float) (color >> 8 & 255) / 255.0F;
-        float b = (float) (color & 255) / 255.0F;
+        float alpha = (float) (color1 >> 24 & 255) / 255.0F;
+        float r = (float) (color1 >> 16 & 255) / 255.0F;
+        float g = (float) (color1 >> 8 & 255) / 255.0F;
+        float b = (float) (color1 & 255) / 255.0F;
         renderer.drawCenteredString(matrices, text, (float) x, (float) y, r, g, b, alpha);
     }
 
@@ -87,13 +90,14 @@ public class BruhAdapter implements FontAdapter {
 
     @Override
     public void drawString(MatrixStack matrices, String s, float x, float y, int color, boolean dropShadow) {
-        if ((color & 0xfc000000) == 0) {
-            color |= 0xff000000;
+        int color1 = color;
+        if ((color1 & 0xfc000000) == 0) {
+            color1 |= 0xff000000;
         }
-        float alpha = (float) (color >> 24 & 255) / 255.0F;
-        float r = (float) (color >> 16 & 255) / 255.0F;
-        float g = (float) (color >> 8 & 255) / 255.0F;
-        float b = (float) (color & 255) / 255.0F;
+        float alpha = (float) (color1 >> 24 & 255) / 255.0F;
+        float r = (float) (color1 >> 16 & 255) / 255.0F;
+        float g = (float) (color1 >> 8 & 255) / 255.0F;
+        float b = (float) (color1 & 255) / 255.0F;
         drawString(matrices, s, x, y, r, g, b, alpha, dropShadow);
     }
 

@@ -124,8 +124,8 @@ public class Kill extends Command {
     }
 
     void makeKillPotAt(BlockHitResult bhr, Vec3d target) {
-        target = target.add(0, 2.7, 0);
-        ItemStack s = Utils.generateItemStackWithMeta("{data: [], palette: [], EntityTag: {Item: {Count: 1b, id: \"minecraft:splash_potion\", tag: {CustomPotionEffects: [{ShowParticles: 1b, Duration: 20, Id: 6b, Amplifier: 125b}], Potion: \"minecraft:awkward\"}}, Pos: [" + target.x + "d, " + target.y + "d, " + target.z + "d], Motion: [0d,-5d,0d], id: \"minecraft:potion\", LeftOwner: 1b}}", Items.BAT_SPAWN_EGG);
+        Vec3d target1 = target.add(0, 2.7, 0);
+        ItemStack s = Utils.generateItemStackWithMeta("{data: [], palette: [], EntityTag: {Item: {Count: 1b, id: \"minecraft:splash_potion\", tag: {CustomPotionEffects: [{ShowParticles: 1b, Duration: 20, Id: 6b, Amplifier: 125b}], Potion: \"minecraft:awkward\"}}, Pos: [" + target1.x + "d, " + target1.y + "d, " + target1.z + "d], Motion: [0d,-5d,0d], id: \"minecraft:potion\", LeftOwner: 1b}}", Items.BAT_SPAWN_EGG);
         assert ShadowMain.client.player != null;
         CreativeInventoryActionC2SPacket pack = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(ShadowMain.client.player.getInventory().selectedSlot), s);
         Objects.requireNonNull(ShadowMain.client.getNetworkHandler()).sendPacket(pack);
