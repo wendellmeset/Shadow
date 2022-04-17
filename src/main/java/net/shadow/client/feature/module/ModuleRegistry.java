@@ -50,6 +50,7 @@ import net.shadow.client.feature.module.impl.misc.AllowFormatCodes;
 import net.shadow.client.feature.module.impl.misc.AntiCrash;
 import net.shadow.client.feature.module.impl.misc.AntiPacketKick;
 import net.shadow.client.feature.module.impl.misc.ClientSettings;
+import net.shadow.client.feature.module.impl.misc.DauntedAutoClaim;
 import net.shadow.client.feature.module.impl.misc.DiscordRPC;
 import net.shadow.client.feature.module.impl.misc.InfChatLength;
 import net.shadow.client.feature.module.impl.misc.NoTitles;
@@ -300,6 +301,7 @@ public class ModuleRegistry {
         vanillaModules.add(new InteractCrash());
         vanillaModules.add(new FlightCrash());
         vanillaModules.add(new ClickTP());
+        vanillaModules.add(new DauntedAutoClaim()); //it was hurting my finger
 
         rebuildSharedModuleList();
     }
