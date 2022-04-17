@@ -5,6 +5,7 @@
 package net.shadow.client.feature.module;
 
 
+import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.addon.Addon;
 import net.shadow.client.feature.module.impl.combat.AimAssist;
 import net.shadow.client.feature.module.impl.combat.AutoAttack;
@@ -27,6 +28,7 @@ import net.shadow.client.feature.module.impl.crash.LecternCrash;
 import net.shadow.client.feature.module.impl.crash.LoominaCrash;
 import net.shadow.client.feature.module.impl.crash.MinehutCrash;
 import net.shadow.client.feature.module.impl.crash.OOBCrash;
+import net.shadow.client.feature.module.impl.crash.SplashCrash;
 import net.shadow.client.feature.module.impl.exploit.AntiAntiXray;
 import net.shadow.client.feature.module.impl.exploit.AntiRDI;
 import net.shadow.client.feature.module.impl.exploit.BoatCrash;
@@ -129,6 +131,7 @@ import net.shadow.client.feature.module.impl.world.Nuker;
 import net.shadow.client.feature.module.impl.world.Scaffold;
 import net.shadow.client.feature.module.impl.world.SurvivalNuker;
 import net.shadow.client.feature.module.impl.world.XRAY;
+import org.apache.logging.log4j.Level;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -180,137 +183,142 @@ public class ModuleRegistry {
             System.exit(1);
         }
     }
+    private static void registerModule(Module module) {
+        ShadowMain.log(Level.INFO, "Initialized "+module.getName());
+        vanillaModules.add(module);
+    }
     private static void initInner() {
         if (initialized.get()) return;
         initialized.set(true);
         vanillaModules.clear();
 
-        vanillaModules.add(new Flight());
-        vanillaModules.add(new Sprint());
-        vanillaModules.add(new Fullbright());
-        vanillaModules.add(new Hud());
-        vanillaModules.add(new TargetHud());
+        registerModule(new Flight());
+        registerModule(new Sprint());
+        registerModule(new Fullbright());
+        registerModule(new Hud());
+        registerModule(new TargetHud());
         //modules.add(new AntiOffhandCrash()); this should be under anticrash
-        vanillaModules.add(new AntiPacketKick());
-        vanillaModules.add(new AntiRDI());
-        vanillaModules.add(new BoatPhase());
-        vanillaModules.add(new BoatCrash());
-        vanillaModules.add(new Boom());
-        vanillaModules.add(new CaveMapper()); // its fun
-        vanillaModules.add(new InstaBow());
-        vanillaModules.add(new ChunkCrash());
-        vanillaModules.add(new OffhandCrash());
-        vanillaModules.add(new OOBCrash());
-        vanillaModules.add(new Phase());
-        vanillaModules.add(new VanillaSpoof());
-        vanillaModules.add(new XRAY());
-        vanillaModules.add(new Decimator());
-        vanillaModules.add(new ClickGUI());
-        vanillaModules.add(new TpRange());
-        vanillaModules.add(new AnyPlacer());
-        vanillaModules.add(new FireballDeflector()); // its a fucking utility client saturn
-        vanillaModules.add(new ShulkerDeflector());
-        vanillaModules.add(new CarpetBomb());
+        registerModule(new AntiPacketKick());
+        registerModule(new AntiRDI());
+        registerModule(new BoatPhase());
+        registerModule(new BoatCrash());
+        registerModule(new Boom());
+        registerModule(new CaveMapper()); // its fun
+        registerModule(new InstaBow());
+        registerModule(new ChunkCrash());
+        registerModule(new OffhandCrash());
+        registerModule(new OOBCrash());
+        registerModule(new Phase());
+        registerModule(new VanillaSpoof());
+        registerModule(new XRAY());
+        registerModule(new Decimator());
+        registerModule(new ClickGUI());
+        registerModule(new TpRange());
+        registerModule(new AnyPlacer());
+        registerModule(new FireballDeflector()); // its a fucking utility client saturn
+        registerModule(new ShulkerDeflector());
+        registerModule(new CarpetBomb());
         //modules.add(new SkinChangeExploit()); litteral fucking joke module, to be re-written as personhider or whatever i named it (skinfuscator is a good name lol)
-        vanillaModules.add(new AutoTrap());
-        vanillaModules.add(new AutoTNT());
+        registerModule(new AutoTrap());
+        registerModule(new AutoTNT());
         //modules.add(new LetThereBeLight()); awful why?
-        vanillaModules.add(new FakeHacker());
-        vanillaModules.add(new NoFall());
-        vanillaModules.add(new ESP());
-        vanillaModules.add(new Tracers());
-        vanillaModules.add(new Hyperspeed());
-        vanillaModules.add(new AntiAnvil());
-        vanillaModules.add(new Swing());
-        vanillaModules.add(new AimAssist());
-        vanillaModules.add(new Criticals());
-        vanillaModules.add(new Killaura()); //TODO: add settings and shit
-        vanillaModules.add(new Velocity());
-        vanillaModules.add(new AntiAntiXray());
-        vanillaModules.add(new PingSpoof());
-        vanillaModules.add(new AutoAttack());
-        vanillaModules.add(new MouseEars()); //i really wanna remove this one | dont
-        vanillaModules.add(new Spinner());
-        vanillaModules.add(new AllowFormatCodes());
-        vanillaModules.add(new InfChatLength());
-        vanillaModules.add(new NoTitles());
-        vanillaModules.add(new PortalGUI());
-        vanillaModules.add(new Timer());
-        vanillaModules.add(new XCarry());
-        vanillaModules.add(new AirJump()); //TODO: unshit
-        vanillaModules.add(new AutoElytra());
-        vanillaModules.add(new Blink());
-        vanillaModules.add(new Boost());
-        vanillaModules.add(new EdgeJump()); // UTILITY CLIENT
-        vanillaModules.add(new EdgeSneak());
-        vanillaModules.add(new EntityFly());
-        vanillaModules.add(new IgnoreWorldBorder()); //i'll allow it | as you should
-        vanillaModules.add(new InventoryWalk());
-        vanillaModules.add(new Jesus());
-        vanillaModules.add(new LongJump());
-        vanillaModules.add(new MoonGravity());
-        vanillaModules.add(new NoJumpCool());
-        vanillaModules.add(new NoLevitation());
-        vanillaModules.add(new NoPush());
-        vanillaModules.add(new Step());
-        vanillaModules.add(new Freecam());
-        vanillaModules.add(new FreeLook());
-        vanillaModules.add(new ItemByteSize()); // TO BE RE-WRITTEN AS TOOLTIPS | keep it in for now tho
-        vanillaModules.add(new Zoom());
-        vanillaModules.add(new AutoTool()); // WHY????? this is so useless | how?
-        vanillaModules.add(new BlockTagViewer());
-        vanillaModules.add(new Annihilator());
-        vanillaModules.add(new FastUse());
-        vanillaModules.add(new Flattener());
-        vanillaModules.add(new GodBridge()); //TODO: add this as a mode to scaffold
-        vanillaModules.add(new InstantBreak()); //TODO: unshit
-        vanillaModules.add(new MassUse());
-        vanillaModules.add(new NoBreakDelay());
-        vanillaModules.add(new SurvivalNuker());
-        vanillaModules.add(new Nuker());
-        vanillaModules.add(new Scaffold());
-        vanillaModules.add(new Test());
-        vanillaModules.add(new BlocksMCFlight());
-        vanillaModules.add(new NameTags());
-        vanillaModules.add(new Trail());
-        vanillaModules.add(new AdBlock());
-        vanillaModules.add(new AutoLavacast());
-        vanillaModules.add(new Backtrack());
-        vanillaModules.add(new TabGui());
-        vanillaModules.add(new Theme());
-        vanillaModules.add(new AntiCrash());
-        vanillaModules.add(new ClientSettings());
-        vanillaModules.add(new NoLiquidFog());
-        vanillaModules.add(new Spotlight());
-        vanillaModules.add(new ShowTntPrime());
-        vanillaModules.add(new ToolsScreen());
-        vanillaModules.add(new BookInflaterCrash());
-        vanillaModules.add(new BlockHighlighting());
-        vanillaModules.add(new AutoIgnite());
-        vanillaModules.add(new DiscordRPC());
-        vanillaModules.add(new AirPlace());
-        vanillaModules.add(new AdSpammer());
-        vanillaModules.add(new AnimationCrash());
-        vanillaModules.add(new AutoFireball());
-        vanillaModules.add(new AutoFish());
-        vanillaModules.add(new AutoRun());
-        vanillaModules.add(new LecternCrash());
-        vanillaModules.add(new MinehutCrash());
-        vanillaModules.add(new ArmorStandCrash());
-        vanillaModules.add(new LoominaCrash());
-        vanillaModules.add(new Reach());
-        vanillaModules.add(new Fling());
-        vanillaModules.add(new AutoSign());
-        vanillaModules.add(new SuperCrossbow());
-        vanillaModules.add(new ReverseKnockback());
-        vanillaModules.add(new Speed());
-        vanillaModules.add(new BoatFling());
-        vanillaModules.add(new FilterBypass());
-        vanillaModules.add(new InteractCrash());
-        vanillaModules.add(new FlightCrash());
-        vanillaModules.add(new ClickTP());
-        vanillaModules.add(new ChestHighlighter());
-        vanillaModules.add(new DauntedAutoClaim());
+        registerModule(new FakeHacker());
+        registerModule(new NoFall());
+        registerModule(new ESP());
+        registerModule(new Tracers());
+        registerModule(new Hyperspeed());
+        registerModule(new AntiAnvil());
+        registerModule(new Swing());
+        registerModule(new AimAssist());
+        registerModule(new Criticals());
+        registerModule(new Killaura()); //TODO: add settings and shit
+        registerModule(new Velocity());
+        registerModule(new AntiAntiXray());
+        registerModule(new PingSpoof());
+        registerModule(new AutoAttack());
+        registerModule(new MouseEars()); //i really wanna remove this one | dont
+        registerModule(new Spinner());
+        registerModule(new AllowFormatCodes());
+        registerModule(new InfChatLength());
+        registerModule(new NoTitles());
+        registerModule(new PortalGUI());
+        registerModule(new Timer());
+        registerModule(new XCarry());
+        registerModule(new AirJump()); //TODO: unshit
+        registerModule(new AutoElytra());
+        registerModule(new Blink());
+        registerModule(new Boost());
+        registerModule(new EdgeJump()); // UTILITY CLIENT
+        registerModule(new EdgeSneak());
+        registerModule(new EntityFly());
+        registerModule(new IgnoreWorldBorder()); //i'll allow it | as you should
+        registerModule(new InventoryWalk());
+        registerModule(new Jesus());
+        registerModule(new LongJump());
+        registerModule(new MoonGravity());
+        registerModule(new NoJumpCool());
+        registerModule(new NoLevitation());
+        registerModule(new NoPush());
+        registerModule(new Step());
+        registerModule(new Freecam());
+        registerModule(new FreeLook());
+        registerModule(new ItemByteSize()); // TO BE RE-WRITTEN AS TOOLTIPS | keep it in for now tho
+        registerModule(new Zoom());
+        registerModule(new AutoTool()); // WHY????? this is so useless | how?
+        registerModule(new BlockTagViewer());
+        registerModule(new Annihilator());
+        registerModule(new FastUse());
+        registerModule(new Flattener());
+        registerModule(new GodBridge()); //TODO: add this as a mode to scaffold
+        registerModule(new InstantBreak()); //TODO: unshit
+        registerModule(new MassUse());
+        registerModule(new NoBreakDelay());
+        registerModule(new SurvivalNuker());
+        registerModule(new Nuker());
+        registerModule(new Scaffold());
+        registerModule(new Test());
+        registerModule(new BlocksMCFlight());
+        registerModule(new NameTags());
+        registerModule(new Trail());
+        registerModule(new AdBlock());
+        registerModule(new AutoLavacast());
+        registerModule(new Backtrack());
+        registerModule(new TabGui());
+        registerModule(new Theme());
+        registerModule(new AntiCrash());
+        registerModule(new ClientSettings());
+        registerModule(new NoLiquidFog());
+        registerModule(new Spotlight());
+        registerModule(new ShowTntPrime());
+        registerModule(new ToolsScreen());
+        registerModule(new BookInflaterCrash());
+        registerModule(new BlockHighlighting());
+        registerModule(new AutoIgnite());
+        registerModule(new DiscordRPC());
+        registerModule(new AirPlace());
+        registerModule(new AdSpammer());
+        registerModule(new AnimationCrash());
+        registerModule(new AutoFireball());
+        registerModule(new AutoFish());
+        registerModule(new AutoRun());
+        registerModule(new LecternCrash());
+        registerModule(new MinehutCrash());
+        registerModule(new ArmorStandCrash());
+        registerModule(new LoominaCrash());
+        registerModule(new Reach());
+        registerModule(new Fling());
+        registerModule(new AutoSign());
+        registerModule(new SuperCrossbow());
+        registerModule(new ReverseKnockback());
+        registerModule(new Speed());
+        registerModule(new BoatFling());
+        registerModule(new FilterBypass());
+        registerModule(new InteractCrash());
+        registerModule(new FlightCrash());
+        registerModule(new ClickTP());
+        registerModule(new ChestHighlighter());
+        registerModule(new DauntedAutoClaim());
+        registerModule(new SplashCrash());
 
         rebuildSharedModuleList();
     }
