@@ -305,7 +305,7 @@ public class ModuleRegistry {
         vanillaModules.add(new ChestHighlighter());
         vanillaModules.add(new DauntedAutoClaim());
 
-        
+
     }
 
     public static List<Module> getModules() {
