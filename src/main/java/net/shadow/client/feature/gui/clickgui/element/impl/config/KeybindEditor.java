@@ -49,15 +49,16 @@ public class KeybindEditor extends ConfigBase<DoubleSetting> {
     //    long lastUpdate = System.currentTimeMillis();
     @Override
     public boolean keyPressed(int keycode, int modifiers) {
+        int keycode1 = keycode;
         if (selecting) {
 //            lastUpdate = System.currentTimeMillis();
             cancelNextCharTyped = true;
-            if (keycode == GLFW.GLFW_KEY_ESCAPE) {
+            if (keycode1 == GLFW.GLFW_KEY_ESCAPE) {
                 selecting = false;
                 return true;
             }
-            if (keycode == GLFW.GLFW_KEY_BACKSPACE) keycode = -1;
-            configValue.setValue(keycode + 0d);
+            if (keycode1 == GLFW.GLFW_KEY_BACKSPACE) keycode1 = -1;
+            configValue.setValue(keycode1 + 0d);
             selecting = false;
             return true;
         }

@@ -13,16 +13,10 @@ import net.minecraft.network.packet.c2s.play.PlayerInteractItemC2SPacket;
 import net.minecraft.util.Hand;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
-import net.shadow.client.feature.command.coloring.ArgumentType;
 
 public class Boot extends Command {
     public Boot() {
         super("Boot", "Kicks all players in render distance", "boot");
-    }
-
-    @Override
-    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
-        return null;
     }
 
     @Override

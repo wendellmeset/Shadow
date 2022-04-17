@@ -446,19 +446,14 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
         }
 
         textStart = MathHelper.clamp(textStart, 0, Math.max(textWidth() - maxTextWidth(), 0));
-
-        onCursorChanged();
-    }
-
-    protected void onCursorChanged() {
     }
 
     protected double getTextWidth(int pos) {
         if (pos < 0) {
             return 0;
         }
-        pos = Math.min(text.length(), pos);
-        return FontRenderers.getRenderer().getStringWidth(text.substring(0, pos));
+        int pos1 = Math.min(text.length(), pos);
+        return FontRenderers.getRenderer().getStringWidth(text.substring(0, pos1));
     }
 
     protected double getCursorTextWidth(int offset) {
@@ -489,15 +484,9 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
 
     public void setFocused(boolean focused) {
 
-        boolean wasJustFocused = focused && !this.focused;
-
         this.focused = focused;
 
         resetSelection();
-
-        if (wasJustFocused) {
-            onCursorChanged();
-        }
     }
 
     public void setCursorMax() {

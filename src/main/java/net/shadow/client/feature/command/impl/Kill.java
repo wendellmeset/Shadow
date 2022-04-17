@@ -28,6 +28,7 @@ import net.minecraft.util.math.Vec3d;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.coloring.ArgumentType;
+import net.shadow.client.feature.command.coloring.PossibleArgument;
 import net.shadow.client.feature.command.coloring.StaticArgumentServer;
 import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.helper.event.EventType;
@@ -64,16 +65,8 @@ public class Kill extends Command {
     }
 
     @Override
-    public String[] getSuggestions(String fullCommand, String[] args) {
-        if (args.length == 1) {
-            return Objects.requireNonNull(ShadowMain.client.world).getPlayers().stream().map(abstractClientPlayerEntity -> abstractClientPlayerEntity.getGameProfile().getName()).toList().toArray(String[]::new);
-        }
-        return super.getSuggestions(fullCommand, args);
-    }
-
-    @Override
-    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
-        return StaticArgumentServer.serveFromStatic(lookingAtArgIndex, ArgumentType.PLAYER);
+    public PossibleArgument getSuggestionsWithType(int index, String[] args) {
+        return StaticArgumentServer.serveFromStatic(index, new PossibleArgument(ArgumentType.PLAYER, Objects.requireNonNull(ShadowMain.client.world).getPlayers().stream().map(abstractClientPlayerEntity -> abstractClientPlayerEntity.getGameProfile().getName()).toList().toArray(String[]::new)));
     }
 
     void handlePacket(PacketEvent pe) {
@@ -124,8 +117,8 @@ public class Kill extends Command {
     }
 
     void makeKillPotAt(BlockHitResult bhr, Vec3d target) {
-        target = target.add(0, 2.7, 0);
-        ItemStack s = Utils.generateItemStackWithMeta("{data: [], palette: [], EntityTag: {Item: {Count: 1b, id: \"minecraft:splash_potion\", tag: {CustomPotionEffects: [{ShowParticles: 1b, Duration: 20, Id: 6b, Amplifier: 125b}], Potion: \"minecraft:awkward\"}}, Pos: [" + target.x + "d, " + target.y + "d, " + target.z + "d], Motion: [0d,-5d,0d], id: \"minecraft:potion\", LeftOwner: 1b}}", Items.BAT_SPAWN_EGG);
+        Vec3d target1 = target.add(0, 2.7, 0);
+        ItemStack s = Utils.generateItemStackWithMeta("{data: [], palette: [], EntityTag: {Item: {Count: 1b, id: \"minecraft:splash_potion\", tag: {CustomPotionEffects: [{ShowParticles: 1b, Duration: 20, Id: 6b, Amplifier: 125b}], Potion: \"minecraft:awkward\"}}, Pos: [" + target1.x + "d, " + target1.y + "d, " + target1.z + "d], Motion: [0d,-5d,0d], id: \"minecraft:potion\", LeftOwner: 1b}}", Items.BAT_SPAWN_EGG);
         assert ShadowMain.client.player != null;
         CreativeInventoryActionC2SPacket pack = new CreativeInventoryActionC2SPacket(Utils.Inventory.slotIndexToId(ShadowMain.client.player.getInventory().selectedSlot), s);
         Objects.requireNonNull(ShadowMain.client.getNetworkHandler()).sendPacket(pack);

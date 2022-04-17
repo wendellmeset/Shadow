@@ -6,8 +6,11 @@ package net.shadow.client.feature.command;
 
 import net.minecraft.client.MinecraftClient;
 import net.shadow.client.feature.command.coloring.ArgumentType;
+import net.shadow.client.feature.command.coloring.PossibleArgument;
 import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.helper.util.Utils;
+
+import java.util.Arrays;
 
 public abstract class Command extends Utils.Logging {
 
@@ -49,8 +52,6 @@ public abstract class Command extends Utils.Logging {
         return aliases;
     }
 
-    public abstract ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex);
-
     public abstract void onExecute(String[] args) throws CommandException;
 
     protected void validateArgumentsLength(String[] args, int requiredLength, String message) throws CommandException {
@@ -58,8 +59,23 @@ public abstract class Command extends Utils.Logging {
             throw new CommandException("Invalid number of arguments: " + requiredLength + " arguments required", message);
     }
 
-    public String[] getSuggestions(String fullCommand, String[] args) {
-        return new String[0];
+    public PossibleArgument getSuggestionsWithType(int index, String[] args) {
+        Object[] sug = getSuggestions(args, index);
+        if (sug != null && sug.length > 0) {
+            Object sample = sug[0];
+            ArgumentType type = null;
+            for (ArgumentType value : ArgumentType.values()) {
+                if (Arrays.stream(value.getAppliesTo()).anyMatch(aClass -> aClass.isAssignableFrom(sample.getClass()))) {
+                    type = value;
+                    break;
+                }
+            }
+            return new PossibleArgument(type, Arrays.stream(sug).map(Object::toString).toList().toArray(String[]::new));
+        }
+        return new PossibleArgument(null);
     }
 
+    public Object[] getSuggestions(String[] args, int lookingAtArgIndex) {
+        return new Object[0];
+    }
 }

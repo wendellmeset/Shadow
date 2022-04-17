@@ -8,7 +8,7 @@ import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.argument.StreamlineArgumentParser;
 import net.shadow.client.feature.command.coloring.ArgumentType;
-import net.shadow.client.feature.command.coloring.StaticArgumentServer;
+import net.shadow.client.feature.command.coloring.PossibleArgument;
 import net.shadow.client.feature.command.exception.CommandException;
 
 public class ApplyVel extends Command {
@@ -18,20 +18,13 @@ public class ApplyVel extends Command {
     }
 
     @Override
-    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
-        return StaticArgumentServer.serveFromStatic(lookingAtArgIndex, ArgumentType.NUMBER, ArgumentType.NUMBER, ArgumentType.NUMBER);
-    }
-
-    @Override
-    public String[] getSuggestions(String fullCommand, String[] args) {
-        if (args.length == 1) {
-            return new String[]{"(x velocity)"};
-        } else if (args.length == 2) {
-            return new String[]{"(y velocity)"};
-        } else if (args.length == 3) {
-            return new String[]{"(z velocity)"};
-        }
-        return super.getSuggestions(fullCommand, args);
+    public PossibleArgument getSuggestionsWithType(int index, String[] args) {
+        return switch (index) {
+            case 0 -> new PossibleArgument(ArgumentType.STRING, "(x velocity)");
+            case 1 -> new PossibleArgument(ArgumentType.STRING, "(y velocity)");
+            case 2 -> new PossibleArgument(ArgumentType.STRING, "(z velocity)");
+            default -> super.getSuggestionsWithType(index, args);
+        };
     }
 
     @Override

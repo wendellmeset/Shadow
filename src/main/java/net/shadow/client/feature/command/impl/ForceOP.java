@@ -17,17 +17,11 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
-import net.shadow.client.feature.command.coloring.ArgumentType;
 import net.shadow.client.feature.command.exception.CommandException;
 
 public class ForceOP extends Command {
     public ForceOP() {
         super("ForceOP", "Edit command blocks on paper 1.14 - 1.17", "forceop", "editcmd");
-    }
-
-    @Override
-    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
-        return ArgumentType.STRING;
     }
 
     @Override

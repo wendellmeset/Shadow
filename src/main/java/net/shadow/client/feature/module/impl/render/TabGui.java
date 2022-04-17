@@ -56,7 +56,7 @@ public class TabGui extends Module {
                     TabPane modules = new TabPane();
                     for (Module module : ModuleRegistry.getModules()) {
                         if (module.getModuleType() != value) continue;
-                        GuiEntry ge1 = new GuiEntry(module.getName(), module::isEnabled, module::toggle, () -> tabStack.pop(), FontRenderers.getRenderer().getStringWidth(module.getName()), FontRenderers.getRenderer().getMarginHeight());
+                        GuiEntry ge1 = new GuiEntry(module.getName(), module::isEnabled, module::toggle, tabStack::pop, FontRenderers.getRenderer().getStringWidth(module.getName()), FontRenderers.getRenderer().getMarginHeight());
                         modules.entries.add(ge1);
                     }
                     if (modules.entries.isEmpty()) return;
@@ -70,11 +70,12 @@ public class TabGui extends Module {
     }
 
     int makeSureInBounds(int index, int size) {
-        index %= size;
-        if (index < 0) {
-            index = size + index;
+        int index1 = index;
+        index1 %= size;
+        if (index1 < 0) {
+            index1 = size + index1;
         }
-        return index;
+        return index1;
     }
 
     void handleMouse(KeyboardEvent me) {

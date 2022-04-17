@@ -48,13 +48,14 @@ public class BindScreen extends ClientScreen {
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        int keyCodeCpy = keyCode;
         if (closeAt != -1) {
             return false;
         }
-        if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
-            keyCode = -1;
+        if (keyCodeCpy == GLFW.GLFW_KEY_ESCAPE) {
+            keyCodeCpy = -1;
         }
-        a.keybind.setValue((double) keyCode);
+        a.keybind.setValue((double) keyCodeCpy);
         closeAt = System.currentTimeMillis() + 500;
         return true;
     }

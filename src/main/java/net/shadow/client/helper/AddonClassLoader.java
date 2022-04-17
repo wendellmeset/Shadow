@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class AddonClassLoader extends URLClassLoader {
-    Map<String, URL> resourceMap = new ConcurrentHashMap<>();
+    final Map<String, URL> resourceMap = new ConcurrentHashMap<>();
 
     public AddonClassLoader(ClassLoader parent) {
         super(new URL[0], parent);

@@ -43,7 +43,7 @@ public class NbtFormatter implements NbtElementVisitor {
         map.put("{}.entities.[].{}", Lists.newArrayList("blockPos", "pos"));
     });
     private static final Set<String> IGNORED_PATHS = Sets.newHashSet("{}.size.[]", "{}.data.[].{}", "{}.palette.[].{}", "{}.entities.[].{}");
-    private static final Pattern SIMPLE_NAME = Pattern.compile("[A-Za-z0-9._+-]+");
+    private static final Pattern SIMPLE_NAME = Pattern.compile("[A-Za-z\\d._+-]+");
     private static final String KEY_VALUE_SEPARATOR = String.valueOf(':');
     private static final String ENTRY_SEPARATOR = String.valueOf(',');
     private static final int NAME_COLOR = 0x55FFFF;

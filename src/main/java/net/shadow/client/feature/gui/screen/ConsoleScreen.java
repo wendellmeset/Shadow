@@ -129,7 +129,7 @@ public class ConsoleScreen extends ClientScreen implements FastTickable {
         if (args.length > 0) {
             Command c = CommandRegistry.getByAlias(cmd);
             if (c != null) {
-                a = List.of(c.getSuggestions(command, args));
+                a = List.of(c.getSuggestionsWithType(args.length - 1, args).getSuggestions());
             } else {
                 return new ArrayList<>(); // we have no command to ask -> we have no suggestions
             }
@@ -184,6 +184,7 @@ public class ConsoleScreen extends ClientScreen implements FastTickable {
         smoothScroll = Transitions.transition(smoothScroll, scroll, 7, 0);
     }
 
+    @SuppressWarnings("AssignmentToForLoopParameter")
     @Override
     public void renderInternal(MatrixStack stack, int mouseX, int mouseY, float delta) {
 

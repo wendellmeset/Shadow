@@ -8,6 +8,7 @@ import net.minecraft.network.packet.c2s.play.BookUpdateC2SPacket;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.argument.IntegerArgumentParser;
 import net.shadow.client.feature.command.coloring.ArgumentType;
+import net.shadow.client.feature.command.coloring.PossibleArgument;
 import net.shadow.client.feature.command.coloring.StaticArgumentServer;
 import net.shadow.client.feature.command.exception.CommandException;
 
@@ -25,19 +26,8 @@ public class RandomBook extends Command {
     }
 
     @Override
-    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
-        return StaticArgumentServer.serveFromStatic(lookingAtArgIndex, ArgumentType.STRING, ArgumentType.NUMBER);
-    }
-
-    @Override
-    public String[] getSuggestions(String fullCommand, String[] args) {
-        if (args.length == 1) {
-            return new String[]{"Ascii", "Raw", "Unicode"};
-        }
-        if (args.length == 2) {
-            return new String[]{"(pages)"};
-        }
-        return super.getSuggestions(fullCommand, args);
+    public PossibleArgument getSuggestionsWithType(int index, String[] args) {
+        return StaticArgumentServer.serveFromStatic(index, new PossibleArgument(ArgumentType.STRING, "ascii", "raw", "unicode"), new PossibleArgument(ArgumentType.NUMBER, "(pages)"));
     }
 
     @Override
@@ -48,9 +38,7 @@ public class RandomBook extends Command {
             case "raw" -> {
                 List<String> title = new ArrayList<>();
                 for (int i = 0; i < size; i++) {
-                    StringBuilder page2 = new StringBuilder();
-                    page2.append(String.valueOf((char) 2048).repeat(266));
-                    title.add(page2.toString());
+                    title.add(String.valueOf((char) 2048).repeat(266));
                 }
 
                 Optional<String> pages = Optional.of("Raw");
@@ -75,7 +63,7 @@ public class RandomBook extends Command {
 
             case "unicode" -> {
                 IntStream chars = new Random().ints(0, 0x10FFFF + 1);
-                String text = chars.limit(210 * Math.round(size)).mapToObj(i -> String.valueOf((char) i)).collect(Collectors.joining());
+                String text = chars.limit(210L * Math.round(size)).mapToObj(i -> String.valueOf((char) i)).collect(Collectors.joining());
                 List<String> title2 = new ArrayList<>();
                 Optional<String> pages2 = Optional.of("Unicode");
 

@@ -52,7 +52,6 @@ public class InteractCrash extends Module {
             case Entity -> {
                 Entity target;
                 if (!(client.crosshairTarget instanceof EntityHitResult)) {
-                    target = null;
                     return;
                 }
                 target = ((EntityHitResult) client.crosshairTarget).getEntity();

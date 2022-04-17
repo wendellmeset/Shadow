@@ -53,7 +53,7 @@ public class Hud extends Module {
     //    final List<ModuleEntry> moduleList = new ArrayList<>();
     final Timer tpsUpdateTimer = new Timer();
     final List<Double> last5SecondTpsAverage = new ArrayList<>();
-    Map<Module, ModuleEntry> entryList = new ConcurrentHashMap<>();
+    final Map<Module, ModuleEntry> entryList = new ConcurrentHashMap<>();
     long lastTimePacketReceived;
     double rNoConnectionPosY = -10d;
     Notification serverNotResponding = null;
@@ -115,12 +115,6 @@ public class Hud extends Module {
     @Override
     public void onHudRenderNoMSAA() {
 
-    }
-
-    @Override
-    public void postInit() {
-
-        super.postInit();
     }
 
     @Override

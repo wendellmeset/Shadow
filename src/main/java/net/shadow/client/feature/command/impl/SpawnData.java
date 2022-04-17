@@ -12,6 +12,7 @@ import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.argument.StreamlineArgumentParser;
 import net.shadow.client.feature.command.coloring.ArgumentType;
+import net.shadow.client.feature.command.coloring.PossibleArgument;
 import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.helper.nbt.NbtGroup;
 import net.shadow.client.helper.nbt.NbtList;
@@ -26,32 +27,20 @@ public class SpawnData extends Command {
     }
 
     @Override
-    public String[] getSuggestions(String fullCommand, String[] args) {
-        if (args.length == 1) {
-            return new String[]{"position", "velocity", "cursor"};
+    public PossibleArgument getSuggestionsWithType(int index, String[] args) {
+        if (index == 0) {
+            return new PossibleArgument(ArgumentType.STRING, "position", "velocity", "cursor");
         }
-        if (args.length > 1) {
-            if (args[0].equals("position") || args[0].equals("velocity")) {
-                return switch (args.length) {
-                    case 2 -> new String[]{"x"};
-                    case 3 -> new String[]{"y"};
-                    case 4 -> new String[]{"z"};
-                    default -> new String[0];
-                };
-            }
+        String s = args[0];
+        if (s.equalsIgnoreCase("position") || s.equalsIgnoreCase("velocity")) {
+            return switch (index) {
+                case 1 -> new PossibleArgument(ArgumentType.NUMBER, "x");
+                case 2 -> new PossibleArgument(ArgumentType.NUMBER, "y");
+                case 3 -> new PossibleArgument(ArgumentType.NUMBER, "z");
+                default -> super.getSuggestionsWithType(index, args);
+            };
         }
-        return super.getSuggestions(fullCommand, args);
-    }
-
-    @Override
-    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
-        if (lookingAtArgIndex == 0) return ArgumentType.STRING;
-        if (lookingAtArgIndex == 1 || lookingAtArgIndex == 2 || lookingAtArgIndex == 3) {
-            if (args[0].equalsIgnoreCase("position") || args[0].equals("velocity")) {
-                return ArgumentType.NUMBER;
-            }
-        }
-        return null;
+        return super.getSuggestionsWithType(index, args);
     }
 
     @Override

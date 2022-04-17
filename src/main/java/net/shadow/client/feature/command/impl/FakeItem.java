@@ -16,6 +16,7 @@ import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.argument.PlayerFromNameArgumentParser;
 import net.shadow.client.feature.command.coloring.ArgumentType;
+import net.shadow.client.feature.command.coloring.PossibleArgument;
 import net.shadow.client.feature.command.exception.CommandException;
 
 import java.util.Arrays;
@@ -27,24 +28,19 @@ public class FakeItem extends Command {
     }
 
     @Override
-    public String[] getSuggestions(String fullCommand, String[] args) {
-        if (args.length == 1) {
-            return Objects.requireNonNull(ShadowMain.client.world).getPlayers().stream().map(abstractClientPlayerEntity -> abstractClientPlayerEntity.getGameProfile().getName()).toList().toArray(String[]::new);
-        } else if (args.length == 2) {
-            return new String[]{"hand", "custom:(item id) [item nbt]"};
-        } else if (args.length == 3 && args[1].toLowerCase().startsWith("custom:")) {
-            return new String[]{"(item nbt)"};
-        }
-        return super.getSuggestions(fullCommand, args);
-    }
-
-    @Override
-    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
-        if (lookingAtArgIndex == 0) return ArgumentType.PLAYER;
-        if (lookingAtArgIndex == 1 || lookingAtArgIndex == 2)
-            return ArgumentType.STRING; // fakeitem target custom:dogshit
-        if (args.length > 2) return ArgumentType.STRING; // nbt
-        return null;
+    public PossibleArgument getSuggestionsWithType(int index, String[] args) {
+        return switch (index) {
+            case 0 ->
+                    new PossibleArgument(ArgumentType.STRING, Objects.requireNonNull(ShadowMain.client.world).getPlayers().stream().map(abstractClientPlayerEntity -> abstractClientPlayerEntity.getGameProfile().getName()).toList().toArray(String[]::new));
+            case 1 -> new PossibleArgument(ArgumentType.STRING, "hand", "custom:(item id) [item nbt]");
+            case 2 -> {
+                if (args[1].toLowerCase().startsWith("custom:")) {
+                    yield new PossibleArgument(ArgumentType.STRING, "(item nbt)");
+                }
+                yield super.getSuggestionsWithType(index, args);
+            }
+            default -> super.getSuggestionsWithType(index, args);
+        };
     }
 
     @Override

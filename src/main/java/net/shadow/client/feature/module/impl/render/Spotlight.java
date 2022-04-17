@@ -5,7 +5,7 @@
 package net.shadow.client.feature.module.impl.render;
 
 import net.minecraft.client.util.math.MatrixStack;
-import net.shadow.client.feature.gui.screen.QuickSelectScreen;
+import net.shadow.client.feature.gui.screen.SpotLightScreen;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 import net.shadow.client.feature.module.NoNotificationDefault;
@@ -18,7 +18,7 @@ public class Spotlight extends Module {
 
     @Override
     public void tick() {
-        client.setScreen(new QuickSelectScreen());
+        client.setScreen(new SpotLightScreen());
         setEnabled(false);
     }
 

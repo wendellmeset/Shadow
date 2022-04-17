@@ -81,9 +81,7 @@ public class ClickTP extends Module {
                 return;
 
             switch (mode.getValue()) {
-                case Normal -> {
-                    client.player.updatePosition(dest.getX(), dest.getY(), dest.getZ());
-                }
+                case Normal -> client.player.updatePosition(dest.getX(), dest.getY(), dest.getZ());
 
                 case Split -> {
                     client.player.jump();
@@ -101,53 +99,49 @@ public class ClickTP extends Module {
                     player.updatePosition(dest.getX(), dest.getY(), dest.getZ());
                 }
 
-                case Tween -> {
-                    new Thread(() -> {
-                        int rdd = lengthTo(ray.getBlockPos());
-                        BlockPos destt = new BlockPos(blockHitResult.getBlockPos());
-                        client.player.jump();
-                        ClientPlayerEntity player = client.player;
-                        Vec3d playerpos = player.getPos();
-                        double xn = destt.getX() - playerpos.x;
-                        double yn = destt.getY() - playerpos.y;
-                        double zn = destt.getZ() - playerpos.z;
-                        double x = xn / rdd;
-                        double y = yn / rdd;
-                        double z = zn / rdd;
-                        for (int i = 0; i < rdd; i++) {
-                            client.player.updatePosition(player.getX() + x, player.getY() + y, player.getZ() + z);
-                            try {
-                                Thread.sleep(7);
-                            } catch (Exception ignored) {
-                            }
-                            client.player.setVelocity(0, 0, 0);
+                case Tween -> new Thread(() -> {
+                    int rdd = lengthTo(ray.getBlockPos());
+                    BlockPos destt = new BlockPos(blockHitResult.getBlockPos());
+                    client.player.jump();
+                    ClientPlayerEntity player = client.player;
+                    Vec3d playerpos = player.getPos();
+                    double xn = destt.getX() - playerpos.x;
+                    double yn = destt.getY() - playerpos.y;
+                    double zn = destt.getZ() - playerpos.z;
+                    double x = xn / rdd;
+                    double y = yn / rdd;
+                    double z = zn / rdd;
+                    for (int i = 0; i < rdd; i++) {
+                        client.player.updatePosition(player.getX() + x, player.getY() + y, player.getZ() + z);
+                        try {
+                            Thread.sleep(7);
+                        } catch (Exception ignored) {
                         }
-                    }).start();
-                }
+                        client.player.setVelocity(0, 0, 0);
+                    }
+                }).start();
 
-                case Experimental -> {
-                    new Thread(() -> {
-                        int rdd = lengthTo(ray.getBlockPos());
-                        BlockPos destt = new BlockPos(blockHitResult.getBlockPos());
-                        client.player.jump();
-                        ClientPlayerEntity player = client.player;
-                        Vec3d playerpos = player.getPos();
-                        double xn = destt.getX() - playerpos.x;
-                        double yn = destt.getY() - playerpos.y;
-                        double zn = destt.getZ() - playerpos.z;
-                        double x = xn / rdd;
-                        double y = yn / rdd;
-                        double z = zn / rdd;
-                        for (int i = 0; i < rdd; i++) {
-                            client.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(player.getX() + x, player.getY() + y, player.getZ() + z, true));
-                            try {
-                                Thread.sleep(10);
-                            } catch (Exception ignored) {
-                            }
-                            client.player.setVelocity(0, 0, 0);
+                case Experimental -> new Thread(() -> {
+                    int rdd = lengthTo(ray.getBlockPos());
+                    BlockPos destt = new BlockPos(blockHitResult.getBlockPos());
+                    client.player.jump();
+                    ClientPlayerEntity player = client.player;
+                    Vec3d playerpos = player.getPos();
+                    double xn = destt.getX() - playerpos.x;
+                    double yn = destt.getY() - playerpos.y;
+                    double zn = destt.getZ() - playerpos.z;
+                    double x = xn / rdd;
+                    double y = yn / rdd;
+                    double z = zn / rdd;
+                    for (int i = 0; i < rdd; i++) {
+                        client.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(player.getX() + x, player.getY() + y, player.getZ() + z, true));
+                        try {
+                            Thread.sleep(10);
+                        } catch (Exception ignored) {
                         }
-                    }).start();
-                }
+                        client.player.setVelocity(0, 0, 0);
+                    }
+                }).start();
             }
         }
     }

@@ -16,16 +16,10 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
-import net.shadow.client.feature.command.coloring.ArgumentType;
 
 public class StopServer extends Command {
     public StopServer() {
         super("StopServer", "Stops the server (real)", "stop");
-    }
-
-    @Override
-    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
-        return null;
     }
 
     @Override

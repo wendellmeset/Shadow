@@ -5,30 +5,16 @@
 package net.shadow.client.feature.command.impl;
 
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.inventory.SimpleInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.screen.GenericContainerScreenHandler;
-import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.text.Text;
-import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
-import net.shadow.client.feature.command.coloring.ArgumentType;
-import net.shadow.client.helper.nbt.NbtGroup;
-import net.shadow.client.helper.nbt.NbtObject;
-import net.shadow.client.helper.nbt.NbtProperty;
 import net.shadow.client.helper.util.Utils;
 
 public class Test extends Command {
     public Test() {
         super("Test", "REAL", "test");
-    }
-
-    @Override
-    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
-        return null;
     }
 
     @Override

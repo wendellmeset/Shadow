@@ -90,6 +90,7 @@ import net.shadow.client.feature.module.impl.movement.Step;
 import net.shadow.client.feature.module.impl.movement.Swing;
 import net.shadow.client.feature.module.impl.render.BlockHighlighting;
 import net.shadow.client.feature.module.impl.render.CaveMapper;
+import net.shadow.client.feature.module.impl.render.ChestHighlighter;
 import net.shadow.client.feature.module.impl.render.ClickGUI;
 import net.shadow.client.feature.module.impl.render.ESP;
 import net.shadow.client.feature.module.impl.render.FakeHacker;
@@ -301,9 +302,10 @@ public class ModuleRegistry {
         vanillaModules.add(new InteractCrash());
         vanillaModules.add(new FlightCrash());
         vanillaModules.add(new ClickTP());
-        vanillaModules.add(new DauntedAutoClaim()); //it was hurting my finger
+        vanillaModules.add(new ChestHighlighter());
+        vanillaModules.add(new DauntedAutoClaim());
 
-        rebuildSharedModuleList();
+        
     }
 
     public static List<Module> getModules() {

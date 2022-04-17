@@ -46,7 +46,7 @@ public class AChatScreenMixin extends Screen {
     protected TextFieldWidget chatField;
     String previousSuggestionInput = "";
     @Shadow
-    private CommandSuggestor commandSuggestor;
+    CommandSuggestor commandSuggestor;
 
     protected AChatScreenMixin(Text title) {
         super(title);
@@ -85,7 +85,7 @@ public class AChatScreenMixin extends Screen {
         if (args.length > 0) {
             Command c = CommandRegistry.getByAlias(cmd);
             if (c != null) {
-                a = List.of(c.getSuggestions(command, args));
+                a = List.of(c.getSuggestionsWithType(args.length - 1, args).getSuggestions());
             } else {
                 return new ArrayList<>(); // we have no command to ask -> we have no suggestions
             }
@@ -208,7 +208,7 @@ public class AChatScreenMixin extends Screen {
                         countedSpaceBefore = false;
                         if (i < integer) continue;
                         if (countedGaps >= 1) {
-                            ArgumentType current = c.getArgumentType(args, "", countedGaps - 1);
+                            ArgumentType current = c.getSuggestionsWithType(countedGaps - 1, args).getType();
                             int col = 0xFFFFFF;
                             if (current != null) col = current.getColor().getRGB();
                             texts.add(OrderedText.styledForwardsVisitedString(String.valueOf(c1), Style.EMPTY.withColor(col)));

@@ -7,21 +7,10 @@ package net.shadow.client.feature.command.impl;
 import net.minecraft.screen.slot.SlotActionType;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
-import net.shadow.client.feature.command.coloring.ArgumentType;
 
 public class ClearInventory extends Command {
     public ClearInventory() {
         super("ClearInventory", "Clear your inventory the cool way", "clear", "clearInv", "void");
-    }
-
-    @Override
-    public ArgumentType getArgumentType(String[] args, String lookingAtArg, int lookingAtArgIndex) {
-        return null;
-    }
-
-    @Override
-    public String[] getSuggestions(String fullCommand, String[] args) {
-        return super.getSuggestions(fullCommand, args);
     }
 
     @Override

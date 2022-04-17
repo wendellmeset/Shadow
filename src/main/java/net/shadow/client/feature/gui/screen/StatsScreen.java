@@ -18,17 +18,17 @@ import java.util.List;
 import java.util.Objects;
 
 public class StatsScreen extends ClientScreen implements FastTickable {
-    static List<Float> packetIn = Util.make(() -> {
+    static final List<Float> packetIn = Util.make(() -> {
         List<Float> f = new ArrayList<>();
         for (int i = 0; i < 100; i++) f.add(0f);
         return f;
     });
-    static List<Float> packetOut = Util.make(() -> {
+    static final List<Float> packetOut = Util.make(() -> {
         List<Float> f = new ArrayList<>();
         for (int i = 0; i < 100; i++) f.add(0f);
         return f;
     });
-    Timer packetUpdater = new Timer();
+    final Timer packetUpdater = new Timer();
 
     @Override
     public void onFastTick() {

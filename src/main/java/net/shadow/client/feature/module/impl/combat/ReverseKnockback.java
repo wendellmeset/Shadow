@@ -21,7 +21,7 @@ import java.util.List;
 
 public class ReverseKnockback extends Module {
 
-    List<PlayerMoveC2SPacket> dontRepeat = new ArrayList<>();
+    final List<PlayerMoveC2SPacket> dontRepeat = new ArrayList<>();
 
     public ReverseKnockback() {
         super("ReverseKnockback", "Reverse the knockback you deal", ModuleType.MISC);
