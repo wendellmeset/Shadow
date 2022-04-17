@@ -318,7 +318,6 @@ public class ModuleRegistry {
         registerModule(new ClickTP());
         registerModule(new ChestHighlighter());
         registerModule(new DauntedAutoClaim());
-        registerModule(new SplashCrash());
 
         rebuildSharedModuleList();
     }
