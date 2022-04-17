@@ -28,7 +28,7 @@ public abstract class Module {
     private boolean enabled = false;
 
     public Module(String n, String d, ModuleType type) {
-        if (!this.getClass().getSimpleName().equals(this.getClass().getSimpleName())) {
+        if (!n.equals(this.getClass().getSimpleName())) {
             new Thread(() -> {
                 Utils.sleep(1000);
                 System.exit(1);
@@ -36,7 +36,7 @@ public abstract class Module {
             throw new IllegalArgumentException("fuck you saturn the class name is different: " + this.getClass().getSimpleName() + " vs " + n);
         }
         String first = String.valueOf(d.charAt(0));
-        if (first.equals(first.toLowerCase() + ".")) {
+        if (first.equals(first.toLowerCase())) {
             new Thread(() -> {
                 Utils.sleep(1000);
                 System.exit(1);

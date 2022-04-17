@@ -8,6 +8,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Util;
 import net.shadow.client.feature.addon.Addon;
 import net.shadow.client.feature.addon.AddonManager;
 import net.shadow.client.feature.gui.FastTickable;
@@ -66,6 +67,10 @@ public class AddonManagerScreen extends ClientScreen implements FastTickable {
     @Override
     protected void init() {
         reInitViewers();
+        RoundButton openFolder = new RoundButton(RoundButton.STANDARD,5,5,100,20,"Open folder", () -> {
+            Util.getOperatingSystem().open(AddonManager.ADDON_DIRECTORY);
+        });
+        this.addDrawableChild(openFolder);
     }
 
     void reInitViewers() {

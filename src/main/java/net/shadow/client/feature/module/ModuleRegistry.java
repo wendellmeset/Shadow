@@ -172,8 +172,15 @@ public class ModuleRegistry {
         }
         reloadInProgress.set(false);
     }
-
     public static void init() {
+        try {
+            initInner();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+    private static void initInner() {
         if (initialized.get()) return;
         initialized.set(true);
         vanillaModules.clear();
@@ -305,7 +312,7 @@ public class ModuleRegistry {
         vanillaModules.add(new ChestHighlighter());
         vanillaModules.add(new DauntedAutoClaim());
 
-
+        rebuildSharedModuleList();
     }
 
     public static List<Module> getModules() {

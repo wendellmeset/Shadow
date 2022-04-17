@@ -21,9 +21,9 @@ public class DauntedAutoClaim extends Module {
 
     @Override
     public void tick() {
-        for(int i = 0; i < 8; i++){
+        for (int i = 0; i < 8; i++) {
             ItemStack selected = client.player.getInventory().getStack(i);
-            if(selected.getItem().equals(Items.PAPER)){
+            if (selected.getItem().equals(Items.PAPER)) {
                 int before = client.player.getInventory().selectedSlot;
                 client.getNetworkHandler().sendPacket(new UpdateSelectedSlotC2SPacket(i));
                 client.getNetworkHandler().sendPacket(new PlayerInteractItemC2SPacket(Hand.MAIN_HAND));
