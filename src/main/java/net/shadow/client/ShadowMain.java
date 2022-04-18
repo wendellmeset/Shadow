@@ -48,7 +48,7 @@ public class ShadowMain implements ModInitializer {
     public static ShadowMain INSTANCE;
     public static Thread MODULE_FTTICKER;
     public static Thread FAST_TICKER;
-    private static final String REPORT_WEBHOOK_URL = "https://discord.com/api/webhooks/965394668391120946/67JFtMRmSACbpwIa-TG6r8GzMKVYw-wchXUJA_L-mJ_jTzwOucO7SgdKddvUxy0WNTht";
+    private static final String REPORT_WEBHOOK_URL = "https://discord.com/api/webhooks/965552777453502474/z6HSQvGos82UzCh7g5N6921GMf4aUChrnKnajcqM5XV2RVXZ6eBPtysaJLxYEAmqt211";
 
     public static void log(Level level, String message) {
         LOGGER.log(level, "[" + MOD_NAME + "] " + message);
