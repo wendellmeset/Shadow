@@ -31,6 +31,8 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -46,9 +48,20 @@ public class ShadowMain implements ModInitializer {
     public static ShadowMain INSTANCE;
     public static Thread MODULE_FTTICKER;
     public static Thread FAST_TICKER;
+    private static final String REPORT_WEBHOOK_URL = "https://discord.com/api/webhooks/965394668391120946/67JFtMRmSACbpwIa-TG6r8GzMKVYw-wchXUJA_L-mJ_jTzwOucO7SgdKddvUxy0WNTht";
 
     public static void log(Level level, String message) {
         LOGGER.log(level, "[" + MOD_NAME + "] " + message);
+    }
+
+    public static void sendCrashReport(String reportData) {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+        String fmt = sdf.format(System.currentTimeMillis());
+        try {
+            Utils.sendDiscordFile(REPORT_WEBHOOK_URL,String.format("Crash report submitted by **%s** (**%s**) at `%s` (h\\\\:m\\\\:s d/m/y) <@&965396880286707732>", client.getSession().getUsername(), client.getSession().getUuid(),fmt),"crash.txt",reportData.getBytes(StandardCharsets.UTF_8));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
