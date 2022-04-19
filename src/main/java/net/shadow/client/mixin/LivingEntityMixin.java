@@ -70,7 +70,7 @@ public class LivingEntityMixin {
         }
     }
 
-    @Redirect(method = "jump", at = @At(value = "INVOKE", target = "net/minecraft/entity/LivingEntity.getYaw()F"))
+    @Redirect(method = "jump", at = @At(value = "INVOKE", target = "net/minecraft/entity/LivingEntity.getYaw()F"), require=0)
     private float atomic_overwriteFreelookYaw(LivingEntity instance) {
         if (instance.equals(ShadowMain.client.player) && ModuleRegistry.getByClass(FreeLook.class).isEnabled()) {
             return ModuleRegistry.getByClass(FreeLook.class).newyaw;
