@@ -154,7 +154,7 @@ public class ServerCrash extends Command {
             }
 
             case "lag2" -> {
-                for(int i = 0; i < 255; i++){
+                for (int i = 0; i < 255; i++) {
                     client.player.networkHandler.sendPacket(new RequestCommandCompletionsC2SPacket(0, "/"));
                 }
                 Notification.create(2000, "Server Crash", Notification.Type.SUCCESS, "Sent Quick Lag Crash");

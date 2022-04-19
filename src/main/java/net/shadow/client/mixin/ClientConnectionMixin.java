@@ -8,7 +8,6 @@ import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.PacketListener;
-import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket;
 import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.feature.module.impl.misc.AntiPacketKick;
 import net.shadow.client.helper.event.EventType;

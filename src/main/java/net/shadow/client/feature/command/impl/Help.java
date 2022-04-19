@@ -39,7 +39,7 @@ public class Help extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) throws CommandException{
+    public void onExecute(String[] args) throws CommandException {
         if (args.length == 0) {
             message("All commands and their description");
             for (Command command : CommandRegistry.getCommands()) {
@@ -49,11 +49,11 @@ public class Help extends Command {
         } else {
             String s = args[0];
             Command c = CommandRegistry.getByAlias(s);
-            if (c == null) error("Command \""+s+"\" was not found");
+            if (c == null) error("Command \"" + s + "\" was not found");
             else {
-                message("Command "+c.getName());
+                message("Command " + c.getName());
                 message0(c.getDescription(), Color.GRAY);
-                message0("Aliases: "+String.join(", ",c.getAliases()), Color.GRAY);
+                message0("Aliases: " + String.join(", ", c.getAliases()), Color.GRAY);
                 message("");
                 ExamplesEntry e = c.getExampleArguments();
                 if (e == null) {
@@ -62,8 +62,8 @@ public class Help extends Command {
                     message("Examples:");
                     String prefix = ModuleRegistry.getByClass(ClientSettings.class).getPrefix().getValue();
                     for (String example : e.examples()) {
-                        String mEx = prefix+c.getAliases()[0]+" "+example;
-                        message("  - "+mEx);
+                        String mEx = prefix + c.getAliases()[0] + " " + example;
+                        message("  - " + mEx);
                     }
                 }
             }

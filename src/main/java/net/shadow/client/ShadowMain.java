@@ -14,6 +14,7 @@ import net.shadow.client.feature.command.CommandRegistry;
 import net.shadow.client.feature.gui.FastTickable;
 import net.shadow.client.feature.gui.notifications.NotificationRenderer;
 import net.shadow.client.feature.gui.screen.HomeScreen;
+import net.shadow.client.feature.itemMenu.ItemGroupRegistry;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.helper.Rotations;
@@ -46,16 +47,7 @@ public class ShadowMain implements ModInitializer {
     public static final Logger LOGGER = LogManager.getLogger();
     public static final MinecraftClient client = MinecraftClient.getInstance();
     public static final File BASE = new File(MinecraftClient.getInstance().runDirectory, "shadow");
-    public static long lastScreenChange = System.currentTimeMillis();
-    public static ShadowMain INSTANCE;
-    public static Thread MODULE_FTTICKER;
-    public static Thread FAST_TICKER;
     private static final String REPORT_WEBHOOK_URL = "https://discord.com/api/webhooks/965552777453502474/z6HSQvGos82UzCh7g5N6921GMf4aUChrnKnajcqM5XV2RVXZ6eBPtysaJLxYEAmqt211";
-
-    public static void log(Level level, String message) {
-        LOGGER.log(level, "[" + MOD_NAME + "] " + message);
-    }
-
     private static final boolean isDevMode = Util.make(() -> {
         try {
             File execF = new File(HomeScreen.class.getProtectionDomain().getCodeSource().getLocation().toURI());
@@ -65,6 +57,14 @@ public class ShadowMain implements ModInitializer {
             return true;
         }
     });
+    public static long lastScreenChange = System.currentTimeMillis();
+    public static ShadowMain INSTANCE;
+    public static Thread MODULE_FTTICKER;
+    public static Thread FAST_TICKER;
+
+    public static void log(Level level, String message) {
+        LOGGER.log(level, "[" + MOD_NAME + "] " + message);
+    }
 
     public static boolean isDev() {
         return isDevMode;
@@ -78,7 +78,7 @@ public class ShadowMain implements ModInitializer {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
         String fmt = sdf.format(System.currentTimeMillis());
         try {
-            Utils.sendDiscordFile(REPORT_WEBHOOK_URL,String.format("Crash report submitted by **%s** (**%s**) at `%s` (h\\\\:m\\\\:s d/m/y) <@&965396880286707732>", client.getSession().getUsername(), client.getSession().getUuid(),fmt),"crash.txt",reportData.getBytes(StandardCharsets.UTF_8));
+            Utils.sendDiscordFile(REPORT_WEBHOOK_URL, String.format("Crash report submitted by **%s** (**%s**) at `%s` (h\\\\:m\\\\:s d/m/y) <@&965396880286707732>", client.getSession().getUsername(), client.getSession().getUuid(), fmt), "crash.txt", reportData.getBytes(StandardCharsets.UTF_8));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -101,6 +101,8 @@ public class ShadowMain implements ModInitializer {
         AddonManager.init();
 
         ConfigManager.loadState();
+
+        ItemGroupRegistry.init();
 
         log(Level.INFO, "Done initializing");
     }

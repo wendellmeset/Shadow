@@ -40,6 +40,7 @@
     "IPlayerMoveC2SPacketAccessor",
     "IRenderTickCounterAccessor",
     "ISliderWidgetAccessor",
+    "ItemGroupMixin",
     "ItemStackMixin",
     "KeyboardMixin",
     "LivingEntityMixin",
