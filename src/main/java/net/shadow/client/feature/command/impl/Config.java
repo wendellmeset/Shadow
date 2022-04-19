@@ -21,6 +21,11 @@ public class Config extends Command {
     }
 
     @Override
+    public ExamplesEntry getExampleArguments() {
+        return new ExamplesEntry("NoFall", "Flight Mode", "Flight Bypass-vanilla-AC true");
+    }
+
+    @Override
     public PossibleArgument getSuggestionsWithType(int index, String[] args) {
         return switch (index) {
             case 0 ->

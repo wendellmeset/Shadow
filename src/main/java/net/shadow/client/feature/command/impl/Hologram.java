@@ -30,6 +30,11 @@ public class Hologram extends Command {
     }
 
     @Override
+    public ExamplesEntry getExampleArguments() {
+        return new ExamplesEntry("E Hello spawn egg", "EB I am baby", "BVM You can see and interact with me", "BGVM Help I'm a falling child which you can interact with!");
+    }
+
+    @Override
     public void onExecute(String[] args) throws CommandException {
         validateArgumentsLength(args, 2, "Provide flags and text");
         String options = args[0].toLowerCase();

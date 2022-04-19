@@ -1,1 +1,3 @@
-among
+Added a bunch of stuff
+Added automatic crash reporting
+Ported modules

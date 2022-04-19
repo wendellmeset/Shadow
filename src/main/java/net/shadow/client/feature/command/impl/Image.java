@@ -49,6 +49,11 @@ public class Image extends Command {
     }
 
     @Override
+    public ExamplesEntry getExampleArguments() {
+        return new ExamplesEntry("chat https://i.pinimg.com/originals/3c/e5/3e/3ce53e9d93949c2fb2372ffcf0751aac.png 60", "lore https://i.pinimg.com/originals/3c/e5/3e/3ce53e9d93949c2fb2372ffcf0751aac.png 100", "help");
+    }
+
+    @Override
     public PossibleArgument getSuggestionsWithType(int index, String[] args) {
         return StaticArgumentServer.serveFromStatic(index, new PossibleArgument(ArgumentType.STRING, "chat", "book", "lore"),
                 new PossibleArgument(ArgumentType.STRING, "(url)"),
@@ -85,31 +90,6 @@ public class Image extends Command {
                         ShadowMain.client.player.networkHandler.sendPacket(new UpdateCommandBlockC2SPacket(((BlockHitResult) ShadowMain.client.crosshairTarget).getBlockPos(), "REST", CommandBlockBlockEntity.Type.REDSTONE, false, false, false));
                         Utils.sleep(50);
                         ShadowMain.client.player.networkHandler.sendPacket(new UpdateCommandBlockC2SPacket(((BlockHitResult) ShadowMain.client.crosshairTarget).getBlockPos(), "/execute run tellraw @a " + mc, CommandBlockBlockEntity.Type.REDSTONE, false, false, true));
-                    }
-                } catch (Exception e) {
-                    message("ChatPrinter");
-                }
-                Utils.sleep(2000);
-                real = false;
-            }).start();
-            case "chat2" -> new Thread(() -> {
-                try {
-                    real = true;
-                    loadImage(args[1], Integer.parseInt(args[2]));
-                    int max = imageToBuild.getHeight();
-                    for (int index = 0; index < max; index++) {
-                        StringBuilder builder = new StringBuilder();
-                        builder.append("[");
-                        for (int i = 0; i < imageToBuild.getWidth(); i++) {
-                            int r = imageToBuild.getRGB(i, index);
-                            int rP = r & 0xFFFFFF | 0xF000000;
-                            builder.append("{\"text\":\"").append(block).append("\",\"color\":\"#").append(Integer.toString(rP, 16).substring(1)).append("\"},");
-                        }
-                        String mc = builder.substring(0, builder.length() - 1) + "]";
-                        Utils.sleep(50);
-                        ShadowMain.client.player.networkHandler.sendPacket(new UpdateCommandBlockC2SPacket(((BlockHitResult) ShadowMain.client.crosshairTarget).getBlockPos(), "REST", CommandBlockBlockEntity.Type.REDSTONE, false, false, false));
-                        Utils.sleep(50);
-                        ShadowMain.client.player.networkHandler.sendPacket(new UpdateCommandBlockC2SPacket(((BlockHitResult) ShadowMain.client.crosshairTarget).getBlockPos(), "/tellraw @a " + mc, CommandBlockBlockEntity.Type.REDSTONE, false, false, true));
                     }
                 } catch (Exception e) {
                     message("ChatPrinter");

@@ -44,6 +44,11 @@ public class SpawnData extends Command {
     }
 
     @Override
+    public ExamplesEntry getExampleArguments() {
+        return new ExamplesEntry("position 0 69 420  (sets the spawn position to 0 69 420)", "velocity 0 2 0  (sets initial velocity to 2y)", "cursor  (sets spawn position to where you're looking)");
+    }
+
+    @Override
     public void onExecute(String[] args) throws CommandException {
         validateArgumentsLength(args, 1, "Provide data point");
         StreamlineArgumentParser parser = new StreamlineArgumentParser(args);

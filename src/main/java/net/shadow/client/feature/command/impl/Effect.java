@@ -20,6 +20,11 @@ public class Effect extends Command {
     }
 
     @Override
+    public ExamplesEntry getExampleArguments() {
+        return new ExamplesEntry("give 3 100 255", "clear");
+    }
+
+    @Override
     public PossibleArgument getSuggestionsWithType(int index, String[] args) {
         if (index == 0) return new PossibleArgument(ArgumentType.STRING, "give", "clear");
         else if (args[0].equalsIgnoreCase("give")) {

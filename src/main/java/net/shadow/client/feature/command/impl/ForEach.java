@@ -31,6 +31,11 @@ public class ForEach extends Command {
     String partial;
     boolean recieving;
 
+    @Override
+    public ExamplesEntry getExampleArguments() {
+        return new ExamplesEntry("player 1000 /msg %s you stink", "tab 10 /kick %s Server wipe", "tab 0 /ban %s MOLED LLLLL");
+    }
+
     public ForEach() {
         super("ForEach", "Do something for each player", "forEach", "for", "fe");
         Events.registerEventHandler(EventType.PACKET_RECEIVE, event -> {

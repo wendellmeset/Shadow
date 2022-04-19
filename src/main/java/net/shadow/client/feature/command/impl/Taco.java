@@ -177,6 +177,11 @@ public class Taco extends Command {
     }
 
     @Override
+    public ExamplesEntry getExampleArguments() {
+        return new ExamplesEntry("fps 30", "play /path/to/gif/file.gif", "toggle");
+    }
+
+    @Override
     public PossibleArgument getSuggestionsWithType(int index, String[] args) {
         if (index == 0) {
             return new PossibleArgument(ArgumentType.STRING, "fps", "play", "toggle");

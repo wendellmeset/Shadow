@@ -38,7 +38,7 @@ public class Poof extends Command {
         ItemStack crashme = new ItemStack(Items.IRON_HOE, 1);
         try {
             //i hate your shitty salmon
-            crashme.setNbt(StringNbtReader.parse("{display:{Name:'{\"text\":\"\",\"hoverEvent\":{\"action\":\"show_entity\",\"contents\":{\"id\":\"AMONG US\",\"type\":\"minecraft:player\"}}}'}}"));
+            crashme.setNbt(StringNbtReader.parse("{display:{Name:'{\"text\":\"Sussy hoe\",\"hoverEvent\":{\"action\":\"show_entity\",\"contents\":{\"id\":\"AMONG US\",\"type\":\"minecraft:player\"}}}'}}"));
         } catch (CommandSyntaxException e) {
             e.printStackTrace();
         }

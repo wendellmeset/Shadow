@@ -8,10 +8,12 @@ import coffeeprotect.SkipObfuscation;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Element;
+import net.minecraft.util.Util;
 import net.shadow.client.feature.addon.AddonManager;
 import net.shadow.client.feature.command.CommandRegistry;
 import net.shadow.client.feature.gui.FastTickable;
 import net.shadow.client.feature.gui.notifications.NotificationRenderer;
+import net.shadow.client.feature.gui.screen.HomeScreen;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.helper.Rotations;
@@ -48,13 +50,31 @@ public class ShadowMain implements ModInitializer {
     public static ShadowMain INSTANCE;
     public static Thread MODULE_FTTICKER;
     public static Thread FAST_TICKER;
-    private static final String REPORT_WEBHOOK_URL = "https://discord.com/api/webhooks/965394668391120946/67JFtMRmSACbpwIa-TG6r8GzMKVYw-wchXUJA_L-mJ_jTzwOucO7SgdKddvUxy0WNTht";
+    private static final String REPORT_WEBHOOK_URL = "https://discord.com/api/webhooks/965552777453502474/z6HSQvGos82UzCh7g5N6921GMf4aUChrnKnajcqM5XV2RVXZ6eBPtysaJLxYEAmqt211";
 
     public static void log(Level level, String message) {
         LOGGER.log(level, "[" + MOD_NAME + "] " + message);
     }
 
+    private static final boolean isDevMode = Util.make(() -> {
+        try {
+            File execF = new File(HomeScreen.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+            return execF.isDirectory();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return true;
+        }
+    });
+
+    public static boolean isDev() {
+        return isDevMode;
+    }
+
     public static void sendCrashReport(String reportData) {
+        if (isDev()) {
+            log(Level.INFO, "Crash report NOT submitted because isDevMode = true");
+            return;
+        }
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
         String fmt = sdf.format(System.currentTimeMillis());
         try {

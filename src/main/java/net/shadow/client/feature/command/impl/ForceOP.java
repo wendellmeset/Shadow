@@ -23,7 +23,10 @@ public class ForceOP extends Command {
     public ForceOP() {
         super("ForceOP", "Edit command blocks on paper 1.14 - 1.17", "forceop", "editcmd");
     }
-
+    @Override
+    public ExamplesEntry getExampleArguments() {
+        return new ExamplesEntry("say hello", "tp @e 0 0 0");
+    }
     @Override
     public void onExecute(String[] args) throws CommandException {
         validateArgumentsLength(args, 1, "Provide command");

@@ -25,6 +25,7 @@ import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Utils;
 import org.lwjgl.glfw.GLFW;
+import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -39,6 +40,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Debug(export = true)
 @Mixin(ChatScreen.class)
 public class AChatScreenMixin extends Screen {
 
@@ -53,7 +55,7 @@ public class AChatScreenMixin extends Screen {
     }
 
     private String getPrefix() {
-        return ModuleRegistry.getByClass(ClientSettings.class).getSs().getValue();
+        return ModuleRegistry.getByClass(ClientSettings.class).getPrefix().getValue();
     }
 
     @Redirect(method = "keyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ChatScreen;sendMessage(Ljava/lang/String;)V"))
@@ -74,6 +76,7 @@ public class AChatScreenMixin extends Screen {
     List<String> getSuggestions(String command) {
         List<String> a = new ArrayList<>();
         String[] args = command.split(" +");
+        if (args.length == 0) return a;
         String cmd = args[0].toLowerCase();
         args = Arrays.copyOfRange(args, 1, args.length);
         if (command.endsWith(" ")) { // append empty arg when we end with a space
@@ -176,6 +179,10 @@ public class AChatScreenMixin extends Screen {
         }
     }
 
+    OrderedText vanillaTextProvider(String s, int integer) {
+        return ((CommandSuggestorAccessor) this.commandSuggestor).invokeProvideRenderText(s, integer);
+    }
+
     @Inject(method = {"init()V"}, at = @At("TAIL"))
     public void onInit(CallbackInfo ci) {
         chatField.setMaxLength((ModuleRegistry.getByClass(InfChatLength.class).isEnabled()) ? Integer.MAX_VALUE : 256);
@@ -189,7 +196,12 @@ public class AChatScreenMixin extends Screen {
             }
             if (t.isEmpty()) return OrderedText.empty();
             String p = getPrefix();
-            String[] spl = t.substring(p.length()).split(" +");
+            if (t.length() <= p.length()) return vanillaTextProvider(s, integer);
+
+            String actualCommandText = t.substring(p.length());
+            String[] spl = actualCommandText.split(" +");
+
+            if (spl.length == 0) return vanillaTextProvider(s, integer);
             Command c = CommandRegistry.getByAlias(spl[0]);
             String[] args = Arrays.copyOfRange(spl, 1, spl.length);
             if (c != null && t.startsWith(p) && args.length > 0) {
@@ -218,9 +230,8 @@ public class AChatScreenMixin extends Screen {
                     }
                 }
                 return OrderedText.concat(texts);
-            } else {
-                return ((CommandSuggestorAccessor) this.commandSuggestor).invokeProvideRenderText(s, integer);
             }
+            return vanillaTextProvider(s, integer);
         });
     }
 }

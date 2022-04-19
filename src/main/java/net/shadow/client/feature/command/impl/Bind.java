@@ -27,6 +27,11 @@ public class Bind extends Command {
     }
 
     @Override
+    public ExamplesEntry getExampleArguments() {
+        return new ExamplesEntry("Flight", "NoFall", "ClickGui");
+    }
+
+    @Override
     public void onExecute(String[] args) throws CommandException {
         validateArgumentsLength(args, 1, "Provide module name");
         String mn = args[0];

