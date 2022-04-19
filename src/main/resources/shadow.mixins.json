@@ -13,6 +13,7 @@
     "BlockEntityRenderDispatcherMixin",
     "BlockMixin",
     "CameraMixin",
+    "ChatHudMixin",
     "ClickableWidgetMixin",
     "ClientConnection1Mixin",
     "ClientConnectionMixin",

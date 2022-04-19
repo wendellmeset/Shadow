@@ -18,6 +18,11 @@ public class Equip extends Command {
     }
 
     @Override
+    public ExamplesEntry getExampleArguments() {
+        return new ExamplesEntry("head", "legs", "feet");
+    }
+
+    @Override
     public PossibleArgument getSuggestionsWithType(int index, String[] args) {
         return StaticArgumentServer.serveFromStatic(index, new PossibleArgument(ArgumentType.STRING, "head", "chest", "legs", "feet"));
     }

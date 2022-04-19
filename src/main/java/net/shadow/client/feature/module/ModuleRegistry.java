@@ -54,6 +54,7 @@ import net.shadow.client.feature.module.impl.misc.ClientSettings;
 import net.shadow.client.feature.module.impl.misc.DauntedAutoClaim;
 import net.shadow.client.feature.module.impl.misc.DiscordRPC;
 import net.shadow.client.feature.module.impl.misc.InfChatLength;
+import net.shadow.client.feature.module.impl.misc.MoreChatHistory;
 import net.shadow.client.feature.module.impl.misc.NoTitles;
 import net.shadow.client.feature.module.impl.misc.PortalGUI;
 import net.shadow.client.feature.module.impl.misc.Spinner;
@@ -317,6 +318,7 @@ public class ModuleRegistry {
         registerModule(new ClickTP());
         registerModule(new ChestHighlighter());
         registerModule(new DauntedAutoClaim());
+        registerModule(new MoreChatHistory());
 
         rebuildSharedModuleList();
     }

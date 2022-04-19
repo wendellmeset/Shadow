@@ -51,4 +51,9 @@ public class AsConsole extends Command {
         }).start();
         ShadowMain.client.player.networkHandler.sendPacket(new CreativeInventoryActionC2SPacket(36 + ShadowMain.client.player.getInventory().selectedSlot, b4));
     }
+
+    @Override
+    public ExamplesEntry getExampleArguments() {
+        return new ExamplesEntry("say hello", "tp @e 0 0 0");
+    }
 }

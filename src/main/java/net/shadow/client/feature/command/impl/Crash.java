@@ -12,6 +12,7 @@ import net.shadow.client.feature.command.argument.PlayerFromNameArgumentParser;
 import net.shadow.client.feature.command.coloring.ArgumentType;
 import net.shadow.client.feature.command.coloring.PossibleArgument;
 import net.shadow.client.feature.command.coloring.StaticArgumentServer;
+import net.shadow.client.feature.command.examples.ExampleServer;
 import net.shadow.client.feature.command.exception.CommandException;
 
 import java.util.Objects;
@@ -24,6 +25,11 @@ public class Crash extends Command {
     @Override
     public PossibleArgument getSuggestionsWithType(int index, String[] args) {
         return StaticArgumentServer.serveFromStatic(index, new PossibleArgument(ArgumentType.STRING, Objects.requireNonNull(ShadowMain.client.world).getPlayers().stream().map(abstractClientPlayerEntity -> abstractClientPlayerEntity.getGameProfile().getName()).toList().toArray(String[]::new)));
+    }
+
+    @Override
+    public ExamplesEntry getExampleArguments() {
+        return ExampleServer.getPlayerNames();
     }
 
     @Override

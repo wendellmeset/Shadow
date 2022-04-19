@@ -38,4 +38,9 @@ public class ApplyVel extends Command {
 
         ShadowMain.client.player.addVelocity(vx, vy, vz);
     }
+
+    @Override
+    public ExamplesEntry getExampleArguments() {
+        return new ExamplesEntry("1 2 3", "0 2 0");
+    }
 }

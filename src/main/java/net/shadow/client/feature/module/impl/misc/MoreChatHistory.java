@@ -4,23 +4,25 @@
 
 package net.shadow.client.feature.module.impl.misc;
 
-import lombok.Getter;
 import net.minecraft.client.util.math.MatrixStack;
-import net.shadow.client.feature.config.StringSetting;
-import net.shadow.client.feature.gui.notifications.Notification;
+import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 
-public class ClientSettings extends Module {
-    @Getter
-    final
-    StringSetting prefix = this.config.create(new StringSetting.Builder(">")
-            .name("Prefix")
-            .description("The prefix to use for commands")
-            .get());
+public class MoreChatHistory extends Module {
+    DoubleSetting size = this.config.create(new DoubleSetting.Builder(300)
+                .name("Size")
+                .description("How big the new chat history should be allowed to get (vanilla is 100)")
+                .min(10)
+                .max(1000)
+                .precision(0)
+                .get());
+    public MoreChatHistory() {
+        super("MoreChatHistory", "Allows you to change the size of the chat history", ModuleType.MISC);
+    }
 
-    public ClientSettings() {
-        super("ClientSettings", "Configuration for the client", ModuleType.MISC);
+    public int getHistSize() {
+        return (int) (size.getValue()+0);
     }
 
     @Override
@@ -30,8 +32,7 @@ public class ClientSettings extends Module {
 
     @Override
     public void enable() {
-        setEnabled(false);
-        Notification.create(5000, "ClientSettings", Notification.Type.INFO, "No need to enable this");
+
     }
 
     @Override

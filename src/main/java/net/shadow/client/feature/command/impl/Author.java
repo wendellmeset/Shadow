@@ -41,4 +41,9 @@ public class Author extends Command {
         String author = String.join(" ", args);
         heldItem.setSubNbt("author", NbtString.of(author));
     }
+
+    @Override
+    public ExamplesEntry getExampleArguments() {
+        return new ExamplesEntry("Notch", "Newton", "Your fucking father");
+    }
 }

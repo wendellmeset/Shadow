@@ -22,6 +22,7 @@ import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.coloring.ArgumentType;
 import net.shadow.client.feature.command.coloring.PossibleArgument;
 import net.shadow.client.feature.command.coloring.StaticArgumentServer;
+import net.shadow.client.feature.command.examples.ExampleServer;
 import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.helper.event.EventListener;
 import net.shadow.client.helper.event.EventType;
@@ -43,6 +44,11 @@ public class Find extends Command {
         super("Find", "Nocom 2 (requires creative)", "find", "findPlayer");
         System.out.println("instanced");
         Events.registerEventHandlerClass(this);
+    }
+
+    @Override
+    public ExamplesEntry getExampleArguments() {
+        return ExampleServer.getPlayerNames();
     }
 
     @EventListener(type = EventType.PACKET_RECEIVE)
