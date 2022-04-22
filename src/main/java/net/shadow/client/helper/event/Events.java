@@ -43,14 +43,16 @@ public class Events {
     public static ListenerEntry registerEventHandler(EventType event, Consumer<? extends Event> handler) {
         return registerEventHandler((int) Math.floor(Math.random() * 0xFFFFFF), event, handler);
     }
+
     public static void unregisterEventHandlerClass(Object instance) {
         for (ListenerEntry entry : new ArrayList<>(entries)) {
             if (entry.owner.equals(instance.getClass())) {
-                ShadowMain.log(Level.INFO, "Unregistering "+entry.type+":"+entry.id);
+                ShadowMain.log(Level.INFO, "Unregistering " + entry.type + ":" + entry.id);
                 entries.remove(entry);
             }
         }
     }
+
     public static void registerEventHandlerClass(Object instance) {
         for (Method declaredMethod : instance.getClass().getDeclaredMethods()) {
             for (Annotation declaredAnnotation : declaredMethod.getDeclaredAnnotations()) {
@@ -78,10 +80,13 @@ public class Events {
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     public static boolean fireEvent(EventType event, Event argument) {
-        for (ListenerEntry entry : entries) {
-            if (entry.type == event) {
-                ((Consumer) entry.eventListener()).accept(argument);
-            }
+        List<ListenerEntry> le = entries.stream().filter(listenerEntry -> listenerEntry.type == event).toList();
+        if (le.size() == 0) {
+//            ShadowMain.log(Level.INFO, "no one cares about "+event+" so we're gonna skip it");
+            return false;
+        }
+        for (ListenerEntry entry : le) {
+            ((Consumer) entry.eventListener()).accept(argument);
         }
         return argument.isCancelled();
     }

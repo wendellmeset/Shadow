@@ -190,18 +190,18 @@ public class ModuleRegistry {
         Module instance = null;
         for (Constructor<?> declaredConstructor : moduleClass.getDeclaredConstructors()) {
             if (declaredConstructor.getParameterCount() != 0) {
-                throw new IllegalArgumentException(moduleClass.getName()+" has invalid constructor: expected "+moduleClass.getName()+"(), got "+declaredConstructor);
+                throw new IllegalArgumentException(moduleClass.getName() + " has invalid constructor: expected " + moduleClass.getName() + "(), got " + declaredConstructor);
             }
             try {
                 instance = (Module) declaredConstructor.newInstance();
             } catch (Exception e) {
-                throw new IllegalArgumentException("Failed to make instance of "+moduleClass.getName(), e);
+                throw new IllegalArgumentException("Failed to make instance of " + moduleClass.getName(), e);
             }
         }
         if (instance == null) {
-            throw new IllegalArgumentException("Failed to make instance of "+moduleClass.getName());
+            throw new IllegalArgumentException("Failed to make instance of " + moduleClass.getName());
         }
-        ShadowMain.log(Level.INFO, "Initialized " + instance.getName()+" via "+moduleClass.getName());
+        ShadowMain.log(Level.INFO, "Initialized " + instance.getName() + " via " + moduleClass.getName());
         vanillaModules.add(instance);
     }
 
@@ -355,7 +355,7 @@ public class ModuleRegistry {
             while (reloadInProgress.get()) {
                 Thread.onSpinWait();
             }
-            ShadowMain.log(Level.INFO, "Lock opened within "+(System.currentTimeMillis()-lockStart)+" ms ("+(System.nanoTime()-lockStartns)+" ns)");
+            ShadowMain.log(Level.INFO, "Lock opened within " + (System.currentTimeMillis() - lockStart) + " ms (" + (System.nanoTime() - lockStartns) + " ns)");
         }
 
     }

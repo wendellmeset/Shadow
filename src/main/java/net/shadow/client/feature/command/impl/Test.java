@@ -24,7 +24,7 @@ public class Test extends Command {
         for (Module module : ModuleRegistry.getModules()) {
             if (module instanceof AddonModule) continue;
             String cname = module.getClass().getSimpleName();
-            sb.append(String.format("registerModule(%s.class);",cname)).append("\n");
+            sb.append(String.format("registerModule(%s.class);", cname)).append("\n");
         }
         try {
             Files.writeString(new File("bruh.txt").toPath(), sb.toString(), StandardOpenOption.CREATE);
