@@ -19,7 +19,6 @@ import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 import net.shadow.client.helper.event.EventListener;
 import net.shadow.client.helper.event.EventType;
-import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.PacketEvent;
 
 public class InteractCrash extends Module {
@@ -29,7 +28,7 @@ public class InteractCrash extends Module {
 
     public InteractCrash() {
         super("InteractCrash", "Crash using interaction packets", ModuleType.CRASH);
-        Events.registerEventHandlerClass(this);
+//        Events.registerEventHandlerClass(this);
     }
 
     @Override

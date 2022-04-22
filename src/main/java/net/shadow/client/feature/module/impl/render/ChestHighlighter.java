@@ -13,7 +13,6 @@ import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 import net.shadow.client.helper.event.EventListener;
 import net.shadow.client.helper.event.EventType;
-import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.BlockEntityRenderEvent;
 import net.shadow.client.helper.render.Renderer;
 
@@ -26,7 +25,7 @@ public class ChestHighlighter extends Module {
 
     public ChestHighlighter() {
         super("ChestHighlighter", "No description", ModuleType.RENDER);
-        Events.registerEventHandlerClass(this);
+//        Events.registerEventHandlerClass(this);
     }
 
     void addIfNotExisting(BlockPos p) {

@@ -14,7 +14,6 @@ import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 import net.shadow.client.helper.event.EventListener;
 import net.shadow.client.helper.event.EventType;
-import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.PacketEvent;
 import net.shadow.client.helper.util.Utils;
 
@@ -29,7 +28,7 @@ public class FlightCrash extends Module {
 
     public FlightCrash() {
         super("FlightCrash", "Generates a ton of chunks", ModuleType.CRASH);
-        Events.registerEventHandlerClass(this);
+//        Events.registerEventHandlerClass(this);
     }
 
     @Override

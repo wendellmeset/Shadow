@@ -90,7 +90,7 @@ public class GameRendererMixin {
         }
     }
 
-    @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;raycast(DFZ)Lnet/minecraft/util/hit/HitResult;"), method = "updateTargetedEntity")
+    @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;raycast(DFZ)Lnet/minecraft/util/hit/HitResult;"), method = "updateTargetedEntity",require = 0)
     HitResult replaceFreelookHitResult(Entity instance, double maxDistance, float tickDelta, boolean includeFluids) {
         if (ModuleRegistry.getByClass(FreeLook.class).isEnabled()) {
             Vec3d vec3d = instance.getCameraPosVec(tickDelta);

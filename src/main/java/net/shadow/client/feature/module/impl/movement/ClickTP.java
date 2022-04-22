@@ -18,7 +18,6 @@ import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 import net.shadow.client.helper.event.EventListener;
 import net.shadow.client.helper.event.EventType;
-import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.MouseEvent;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Utils;
@@ -31,7 +30,7 @@ public class ClickTP extends Module {
 
     public ClickTP() {
         super("ClickTP", "Teleport somewhere you clicked to", ModuleType.MOVEMENT);
-        Events.registerEventHandlerClass(this);
+//        Events.registerEventHandlerClass(this);
     }
 
     private static int lengthTo(BlockPos p) {
