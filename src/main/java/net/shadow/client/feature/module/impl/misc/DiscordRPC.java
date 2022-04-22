@@ -74,7 +74,7 @@ public class DiscordRPC extends Module {
         rp.setDetails(details.getValue());
         rp.setState(state.getValue());
         rp.setLargeImage("icon", "discord.gg/moles");
-        rp.setSmallImage("grass", "0x150 the 2nd#8918, saturn5Vfive#6767");
+        rp.setSmallImage("icon", "0x150 the 2nd#8918, saturn5Vfive#6767");
         rp.setStart(startTime);
         DiscordIPC.setActivity(rp);
     }
