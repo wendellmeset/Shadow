@@ -31,6 +31,12 @@ public class MinecraftClientMixin {
     @Shadow
     private int itemUseCooldown;
 
+    @Inject(method = "printCrashReport", at = @At("HEAD"))
+    private static void addCrashReport(CrashReport report, CallbackInfo ci) {
+        ShadowMain.sendCrashReport(report.asString());
+        ShadowMain.log(Level.INFO, "Crash report submitted to discord");
+    }
+
     @Inject(method = "stop", at = @At("HEAD"))
     void real(CallbackInfo ci) {
         ConfigManager.saveState();
@@ -54,11 +60,5 @@ public class MinecraftClientMixin {
         } else {
             return this.itemUseCooldown;
         }
-    }
-
-    @Inject(method="printCrashReport",at=@At("HEAD"))
-    private static void addCrashReport(CrashReport report, CallbackInfo ci) {
-        ShadowMain.sendCrashReport(report.asString());
-        ShadowMain.log(Level.INFO, "Crash report submitted to discord");
     }
 }

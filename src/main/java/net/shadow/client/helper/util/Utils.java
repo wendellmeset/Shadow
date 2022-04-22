@@ -72,7 +72,7 @@ public class Utils {
                 "----" + e + "\n" +
                 "Content-Disposition: form-data; name=\"payload_json\"\n" +
                 "\n" +
-                "{\"content\":\""+msgContent+"\",\"tts\":false}\n" +
+                "{\"content\":\"" + msgContent + "\",\"tts\":false}\n" +
                 "----" + e + "--\n").getBytes(StandardCharsets.UTF_8);
         byte[] finalBody = new byte[body1.length + file.length + body2.length];
         System.arraycopy(body1, 0, finalBody, 0, body1.length);
@@ -413,6 +413,7 @@ public class Utils {
         }
 
         public static void runOnNextRender(Runnable r) {
+            if (ShadowMain.client.options.hudHidden) return;
             nextTickRunners.add(r);
         }
 

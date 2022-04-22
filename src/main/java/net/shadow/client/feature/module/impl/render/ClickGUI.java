@@ -9,6 +9,7 @@ import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 import net.shadow.client.feature.module.NoNotificationDefault;
+import org.lwjgl.glfw.GLFW;
 
 @NoNotificationDefault
 public class ClickGUI extends Module {
@@ -16,6 +17,7 @@ public class ClickGUI extends Module {
 
     public ClickGUI() {
         super("ClickGUI", "A visual manager for all modules", ModuleType.RENDER);
+        this.keybind.accept(GLFW.GLFW_KEY_RIGHT_SHIFT + "");
     }
 
     @Override

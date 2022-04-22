@@ -5,12 +5,17 @@
 package net.shadow.client.mixin;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.gui.AbstractParentElement;
+import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
+import net.shadow.client.feature.gui.HasSpecialCursor;
+import net.shadow.client.helper.render.Cursor;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -18,15 +23,23 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.awt.Color;
+import java.util.List;
 
 @Mixin(Screen.class)
-public class ScreenMixin {
+public abstract class ScreenMixin extends AbstractParentElement {
     private static final Color c = new Color(10, 10, 10);
     @Shadow
     public int height;
 
     @Shadow
     public int width;
+
+    @Shadow
+    @Final
+    private List<Element> children;
+
+    @Shadow
+    protected abstract void insertText(String text, boolean override);
 
     @Inject(method = "renderBackgroundTexture", at = @At("HEAD"), cancellable = true)
     void real(int vOffset, CallbackInfo ci) {
@@ -44,5 +57,26 @@ public class ScreenMixin {
         bufferBuilder.vertex(this.width, 0.0D, 0.0D).color(r, g, b, 1f).next();
         bufferBuilder.vertex(0.0D, 0.0D, 0.0D).color(r, g, b, 1f).next();
         tessellator.draw();
+    }
+
+    @Override
+    public List<? extends Element> children() { // have to do this because java will shit itself when i dont overwrite this
+        return this.children;
+    }
+
+    void shadow_handleCursor(double x, double y) {
+        long c = Cursor.STANDARD;
+        for (Element child : this.children) {
+            if (child instanceof HasSpecialCursor specialCursor) {
+                if (specialCursor.shouldApplyCustomCursor()) c = specialCursor.getCursor();
+            }
+        }
+        Cursor.setGlfwCursor(c);
+    }
+
+    @Override
+    public void mouseMoved(double mouseX, double mouseY) {
+        shadow_handleCursor(mouseX, mouseY);
+        super.mouseMoved(mouseX, mouseY);
     }
 }

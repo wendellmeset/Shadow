@@ -175,6 +175,7 @@ public class ModuleRegistry {
         }
         reloadInProgress.set(false);
     }
+
     public static void init() {
         try {
             initInner();
@@ -183,10 +184,12 @@ public class ModuleRegistry {
             System.exit(1);
         }
     }
+
     private static void registerModule(Module module) {
-        ShadowMain.log(Level.INFO, "Initialized "+module.getName());
+        ShadowMain.log(Level.INFO, "Initialized " + module.getName());
         vanillaModules.add(module);
     }
+
     private static void initInner() {
         if (initialized.get()) return;
         initialized.set(true);

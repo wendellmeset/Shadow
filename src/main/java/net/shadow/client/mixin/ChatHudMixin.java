@@ -16,9 +16,10 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 @Debug(export = true)
 @Mixin(ChatHud.class)
 public abstract class ChatHudMixin {
-    @Shadow public abstract int getWidth();
+    @Shadow
+    public abstract int getWidth();
 
-    @ModifyConstant(method="addMessage(Lnet/minecraft/text/Text;IIZ)V",constant = @Constant(intValue = 100))
+    @ModifyConstant(method = "addMessage(Lnet/minecraft/text/Text;IIZ)V", constant = @Constant(intValue = 100))
     int a(int constant) {
         MoreChatHistory hist = ModuleRegistry.getByClass(MoreChatHistory.class);
         if (hist.isEnabled()) return hist.getHistSize();

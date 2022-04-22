@@ -4,7 +4,6 @@
 
 package net.shadow.client.feature.command.impl;
 
-import io.netty.util.internal.shaded.org.jctools.util.UnsafeAccess;
 import net.shadow.client.feature.command.Command;
 
 public class Test extends Command {
@@ -14,6 +13,6 @@ public class Test extends Command {
 
     @Override
     public void onExecute(String[] args) {
-        UnsafeAccess.UNSAFE.throwException(new ClassFormatError("AMONG US SUSSY!!!"));
+        success("jooj");
     }
 }

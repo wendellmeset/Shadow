@@ -134,7 +134,7 @@ public class Boom extends Module {
 
     @Override
     public String getContext() {
-        return null;
+        return ((int) (this.power.getValue() + 0)) + "!".repeat((int) Math.floor(this.power.getValue() / 20d));
     }
 
     @Override
@@ -151,4 +151,3 @@ public class Boom extends Module {
         FireballGhast, FireballInstant
     }
 }
-

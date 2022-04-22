@@ -20,7 +20,4 @@ public interface IMinecraftClientAccessor {
 
     @Accessor("renderTickCounter")
     RenderTickCounter getRenderTickCounter();
-
-    @Accessor("currentFps")
-    int getCurrentFps();
 }

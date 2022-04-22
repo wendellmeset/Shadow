@@ -11,18 +11,19 @@ import net.shadow.client.feature.module.ModuleType;
 
 public class MoreChatHistory extends Module {
     DoubleSetting size = this.config.create(new DoubleSetting.Builder(300)
-                .name("Size")
-                .description("How big the new chat history should be allowed to get (vanilla is 100)")
-                .min(10)
-                .max(1000)
-                .precision(0)
-                .get());
+            .name("Size")
+            .description("How big the new chat history should be allowed to get (vanilla is 100)")
+            .min(10)
+            .max(1000)
+            .precision(0)
+            .get());
+
     public MoreChatHistory() {
         super("MoreChatHistory", "Allows you to change the size of the chat history", ModuleType.MISC);
     }
 
     public int getHistSize() {
-        return (int) (size.getValue()+0);
+        return (int) (size.getValue() + 0);
     }
 
     @Override

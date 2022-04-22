@@ -23,7 +23,7 @@ public class PlayerEntityRendererMixin {
     void real(AbstractClientPlayerEntity abstractClientPlayerEntity, Text text, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci) {
         NameTags nt = ModuleRegistry.getByClass(NameTags.class);
         if (nt.isEnabled()) {
-            nt.render(matrixStack, abstractClientPlayerEntity, text);
+//            nt.render(matrixStack, abstractClientPlayerEntity, text);
             ci.cancel();
         }
     }
