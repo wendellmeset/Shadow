@@ -13,8 +13,10 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.gui.DoesMSAA;
+import net.shadow.client.feature.gui.HasSpecialCursor;
 import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.render.ClipStack;
+import net.shadow.client.helper.render.Cursor;
 import net.shadow.client.helper.render.Rectangle;
 import net.shadow.client.helper.render.Renderer;
 import org.apache.commons.lang3.SystemUtils;
@@ -22,7 +24,7 @@ import org.lwjgl.glfw.GLFW;
 
 import java.awt.Color;
 
-public class RoundTextFieldWidget implements Element, Drawable, Selectable, DoesMSAA {
+public class RoundTextFieldWidget implements Element, Drawable, Selectable, DoesMSAA, HasSpecialCursor {
     protected final String suggestion;
     public Runnable changeListener = () -> {
     };
@@ -40,6 +42,16 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
         this.width = width;
         this.height = height;
         this.suggestion = text;
+    }
+
+    @Override
+    public boolean shouldApplyCustomCursor() {
+        return mouseOver;
+    }
+
+    @Override
+    public long getCursor() {
+        return Cursor.TEXT_EDIT;
     }
 
     protected double maxTextWidth() {

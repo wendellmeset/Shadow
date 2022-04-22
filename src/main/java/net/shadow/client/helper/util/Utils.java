@@ -413,6 +413,7 @@ public class Utils {
         }
 
         public static void runOnNextRender(Runnable r) {
+            if (ShadowMain.client.options.hudHidden) return;
             nextTickRunners.add(r);
         }
 
