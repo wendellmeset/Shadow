@@ -52,12 +52,6 @@ public class NameTags extends Module {
         }
     }
 
-    GameMode getGamemode(AbstractClientPlayerEntity p) {
-        PlayerListEntry ple = client.getNetworkHandler().getPlayerListEntry(p.getUuid());
-        if (ple == null) return null;
-        return ple.getGameMode();
-    }
-
     void drawInternal(Vec3d screenPos, String text, AbstractClientPlayerEntity entity) {
         FontAdapter nameDrawer = FontRenderers.getRenderer();
         FontAdapter infoDrawer = FontRenderers.getCustomSize(12);
@@ -111,7 +105,7 @@ public class NameTags extends Module {
     @Override
     public void onWorldRender(MatrixStack matrices) {
         // sort the entire thing based on the most distant to the least distant because thats how rendering works
-        for (AbstractClientPlayerEntity player : client.world.getPlayers().stream().sorted(Comparator.comparingDouble(value -> -value.getPos().distanceTo(client.gameRenderer.getCamera().getPos()))).toList()) {
+        for (AbstractClientPlayerEntity player : client.world.getPlayers().stream().sorted(Comparator.comparingDouble(value -> -value.getPos().distanceTo(client.gameRenderer.getCamera().getPos()))).filter(abstractClientPlayerEntity -> !abstractClientPlayerEntity.equals(client.player)).toList()) {
 //            String t = player.getEntityName();
             render(matrices, player, player.getName());
         }

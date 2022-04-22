@@ -15,7 +15,6 @@ import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 import net.shadow.client.helper.event.EventListener;
 import net.shadow.client.helper.event.EventType;
-import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.PacketEvent;
 import net.shadow.client.helper.util.Utils;
 
@@ -29,7 +28,7 @@ public class Fling extends Module {
 
     public Fling() {
         super("Fling", "Fling players in the air", ModuleType.COMBAT);
-        Events.registerEventHandlerClass(this);
+//        Events.registerEventHandlerClass(this);
     }
 
     @Override

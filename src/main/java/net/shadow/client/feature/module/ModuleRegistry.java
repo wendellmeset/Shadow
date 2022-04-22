@@ -49,6 +49,7 @@ import net.shadow.client.feature.module.impl.misc.AdBlock;
 import net.shadow.client.feature.module.impl.misc.AdSpammer;
 import net.shadow.client.feature.module.impl.misc.AllowFormatCodes;
 import net.shadow.client.feature.module.impl.misc.AntiCrash;
+import net.shadow.client.feature.module.impl.misc.AntiOffhandCrash;
 import net.shadow.client.feature.module.impl.misc.AntiPacketKick;
 import net.shadow.client.feature.module.impl.misc.ClientSettings;
 import net.shadow.client.feature.module.impl.misc.DiscordRPC;
@@ -132,6 +133,7 @@ import net.shadow.client.feature.module.impl.world.SurvivalNuker;
 import net.shadow.client.feature.module.impl.world.XRAY;
 import org.apache.logging.log4j.Level;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -179,14 +181,27 @@ public class ModuleRegistry {
         try {
             initInner();
         } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(1);
+            throw new RuntimeException(e);
         }
     }
 
-    private static void registerModule(Module module) {
-        ShadowMain.log(Level.INFO, "Initialized " + module.getName());
-        vanillaModules.add(module);
+    private static void registerModule(Class<? extends Module> moduleClass) {
+        Module instance = null;
+        for (Constructor<?> declaredConstructor : moduleClass.getDeclaredConstructors()) {
+            if (declaredConstructor.getParameterCount() != 0) {
+                throw new IllegalArgumentException(moduleClass.getName() + " has invalid constructor: expected " + moduleClass.getName() + "(), got " + declaredConstructor);
+            }
+            try {
+                instance = (Module) declaredConstructor.newInstance();
+            } catch (Exception e) {
+                throw new IllegalArgumentException("Failed to make instance of " + moduleClass.getName(), e);
+            }
+        }
+        if (instance == null) {
+            throw new IllegalArgumentException("Failed to make instance of " + moduleClass.getName());
+        }
+        ShadowMain.log(Level.INFO, "Initialized " + instance.getName() + " via " + moduleClass.getName());
+        vanillaModules.add(instance);
     }
 
     private static void initInner() {
@@ -194,132 +209,130 @@ public class ModuleRegistry {
         initialized.set(true);
         vanillaModules.clear();
 
-        registerModule(new Flight());
-        registerModule(new Sprint());
-        registerModule(new Fullbright());
-        registerModule(new Hud());
-        registerModule(new TargetHud());
-        //modules.add(new AntiOffhandCrash()); this should be under anticrash
-        registerModule(new AntiPacketKick());
-        registerModule(new AntiRDI());
-        registerModule(new BoatPhase());
-        registerModule(new BoatCrash());
-        registerModule(new Boom());
-        registerModule(new CaveMapper()); // its fun
-        registerModule(new InstaBow());
-        registerModule(new ChunkCrash());
-        registerModule(new OffhandCrash());
-        registerModule(new OOBCrash());
-        registerModule(new Phase());
-        registerModule(new VanillaSpoof());
-        registerModule(new XRAY());
-        registerModule(new Decimator());
-        registerModule(new ClickGUI());
-        registerModule(new TpRange());
-        registerModule(new AnyPlacer());
-        registerModule(new FireballDeflector()); // its a fucking utility client saturn
-        registerModule(new ShulkerDeflector());
-        registerModule(new CarpetBomb());
-        //modules.add(new SkinChangeExploit()); litteral fucking joke module, to be re-written as personhider or whatever i named it (skinfuscator is a good name lol)
-        registerModule(new AutoTrap());
-        registerModule(new AutoTNT());
-        //modules.add(new LetThereBeLight()); awful why?
-        registerModule(new FakeHacker());
-        registerModule(new NoFall());
-        registerModule(new ESP());
-        registerModule(new Tracers());
-        registerModule(new Hyperspeed());
-        registerModule(new AntiAnvil());
-        registerModule(new Swing());
-        registerModule(new AimAssist());
-        registerModule(new Criticals());
-        registerModule(new Killaura()); //TODO: add settings and shit
-        registerModule(new Velocity());
-        registerModule(new AntiAntiXray());
-        registerModule(new PingSpoof());
-        registerModule(new AutoAttack());
-        registerModule(new MouseEars()); //i really wanna remove this one | dont
-        registerModule(new Spinner());
-        registerModule(new AllowFormatCodes());
-        registerModule(new InfChatLength());
-        registerModule(new NoTitles());
-        registerModule(new PortalGUI());
-        registerModule(new Timer());
-        registerModule(new XCarry());
-        registerModule(new AirJump()); //TODO: unshit
-        registerModule(new AutoElytra());
-        registerModule(new Blink());
-        registerModule(new Boost());
-        registerModule(new EdgeJump()); // UTILITY CLIENT
-        registerModule(new EdgeSneak());
-        registerModule(new EntityFly());
-        registerModule(new IgnoreWorldBorder()); //i'll allow it | as you should
-        registerModule(new InventoryWalk());
-        registerModule(new Jesus());
-        registerModule(new LongJump());
-        registerModule(new MoonGravity());
-        registerModule(new NoJumpCool());
-        registerModule(new NoLevitation());
-        registerModule(new NoPush());
-        registerModule(new Step());
-        registerModule(new Freecam());
-        registerModule(new FreeLook());
-        registerModule(new ItemByteSize()); // TO BE RE-WRITTEN AS TOOLTIPS | keep it in for now tho
-        registerModule(new Zoom());
-        registerModule(new AutoTool()); // WHY????? this is so useless | how?
-        registerModule(new BlockTagViewer());
-        registerModule(new Annihilator());
-        registerModule(new FastUse());
-        registerModule(new Flattener());
-        registerModule(new GodBridge()); //TODO: add this as a mode to scaffold
-        registerModule(new InstantBreak()); //TODO: unshit
-        registerModule(new MassUse());
-        registerModule(new NoBreakDelay());
-        registerModule(new SurvivalNuker());
-        registerModule(new Nuker());
-        registerModule(new Scaffold());
-        registerModule(new Test());
-        registerModule(new BlocksMCFlight());
-        registerModule(new NameTags());
-        registerModule(new Trail());
-        registerModule(new AdBlock());
-        registerModule(new AutoLavacast());
-        registerModule(new Backtrack());
-        registerModule(new TabGui());
-        registerModule(new Theme());
-        registerModule(new AntiCrash());
-        registerModule(new ClientSettings());
-        registerModule(new NoLiquidFog());
-        registerModule(new Spotlight());
-        registerModule(new ShowTntPrime());
-        registerModule(new ToolsScreen());
-        registerModule(new BookInflaterCrash());
-        registerModule(new BlockHighlighting());
-        registerModule(new AutoIgnite());
-        registerModule(new DiscordRPC());
-        registerModule(new AirPlace());
-        registerModule(new AdSpammer());
-        registerModule(new AnimationCrash());
-        registerModule(new AutoFireball());
-        registerModule(new AutoFish());
-        registerModule(new AutoRun());
-        registerModule(new LecternCrash());
-        registerModule(new MinehutCrash());
-        registerModule(new ArmorStandCrash());
-        registerModule(new LoominaCrash());
-        registerModule(new Reach());
-        registerModule(new Fling());
-        registerModule(new AutoSign());
-        registerModule(new SuperCrossbow());
-        registerModule(new ReverseKnockback());
-        registerModule(new Speed());
-        registerModule(new BoatFling());
-        registerModule(new FilterBypass());
-        registerModule(new InteractCrash());
-        registerModule(new FlightCrash());
-        registerModule(new ClickTP());
-        registerModule(new ChestHighlighter());
-        registerModule(new MoreChatHistory());
+        registerModule(Flight.class);
+        registerModule(Sprint.class);
+        registerModule(Fullbright.class);
+        registerModule(Hud.class);
+        registerModule(TargetHud.class);
+        registerModule(AntiOffhandCrash.class);
+        registerModule(AntiPacketKick.class);
+        registerModule(AntiRDI.class);
+        registerModule(BoatPhase.class);
+        registerModule(BoatCrash.class);
+        registerModule(Boom.class);
+        registerModule(CaveMapper.class);
+        registerModule(InstaBow.class);
+        registerModule(ChunkCrash.class);
+        registerModule(OffhandCrash.class);
+        registerModule(OOBCrash.class);
+        registerModule(Phase.class);
+        registerModule(VanillaSpoof.class);
+        registerModule(XRAY.class);
+        registerModule(Decimator.class);
+        registerModule(ClickGUI.class);
+        registerModule(TpRange.class);
+        registerModule(AnyPlacer.class);
+        registerModule(FireballDeflector.class);
+        registerModule(ShulkerDeflector.class);
+        registerModule(CarpetBomb.class);
+        registerModule(AutoTrap.class);
+        registerModule(AutoTNT.class);
+        registerModule(FakeHacker.class);
+        registerModule(NoFall.class);
+        registerModule(ESP.class);
+        registerModule(Tracers.class);
+        registerModule(Hyperspeed.class);
+        registerModule(AntiAnvil.class);
+        registerModule(Swing.class);
+        registerModule(AimAssist.class);
+        registerModule(Criticals.class);
+        registerModule(Killaura.class);
+        registerModule(Velocity.class);
+        registerModule(AntiAntiXray.class);
+        registerModule(PingSpoof.class);
+        registerModule(AutoAttack.class);
+        registerModule(MouseEars.class);
+        registerModule(Spinner.class);
+        registerModule(AllowFormatCodes.class);
+        registerModule(InfChatLength.class);
+        registerModule(NoTitles.class);
+        registerModule(PortalGUI.class);
+        registerModule(Timer.class);
+        registerModule(XCarry.class);
+        registerModule(AirJump.class);
+        registerModule(AutoElytra.class);
+        registerModule(Blink.class);
+        registerModule(Boost.class);
+        registerModule(EdgeJump.class);
+        registerModule(EdgeSneak.class);
+        registerModule(EntityFly.class);
+        registerModule(IgnoreWorldBorder.class);
+        registerModule(InventoryWalk.class);
+        registerModule(Jesus.class);
+        registerModule(LongJump.class);
+        registerModule(MoonGravity.class);
+        registerModule(NoJumpCool.class);
+        registerModule(NoLevitation.class);
+        registerModule(NoPush.class);
+        registerModule(Step.class);
+        registerModule(Freecam.class);
+        registerModule(FreeLook.class);
+        registerModule(ItemByteSize.class);
+        registerModule(Zoom.class);
+        registerModule(AutoTool.class);
+        registerModule(BlockTagViewer.class);
+        registerModule(Annihilator.class);
+        registerModule(FastUse.class);
+        registerModule(Flattener.class);
+        registerModule(GodBridge.class);
+        registerModule(InstantBreak.class);
+        registerModule(MassUse.class);
+        registerModule(NoBreakDelay.class);
+        registerModule(SurvivalNuker.class);
+        registerModule(Nuker.class);
+        registerModule(Scaffold.class);
+        registerModule(Test.class);
+        registerModule(BlocksMCFlight.class);
+        registerModule(NameTags.class);
+        registerModule(Trail.class);
+        registerModule(AdBlock.class);
+        registerModule(AutoLavacast.class);
+        registerModule(Backtrack.class);
+        registerModule(TabGui.class);
+        registerModule(Theme.class);
+        registerModule(AntiCrash.class);
+        registerModule(ClientSettings.class);
+        registerModule(NoLiquidFog.class);
+        registerModule(Spotlight.class);
+        registerModule(ShowTntPrime.class);
+        registerModule(ToolsScreen.class);
+        registerModule(BookInflaterCrash.class);
+        registerModule(BlockHighlighting.class);
+        registerModule(AutoIgnite.class);
+        registerModule(DiscordRPC.class);
+        registerModule(AirPlace.class);
+        registerModule(AdSpammer.class);
+        registerModule(AnimationCrash.class);
+        registerModule(AutoFireball.class);
+        registerModule(AutoFish.class);
+        registerModule(AutoRun.class);
+        registerModule(LecternCrash.class);
+        registerModule(MinehutCrash.class);
+        registerModule(ArmorStandCrash.class);
+        registerModule(LoominaCrash.class);
+        registerModule(Reach.class);
+        registerModule(Fling.class);
+        registerModule(AutoSign.class);
+        registerModule(SuperCrossbow.class);
+        registerModule(ReverseKnockback.class);
+        registerModule(Speed.class);
+        registerModule(BoatFling.class);
+        registerModule(FilterBypass.class);
+        registerModule(InteractCrash.class);
+        registerModule(FlightCrash.class);
+        registerModule(ClickTP.class);
+        registerModule(ChestHighlighter.class);
+        registerModule(MoreChatHistory.class);
 
         rebuildSharedModuleList();
     }
@@ -328,13 +341,21 @@ public class ModuleRegistry {
         if (!initialized.get()) {
             init();
         }
+        awaitLockOpen();
         return sharedModuleList;
     }
 
     private static void awaitLockOpen() {
-        while (reloadInProgress.get()) {
-            Thread.onSpinWait();
+        if (reloadInProgress.get()) {
+            ShadowMain.log(Level.INFO, "Locking for some time for reload to complete");
+            long lockStart = System.currentTimeMillis();
+            long lockStartns = System.nanoTime();
+            while (reloadInProgress.get()) {
+                Thread.onSpinWait();
+            }
+            ShadowMain.log(Level.INFO, "Lock opened within " + (System.currentTimeMillis() - lockStart) + " ms (" + (System.nanoTime() - lockStartns) + " ns)");
         }
+
     }
 
     @SuppressWarnings("unchecked")

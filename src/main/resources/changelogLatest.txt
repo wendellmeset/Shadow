@@ -1,3 +1,2 @@
-Port all the items
-Fix automated crash reports
-Sus
+Fixed compat issues
+Fixed race condition crash on startup

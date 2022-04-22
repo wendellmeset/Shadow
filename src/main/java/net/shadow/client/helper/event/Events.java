@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Level;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -21,8 +22,12 @@ public class Events {
     static final List<ListenerEntry> entries = new CopyOnWriteArrayList<>();
 
     public static ListenerEntry registerEventHandler(int uniqueId, EventType event, Consumer<? extends Event> handler) {
+        return registerEventHandler(uniqueId, event, handler, Events.class);
+    }
+
+    public static ListenerEntry registerEventHandler(int uniqueId, EventType event, Consumer<? extends Event> handler, Class<?> owner) {
         if (entries.stream().noneMatch(listenerEntry -> listenerEntry.id == uniqueId)) {
-            ListenerEntry le = new ListenerEntry(uniqueId, event, handler);
+            ListenerEntry le = new ListenerEntry(uniqueId, event, handler, owner);
             entries.add(le);
             return le;
         } else {
@@ -37,6 +42,15 @@ public class Events {
 
     public static ListenerEntry registerEventHandler(EventType event, Consumer<? extends Event> handler) {
         return registerEventHandler((int) Math.floor(Math.random() * 0xFFFFFF), event, handler);
+    }
+
+    public static void unregisterEventHandlerClass(Object instance) {
+        for (ListenerEntry entry : new ArrayList<>(entries)) {
+            if (entry.owner.equals(instance.getClass())) {
+                ShadowMain.log(Level.INFO, "Unregistering " + entry.type + ":" + entry.id);
+                entries.remove(entry);
+            }
+        }
     }
 
     public static void registerEventHandlerClass(Object instance) {
@@ -56,11 +70,9 @@ public class Events {
                             } catch (IllegalAccessException | InvocationTargetException e) {
                                 e.printStackTrace();
                             }
-                        });
+                        }, instance.getClass());
                         ShadowMain.log(Level.INFO, "Registered event handler " + declaredMethod + " with id " + l.id);
                     }
-
-
                 }
             }
         }
@@ -68,14 +80,17 @@ public class Events {
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     public static boolean fireEvent(EventType event, Event argument) {
-        for (ListenerEntry entry : entries) {
-            if (entry.type == event) {
-                ((Consumer) entry.eventListener()).accept(argument);
-            }
+        List<ListenerEntry> le = entries.stream().filter(listenerEntry -> listenerEntry.type == event).toList();
+        if (le.size() == 0) {
+//            ShadowMain.log(Level.INFO, "no one cares about "+event+" so we're gonna skip it");
+            return false;
+        }
+        for (ListenerEntry entry : le) {
+            ((Consumer) entry.eventListener()).accept(argument);
         }
         return argument.isCancelled();
     }
 
-    record ListenerEntry(int id, EventType type, Consumer<? extends Event> eventListener) {
+    record ListenerEntry(int id, EventType type, Consumer<? extends Event> eventListener, Class<?> owner) {
     }
 }

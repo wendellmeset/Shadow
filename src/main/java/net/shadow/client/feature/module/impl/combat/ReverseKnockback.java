@@ -13,7 +13,6 @@ import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 import net.shadow.client.helper.event.EventListener;
 import net.shadow.client.helper.event.EventType;
-import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.PacketEvent;
 
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ public class ReverseKnockback extends Module {
 
     public ReverseKnockback() {
         super("ReverseKnockback", "Reverse the knockback you deal", ModuleType.MISC);
-        Events.registerEventHandlerClass(this);
+//        Events.registerEventHandlerClass(this);
     }
 
     @Override

@@ -11,6 +11,7 @@ import net.shadow.client.feature.config.BooleanSetting;
 import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.config.ModuleConfig;
 import net.shadow.client.feature.gui.notifications.Notification;
+import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.util.Utils;
 
 import java.lang.annotation.Annotation;
@@ -119,9 +120,11 @@ public abstract class Module {
             Notification.create(1000, "Module toggle", Notification.Type.INFO, (this.enabled ? "§aEn" : "§cDis") + "abled §r" + this.getName());
         }
         if (this.enabled) {
+            Events.registerEventHandlerClass(this);
             this.enable();
         } else {
             this.disable();
+            Events.unregisterEventHandlerClass(this);
         }
     }
 
