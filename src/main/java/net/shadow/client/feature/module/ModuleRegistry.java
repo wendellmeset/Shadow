@@ -51,7 +51,6 @@ import net.shadow.client.feature.module.impl.misc.AllowFormatCodes;
 import net.shadow.client.feature.module.impl.misc.AntiCrash;
 import net.shadow.client.feature.module.impl.misc.AntiPacketKick;
 import net.shadow.client.feature.module.impl.misc.ClientSettings;
-import net.shadow.client.feature.module.impl.misc.DauntedAutoClaim;
 import net.shadow.client.feature.module.impl.misc.DiscordRPC;
 import net.shadow.client.feature.module.impl.misc.InfChatLength;
 import net.shadow.client.feature.module.impl.misc.MoreChatHistory;
@@ -320,7 +319,6 @@ public class ModuleRegistry {
         registerModule(new FlightCrash());
         registerModule(new ClickTP());
         registerModule(new ChestHighlighter());
-        registerModule(new DauntedAutoClaim());
         registerModule(new MoreChatHistory());
 
         rebuildSharedModuleList();
