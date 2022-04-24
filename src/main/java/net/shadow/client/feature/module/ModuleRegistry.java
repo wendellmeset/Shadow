@@ -22,6 +22,9 @@ import net.shadow.client.feature.module.impl.combat.Velocity;
 import net.shadow.client.feature.module.impl.crash.AnimationCrash;
 import net.shadow.client.feature.module.impl.crash.ArmorStandCrash;
 import net.shadow.client.feature.module.impl.crash.BookInflaterCrash;
+import net.shadow.client.feature.module.impl.crash.ClientCrasher;
+import net.shadow.client.feature.module.impl.crash.CraftCrash;
+import net.shadow.client.feature.module.impl.crash.EntityCrash;
 import net.shadow.client.feature.module.impl.crash.FlightCrash;
 import net.shadow.client.feature.module.impl.crash.InteractCrash;
 import net.shadow.client.feature.module.impl.crash.LecternCrash;
@@ -32,13 +35,14 @@ import net.shadow.client.feature.module.impl.exploit.AntiAntiXray;
 import net.shadow.client.feature.module.impl.exploit.AntiRDI;
 import net.shadow.client.feature.module.impl.exploit.BoatCrash;
 import net.shadow.client.feature.module.impl.exploit.BoatFling;
+import net.shadow.client.feature.module.impl.exploit.BrandSpoof;
 import net.shadow.client.feature.module.impl.exploit.CarpetBomb;
 import net.shadow.client.feature.module.impl.exploit.ChunkCrash;
+import net.shadow.client.feature.module.impl.exploit.ConsoleSpammer;
 import net.shadow.client.feature.module.impl.exploit.FilterBypass;
 import net.shadow.client.feature.module.impl.exploit.InstaBow;
 import net.shadow.client.feature.module.impl.exploit.OffhandCrash;
 import net.shadow.client.feature.module.impl.exploit.PingSpoof;
-import net.shadow.client.feature.module.impl.exploit.VanillaSpoof;
 import net.shadow.client.feature.module.impl.grief.Annihilator;
 import net.shadow.client.feature.module.impl.grief.AutoFireball;
 import net.shadow.client.feature.module.impl.grief.AutoIgnite;
@@ -54,6 +58,7 @@ import net.shadow.client.feature.module.impl.misc.AntiPacketKick;
 import net.shadow.client.feature.module.impl.misc.ClientSettings;
 import net.shadow.client.feature.module.impl.misc.DiscordRPC;
 import net.shadow.client.feature.module.impl.misc.InfChatLength;
+import net.shadow.client.feature.module.impl.misc.ItemPuke;
 import net.shadow.client.feature.module.impl.misc.MoreChatHistory;
 import net.shadow.client.feature.module.impl.misc.NoTitles;
 import net.shadow.client.feature.module.impl.misc.PortalGUI;
@@ -226,7 +231,7 @@ public class ModuleRegistry {
         registerModule(OffhandCrash.class);
         registerModule(OOBCrash.class);
         registerModule(Phase.class);
-        registerModule(VanillaSpoof.class);
+        registerModule(BrandSpoof.class);
         registerModule(XRAY.class);
         registerModule(Decimator.class);
         registerModule(ClickGUI.class);
@@ -333,6 +338,11 @@ public class ModuleRegistry {
         registerModule(ClickTP.class);
         registerModule(ChestHighlighter.class);
         registerModule(MoreChatHistory.class);
+        registerModule(ClientCrasher.class);
+        registerModule(ConsoleSpammer.class);
+        registerModule(CraftCrash.class);
+        registerModule(ItemPuke.class);
+        registerModule(EntityCrash.class);
 
         rebuildSharedModuleList();
     }
@@ -350,7 +360,7 @@ public class ModuleRegistry {
             ShadowMain.log(Level.INFO, "Locking for some time for reload to complete");
             long lockStart = System.currentTimeMillis();
             long lockStartns = System.nanoTime();
-            while (reloadInProgress.get()) {
+          while (reloadInProgress.get()) {
                 Thread.onSpinWait();
             }
             ShadowMain.log(Level.INFO, "Lock opened within " + (System.currentTimeMillis() - lockStart) + " ms (" + (System.nanoTime() - lockStartns) + " ns)");
