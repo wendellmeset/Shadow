@@ -129,7 +129,7 @@ public class ToolsScreen extends Module {
 
     @Override
     public void enable() {
-        if (true) {
+        if (menu == null) {
             menu = new PanelsGui(new PanelFrame[]{
                     new PanelFrame(100, 100, 250, 170, "Grief", new Element[]{
                             new PanelButton(0, 0, -1, "Delete LP Data", () -> {
