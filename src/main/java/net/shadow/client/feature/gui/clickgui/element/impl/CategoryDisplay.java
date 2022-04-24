@@ -5,6 +5,8 @@
 package net.shadow.client.feature.gui.clickgui.element.impl;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Quaternion;
@@ -32,10 +34,14 @@ import static java.lang.Math.sqrt;
 
 public class CategoryDisplay extends Element {
     static final FontAdapter cfr = FontRenderers.getCustomSize(20);
+    @Getter
     final List<ModuleDisplay> md = new ArrayList<>();
+    @Getter
     final ModuleType mt;
     final Scroller scroller = new Scroller(0);
     boolean selected = false;
+    @Getter
+    @Setter
     boolean open = true;
     double openAnim = 1;
 

@@ -5,18 +5,16 @@
 package net.shadow.client.feature.module.impl.crash;
 
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.Entity;
+import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.Entity;
-import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
-import net.minecraft.world.World;
 
 public class EntityCrash extends Module {
 
-    Entity target = null;
     final DoubleSetting repeat = this.config.create(new DoubleSetting.Builder(2000).min(500).max(10000).name("Power").description("how fast to crash").get());
+    Entity target = null;
 
     public EntityCrash() {
         super("EntityCrash", "Crash the server by punching entities", ModuleType.CRASH);

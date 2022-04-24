@@ -14,8 +14,10 @@ import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.gui.FastTickable;
 import net.shadow.client.feature.gui.clickgui.element.Element;
 import net.shadow.client.feature.gui.clickgui.element.impl.CategoryDisplay;
+import net.shadow.client.feature.gui.clickgui.element.impl.ModuleDisplay;
 import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.feature.module.ModuleType;
+import net.shadow.client.helper.ConfigContainer;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.font.FontRenderers;
@@ -26,17 +28,21 @@ import net.shadow.client.helper.util.Transitions;
 import org.lwjgl.glfw.GLFW;
 
 import java.awt.Color;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class ClickGUI extends Screen implements FastTickable {
 //    public static final Theme theme = new SipoverV1();
 
     static final Color tooltipColor = new Color(20, 20, 30, 255);
+    static ConfigContainer configContainer = new ConfigContainer(new File(ShadowMain.BASE, "clickGui.sip"), "amongUs");
     private static ClickGUI instance;
     final List<Element> elements = new ArrayList<>();
     final ParticleRenderer real = new ParticleRenderer(100);
@@ -57,6 +63,10 @@ public class ClickGUI extends Screen implements FastTickable {
             }
             this.real.render(Renderer.R3D.getEmptyMatrixStack());
         });
+        Events.registerEventHandler(EventType.CONFIG_SAVE, event -> {
+            saveConfig();
+        });
+        loadConfig();
     }
 
     public static ClickGUI instance() {
@@ -68,6 +78,61 @@ public class ClickGUI extends Screen implements FastTickable {
 
     public static void reInit() {
         if (instance != null) instance.initElements();
+    }
+
+    void loadConfig() {
+        configContainer.reload();
+        ClickguiConfigContainer cc = configContainer.get(ClickguiConfigContainer.class);
+        if (cc == null) return;
+        Map<String, CategoryDisplay> displays = new HashMap<>();
+        for (Element element : elements) {
+            if (element instanceof CategoryDisplay dd) {
+                displays.put(dd.getMt().getName(), dd);
+            }
+        }
+        for (ClickguiConfigContainer.CategoryEntry entry : cc.entries) {
+            String n = entry.name;
+            if (displays.containsKey(n)) {
+                CategoryDisplay disp = displays.get(n);
+                disp.setX(entry.posX);
+                disp.setY(entry.posY);
+                disp.setOpen(entry.expanded);
+                List<ModuleDisplay> mdList = disp.getMd();
+                for (ClickguiConfigContainer.ModuleEntry moduleEntry : entry.entries) {
+                    ModuleDisplay mde = mdList.stream().filter(moduleDisplay -> moduleDisplay.getModule().getName().equals(moduleEntry.name)).findFirst().orElse(null);
+                    if (mde == null) continue;
+                    mde.setExtended(moduleEntry.expanded);
+                }
+            }
+        }
+    }
+
+    void saveConfig() {
+        ClickguiConfigContainer cc = new ClickguiConfigContainer();
+        List<ClickguiConfigContainer.CategoryEntry> e = new ArrayList<>();
+        for (Element element : elements) {
+            if (element instanceof CategoryDisplay ce) {
+                List<ModuleDisplay> mods = ce.getMd();
+                ModuleType type = ce.getMt();
+                ClickguiConfigContainer.CategoryEntry cm = new ClickguiConfigContainer.CategoryEntry();
+                cm.expanded = ce.isOpen();
+                cm.posX = ce.getX();
+                cm.posY = ce.getY();
+                cm.name = type.getName();
+                List<ClickguiConfigContainer.ModuleEntry> me = new ArrayList<>();
+                for (ModuleDisplay mod : mods) {
+                    ClickguiConfigContainer.ModuleEntry moduleEntry = new ClickguiConfigContainer.ModuleEntry();
+                    moduleEntry.expanded = mod.isExtended();
+                    moduleEntry.name = mod.getModule().getName();
+                    me.add(moduleEntry);
+                }
+                cm.entries = me.toArray(ClickguiConfigContainer.ModuleEntry[]::new);
+                e.add(cm);
+            }
+        }
+        cc.entries = e.toArray(ClickguiConfigContainer.CategoryEntry[]::new);
+        configContainer.set(cc);
+        configContainer.save();
     }
 
     @Override
@@ -264,5 +329,21 @@ public class ClickGUI extends Screen implements FastTickable {
         }
         searchTerm += chr;
         return false;
+    }
+
+    static class ClickguiConfigContainer {
+        CategoryEntry[] entries;
+
+        static class CategoryEntry {
+            String name;
+            double posX, posY;
+            boolean expanded;
+            ModuleEntry[] entries;
+        }
+
+        static class ModuleEntry {
+            String name;
+            boolean expanded;
+        }
     }
 }

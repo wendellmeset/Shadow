@@ -361,7 +361,7 @@ public class ModuleRegistry {
             ShadowMain.log(Level.INFO, "Locking for some time for reload to complete");
             long lockStart = System.currentTimeMillis();
             long lockStartns = System.nanoTime();
-          while (reloadInProgress.get()) {
+            while (reloadInProgress.get()) {
                 Thread.onSpinWait();
             }
             ShadowMain.log(Level.INFO, "Lock opened within " + (System.currentTimeMillis() - lockStart) + " ms (" + (System.nanoTime() - lockStartns) + " ns)");

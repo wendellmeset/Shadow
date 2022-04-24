@@ -4,14 +4,6 @@
 
 package net.shadow.client.feature.command.impl;
 
-import net.minecraft.world.GameMode;
-import net.shadow.client.ShadowMain;
-import net.shadow.client.feature.command.Command;
-import net.shadow.client.feature.command.coloring.ArgumentType;
-import net.shadow.client.feature.command.coloring.PossibleArgument;
-import net.shadow.client.feature.command.coloring.StaticArgumentServer;
-import net.shadow.client.feature.command.exception.CommandException;
-import net.shadow.client.feature.gui.notifications.Notification;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -19,8 +11,10 @@ import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-
-import java.util.Arrays;
+import net.shadow.client.feature.command.Command;
+import net.shadow.client.feature.command.coloring.PossibleArgument;
+import net.shadow.client.feature.command.exception.CommandException;
+import net.shadow.client.feature.gui.notifications.Notification;
 
 public class Gensploit extends Command {
 

@@ -5,10 +5,20 @@
 package net.shadow.client.feature.module.impl.crash;
 
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.StringNbtReader;
+import net.minecraft.network.Packet;
+import net.minecraft.network.packet.c2s.play.BookUpdateC2SPacket;
+import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
+import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.config.EnumSetting;
 import net.shadow.client.feature.gui.notifications.Notification;
@@ -19,52 +29,42 @@ import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.PacketEvent;
 
-import java.util.Random;
-
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.StringNbtReader;
-import net.minecraft.network.Packet;
-import net.minecraft.network.packet.c2s.play.*;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.Vec3d;
-
 import java.util.List;
-import java.util.*;
+import java.util.Optional;
+import java.util.Random;
 
 public class ClientCrasher extends Module {
 
 
-    BlockPos selectedbreaker;
     final EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.Offhand).name("Mode").description("How to crash").get());
     final DoubleSetting power = this.config.create(new DoubleSetting.Builder(1000).min(5).max(2000).name("Power").description("How much power to crash with").get());
+    BlockPos selectedbreaker;
 
     public ClientCrasher() {
         super("ClientCrasher", "Crash players games", ModuleType.CRASH);
         Events.registerEventHandlerClass(this);
     }
 
-    @EventListener(type=EventType.PACKET_SEND)
-    void giveAShit(PacketEvent event){
-        if(mode.getValue() != Mode.Place) return;
-        if(!this.isEnabled())return;
+    @EventListener(type = EventType.PACKET_SEND)
+    void giveAShit(PacketEvent event) {
+        if (mode.getValue() != Mode.Place) return;
+        if (!this.isEnabled()) return;
         if (!(event.getPacket() instanceof PlayerMoveC2SPacket packet))
-        return;
+            return;
 
         if (!(packet instanceof PlayerMoveC2SPacket.PositionAndOnGround || packet instanceof PlayerMoveC2SPacket.Full))
             return;
-        
+
         if (client.player.input == null) {
             event.setCancelled(true);
             return;
         }
-    
+
         event.setCancelled(false);
         double x = packet.getX(0);
         double y = packet.getY(0);
         double z = packet.getZ(0);
-    
+
         Packet<?> newPacket;
         Random r = new Random();
         if (packet instanceof PlayerMoveC2SPacket.PositionAndOnGround)
@@ -72,15 +72,15 @@ public class ClientCrasher extends Module {
         else
             newPacket = new PlayerMoveC2SPacket.Full(x, y + r.nextDouble(), z, packet.getYaw(0),
                     packet.getPitch(0), true);
-    
+
         client.player.networkHandler.getConnection().send(newPacket);
     }
 
     @Override
     public void tick() {
-        switch(mode.getValue()){
+        switch (mode.getValue()) {
             case Offhand -> {
-                for(int i = 0; i < power.getValue(); i++){
+                for (int i = 0; i < power.getValue(); i++) {
                     client.player.networkHandler.sendPacket(new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.SWAP_ITEM_WITH_OFFHAND, client.player.getBlockPos(), Direction.UP));
                 }
             }

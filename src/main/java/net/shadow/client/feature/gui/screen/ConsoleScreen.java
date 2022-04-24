@@ -72,7 +72,7 @@ public class ConsoleScreen extends ClientScreen implements FastTickable {
             return;
         }
         addLog(new LogEntry("> " + cmd, BACKGROUND));
-        CommandRegistry.executeConsole(cmd);
+        CommandRegistry.execute(cmd);
     }
 
     @Override
@@ -127,14 +127,14 @@ public class ConsoleScreen extends ClientScreen implements FastTickable {
             args = args1;
         }
         if (args.length > 0) {
-            Command c = CommandRegistry.getConsoleByAlias(cmd);
+            Command c = CommandRegistry.getByAlias(cmd);
             if (c != null) {
                 a = List.of(c.getSuggestionsWithType(args.length - 1, args).getSuggestions());
             } else {
                 return new ArrayList<>(); // we have no command to ask -> we have no suggestions
             }
         } else {
-            for (Command command1 : CommandRegistry.getConsoleCommands()) {
+            for (Command command1 : CommandRegistry.getCommands()) {
                 for (String alias : command1.getAliases()) {
                     if (alias.toLowerCase().startsWith(cmd.toLowerCase())) {
                         a.add(alias);

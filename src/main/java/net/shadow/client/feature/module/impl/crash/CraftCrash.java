@@ -4,7 +4,10 @@
 
 package net.shadow.client.feature.module.impl.crash;
 
+import net.minecraft.client.gui.screen.ingame.CraftingScreen;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.network.packet.c2s.play.CraftRequestC2SPacket;
+import net.minecraft.recipe.Recipe;
 import net.shadow.client.feature.gui.notifications.Notification;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
@@ -12,9 +15,6 @@ import net.shadow.client.helper.event.EventListener;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.PacketEvent;
-import net.minecraft.client.gui.screen.ingame.CraftingScreen;
-import net.minecraft.network.packet.c2s.play.CraftRequestC2SPacket;
-import net.minecraft.recipe.Recipe;
 
 public class CraftCrash extends Module {
 
@@ -30,9 +30,9 @@ public class CraftCrash extends Module {
         Events.registerEventHandlerClass(this);
     }
 
-    @EventListener(type=EventType.PACKET_SEND)
-    public void onPacketSend(PacketEvent event){
-        if(!this.isEnabled()) return;
+    @EventListener(type = EventType.PACKET_SEND)
+    public void onPacketSend(PacketEvent event) {
+        if (!this.isEnabled()) return;
         if (event.getPacket() instanceof CraftRequestC2SPacket packet) {
             if (isListening) {
                 if (stick == null) {
