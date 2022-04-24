@@ -338,6 +338,7 @@ public class ModuleRegistry {
         registerModule(ClickTP.class);
         registerModule(ChestHighlighter.class);
         registerModule(MoreChatHistory.class);
+        //untested
         registerModule(ClientCrasher.class);
         registerModule(ConsoleSpammer.class);
         registerModule(CraftCrash.class);
