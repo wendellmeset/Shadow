@@ -19,7 +19,7 @@ public class EntityCrash extends Module {
     final DoubleSetting repeat = this.config.create(new DoubleSetting.Builder(2000).min(500).max(10000).name("Power").description("how fast to crash").get());
 
     public EntityCrash() {
-        super("Template", "template", ModuleType.CRASH);
+        super("EntityCrash", "Crash the server by punching entities", ModuleType.CRASH);
     }
 
     public Entity getNearestLikelyEntity() {

@@ -25,7 +25,7 @@ public class ItemPuke extends Module {
     private final Random r = new Random();
 
     public ItemPuke() {
-        super("ItemPuke", "throw out items really fast in creative", ModuleType.MISC);
+        super("ItemPuke", "Throw out items really fast in creative", ModuleType.MISC);
     }
 
     @Override
