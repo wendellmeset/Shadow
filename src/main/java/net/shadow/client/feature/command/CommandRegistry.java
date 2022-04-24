@@ -69,6 +69,7 @@ public class CommandRegistry {
     private static final List<Command> vanillaCommands = new ArrayList<>();
     private static final List<CustomCommandEntry> customCommands = new ArrayList<>();
     private static final List<Command> sharedCommands = new ArrayList<>();
+    private static final List<Command> consoleCommands = new ArrayList<>();
 
     static {
         // TODO: 18.12.21 add commands
@@ -97,6 +98,16 @@ public class CommandRegistry {
         for (CustomCommandEntry customCommand : customCommands) {
             sharedCommands.add(customCommand.command);
         }
+    }
+
+    public static void buildConsoleCommands(){
+        consoleCommands.addAll(sharedCommands);
+
+        //consoleCommands.add();
+    }
+
+    public static List<Command> getConsoleCommands() {
+        return consoleCommands;
     }
 
     public static void init() {
@@ -156,6 +167,7 @@ public class CommandRegistry {
         vanillaCommands.add(new RandomBook());
 
         rebuildSharedCommands();
+        buildConsoleCommands();
     }
 
     public static List<Command> getCommands() {
@@ -193,8 +205,40 @@ public class CommandRegistry {
         }
     }
 
+
+    public static void executeConsole(String command) {
+        String[] spl = command.split(" +");
+        String cmd = spl[0].toLowerCase();
+        String[] args = Arrays.copyOfRange(spl, 1, spl.length);
+        Command c = CommandRegistry.getConsoleByAlias(cmd);
+        if (c == null) {
+            Utils.Logging.error("Command \"" + cmd + "\" not found");
+        } else {
+            try {
+                c.onExecute(args);
+            } catch (CommandException cex) {
+                Utils.Logging.error(cex.getMessage());
+                if (cex.getPotentialFix() != null) Utils.Logging.error("Potential fix: " + cex.getPotentialFix());
+            } catch (Exception e) {
+                Utils.Logging.error("Error while running command " + command);
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static Command getByAlias(String n) {
         for (Command command : getCommands()) {
+            for (String alias : command.getAliases()) {
+                if (alias.equalsIgnoreCase(n)) {
+                    return command;
+                }
+            }
+        }
+        return null;
+    }
+
+    public static Command getConsoleByAlias(String n) {
+        for (Command command : getConsoleCommands()) {
             for (String alias : command.getAliases()) {
                 if (alias.equalsIgnoreCase(n)) {
                     return command;

