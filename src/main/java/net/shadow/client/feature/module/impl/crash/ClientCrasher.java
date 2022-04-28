@@ -35,8 +35,9 @@ import java.util.*;
 
 public class ClientCrasher extends Module {
 
+    boolean sends = true;
 
-    BlockPos selectedbreaker;
+    BlockPos selectedbreaker = new BlockPos(0,0,0);
     final EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.Offhand).name("Mode").description("How to crash").get());
     final DoubleSetting power = this.config.create(new DoubleSetting.Builder(1000).min(5).max(2000).name("Power").description("How much power to crash with").get());
 
@@ -48,7 +49,7 @@ public class ClientCrasher extends Module {
     @EventListener(type=EventType.PACKET_SEND)
     void giveAShit(PacketEvent event){
         if(mode.getValue() != Mode.Place) return;
-        if(!this.isEnabled())return;
+        if(!sends) return;
         if (!(event.getPacket() instanceof PlayerMoveC2SPacket packet))
         return;
 
@@ -73,7 +74,9 @@ public class ClientCrasher extends Module {
             newPacket = new PlayerMoveC2SPacket.Full(x, y + r.nextDouble(), z, packet.getYaw(0),
                     packet.getPitch(0), true);
     
+        sends = false;
         client.player.networkHandler.getConnection().send(newPacket);
+        sends = true;
     }
 
     @Override
@@ -148,6 +151,7 @@ public class ClientCrasher extends Module {
 
     @Override
     public void enable() {
+        this.selectedbreaker = client.player.getBlockPos();
     }
 
     @Override

