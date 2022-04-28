@@ -49,6 +49,7 @@ public class ClientCrasher extends Module {
     @EventListener(type = EventType.PACKET_SEND)
     void giveAShit(PacketEvent event) {
         if (mode.getValue() != Mode.Place) return;
+        if(!sends) return;
         if (!this.isEnabled()) return;
         if (!(event.getPacket() instanceof PlayerMoveC2SPacket packet))
             return;
@@ -73,6 +74,7 @@ public class ClientCrasher extends Module {
         else
             newPacket = new PlayerMoveC2SPacket.Full(x, y + r.nextDouble(), z, packet.getYaw(0),
                     packet.getPitch(0), true);
+        sends = false;
         client.player.networkHandler.getConnection().send(newPacket);
         sends = true;
     }
