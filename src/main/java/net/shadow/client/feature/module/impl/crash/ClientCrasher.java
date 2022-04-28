@@ -35,10 +35,9 @@ import java.util.Random;
 
 public class ClientCrasher extends Module {
 
-    boolean sends = true;
-
     final EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.Offhand).name("Mode").description("How to crash").get());
     final DoubleSetting power = this.config.create(new DoubleSetting.Builder(1000).min(5).max(2000).name("Power").description("How much power to crash with").get());
+    boolean sends = true;
     BlockPos selectedbreaker;
 
     public ClientCrasher() {
@@ -49,7 +48,7 @@ public class ClientCrasher extends Module {
     @EventListener(type = EventType.PACKET_SEND)
     void giveAShit(PacketEvent event) {
         if (mode.getValue() != Mode.Place) return;
-        if(!sends) return;
+        if (!sends) return;
         if (!this.isEnabled()) return;
         if (!(event.getPacket() instanceof PlayerMoveC2SPacket packet))
             return;

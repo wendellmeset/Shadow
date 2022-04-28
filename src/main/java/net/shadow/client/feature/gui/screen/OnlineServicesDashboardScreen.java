@@ -39,20 +39,19 @@ import java.util.function.BiConsumer;
 
 public class OnlineServicesDashboardScreen extends ClientScreen implements FastTickable {
     static List<LogsFieldWidget.LogEntry> logs = new CopyOnWriteArrayList<>();
+    private static OnlineServicesDashboardScreen instance;
     long reconnectTime = System.currentTimeMillis();
     SimpleWebsocket logsSocket;
     AccountList dvw;
-    private static OnlineServicesDashboardScreen instance;
-
-    public static OnlineServicesDashboardScreen getInstance() {
-        if (instance == null) instance = new OnlineServicesDashboardScreen();
-        return instance;
-    }
 
     private OnlineServicesDashboardScreen() {
 
     }
 
+    public static OnlineServicesDashboardScreen getInstance() {
+        if (instance == null) instance = new OnlineServicesDashboardScreen();
+        return instance;
+    }
 
     void initSocket() {
         if (ShadowAPIWrapper.getAuthKey() != null) {
@@ -72,9 +71,9 @@ public class OnlineServicesDashboardScreen extends ClientScreen implements FastT
             LinkedHashMap<String, String> props = new LinkedHashMap<>();
             props.put("Time", sdf.format(pack.data.get("time")));
             props.put("Severity", pack.data.get("severity").toString());
-            logs.add(0, new LogsFieldWidget.LogEntry(props, pack.data.get("message").toString(),switch(pack.data.get("severity").toString()) {
+            logs.add(0, new LogsFieldWidget.LogEntry(props, pack.data.get("message").toString(), switch (pack.data.get("severity").toString()) {
                 case "WARNING" -> Color.YELLOW.getRGB();
-                case "SEVERE" -> new Color(255,50,50).getRGB();
+                case "SEVERE" -> new Color(255, 50, 50).getRGB();
                 default -> 0xFFFFFF;
             }));
         }
@@ -90,7 +89,7 @@ public class OnlineServicesDashboardScreen extends ClientScreen implements FastT
             yO += avw.height + 5;
             dvw.add(avw);
         }
-        dvw.add(new RegisterAccountViewer(0,yO,300,30,(s, s2) -> {
+        dvw.add(new RegisterAccountViewer(0, yO, 300, 30, (s, s2) -> {
             if (ShadowAPIWrapper.registerAccount(s, s2)) populateAccountList();
         }));
     }
@@ -151,15 +150,18 @@ public class OnlineServicesDashboardScreen extends ClientScreen implements FastT
 
     static class RegisterAccountViewer extends AccountViewerWidget {
         BiConsumer<String, String> r;
-        public RegisterAccountViewer(double x, double y, double width, double height, BiConsumer<String, String> onReg) {
-            super("","", x, y, width, height, () -> {});
-            this.r = onReg;
-        }
         RoundTextFieldWidget user, pass;
         RoundButton reg;
-        Element[] getEl() {
-            return new Element[] {user, pass,reg};
+        public RegisterAccountViewer(double x, double y, double width, double height, BiConsumer<String, String> onReg) {
+            super("", "", x, y, width, height, () -> {
+            });
+            this.r = onReg;
         }
+
+        Element[] getEl() {
+            return new Element[]{user, pass, reg};
+        }
+
         @Override
         public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
             if (user == null || pass == null || reg == null) initWidgets();
@@ -178,7 +180,7 @@ public class OnlineServicesDashboardScreen extends ClientScreen implements FastT
         public boolean mouseClicked(double mouseX, double mouseY, int button) {
             for (Element element : getEl()) {
                 element.mouseClicked(mouseX, mouseY, button);
-             }
+            }
             return false;
         }
 
@@ -200,12 +202,12 @@ public class OnlineServicesDashboardScreen extends ClientScreen implements FastT
 
         void initWidgets() {
             double h = 20;
-            double pad = (this.height-h)/2d;
+            double pad = (this.height - h) / 2d;
             double regBtnWidth = 60;
-            double oneWidth = (this.width-regBtnWidth-pad*3)/2d-2.5;
-            this.user = new RoundTextFieldWidget(x+pad,y+this.height/2d-h/2d,oneWidth,h,"Username");
-            this.pass = new RoundTextFieldWidget(x+pad+oneWidth+5,y+this.height/2d-h/2d,oneWidth,h,"Password");
-            this.reg = new RoundButton(RoundButton.STANDARD,x+this.width-pad-regBtnWidth,y+this.height/2d-h/2d,regBtnWidth,h,"Register",()->{
+            double oneWidth = (this.width - regBtnWidth - pad * 3) / 2d - 2.5;
+            this.user = new RoundTextFieldWidget(x + pad, y + this.height / 2d - h / 2d, oneWidth, h, "Username");
+            this.pass = new RoundTextFieldWidget(x + pad + oneWidth + 5, y + this.height / 2d - h / 2d, oneWidth, h, "Password");
+            this.reg = new RoundButton(RoundButton.STANDARD, x + this.width - pad - regBtnWidth, y + this.height / 2d - h / 2d, regBtnWidth, h, "Register", () -> {
                 this.r.accept(this.user.get(), this.pass.get());
                 this.user.set("");
                 this.pass.set("");

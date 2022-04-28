@@ -19,6 +19,7 @@ import java.util.Map;
 public class IRCWebSocket extends WebSocketClient {
     String authToken;
     Runnable onClose;
+
     public IRCWebSocket(URI serverUri, String authToken, Runnable onClose) {
         super(serverUri, Map.of("Authorization", authToken));
         this.authToken = authToken;
