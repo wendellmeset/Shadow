@@ -18,6 +18,7 @@ public class Test extends Command {
     @Override
     public void onExecute(String[] args) {
         if (ShadowAPIWrapper.getAuthKey() != null && ShadowAPIWrapper.isCurrentUserAdmin()) {
+            System.out.println(ShadowAPIWrapper.getAccounts());
             Utils.TickManager.runInNTicks(5, () -> {
                 ShadowMain.client.setScreen(new OnlineServicesDashboardScreen());
             });

@@ -20,10 +20,12 @@ import java.net.URI;
 public class IRC extends Module {
     static String ircPrefix = "#";
     IRCWebSocket wsS;
+
     public IRC() {
         super("IRC", "Chat with others using the client", ModuleType.MISC);
     }
-    @EventListener(type= EventType.PACKET_SEND)
+
+    @EventListener(type = EventType.PACKET_SEND)
     void onPackSent(PacketEvent pe) {
         if (pe.getPacket() instanceof ChatMessageC2SPacket msg) {
             String m = msg.getChatMessage();
@@ -46,7 +48,7 @@ public class IRC extends Module {
             setEnabled(false);
             return;
         }
-        this.wsS = new IRCWebSocket(URI.create(ShadowAPIWrapper.BASE_WS+"/irc"),ShadowAPIWrapper.getAuthKey(),()-> {
+        this.wsS = new IRCWebSocket(URI.create(ShadowAPIWrapper.BASE_WS + "/irc"), ShadowAPIWrapper.getAuthKey(), () -> {
             this.wsS = null;
             if (this.isEnabled()) this.setEnabled(false);
         });

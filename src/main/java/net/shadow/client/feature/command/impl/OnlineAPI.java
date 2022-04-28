@@ -22,14 +22,15 @@ import java.nio.charset.StandardCharsets;
 
 public class OnlineAPI extends Command {
     static final File SESSION_KEY_FILE = new File(ShadowMain.BASE, "session.sip");
+
     public OnlineAPI() {
-        super("OnlineAPI", "Manage your API connection to the mothership","onlineapi","shadowapi","onlineservices");
+        super("OnlineAPI", "Manage your API connection to the mothership", "onlineapi", "shadowapi", "onlineservices");
         tryToRecoverSession();
         Events.registerEventHandler(EventType.CONFIG_SAVE, event -> {
             String authKey = ShadowAPIWrapper.getAuthKey();
             if (authKey != null) {
                 try {
-                    FileUtils.write(SESSION_KEY_FILE,authKey,StandardCharsets.UTF_8);
+                    FileUtils.write(SESSION_KEY_FILE, authKey, StandardCharsets.UTF_8);
                 } catch (Exception e) {
                     System.out.println("failed to save session :(");
                     e.printStackTrace();
@@ -37,6 +38,7 @@ public class OnlineAPI extends Command {
             }
         });
     }
+
     void tryToRecoverSession() {
         if (SESSION_KEY_FILE.exists()) {
             try {
@@ -54,19 +56,20 @@ public class OnlineAPI extends Command {
             }
         }
     }
+
     @Override
     public PossibleArgument getSuggestionsWithType(int index, String[] args) {
         if (index == 0) return new PossibleArgument(ArgumentType.STRING, "login", "logout");
         if (args[0].equalsIgnoreCase("login")) {
-            return StaticArgumentServer.serveFromStatic(index-1,new PossibleArgument(ArgumentType.STRING, "(username)"), new PossibleArgument(ArgumentType.STRING, "(password)"));
+            return StaticArgumentServer.serveFromStatic(index - 1, new PossibleArgument(ArgumentType.STRING, "(username)"), new PossibleArgument(ArgumentType.STRING, "(password)"));
         }
         return super.getSuggestionsWithType(index, args);
     }
 
     @Override
     public void onExecute(String[] args) throws CommandException {
-        validateArgumentsLength(args,1, "Need an action");
-        switch(args[0].toLowerCase()) {
+        validateArgumentsLength(args, 1, "Need an action");
+        switch (args[0].toLowerCase()) {
             case "login" -> {
                 if (ShadowAPIWrapper.getAuthKey() != null) {
                     error("You're already logged in!");
@@ -74,7 +77,7 @@ public class OnlineAPI extends Command {
                 }
                 validateArgumentsLength(args, 3, "Need action, username and password");
                 if (ShadowAPIWrapper.attemptLogin(args[1], args[2])) {
-                    success("You're now logged in as "+args[1]+". Try using IRC or the item market ;)");
+                    success("You're now logged in as " + args[1] + ". Try using IRC or the item market ;)");
                 } else {
                     error("Failed to login. Check if username and password are correct");
                 }

@@ -17,6 +17,54 @@ import java.net.URI;
 import java.util.Map;
 
 public class IRCWebSocket extends WebSocketClient {
+    String authToken;
+    Runnable onClose;
+    public IRCWebSocket(URI serverUri, String authToken, Runnable onClose) {
+        super(serverUri, Map.of("Authorization", authToken));
+        this.authToken = authToken;
+        this.onClose = onClose;
+    }
+
+    @Override
+    public void onOpen(ServerHandshake handshakedata) {
+        Utils.Logging.success("Connected to IRC");
+    }
+
+    @Override
+    public void onMessage(String message) {
+        Packet p = new Gson().fromJson(message, Packet.class);
+        switch (p.id) {
+            case "message" -> {
+                String uname = p.data.get("who").toString();
+                String msg = p.data.get("message").toString();
+                ShadowMain.client.player.sendMessage(Text.of(String.format("%s[IRC] %s[%s] %s", Formatting.AQUA, Formatting.BLUE, uname, msg)), false);
+            }
+            case "userJoined" -> {
+                String uname = p.data.get("who").toString();
+                ShadowMain.client.player.sendMessage(Text.of(String.format("%s[IRC] %s%s joined the IRC", Formatting.AQUA, Formatting.GREEN, uname)), false);
+            }
+            case "userLeft" -> {
+                String uname = p.data.get("who").toString();
+                ShadowMain.client.player.sendMessage(Text.of(String.format("%s[IRC] %s%s left the IRC", Formatting.AQUA, Formatting.RED, uname)), false);
+            }
+            case "connectFailed" -> {
+                String reason = p.data.get("reason").toString();
+                Utils.Logging.error("Failed to establish connection, server said: " + reason);
+            }
+        }
+    }
+
+    @Override
+    public void onClose(int code, String reason, boolean remote) {
+        Utils.Logging.error("IRC Disconnected");
+        this.onClose.run();
+    }
+
+    @Override
+    public void onError(Exception ex) {
+        ex.printStackTrace();
+    }
+
     @AllArgsConstructor
     public static
     class Packet {
@@ -34,52 +82,5 @@ public class IRCWebSocket extends WebSocketClient {
                     ", data=" + data +
                     '}';
         }
-    }
-    String authToken;
-    Runnable onClose;
-    public IRCWebSocket(URI serverUri, String authToken, Runnable onClose) {
-        super(serverUri, Map.of("Authorization", authToken));
-        this.authToken = authToken;
-        this.onClose = onClose;
-    }
-
-    @Override
-    public void onOpen(ServerHandshake handshakedata) {
-        Utils.Logging.success("Connected to IRC");
-    }
-
-    @Override
-    public void onMessage(String message) {
-        Packet p = new Gson().fromJson(message, Packet.class);
-        switch(p.id) {
-            case "message" -> {
-                String uname = p.data.get("who").toString();
-                String msg = p.data.get("message").toString();
-                ShadowMain.client.player.sendMessage(Text.of(String.format("%s[IRC] %s[%s] %s", Formatting.AQUA, Formatting.BLUE, uname, msg)), false);
-            }
-            case "userJoined" -> {
-                String uname = p.data.get("who").toString();
-                ShadowMain.client.player.sendMessage(Text.of(String.format("%s[IRC] %s%s joined the IRC", Formatting.AQUA, Formatting.GREEN, uname)), false);
-            }
-            case "userLeft" -> {
-                String uname = p.data.get("who").toString();
-                ShadowMain.client.player.sendMessage(Text.of(String.format("%s[IRC] %s%s left the IRC", Formatting.AQUA, Formatting.RED, uname)), false);
-            }
-            case "connectFailed" -> {
-                String reason = p.data.get("reason").toString();
-                Utils.Logging.error("Failed to establish connection, server said: "+reason);
-            }
-        }
-    }
-
-    @Override
-    public void onClose(int code, String reason, boolean remote) {
-        Utils.Logging.error("IRC Disconnected");
-        this.onClose.run();
-    }
-
-    @Override
-    public void onError(Exception ex) {
-        ex.printStackTrace();
     }
 }
