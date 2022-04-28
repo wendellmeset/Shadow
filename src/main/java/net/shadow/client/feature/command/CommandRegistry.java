@@ -43,6 +43,7 @@ import net.shadow.client.feature.command.impl.Kill;
 import net.shadow.client.feature.command.impl.LinkWolf;
 import net.shadow.client.feature.command.impl.LogFlood;
 import net.shadow.client.feature.command.impl.MessageSpam;
+import net.shadow.client.feature.command.impl.OnlineAPI;
 import net.shadow.client.feature.command.impl.Panic;
 import net.shadow.client.feature.command.impl.PermissionLevel;
 import net.shadow.client.feature.command.impl.Poof;
@@ -153,6 +154,7 @@ public class CommandRegistry {
         vanillaCommands.add(new ForceOP());
         vanillaCommands.add(new ServerCrash());
         vanillaCommands.add(new RandomBook());
+        vanillaCommands.add(new OnlineAPI());
 
         rebuildSharedCommands();
     }

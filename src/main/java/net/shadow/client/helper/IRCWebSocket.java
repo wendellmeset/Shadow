@@ -80,6 +80,6 @@ public class IRCWebSocket extends WebSocketClient {
 
     @Override
     public void onError(Exception ex) {
-
+        ex.printStackTrace();
     }
 }

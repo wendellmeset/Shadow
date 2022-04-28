@@ -9,6 +9,7 @@ import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 import net.shadow.client.helper.IRCWebSocket;
+import net.shadow.client.helper.ShadowAPIWrapper;
 import net.shadow.client.helper.event.EventListener;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.events.PacketEvent;
@@ -17,10 +18,8 @@ import net.shadow.client.helper.util.Utils;
 import java.net.URI;
 
 public class IRC extends Module {
-    static final String websocketUrl = "ws://localhost:8080/irc";
     static String ircPrefix = "#";
     IRCWebSocket wsS;
-    static String authToken = System.getenv("SHADOW_API_KEY");
     public IRC() {
         super("IRC", "Chat with others using the client", ModuleType.MISC);
     }
@@ -42,12 +41,12 @@ public class IRC extends Module {
 
     @Override
     public void enable() {
-        if (authToken == null) {
+        if (ShadowAPIWrapper.getAuthKey() == null) {
             Utils.Logging.error("Cannot use IRC because you didn't use the launcher to launch shadow.");
             setEnabled(false);
             return;
         }
-        this.wsS = new IRCWebSocket(URI.create(websocketUrl),authToken,()-> {
+        this.wsS = new IRCWebSocket(URI.create(ShadowAPIWrapper.BASE_WS+"/irc"),ShadowAPIWrapper.getAuthKey(),()-> {
             this.wsS = null;
             this.setEnabled(false);
         });
