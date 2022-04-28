@@ -97,6 +97,14 @@ public class ShadowAPIWrapper {
         return s != null && s.statusCode() == 200;
     }
 
+    public static boolean registerAccount(String user, String pass) {
+        HttpResponse<String> s = post("/users/admin/register", new Gson().toJson(
+                Map.of("username", user, "password", pass)
+        ));
+        if (s != null) System.out.println(s.body());
+        return s != null && s.statusCode() == 200;
+    }
+
     public static boolean putItem(ItemStack stack) {
         HttpResponse<String> a = request("/items", "PUT", HttpRequest.BodyPublishers.ofString(gson.toJson(Map.of(
                 "itemName", Registry.ITEM.getId(stack.getItem()).getPath(),

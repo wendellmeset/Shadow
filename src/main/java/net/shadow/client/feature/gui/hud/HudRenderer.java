@@ -8,13 +8,13 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import net.minecraft.client.gui.screen.ChatScreen;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.gui.hud.element.HudElement;
 import net.shadow.client.feature.gui.hud.element.SpeedHud;
 import net.shadow.client.feature.gui.hud.element.TabGui;
 import net.shadow.client.feature.gui.hud.element.Taco;
 import net.shadow.client.feature.gui.hud.element.TargetHUD;
+import net.shadow.client.feature.gui.screen.HudEditorScreen;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.MouseEvent;
@@ -148,7 +148,7 @@ public class HudRenderer {
             }
             prevWY = currentWY;
         }
-        isEditing = ShadowMain.client.currentScreen instanceof ChatScreen;
+        isEditing = ShadowMain.client.currentScreen instanceof HudEditorScreen;
         if (mouseHeldDown) {
             for (HudElement element : elements) {
                 element.mouseDragged(Utils.Mouse.getMouseX() - prevX, Utils.Mouse.getMouseY() - prevY);
