@@ -83,7 +83,7 @@ public class ClickGUI extends Screen implements FastTickable {
     void loadConfig() {
         configContainer.reload();
         ClickguiConfigContainer cc = configContainer.get(ClickguiConfigContainer.class);
-        if (cc == null) return;
+        if (cc == null || cc.entries == null) return;
         Map<String, CategoryDisplay> displays = new HashMap<>();
         for (Element element : elements) {
             if (element instanceof CategoryDisplay dd) {

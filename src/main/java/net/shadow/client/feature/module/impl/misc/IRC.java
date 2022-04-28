@@ -48,7 +48,7 @@ public class IRC extends Module {
         }
         this.wsS = new IRCWebSocket(URI.create(ShadowAPIWrapper.BASE_WS+"/irc"),ShadowAPIWrapper.getAuthKey(),()-> {
             this.wsS = null;
-            this.setEnabled(false);
+            if (this.isEnabled()) this.setEnabled(false);
         });
         this.wsS.connect();
     }
