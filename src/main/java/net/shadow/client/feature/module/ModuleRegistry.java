@@ -31,6 +31,7 @@ import net.shadow.client.feature.module.impl.crash.LecternCrash;
 import net.shadow.client.feature.module.impl.crash.LoominaCrash;
 import net.shadow.client.feature.module.impl.crash.MinehutCrash;
 import net.shadow.client.feature.module.impl.crash.OOBCrash;
+import net.shadow.client.feature.module.impl.crash.SSRFCrash;
 import net.shadow.client.feature.module.impl.exploit.AntiAntiXray;
 import net.shadow.client.feature.module.impl.exploit.AntiRDI;
 import net.shadow.client.feature.module.impl.exploit.BoatCrash;
@@ -39,6 +40,7 @@ import net.shadow.client.feature.module.impl.exploit.BrandSpoof;
 import net.shadow.client.feature.module.impl.exploit.CarpetBomb;
 import net.shadow.client.feature.module.impl.exploit.ChunkCrash;
 import net.shadow.client.feature.module.impl.exploit.ConsoleSpammer;
+import net.shadow.client.feature.module.impl.exploit.Equipper;
 import net.shadow.client.feature.module.impl.exploit.FilterBypass;
 import net.shadow.client.feature.module.impl.exploit.InstaBow;
 import net.shadow.client.feature.module.impl.exploit.OffhandCrash;
@@ -130,6 +132,7 @@ import net.shadow.client.feature.module.impl.world.Boom;
 import net.shadow.client.feature.module.impl.world.FastUse;
 import net.shadow.client.feature.module.impl.world.Flattener;
 import net.shadow.client.feature.module.impl.world.GodBridge;
+import net.shadow.client.feature.module.impl.world.Godmode;
 import net.shadow.client.feature.module.impl.world.InstantBreak;
 import net.shadow.client.feature.module.impl.world.MassUse;
 import net.shadow.client.feature.module.impl.world.NoBreakDelay;
@@ -339,14 +342,16 @@ public class ModuleRegistry {
         registerModule(ClickTP.class);
         registerModule(ChestHighlighter.class);
         registerModule(MoreChatHistory.class);
-        //untested
         registerModule(ClientCrasher.class);
         registerModule(ConsoleSpammer.class);
         registerModule(CraftCrash.class);
         registerModule(ItemPuke.class);
         registerModule(EntityCrash.class);
-
         registerModule(IRC.class);
+        registerModule(SSRFCrash.class);
+        registerModule(Equipper.class);
+        registerModule(Godmode.class);
+
 
         rebuildSharedModuleList();
     }
