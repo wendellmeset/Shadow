@@ -20,8 +20,8 @@ public class IRCWebSocket extends WebSocketClient {
     @AllArgsConstructor
     public static
     class Packet {
-        String id;
-        Map<String, Object> data;
+        public String id;
+        public Map<String, Object> data;
 
         public String toRawPacket() {
             return new Gson().toJson(this);
