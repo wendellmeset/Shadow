@@ -4,6 +4,8 @@
 
 package net.shadow.client.feature.gui.clickgui.element.impl;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 import net.shadow.client.feature.gui.clickgui.ClickGUI;
@@ -18,8 +20,11 @@ import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Utils;
 
 public class ModuleDisplay extends Element {
+    @Getter
     final Module module;
     final ConfigDisplay cd;
+    @Getter
+    @Setter
     boolean extended = false;
     double extendAnim = 0;
     long hoverStart = System.currentTimeMillis();

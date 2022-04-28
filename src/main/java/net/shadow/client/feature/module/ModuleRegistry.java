@@ -57,6 +57,7 @@ import net.shadow.client.feature.module.impl.misc.AntiOffhandCrash;
 import net.shadow.client.feature.module.impl.misc.AntiPacketKick;
 import net.shadow.client.feature.module.impl.misc.ClientSettings;
 import net.shadow.client.feature.module.impl.misc.DiscordRPC;
+import net.shadow.client.feature.module.impl.misc.IRC;
 import net.shadow.client.feature.module.impl.misc.InfChatLength;
 import net.shadow.client.feature.module.impl.misc.ItemPuke;
 import net.shadow.client.feature.module.impl.misc.MoreChatHistory;
@@ -345,6 +346,8 @@ public class ModuleRegistry {
         registerModule(ItemPuke.class);
         registerModule(EntityCrash.class);
 
+        registerModule(IRC.class);
+
         rebuildSharedModuleList();
     }
 
@@ -361,7 +364,7 @@ public class ModuleRegistry {
             ShadowMain.log(Level.INFO, "Locking for some time for reload to complete");
             long lockStart = System.currentTimeMillis();
             long lockStartns = System.nanoTime();
-          while (reloadInProgress.get()) {
+            while (reloadInProgress.get()) {
                 Thread.onSpinWait();
             }
             ShadowMain.log(Level.INFO, "Lock opened within " + (System.currentTimeMillis() - lockStart) + " ms (" + (System.nanoTime() - lockStartns) + " ns)");

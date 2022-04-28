@@ -10,11 +10,10 @@ import com.google.gson.JsonParser;
 import lombok.Getter;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
 
 @SuppressWarnings("unused")
 public class ConfigContainer {
@@ -23,6 +22,7 @@ public class ConfigContainer {
     final String key;
     @Getter
     JsonObject value;
+    boolean loaded = false;
 
     public ConfigContainer(File f, String key) {
         this.path = f;
@@ -33,6 +33,7 @@ public class ConfigContainer {
     }
 
     public <T> T get(Class<T> type) {
+        if (!loaded) return null;
         return gson.fromJson(getValue(), type);
     }
 
@@ -45,8 +46,9 @@ public class ConfigContainer {
     }
 
     void write(String data) {
+        System.out.println("writing " + data);
         try {
-            Files.writeString(path.toPath(), data, StandardOpenOption.CREATE);
+            FileUtils.write(path, data, StandardCharsets.UTF_8);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -57,8 +59,9 @@ public class ConfigContainer {
             return;
         }
         try {
-            String p = Files.readString(path.toPath(), StandardCharsets.UTF_8);
+            String p = FileUtils.readFileToString(path, StandardCharsets.UTF_8);
             set(JsonParser.parseString(p).getAsJsonObject());
+            loaded = true;
         } catch (Exception e) {
             e.printStackTrace();
         }

