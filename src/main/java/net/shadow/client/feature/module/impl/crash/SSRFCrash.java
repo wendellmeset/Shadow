@@ -4,20 +4,24 @@
 
 package net.shadow.client.feature.module.impl.crash;
 
-import java.util.Random;
-
 import net.minecraft.client.util.math.MatrixStack;
-import net.shadow.client.feature.module.ModuleType;
-import net.shadow.client.feature.module.Module;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.*;
+import net.minecraft.nbt.NbtByte;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtInt;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtString;
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
+import net.shadow.client.feature.module.Module;
+import net.shadow.client.feature.module.ModuleType;
+
+import java.util.Random;
 
 public class SSRFCrash extends Module {
 
@@ -78,7 +82,7 @@ public class SSRFCrash extends Module {
 
     }
 
-    
+
     private String rndStr(int size) {
         StringBuilder buf = new StringBuilder();
         String[] chars = new String[]{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};

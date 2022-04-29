@@ -8,12 +8,10 @@ import coffeeprotect.SkipObfuscation;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Element;
-import net.minecraft.util.Util;
 import net.shadow.client.feature.addon.AddonManager;
 import net.shadow.client.feature.command.CommandRegistry;
 import net.shadow.client.feature.gui.FastTickable;
 import net.shadow.client.feature.gui.notifications.NotificationRenderer;
-import net.shadow.client.feature.gui.screen.HomeScreen;
 import net.shadow.client.feature.itemMenu.ItemGroupRegistry;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleRegistry;
@@ -34,8 +32,6 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -47,16 +43,6 @@ public class ShadowMain implements ModInitializer {
     public static final Logger LOGGER = LogManager.getLogger();
     public static final MinecraftClient client = MinecraftClient.getInstance();
     public static final File BASE = new File(MinecraftClient.getInstance().runDirectory, "shadow");
-    private static final String REPORT_WEBHOOK_URL = "https://discord.com/api/webhooks/965552777453502474/z6HSQvGos82UzCh7g5N6921GMf4aUChrnKnajcqM5XV2RVXZ6eBPtysaJLxYEAmqt211";
-    private static final boolean isDevMode = Util.make(() -> {
-        try {
-            File execF = new File(HomeScreen.class.getProtectionDomain().getCodeSource().getLocation().toURI());
-            return execF.isDirectory();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return true;
-        }
-    });
     public static long lastScreenChange = System.currentTimeMillis();
     public static ShadowMain INSTANCE;
     public static Thread MODULE_FTTICKER;
@@ -64,24 +50,6 @@ public class ShadowMain implements ModInitializer {
 
     public static void log(Level level, String message) {
         LOGGER.log(level, "[" + MOD_NAME + "] " + message);
-    }
-
-    public static boolean isDev() {
-        return isDevMode;
-    }
-
-    public static void sendCrashReport(String reportData) {
-        if (isDev()) {
-            log(Level.INFO, "Crash report NOT submitted because isDevMode = true");
-            return;
-        }
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
-        String fmt = sdf.format(System.currentTimeMillis());
-        try {
-            Utils.sendDiscordFile(REPORT_WEBHOOK_URL, String.format("Crash report submitted by **%s** (**%s**) at `%s` (h\\\\:m\\\\:s d/m/y) <@&965396880286707732>", client.getSession().getUsername(), client.getSession().getUuid(), fmt), "crash.txt", reportData.getBytes(StandardCharsets.UTF_8));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @Override

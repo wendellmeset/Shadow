@@ -14,6 +14,7 @@ import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.util.math.MatrixStack;
 import net.shadow.client.feature.gui.FastTickable;
 import net.shadow.client.feature.gui.widget.RoundButton;
+import net.shadow.client.feature.gui.widget.RoundTextFieldWidget;
 import net.shadow.client.helper.IRCWebSocket;
 import net.shadow.client.helper.ShadowAPIWrapper;
 import net.shadow.client.helper.font.FontRenderers;
@@ -29,16 +30,28 @@ import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.BiConsumer;
 
 public class OnlineServicesDashboardScreen extends ClientScreen implements FastTickable {
     static List<LogsFieldWidget.LogEntry> logs = new CopyOnWriteArrayList<>();
+    private static OnlineServicesDashboardScreen instance;
     long reconnectTime = System.currentTimeMillis();
     SimpleWebsocket logsSocket;
     AccountList dvw;
+
+    private OnlineServicesDashboardScreen() {
+
+    }
+
+    public static OnlineServicesDashboardScreen getInstance() {
+        if (instance == null) instance = new OnlineServicesDashboardScreen();
+        return instance;
+    }
 
     void initSocket() {
         if (ShadowAPIWrapper.getAuthKey() != null) {
@@ -54,8 +67,15 @@ public class OnlineServicesDashboardScreen extends ClientScreen implements FastT
     void socketMessageRecieved(String msg) {
         IRCWebSocket.Packet pack = new Gson().fromJson(msg, IRCWebSocket.Packet.class);
         if (pack.id.equals("log")) {
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
-            logs.add(0, new LogsFieldWidget.LogEntry(Map.of("Time", sdf.format(pack.data.get("time")), "Severity", pack.data.get("severity").toString()), pack.data.get("message").toString()));
+            SimpleDateFormat sdf = new SimpleDateFormat("dd. MM HH:mm:ss");
+            LinkedHashMap<String, String> props = new LinkedHashMap<>();
+            props.put("Time", sdf.format(pack.data.get("time")));
+            props.put("Severity", pack.data.get("severity").toString());
+            logs.add(0, new LogsFieldWidget.LogEntry(props, pack.data.get("message").toString(), switch (pack.data.get("severity").toString()) {
+                case "WARNING" -> Color.YELLOW.getRGB();
+                case "SEVERE" -> new Color(255, 50, 50).getRGB();
+                default -> 0xFFFFFF;
+            }));
         }
     }
 
@@ -69,6 +89,9 @@ public class OnlineServicesDashboardScreen extends ClientScreen implements FastT
             yO += avw.height + 5;
             dvw.add(avw);
         }
+        dvw.add(new RegisterAccountViewer(0, yO, 300, 30, (s, s2) -> {
+            if (ShadowAPIWrapper.registerAccount(s, s2)) populateAccountList();
+        }));
     }
 
     @Override
@@ -99,6 +122,97 @@ public class OnlineServicesDashboardScreen extends ClientScreen implements FastT
             if (child.mouseScrolled(mouseX, mouseY, amount)) return true;
         }
         return super.mouseScrolled(mouseX, mouseY, amount);
+    }
+
+    @Override
+    public boolean charTyped(char chr, int modifiers) {
+        for (Element child : this.children()) {
+            if (child.charTyped(chr, modifiers)) return true;
+        }
+        return super.charTyped(chr, modifiers);
+    }
+
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        for (Element child : this.children()) {
+            if (child.keyPressed(keyCode, scanCode, modifiers)) return true;
+        }
+        return super.keyPressed(keyCode, scanCode, modifiers);
+    }
+
+    @Override
+    public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
+        for (Element child : this.children()) {
+            if (child.keyReleased(keyCode, scanCode, modifiers)) return true;
+        }
+        return super.keyReleased(keyCode, scanCode, modifiers);
+    }
+
+    static class RegisterAccountViewer extends AccountViewerWidget {
+        BiConsumer<String, String> r;
+        RoundTextFieldWidget user, pass;
+        RoundButton reg;
+        public RegisterAccountViewer(double x, double y, double width, double height, BiConsumer<String, String> onReg) {
+            super("", "", x, y, width, height, () -> {
+            });
+            this.r = onReg;
+        }
+
+        Element[] getEl() {
+            return new Element[]{user, pass, reg};
+        }
+
+        @Override
+        public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+            if (user == null || pass == null || reg == null) initWidgets();
+            Renderer.R2D.renderRoundedQuad(matrices, new Color(10, 10, 20), x, y, x + width, y + height, 5, 20);
+            this.user.render(matrices, mouseX, mouseY, delta);
+            this.pass.render(matrices, mouseX, mouseY, delta);
+            this.reg.render(matrices, mouseX, mouseY, delta);
+        }
+
+        @Override
+        public void onFastTick() {
+            this.reg.onFastTick();
+        }
+
+        @Override
+        public boolean mouseClicked(double mouseX, double mouseY, int button) {
+            for (Element element : getEl()) {
+                element.mouseClicked(mouseX, mouseY, button);
+            }
+            return false;
+        }
+
+        @Override
+        public boolean charTyped(char chr, int modifiers) {
+            for (Element element : getEl()) {
+                if (element.charTyped(chr, modifiers)) return true;
+            }
+            return super.charTyped(chr, modifiers);
+        }
+
+        @Override
+        public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+            for (Element element : getEl()) {
+                if (element.keyPressed(keyCode, scanCode, modifiers)) return true;
+            }
+            return super.keyPressed(keyCode, scanCode, modifiers);
+        }
+
+        void initWidgets() {
+            double h = 20;
+            double pad = (this.height - h) / 2d;
+            double regBtnWidth = 60;
+            double oneWidth = (this.width - regBtnWidth - pad * 3) / 2d - 2.5;
+            this.user = new RoundTextFieldWidget(x + pad, y + this.height / 2d - h / 2d, oneWidth, h, "Username");
+            this.pass = new RoundTextFieldWidget(x + pad + oneWidth + 5, y + this.height / 2d - h / 2d, oneWidth, h, "Password");
+            this.reg = new RoundButton(RoundButton.STANDARD, x + this.width - pad - regBtnWidth, y + this.height / 2d - h / 2d, regBtnWidth, h, "Register", () -> {
+                this.r.accept(this.user.get(), this.pass.get());
+                this.user.set("");
+                this.pass.set("");
+            });
+        }
     }
 
     @RequiredArgsConstructor
@@ -231,7 +345,7 @@ public class OnlineServicesDashboardScreen extends ClientScreen implements FastT
             return Element.super.mouseScrolled(mouseX, mouseY, amount);
         }
 
-        public record LogEntry(Map<String, String> additionalProps, String msg) {
+        public record LogEntry(Map<String, String> additionalProps, String msg, int color) {
 
         }
 
@@ -255,7 +369,7 @@ public class OnlineServicesDashboardScreen extends ClientScreen implements FastT
     class AccountList implements Element, Drawable, Selectable, FastTickable {
         final double x, y, w, h;
         @Getter
-        List<AccountViewerWidget> aww = new ArrayList<>();
+        List<AccountViewerWidget> aww = new CopyOnWriteArrayList<>();
         Scroller s = new Scroller(0);
 
         public void add(AccountViewerWidget v) {

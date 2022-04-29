@@ -108,7 +108,7 @@ public class TabGui extends Module {
             double height = tabPane.entries.size() * oneHeight + padOuter * 2;
 
             double width = padOuter + scrollerWidth + 2 + Math.ceil(widest.width + 1) + 3;
-            Renderer.R2D.renderRoundedQuad(stack, ThemeManager.getMainTheme().getConfig(), 0, 0, width, height, 3, 20);
+            Renderer.R2D.renderRoundedQuadWithShadow(stack, ThemeManager.getMainTheme().getConfig(), 0, 0, width, height, 3, 20);
             Renderer.R2D.renderRoundedQuad(stack, ThemeManager.getMainTheme().getAccent(), padOuter, yOffset + scrollerYOffset, padOuter + scrollerWidth, yOffset + scrollerYEnd, scrollerWidth / 2d, 20);
 
             double lastEnabledStackHeight = 0;

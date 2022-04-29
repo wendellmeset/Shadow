@@ -7,7 +7,6 @@ package net.shadow.client.mixin;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.util.crash.CrashReport;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.feature.module.impl.world.FastUse;
@@ -15,7 +14,6 @@ import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.base.NonCancellableEvent;
 import net.shadow.client.helper.manager.ConfigManager;
-import org.apache.logging.log4j.Level;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -30,12 +28,6 @@ import java.util.Objects;
 public class MinecraftClientMixin {
     @Shadow
     private int itemUseCooldown;
-
-    @Inject(method = "printCrashReport", at = @At("HEAD"))
-    private static void addCrashReport(CrashReport report, CallbackInfo ci) {
-        ShadowMain.sendCrashReport(report.asString());
-        ShadowMain.log(Level.INFO, "Crash report submitted to discord");
-    }
 
     @Inject(method = "stop", at = @At("HEAD"))
     void real(CallbackInfo ci) {
