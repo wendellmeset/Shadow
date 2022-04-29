@@ -4,7 +4,7 @@
 
 package net.shadow.client.feature.command.impl;
 
-import net.minecraft.client.network.PlayerListEntry;
+import com.mojang.authlib.GameProfile;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.NetworkState;
@@ -20,7 +20,6 @@ import net.minecraft.text.Text;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.argument.PlayerFromNameArgumentParser;
-import net.shadow.client.feature.command.argument.StreamlineArgumentParser;
 import net.shadow.client.feature.command.coloring.ArgumentType;
 import net.shadow.client.feature.command.coloring.PossibleArgument;
 import net.shadow.client.feature.command.coloring.StaticArgumentServer;
@@ -29,8 +28,6 @@ import net.shadow.client.feature.command.exception.CommandException;
 
 import java.net.InetSocketAddress;
 import java.util.Objects;
-
-import com.mojang.authlib.GameProfile;
 
 public class SocketKick extends Command {
     public SocketKick() {
