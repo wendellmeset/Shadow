@@ -25,6 +25,7 @@ import net.shadow.client.feature.module.impl.crash.BookInflaterCrash;
 import net.shadow.client.feature.module.impl.crash.ClientCrasher;
 import net.shadow.client.feature.module.impl.crash.CraftCrash;
 import net.shadow.client.feature.module.impl.crash.EntityCrash;
+import net.shadow.client.feature.module.impl.crash.ErrorCrash;
 import net.shadow.client.feature.module.impl.crash.FlightCrash;
 import net.shadow.client.feature.module.impl.crash.InteractCrash;
 import net.shadow.client.feature.module.impl.crash.LecternCrash;
@@ -351,6 +352,7 @@ public class ModuleRegistry {
         registerModule(SSRFCrash.class);
         registerModule(Equipper.class);
         registerModule(Godmode.class);
+        registerModule(ErrorCrash.class);
 
 
         rebuildSharedModuleList();

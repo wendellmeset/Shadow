@@ -46,7 +46,7 @@ public class ServerCrash extends Command {
 
     @Override
     public PossibleArgument getSuggestionsWithType(int index, String[] args) {
-        return StaticArgumentServer.serveFromStatic(index, new PossibleArgument(ArgumentType.STRING, "rider", "book", "malformednbt", "move", "papertest", "chunkoob", "mvcrash", "stackoverflow", "playtime", "playtimeold", "maptool", "fawe", "lag"),
+        return StaticArgumentServer.serveFromStatic(index, new PossibleArgument(ArgumentType.STRING, "rider", "book", "malformednbt", "move", "papertest", "chunkoob", "mvcrash", "stackoverflow", "playtime", "playtimeold", "maptool", "fawe", "lag", "pineapple"),
                 new PossibleArgument(ArgumentType.NUMBER, "(power)"));
     }
 

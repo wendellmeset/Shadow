@@ -52,6 +52,7 @@ import net.shadow.client.feature.command.impl.RandomBook;
 import net.shadow.client.feature.command.impl.Rename;
 import net.shadow.client.feature.command.impl.Say;
 import net.shadow.client.feature.command.impl.ServerCrash;
+import net.shadow.client.feature.command.impl.SocketKick;
 import net.shadow.client.feature.command.impl.SpawnData;
 import net.shadow.client.feature.command.impl.StopServer;
 import net.shadow.client.feature.command.impl.Taco;
@@ -155,6 +156,7 @@ public class CommandRegistry {
         vanillaCommands.add(new ServerCrash());
         vanillaCommands.add(new RandomBook());
         vanillaCommands.add(new OnlineAPI());
+        vanillaCommands.add(new SocketKick());
 
         rebuildSharedCommands();
     }
