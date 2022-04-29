@@ -19,9 +19,9 @@ import java.util.List;
 import java.util.Map;
 
 public class ShadowAPIWrapper {
-    public static final String BASE_DOMAIN = "localhost:8080";
-    public static final String BASE_URL = "http://" + BASE_DOMAIN;
-    public static final String BASE_WS = "ws://" + BASE_DOMAIN;
+    public static final String BASE_DOMAIN = "api.shadowclient.cf";
+    public static final String BASE_URL = "https://" + BASE_DOMAIN;
+    public static final String BASE_WS = "wss://" + BASE_DOMAIN;
     static String authKey = "";
     static HttpClient client = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.ALWAYS).build();
     static Gson gson = new Gson();
