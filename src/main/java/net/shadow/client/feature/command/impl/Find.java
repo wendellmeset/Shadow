@@ -42,7 +42,6 @@ public class Find extends Command {
 
     public Find() {
         super("Find", "Nocom 2 (requires creative)", "find", "findPlayer");
-        System.out.println("instanced");
         Events.registerEventHandlerClass(this);
     }
 

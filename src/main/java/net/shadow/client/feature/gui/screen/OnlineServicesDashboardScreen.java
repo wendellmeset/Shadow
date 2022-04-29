@@ -13,6 +13,7 @@ import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.util.math.MatrixStack;
 import net.shadow.client.feature.gui.FastTickable;
+import net.shadow.client.feature.gui.notifications.hudNotif.HudNotification;
 import net.shadow.client.feature.gui.widget.RoundButton;
 import net.shadow.client.feature.gui.widget.RoundTextFieldWidget;
 import net.shadow.client.helper.IRCWebSocket;
@@ -57,6 +58,7 @@ public class OnlineServicesDashboardScreen extends ClientScreen implements FastT
         if (ShadowAPIWrapper.getAuthKey() != null) {
             logs.clear();
             logsSocket = new SimpleWebsocket(URI.create(ShadowAPIWrapper.BASE_WS + "/admin/logs"), Map.of("Authorization", ShadowAPIWrapper.getAuthKey()), () -> {
+                HudNotification.create("Websocket disconnected, reconnecting in 3 seconds", 3000, HudNotification.Type.INFO);
                 reconnectTime = System.currentTimeMillis() + Duration.ofSeconds(3).toMillis();
                 logs.clear();
             }, this::socketMessageRecieved);
@@ -152,6 +154,7 @@ public class OnlineServicesDashboardScreen extends ClientScreen implements FastT
         BiConsumer<String, String> r;
         RoundTextFieldWidget user, pass;
         RoundButton reg;
+
         public RegisterAccountViewer(double x, double y, double width, double height, BiConsumer<String, String> onReg) {
             super("", "", x, y, width, height, () -> {
             });

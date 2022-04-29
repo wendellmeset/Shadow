@@ -16,12 +16,6 @@ public class Cursor {
 
     public static void setGlfwCursor(long cursor) {
         if (currentCursor == cursor) return;
-        String cname = "(unknown)";
-        if (CLICK == cursor) cname = "CLICK";
-        if (STANDARD == cursor) cname = "STANDARD";
-        if (TEXT_EDIT == cursor) cname = "TEXT_EDIT";
-        if (HSLIDER == cursor) cname = "HSLIDER";
-        System.out.println("set cursor: 0x" + Long.toHexString(cursor).toUpperCase() + ": " + cname);
         currentCursor = cursor;
         GLFW.glfwSetCursor(ShadowMain.client.getWindow().getHandle(), cursor);
     }

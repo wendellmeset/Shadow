@@ -15,6 +15,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.gui.DoesMSAA;
+import net.shadow.client.feature.gui.notifications.hudNotif.HudNotificationRenderer;
 import net.shadow.client.feature.gui.screen.ClientScreen;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleRegistry;
@@ -106,5 +107,10 @@ public class GameRendererMixin {
     public void overwriteFov(Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<Double> cir) {
         double zv = ModuleRegistry.getByClass(Zoom.class).getZoomValue(cir.getReturnValue());
         cir.setReturnValue(zv);
+    }
+
+    @Inject(method = "render", at = @At("RETURN"))
+    void a(float tickDelta, long startTime, boolean tick, CallbackInfo ci) {
+        HudNotificationRenderer.instance.render(Renderer.R3D.getEmptyMatrixStack());
     }
 }

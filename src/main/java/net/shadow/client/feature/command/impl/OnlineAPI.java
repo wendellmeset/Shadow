@@ -16,6 +16,7 @@ import net.shadow.client.helper.ShadowAPIWrapper;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
 import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.Level;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
@@ -45,13 +46,13 @@ public class OnlineAPI extends Command {
                 String session = FileUtils.readFileToString(SESSION_KEY_FILE, StandardCharsets.UTF_8);
                 if (!session.isEmpty()) {
                     if (ShadowAPIWrapper.loginWithKey(session)) {
-                        System.out.println("recovered previous session from backup file");
+                        ShadowMain.log(Level.INFO, "recovered previous session from backup file");
                     } else {
-                        System.out.println("server said no to session recovery, moving on");
+                        ShadowMain.log(Level.INFO, "server said no to session recovery, moving on");
                     }
                 }
             } catch (Exception e) {
-                System.out.println("failed to recover session :(");
+                ShadowMain.log(Level.ERROR, "failed to recover session :(");
                 e.printStackTrace();
             }
         }

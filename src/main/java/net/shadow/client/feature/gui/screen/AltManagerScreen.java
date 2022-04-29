@@ -15,14 +15,13 @@ import me.x150.authlib.login.mojang.profile.MinecraftProfile;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.texture.NativeImage;
-import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.minecraft.client.util.DefaultSkinHelper;
 import net.minecraft.client.util.Session;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.gui.FastTickable;
+import net.shadow.client.feature.gui.notifications.hudNotif.HudNotification;
 import net.shadow.client.feature.gui.widget.RoundButton;
 import net.shadow.client.feature.gui.widget.RoundTextFieldWidget;
 import net.shadow.client.helper.Texture;
@@ -30,6 +29,7 @@ import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.font.adapter.FontAdapter;
 import net.shadow.client.helper.render.ClipStack;
 import net.shadow.client.helper.render.MSAAFramebuffer;
+import net.shadow.client.helper.render.PlayerHeadResolver;
 import net.shadow.client.helper.render.Rectangle;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Transitions;
@@ -37,19 +37,11 @@ import net.shadow.client.mixin.IMinecraftClientAccessor;
 import net.shadow.client.mixin.SessionAccessor;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.Level;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL40C;
 
-import javax.imageio.ImageIO;
 import java.awt.Color;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.net.URI;
 import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -89,7 +81,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
     double scroll = 0;
     double scrollSmooth = 0;
     Texture currentAccountTexture = new Texture("dynamic/currentaccount");
-    boolean currentAccountTextureLoaded = false;
+    boolean currentAccountTextureLoaded = true;
 
     private AltManagerScreen() {
         super(MSAAFramebuffer.MAX_SAMPLES);
@@ -233,32 +225,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
     void updateCurrentAccount() {
         UUID uid = ShadowMain.client.getSession().getProfile().getId();
 
-        if (texCache.containsKey(uid)) {
-            this.currentAccountTexture = texCache.get(uid);
-            currentAccountTextureLoaded = true;
-            return;
-        }
-
-        HttpRequest hr = HttpRequest.newBuilder().uri(URI.create("https://crafatar.com/avatars/" + uid + "?overlay")).header("User-Agent", "why").build();
-        downloader.sendAsync(hr, HttpResponse.BodyHandlers.ofByteArray()).thenAccept(httpResponse -> {
-            try {
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                ImageIO.write(ImageIO.read(new ByteArrayInputStream(httpResponse.body())), "png", stream);
-                byte[] bytes = stream.toByteArray();
-
-                ByteBuffer data = BufferUtils.createByteBuffer(bytes.length).put(bytes);
-                data.flip();
-                NativeImage img = NativeImage.read(data);
-                NativeImageBackedTexture texture = new NativeImageBackedTexture(img);
-
-                ShadowMain.client.execute(() -> {
-                    ShadowMain.client.getTextureManager().registerTexture(currentAccountTexture, texture);
-                    currentAccountTextureLoaded = true;
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+        this.currentAccountTexture = PlayerHeadResolver.resolve(uid);
     }
 
     void login() {
@@ -270,11 +237,14 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
             this.selectedAlt.login();
             isLoggingIn.set(false);
             if (!this.selectedAlt.storage.valid) {
+                HudNotification.create("Failed to log in", 5000, HudNotification.Type.ERROR);
                 return;
             }
             Session newSession = new Session(selectedAlt.storage.cachedName, selectedAlt.storage.cachedUuid.toString(), selectedAlt.storage.accessToken, Optional.empty(), Optional.empty(), Session.AccountType.MOJANG);
             ((IMinecraftClientAccessor) ShadowMain.client).setSession(newSession);
+            HudNotification.create("Logged into account " + newSession.getUsername(), 5000, HudNotification.Type.INFO);
             updateCurrentAccount();
+
         }).start();
     }
 
@@ -916,28 +886,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
         }
 
         void downloadTexture() {
-            HttpRequest hr = HttpRequest.newBuilder().uri(URI.create("https://crafatar.com/avatars/" + this.storage.cachedUuid + "?overlay")).header("User-Agent", "why").build();
-            downloader.sendAsync(hr, HttpResponse.BodyHandlers.ofByteArray()).thenAccept(httpResponse -> {
-                try {
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    ImageIO.write(ImageIO.read(new ByteArrayInputStream(httpResponse.body())), "png", stream);
-                    byte[] bytes = stream.toByteArray();
-
-                    ByteBuffer data = BufferUtils.createByteBuffer(bytes.length).put(bytes);
-                    data.flip();
-                    NativeImage img = NativeImage.read(data);
-                    NativeImageBackedTexture texture = new NativeImageBackedTexture(img);
-
-                    ShadowMain.client.execute(() -> {
-                        this.tex = new Texture(("dynamic/tex_" + this.storage.cachedUuid.hashCode() + "_" + (Math.random() + "").split("\\.")[1]).toLowerCase());
-                        ShadowMain.client.getTextureManager().registerTexture(this.tex, texture);
-                        texCache.put(this.storage.cachedUuid, this.tex);
-                        texLoaded = true;
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
+            this.tex = PlayerHeadResolver.resolve(this.storage.cachedUuid);
         }
 
         public double getHeight() {
@@ -1025,11 +974,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
 
             RenderSystem.blendFunc(GL40C.GL_DST_ALPHA, GL40C.GL_ONE_MINUS_DST_ALPHA);
             RenderSystem.setShaderTexture(0, tex);
-            if (texLoaded) {
-                Renderer.R2D.renderTexture(stack, originX + padding, originY + padding, texWidth, texHeight, 0, 0, 64, 64, 64, 64);
-            } else {
-                Renderer.R2D.renderTexture(stack, originX + padding, originY + padding, texWidth, texHeight, 8, 8, 8, 8, 64, 64); // default skin
-            }
+            Renderer.R2D.renderTexture(stack, originX + padding, originY + padding, texWidth, texHeight, 0, 0, 64, 64, 64, 64);
             String mail;
             if (this.storage.type != AddScreenOverlay.AccountType.CRACKED) {
                 mail = this.storage.email;

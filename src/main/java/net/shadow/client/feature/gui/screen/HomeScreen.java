@@ -12,8 +12,6 @@ import net.minecraft.client.gui.screen.option.OptionsScreen;
 import net.minecraft.client.gui.screen.world.SelectWorldScreen;
 import net.minecraft.client.realms.gui.screen.RealmsMainScreen;
 import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.texture.NativeImage;
-import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.minecraft.client.util.DefaultSkinHelper;
 import net.minecraft.client.util.math.MatrixStack;
 import net.shadow.client.ShadowMain;
@@ -24,21 +22,14 @@ import net.shadow.client.helper.Texture;
 import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.font.adapter.FontAdapter;
 import net.shadow.client.helper.render.MSAAFramebuffer;
+import net.shadow.client.helper.render.PlayerHeadResolver;
 import net.shadow.client.helper.render.Renderer;
 import org.apache.commons.io.IOUtils;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL40C;
 
-import javax.imageio.ImageIO;
 import java.awt.Color;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.net.URI;
 import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.AbstractMap;
@@ -108,7 +99,10 @@ public class HomeScreen extends ClientScreen {
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Singleplayer", () -> ShadowMain.client.setScreen(new SelectWorldScreen(this))));
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Multiplayer", () -> ShadowMain.client.setScreen(new MultiplayerScreen(this))));
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Realms", () -> ShadowMain.client.setScreen(new RealmsMainScreen(this))));
-        buttonsMap.add(new AbstractMap.SimpleEntry<>("Alts", () -> ShadowMain.client.setScreen(AltManagerScreen.instance())));
+        buttonsMap.add(new AbstractMap.SimpleEntry<>("Alts", () -> {
+            ShadowMain.client.setScreen(AltManagerScreen.instance());
+//            Notification.create(RandomStringUtils.randomPrint(20), RandomUtils.nextLong(4000, 7000), Notification.Type.INFO);
+        }));
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Settings", () -> ShadowMain.client.setScreen(new OptionsScreen(this, ShadowMain.client.options))));
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Quit", ShadowMain.client::scheduleStop));
 //        buttonsMap.add(new AbstractMap.SimpleEntry<>("reinit", this::init));
@@ -155,30 +149,9 @@ public class HomeScreen extends ClientScreen {
             return;
         }
         previousChecked = uid;
-
-        HttpRequest hr = HttpRequest.newBuilder().uri(URI.create("https://crafatar.com/avatars/" + uid + "?overlay")).header("User-Agent", "why").timeout(Duration.ofSeconds(5)).build();
-        downloader.sendAsync(hr, HttpResponse.BodyHandlers.ofByteArray()).thenAccept(httpResponse -> {
-            try {
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                ImageIO.write(ImageIO.read(new ByteArrayInputStream(httpResponse.body())), "png", stream);
-                byte[] bytes = stream.toByteArray();
-
-                ByteBuffer data = BufferUtils.createByteBuffer(bytes.length).put(bytes);
-                data.flip();
-                NativeImage img = NativeImage.read(data);
-//                System.out.println(img);
-                NativeImageBackedTexture texture = new NativeImageBackedTexture(img);
-
-                ShadowMain.client.execute(() -> {
-                    ShadowMain.client.getTextureManager().registerTexture(currentAccountTexture, texture);
-                    currentAccountTextureLoaded = true;
-                    callback.run();
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-                callback.run();
-            }
-        });
+        PlayerHeadResolver.resolve(uid, this.currentAccountTexture);
+        currentAccountTextureLoaded = true;
+        callback.run();
     }
 
     @Override
