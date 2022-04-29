@@ -44,7 +44,7 @@ public class Help extends Command {
             message("All commands and their description");
             for (Command command : CommandRegistry.getCommands()) {
                 message(command.getName() + ": " + command.getDescription());
-                message0("  " + String.join(", ", command.getAliases()), Color.GRAY);
+                message("  " + String.join(", ", command.getAliases()), Color.GRAY);
             }
         } else {
             String s = args[0];
@@ -52,8 +52,8 @@ public class Help extends Command {
             if (c == null) error("Command \"" + s + "\" was not found");
             else {
                 message("Command " + c.getName());
-                message0(c.getDescription(), Color.GRAY);
-                message0("Aliases: " + String.join(", ", c.getAliases()), Color.GRAY);
+                message(c.getDescription(), Color.GRAY);
+                message("Aliases: " + String.join(", ", c.getAliases()), Color.GRAY);
                 message("");
                 ExamplesEntry e = c.getExampleArguments();
                 if (e == null) {

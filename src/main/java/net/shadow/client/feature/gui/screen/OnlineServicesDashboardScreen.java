@@ -250,12 +250,12 @@ public class OnlineServicesDashboardScreen extends ClientScreen implements FastT
 
         @Override
         public void onFastTick() {
-            deleteBtn.onFastTick();
+            if (deleteBtn != null) deleteBtn.onFastTick();
         }
 
         @Override
         public boolean mouseClicked(double mouseX, double mouseY, int button) {
-            return deleteBtn.mouseClicked(mouseX, mouseY, button);
+            return deleteBtn != null && deleteBtn.mouseClicked(mouseX, mouseY, button);
         }
     }
 

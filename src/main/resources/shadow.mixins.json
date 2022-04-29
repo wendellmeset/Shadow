@@ -33,6 +33,7 @@
     "IClientPlayerInteractionManagerAccessor",
     "ICustomPayloadC2SPacketAccessor",
     "IDebugHudAccessor",
+    "IdentifierAccessor",
     "IEntityVelocityUpdateS2CPacketMixin",
     "IInGameHudAccessor",
     "ILivingEntityAccessor",
@@ -57,6 +58,7 @@
     "PlayerEntityMixin",
     "PlayerEntityRendererMixin",
     "PlayerInteractEntityC2SPacketAccessor",
+    "PlayerListHudMixin",
     "RebuildTaskMixin",
     "ScreenMixin",
     "SelectWorldScreenMixin",
@@ -67,8 +69,7 @@
     "SliderWidgetMixin",
     "TitleScreenMixin",
     "WorldRendererAccessor",
-    "WorldRendererMixin",
-    "IdentifierAccessor"
+    "WorldRendererMixin"
   ],
   "client": [],
   "server": [],

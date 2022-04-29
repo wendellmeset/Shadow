@@ -19,7 +19,7 @@ import java.net.URI;
 
 public class IRC extends Module {
     static String ircPrefix = "#";
-    IRCWebSocket wsS;
+    public IRCWebSocket wsS;
 
     public IRC() {
         super("IRC", "Chat with others using the client", ModuleType.MISC);
@@ -48,6 +48,9 @@ public class IRC extends Module {
             setEnabled(false);
             return;
         }
+        initSock();
+    }
+    void initSock() {
         this.wsS = new IRCWebSocket(URI.create(ShadowAPIWrapper.BASE_WS + "/irc"), ShadowAPIWrapper.getAuthKey(), () -> {
             this.wsS = null;
             if (this.isEnabled()) this.setEnabled(false);
@@ -58,6 +61,11 @@ public class IRC extends Module {
     @Override
     public void disable() {
         if (this.wsS != null) this.wsS.close();
+    }
+
+    public void reconnect() {
+        if (this.wsS != null) this.wsS.close();
+        initSock();
     }
 
     @Override
