@@ -4,6 +4,7 @@
 
 package net.shadow.client.feature.module.impl.render;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.util.math.MatrixStack;
@@ -13,6 +14,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameMode;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
+import net.shadow.client.helper.GameTexture;
+import net.shadow.client.helper.IRCWebSocket;
 import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.font.adapter.FontAdapter;
 import net.shadow.client.helper.render.Renderer;
@@ -74,11 +77,28 @@ public class NameTags extends Module {
         }
         MatrixStack stack1 = Renderer.R3D.getEmptyMatrixStack();
         Vec3d actual = new Vec3d(screenPos.x, screenPos.y - labelHeight, screenPos.z);
-        float fontWidth = nameDrawer.getStringWidth(text) + 4;
-        float width = fontWidth;
-        width = Math.max(width, 70);
+        float width = nameDrawer.getStringWidth(text) + 4;
+        width = Math.max(width, 60);
+        boolean in = IRCWebSocket.knownIRCPlayers.stream().anyMatch(playerEntry -> playerEntry.uuid().equals(entity.getUuid()));
+
+        double origWidth = 782;
+        double origHeight = 1000;
+        double newHeight = nameDrawer.getFontHeight();
+        double newWidth = origWidth*(newHeight /origHeight);
+        double req = newWidth+5;
+
+        if (in) {
+
+            if (width-req < nameDrawer.getStringWidth(text)) width += newWidth+5; // make sure we always have some space to draw the icon
+        }
         Renderer.R2D.renderRoundedQuad(stack1, new Color(0, 0, 5, 200), actual.x - width / 2d, actual.y, actual.x + width / 2d, actual.y + labelHeight, 3, 20);
-        nameDrawer.drawString(stack1, text, actual.x - fontWidth / 2d + 2, actual.y + 2, 0xFFFFFF);
+        nameDrawer.drawString(stack1, text, actual.x + width/2d - nameDrawer.getStringWidth(text)-2, actual.y + 2, 0xFFFFFF);
+
+        if (in) {
+            RenderSystem.setShaderTexture(0, GameTexture.TEXTURE_ICON.getWhere());
+            Renderer.R2D.renderTexture(stack1, actual.x -width/2d+2,actual.y+2, newWidth,newHeight,0,0, newWidth,newHeight, newWidth,newHeight);
+        }
+
         infoDrawer.drawString(stack1, gmString, actual.x + width / 2d - infoDrawer.getStringWidth(gmString) - 2, actual.y + 2 + nameDrawer.getFontHeight(), 0xAAAAAA);
         if (ping != -1)
             infoDrawer.drawString(stack1, pingStr, actual.x - width / 2d + 2, actual.y + 2 + nameDrawer.getFontHeight(), 0xAAAAAA);

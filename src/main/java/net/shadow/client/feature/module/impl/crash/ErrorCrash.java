@@ -4,21 +4,19 @@
 
 package net.shadow.client.feature.module.impl.crash;
 
-import net.minecraft.client.util.math.MatrixStack;
-import net.shadow.client.feature.module.ModuleType;
-import net.shadow.client.feature.config.DoubleSetting;
-import net.shadow.client.feature.config.EnumSetting;
-import net.shadow.client.feature.gui.notifications.Notification;
-import net.shadow.client.feature.module.Module;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.packet.c2s.play.ButtonClickC2SPacket;
 import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket;
 import net.minecraft.network.packet.c2s.play.SelectMerchantTradeC2SPacket;
-import net.minecraft.network.packet.c2s.play.UpdateSelectedSlotC2SPacket;
 import net.minecraft.screen.slot.SlotActionType;
+import net.shadow.client.feature.config.DoubleSetting;
+import net.shadow.client.feature.config.EnumSetting;
+import net.shadow.client.feature.module.Module;
+import net.shadow.client.feature.module.ModuleType;
 
 
 public class ErrorCrash extends Module {
@@ -32,7 +30,7 @@ public class ErrorCrash extends Module {
 
     @Override
     public void tick() {
-        switch(mode.getValue()){
+        switch (mode.getValue()) {
             case Click -> {
                 Int2ObjectMap<ItemStack> ripbozo = new Int2ObjectArrayMap();
                 ripbozo.put(0, new ItemStack(Items.ACACIA_BOAT, 1));

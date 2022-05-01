@@ -20,6 +20,7 @@ import net.shadow.client.feature.module.ModuleType;
 import net.shadow.client.helper.Texture;
 import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.manager.AttackManager;
+import net.shadow.client.helper.render.PlayerHeadResolver;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Transitions;
 import net.shadow.client.helper.util.Utils;
@@ -150,7 +151,7 @@ public class TargetHud extends Module {
             double textLeftAlign = 32 + 10;
             Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20, 200), 0, 0, modalWidth, modalHeight, 5, 10);
 
-            Texture tex = new Texture(Utils.Textures.getSkinPreviewTexture(entity.getUuid()));
+            Texture tex = PlayerHeadResolver.resolve(entity.getUuid());
             RenderSystem.setShaderTexture(0, tex);
 
             RenderSystem.enableBlend();
@@ -193,4 +194,3 @@ public class TargetHud extends Module {
     }
 
 }
-

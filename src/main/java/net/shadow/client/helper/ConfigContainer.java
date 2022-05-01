@@ -46,7 +46,6 @@ public class ConfigContainer {
     }
 
     void write(String data) {
-        System.out.println("writing " + data);
         try {
             FileUtils.write(path, data, StandardCharsets.UTF_8);
         } catch (Exception e) {

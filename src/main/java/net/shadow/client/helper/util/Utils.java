@@ -16,6 +16,7 @@ import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -46,11 +47,13 @@ import java.net.http.HttpResponse;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Queue;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -367,27 +370,37 @@ public class Utils {
     }
 
     public static class Logging {
+        static Queue<Text> messageQueue = new ArrayDeque<>();
+        static void sendMessages() {
+            if (ShadowMain.client.player != null) {
+                Text next;
+                while((next = messageQueue.poll()) != null) {
+                    ShadowMain.client.player.sendMessage(next, false);
+                }
+            }
+        }
         public static void warn(String n) {
-            message0(n, Color.YELLOW);
+            message(n, Color.YELLOW);
         }
 
         public static void success(String n) {
-            message0(n, new Color(65, 217, 101));
+            message(n, new Color(65, 217, 101));
         }
 
         public static void error(String n) {
-            message0(n, new Color(214, 93, 62));
+            message(n, new Color(214, 93, 62));
         }
 
         public static void message(String n) {
-            message0(n, Color.WHITE);
+            message(n, Color.WHITE);
         }
-
-        public static void message0(String n, Color c) {
+        public static void message(Text text) {
+            messageQueue.add(text);
+        }
+        public static void message(String n, Color c) {
             LiteralText t = new LiteralText(n);
             t.setStyle(t.getStyle().withColor(TextColor.fromRgb(c.getRGB())));
-            if (ShadowMain.client.player != null) if (!(ShadowMain.client.currentScreen instanceof ConsoleScreen))
-                ShadowMain.client.player.sendMessage(t, false);
+            if (!(ShadowMain.client.currentScreen instanceof ConsoleScreen)) message(t);
             //            if (c.equals(Color.WHITE)) c = Color.BLACK;
             ConsoleScreen.instance().addLog(new ConsoleScreen.LogEntry(n, c));
         }
@@ -404,6 +417,7 @@ public class Utils {
         }
 
         public static void tick() {
+            Logging.sendMessages();
             for (TickEntry entry : entries.toArray(new TickEntry[0])) {
                 entry.v--;
                 if (entry.v <= 0) {
