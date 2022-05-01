@@ -1,2 +1,4 @@
-Fixed compat issues
-Fixed race condition crash on startup
+Added online services
+Added IRC
+Added ability to view other shadow users
+Ported over modules

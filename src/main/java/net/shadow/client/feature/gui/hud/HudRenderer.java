@@ -10,6 +10,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.gui.hud.element.HudElement;
+import net.shadow.client.feature.gui.hud.element.RadarElement;
 import net.shadow.client.feature.gui.hud.element.SpeedHud;
 import net.shadow.client.feature.gui.hud.element.TabGui;
 import net.shadow.client.feature.gui.hud.element.Taco;
@@ -78,6 +79,7 @@ public class HudRenderer {
         he.add(new Taco());
         he.add(new SpeedHud());
         he.add(new TabGui());
+        he.add(new RadarElement());
         return he;
     }
 

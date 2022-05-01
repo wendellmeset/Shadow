@@ -113,6 +113,7 @@ import net.shadow.client.feature.module.impl.render.ItemByteSize;
 import net.shadow.client.feature.module.impl.render.MouseEars;
 import net.shadow.client.feature.module.impl.render.NameTags;
 import net.shadow.client.feature.module.impl.render.NoLiquidFog;
+import net.shadow.client.feature.module.impl.render.Radar;
 import net.shadow.client.feature.module.impl.render.ShowTntPrime;
 import net.shadow.client.feature.module.impl.render.Spotlight;
 import net.shadow.client.feature.module.impl.render.TabGui;
@@ -353,6 +354,7 @@ public class ModuleRegistry {
         registerModule(Equipper.class);
         registerModule(Godmode.class);
         registerModule(ErrorCrash.class);
+        registerModule(Radar.class);
 
 
         rebuildSharedModuleList();
