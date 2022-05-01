@@ -7,6 +7,10 @@ package net.shadow.client.feature.module.impl.world;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.packet.c2s.play.ClientStatusC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
+import net.minecraft.network.packet.c2s.play.TeleportConfirmC2SPacket;
+import net.minecraft.network.packet.s2c.play.DeathMessageS2CPacket;
+import net.minecraft.network.packet.s2c.play.EntityTrackerUpdateS2CPacket;
+import net.minecraft.network.packet.s2c.play.HealthUpdateS2CPacket;
 import net.shadow.client.feature.config.EnumSetting;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
@@ -25,12 +29,24 @@ public class Godmode extends Module {
 
     @EventListener(type = EventType.PACKET_SEND)
     void giveAShit(PacketEvent event) {
-        if (event.getPacket() instanceof ClientStatusC2SPacket packet) {
-            if (packet.getMode() == ClientStatusC2SPacket.Mode.PERFORM_RESPAWN) {
+        if(mode.getValue().equals(Mode.Portal)){
+            if (event.getPacket() instanceof TeleportConfirmC2SPacket) {
                 event.setCancelled(true);
-                client.setScreen(null);
-                client.currentScreen = null;
-                client.player.setHealth(20F);
+            }
+        }
+    }
+
+    @EventListener(type=EventType.PACKET_RECEIVE)
+    void giveTwoShits(PacketEvent event){
+        if(mode.getValue().equals(Mode.Vanilla)){
+            if (event.getPacket() instanceof DeathMessageS2CPacket) {
+                event.setCancelled(true);
+            }
+            if (event.getPacket() instanceof EntityTrackerUpdateS2CPacket) {
+                event.setCancelled(true);
+            }
+            if (event.getPacket() instanceof HealthUpdateS2CPacket) {
+                event.setCancelled(true);
             }
         }
     }
@@ -72,6 +88,7 @@ public class Godmode extends Module {
 
     public enum Mode {
         Vanilla,
-        Matrix
+        Matrix,
+        Portal
     }
 }
