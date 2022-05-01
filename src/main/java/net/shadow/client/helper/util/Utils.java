@@ -13,6 +13,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.StringNbtReader;
+import net.minecraft.network.Packet;
 import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.LiteralText;
@@ -59,6 +60,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Utils {
 
+    public static boolean sendPackets = true;
+
     public static void sleep(long ms) {
         try {
             Thread.sleep(ms);
@@ -90,6 +93,12 @@ public class Utils {
         System.out.println(real.send(req, HttpResponse.BodyHandlers.ofString()).body());
     }
 
+
+    public static void sendPacket(Packet packet){
+        sendPackets = false;
+        ShadowMain.client.player.networkHandler.sendPacket(packet);
+        sendPackets = true;
+    }
 
     public static void setClientTps(float tps) {
         IRenderTickCounterAccessor accessor = ((IRenderTickCounterAccessor) ((IMinecraftClientAccessor) ShadowMain.client).getRenderTickCounter());
