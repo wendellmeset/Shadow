@@ -23,8 +23,8 @@ public class ShadowAPIWrapper {
     public static final String BASE_URL = "https://" + BASE_DOMAIN;
     public static final String BASE_WS = "wss://" + BASE_DOMAIN;
     static String authKey = "";
-    static HttpClient client = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.ALWAYS).build();
-    static Gson gson = new Gson();
+    static final HttpClient client = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.ALWAYS).build();
+    static final Gson gson = new Gson();
     static boolean currentUserIsAdmin = false;
 
     public static String getAuthKey() {

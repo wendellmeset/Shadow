@@ -67,9 +67,7 @@ public class AddonManagerScreen extends ClientScreen implements FastTickable {
     @Override
     protected void init() {
         reInitViewers();
-        RoundButton openFolder = new RoundButton(RoundButton.STANDARD, 5, 5, 100, 20, "Open folder", () -> {
-            Util.getOperatingSystem().open(AddonManager.ADDON_DIRECTORY);
-        });
+        RoundButton openFolder = new RoundButton(RoundButton.STANDARD, 5, 5, 100, 20, "Open folder", () -> Util.getOperatingSystem().open(AddonManager.ADDON_DIRECTORY));
         this.addDrawableChild(openFolder);
     }
 

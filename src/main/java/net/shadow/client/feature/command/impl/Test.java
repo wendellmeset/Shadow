@@ -19,9 +19,7 @@ public class Test extends Command {
     public void onExecute(String[] args) {
         if (ShadowAPIWrapper.getAuthKey() != null && ShadowAPIWrapper.isCurrentUserAdmin()) {
             System.out.println(ShadowAPIWrapper.getAccounts());
-            Utils.TickManager.runInNTicks(5, () -> {
-                ShadowMain.client.setScreen(OnlineServicesDashboardScreen.getInstance());
-            });
+            Utils.TickManager.runInNTicks(5, () -> ShadowMain.client.setScreen(OnlineServicesDashboardScreen.getInstance()));
         } else {
             error("not logged in or not admin");
         }

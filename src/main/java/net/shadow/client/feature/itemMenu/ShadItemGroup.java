@@ -21,7 +21,7 @@ public class ShadItemGroup {
     String nameS;
     @Getter
     ItemStack icon;
-    Text name;
+    final Text name;
     @Getter
     List<ItemStack> items = new CopyOnWriteArrayList<>();
 

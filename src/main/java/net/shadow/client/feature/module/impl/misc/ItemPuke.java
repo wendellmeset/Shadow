@@ -30,7 +30,7 @@ public class ItemPuke extends Module {
     @Override
     public void tick() {
         for (int i = 0; i < speed.getValue(); i++) {
-            ItemStack j = new ItemStack(Registry.ITEM.get(Registry.ITEM.getRandom(r).get().getKey().get().getValue()), 64);
+            ItemStack j = new ItemStack(Registry.ITEM.get(Registry.ITEM.getRandom(r).orElseThrow().getKey().orElseThrow().getValue()), 64);
             client.player.networkHandler.sendPacket(new CreativeInventoryActionC2SPacket(client.player.getInventory().selectedSlot + 36, j));
             client.player.networkHandler.sendPacket(new PlayerActionC2SPacket(Action.DROP_ALL_ITEMS, new BlockPos(0, 0, 0), Direction.UP));
         }

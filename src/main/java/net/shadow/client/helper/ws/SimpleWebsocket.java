@@ -12,8 +12,8 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public class SimpleWebsocket extends WebSocketClient {
-    Runnable onClose;
-    Consumer<String> onMessage;
+    final Runnable onClose;
+    final Consumer<String> onMessage;
 
     public SimpleWebsocket(URI serverUri, Map<String, String> headers, Runnable c, Consumer<String> msg) {
         super(serverUri, headers);

@@ -18,7 +18,7 @@ import net.shadow.client.helper.util.Utils;
 import java.net.URI;
 
 public class IRC extends Module {
-    static String ircPrefix = "#";
+    static final String ircPrefix = "#";
     public IRCWebSocket wsS;
 
     public IRC() {

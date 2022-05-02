@@ -24,8 +24,8 @@ import java.util.UUID;
 
 public class PlayerHeadResolver {
     static final NativeImageBackedTexture EMPTY = new NativeImageBackedTexture(1, 1, false);
-    static HttpClient client = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.ALWAYS).build();
-    static Map<UUID, NativeImageBackedTexture> imageCache = new HashMap<>();
+    static final HttpClient client = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.ALWAYS).build();
+    static final Map<UUID, NativeImageBackedTexture> imageCache = new HashMap<>();
 
     public static void resolve(UUID uuid, Texture texture) {
         if (imageCache.containsKey(uuid)) {

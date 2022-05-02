@@ -39,7 +39,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.BiConsumer;
 
 public class OnlineServicesDashboardScreen extends ClientScreen implements FastTickable {
-    static List<LogsFieldWidget.LogEntry> logs = new CopyOnWriteArrayList<>();
+    static final List<LogsFieldWidget.LogEntry> logs = new CopyOnWriteArrayList<>();
     private static OnlineServicesDashboardScreen instance;
     long reconnectTime = System.currentTimeMillis();
     SimpleWebsocket logsSocket;
@@ -151,7 +151,7 @@ public class OnlineServicesDashboardScreen extends ClientScreen implements FastT
     }
 
     static class RegisterAccountViewer extends AccountViewerWidget {
-        BiConsumer<String, String> r;
+        final BiConsumer<String, String> r;
         RoundTextFieldWidget user, pass;
         RoundButton reg;
 
@@ -262,7 +262,7 @@ public class OnlineServicesDashboardScreen extends ClientScreen implements FastT
     class LogsFieldWidget implements Element, Drawable, Selectable, FastTickable {
         final double x, y, w, h;
         final List<LogEntry> logs;
-        Scroller scroller = new Scroller(0);
+        final Scroller scroller = new Scroller(0);
 
         double heightPerLine() {
             return FontRenderers.getRenderer().getFontHeight() + 8;
@@ -372,7 +372,7 @@ public class OnlineServicesDashboardScreen extends ClientScreen implements FastT
         final double x, y, w, h;
         @Getter
         List<AccountViewerWidget> aww = new CopyOnWriteArrayList<>();
-        Scroller s = new Scroller(0);
+        final Scroller s = new Scroller(0);
 
         public void add(AccountViewerWidget v) {
             aww.add(v);

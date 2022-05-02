@@ -38,7 +38,7 @@ public class Flight extends Module {
     final BooleanSetting bypassVanillaAc = this.config.create(new BooleanSetting.Builder(true).name("Bypass vanilla AC").description("Whether to bypass the vanilla anticheat").get());
     final DoubleSetting speed = this.config.create(new DoubleSetting.Builder(1).name("Speed").description("How fast you fly").min(0).max(10).get());
     final List<Packet<?>> queue = new ArrayList<>();
-    Timer lag = new Timer();
+    final Timer lag = new Timer();
     boolean capturePackets = false;
     int bypassTimer = 0;
     boolean flewBefore = false;

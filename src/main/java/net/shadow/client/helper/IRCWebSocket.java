@@ -15,16 +15,15 @@ import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class IRCWebSocket extends WebSocketClient {
-    public static List<PlayerEntry> knownIRCPlayers = new CopyOnWriteArrayList<>();
-    String authToken;
-    Runnable onClose;
+    public static final List<PlayerEntry> knownIRCPlayers = new CopyOnWriteArrayList<>();
+    final String authToken;
+    final Runnable onClose;
 
     public IRCWebSocket(URI serverUri, String authToken, Runnable onClose) {
         super(serverUri, Map.of("Authorization", authToken, "X-MC-UUID", ShadowMain.client.getSession().getUuid(), "X-MC-USERNAME", ShadowMain.client.getSession().getUsername()));
@@ -60,7 +59,7 @@ public class IRCWebSocket extends WebSocketClient {
             }
             case "usersList" -> {
                 knownIRCPlayers.clear();
-                for (LinkedTreeMap<String, String> who : ((ArrayList<LinkedTreeMap<String, String>>) p.data.get("who"))) {
+                for (LinkedTreeMap<String, String> who : ((Iterable<LinkedTreeMap<String, String>>) p.data.get("who"))) {
                     String u = who.get("username");
                     UUID uuid;
                     try {

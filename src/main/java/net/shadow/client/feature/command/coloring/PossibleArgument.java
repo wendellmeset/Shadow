@@ -5,8 +5,8 @@
 package net.shadow.client.feature.command.coloring;
 
 public class PossibleArgument {
-    String[] suggestions;
-    ArgumentType type;
+    final String[] suggestions;
+    final ArgumentType type;
 
     public PossibleArgument(ArgumentType type, String... suggestions) {
         this.suggestions = suggestions;

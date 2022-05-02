@@ -31,18 +31,6 @@ public class Freecam extends Module {
 
     public Freecam() {
         super("Freecam", "Imitates spectator without you having permission to use it", ModuleType.RENDER);
-        //        Events.registerEventHandler(EventType.PACKET_SEND, event1 -> {
-        //            if (!this.isEnabled()) {
-        //                return;
-        //            }
-        //            PacketEvent event = (PacketEvent) event1;
-        //        });
-        //        Events.registerEventHandler(EventType.NOCLIP_QUERY, event -> {
-        //            if (!this.isEnabled() || ((PlayerNoClipQueryEvent) event).getPlayer().isOnGround()) {
-        //                return;
-        //            }
-        //            ((PlayerNoClipQueryEvent) event).setNoClipState(PlayerNoClipQueryEvent.NoClipState.ACTIVE);
-        //        });
     }
 
     @EventListener(type = EventType.PACKET_SEND)

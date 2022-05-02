@@ -15,7 +15,7 @@ public class HttpWrapper {
 
     final HttpClient client = HttpClient.newBuilder().version(HttpClient.Version.HTTP_1_1).followRedirects(HttpClient.Redirect.ALWAYS).connectTimeout(Duration.ofSeconds(20)).build();
 
-    final ThreadPoolExecutor pool = new ThreadPoolExecutor(10, 10, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
+    final ThreadPoolExecutor pool = new ThreadPoolExecutor(10, 10, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
 
     public HttpWrapper() {
 
@@ -30,8 +30,7 @@ public class HttpWrapper {
         }
 
         HttpRequest request = builder.build();
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        return response;
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
     public void getAsync(String uri, String... headers) {
@@ -62,8 +61,7 @@ public class HttpWrapper {
         }
 
         HttpRequest request = builder.build();
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        return response;
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
     public void postAsync(String uri, String data, String... headers) {
@@ -94,8 +92,7 @@ public class HttpWrapper {
         }
 
         HttpRequest request = builder.build();
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        return response;
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
     public void deleteAsync(String uri, String... headers) {
@@ -125,8 +122,7 @@ public class HttpWrapper {
         }
 
         HttpRequest request = builder.build();
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        return response;
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
     public void putAsync(String uri, String data, String... headers) {
@@ -156,8 +152,7 @@ public class HttpWrapper {
         }
 
         HttpRequest request = builder.build();
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        return response;
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
     public void patchAsync(String uri, String data, String... headers) {

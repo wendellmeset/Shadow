@@ -49,9 +49,7 @@ public class NameTags extends Module {
         Vec3d headPos = Utils.getInterpolatedEntityPosition(entity).add(0, entity.getHeight() + 0.3, 0);
         Vec3d a = Renderer.R2D.getScreenSpaceCoordinate(headPos, stack);
         if (Renderer.R2D.isOnScreen(a)) {
-            Utils.TickManager.runOnNextRender(() -> {
-                drawInternal(a, t, entity);
-            });
+            Utils.TickManager.runOnNextRender(() -> drawInternal(a, t, entity));
         }
     }
 

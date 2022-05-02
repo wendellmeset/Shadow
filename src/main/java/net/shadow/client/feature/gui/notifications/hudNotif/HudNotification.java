@@ -25,10 +25,10 @@ public class HudNotification {
     final String content;
     final long duration;
     final Type type;
-    long creation = System.currentTimeMillis();
-    double texDim = 16;
-    double pad = 2;
-    long fadeTime = 1200;
+    final long creation = System.currentTimeMillis();
+    final double texDim = 16;
+    final double pad = 2;
+    final long fadeTime = 1200;
 
     public static HudNotification create(String content, long duration, Type type) {
         HudNotification n = new HudNotification(content, duration, type);

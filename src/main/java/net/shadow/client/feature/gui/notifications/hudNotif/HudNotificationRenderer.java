@@ -14,7 +14,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class HudNotificationRenderer {
     public static final HudNotificationRenderer instance = new HudNotificationRenderer();
-    List<HudNotification> notifs = new CopyOnWriteArrayList<>();
+    final List<HudNotification> notifs = new CopyOnWriteArrayList<>();
 
     void addNotification(HudNotification notif) {
         this.notifs.add(notif);

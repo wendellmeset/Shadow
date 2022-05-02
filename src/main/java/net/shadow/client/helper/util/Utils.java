@@ -83,7 +83,7 @@ public class Utils {
     }
 
 
-    public static void sendPacket(Packet packet) {
+    public static void sendPacket(Packet<?> packet) {
         sendPackets = false;
         ShadowMain.client.player.networkHandler.sendPacket(packet);
         sendPackets = true;
@@ -367,7 +367,7 @@ public class Utils {
     }
 
     public static class Logging {
-        static Queue<Text> messageQueue = new ArrayDeque<>();
+        static final Queue<Text> messageQueue = new ArrayDeque<>();
 
         static void sendMessages() {
             if (ShadowMain.client.player != null) {

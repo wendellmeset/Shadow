@@ -39,7 +39,7 @@ public class Help extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) throws CommandException {
+    public void onExecute(String[] args) {
         if (args.length == 0) {
             message("All commands and their description");
             for (Command command : CommandRegistry.getCommands()) {

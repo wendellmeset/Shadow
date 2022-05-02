@@ -19,7 +19,7 @@ import java.util.Base64;
 import java.util.List;
 
 public class ItemGroupRegistry {
-    public static List<ShadItemGroupEntry> groups = Util.make(() -> {
+    public static final List<ShadItemGroupEntry> groups = Util.make(() -> {
         List<ShadItemGroupEntry> entries = new ArrayList<>();
         entries.add(new ShadItemGroupEntry(new ShadItemGroup("Exploits", new ItemStack(Items.ARMOR_STAND)), "exploit"));
         entries.add(new ShadItemGroupEntry(new ShadItemGroup("Grief", new ItemStack(Items.TNT)), "grief"));

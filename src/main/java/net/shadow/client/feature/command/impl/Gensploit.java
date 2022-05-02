@@ -40,7 +40,7 @@ public class Gensploit extends Command {
     }
 
     @Override
-    public void onExecute(String[] args) throws CommandException {
+    public void onExecute(String[] args) {
         String itemname = ""; // find way to compile between the "" for these
         String mode = args[0];
         String text = ""; // find way to compile between the "" for these

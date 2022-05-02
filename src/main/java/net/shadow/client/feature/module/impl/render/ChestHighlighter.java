@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ChestHighlighter extends Module {
-    List<BlockPos> positions = new CopyOnWriteArrayList<>();
+    final List<BlockPos> positions = new CopyOnWriteArrayList<>();
 
     public ChestHighlighter() {
         super("ChestHighlighter", "Shows all chests in the area", ModuleType.RENDER);

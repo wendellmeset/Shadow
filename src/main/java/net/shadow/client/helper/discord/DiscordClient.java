@@ -9,8 +9,8 @@ import java.io.IOException;
 import java.net.http.HttpResponse;
 
 public class DiscordClient {
-    String token;
-    HttpWrapper requests = new HttpWrapper();
+    final String token;
+    final HttpWrapper requests = new HttpWrapper();
 
     public DiscordClient(String token, boolean isBot) {
         if (isBot) {

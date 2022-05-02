@@ -20,8 +20,8 @@ public class CraftCrash extends Module {
 
     int ticks;
     boolean isListening = false;
-    Recipe stick = null;
-    Recipe buton = null;
+    Recipe<?> stick = null;
+    Recipe<?> buton = null;
     int superticks;
 
 
@@ -36,10 +36,10 @@ public class CraftCrash extends Module {
         if (event.getPacket() instanceof CraftRequestC2SPacket packet) {
             if (isListening) {
                 if (stick == null) {
-                    stick = client.player.world.getRecipeManager().get(packet.getRecipe()).get();
+                    stick = client.player.world.getRecipeManager().get(packet.getRecipe()).orElseThrow();
                     Notification.create(1000, "CraftCrash", Notification.Type.INFO, "Selected first recipe");
                 } else {
-                    buton = client.player.world.getRecipeManager().get(packet.getRecipe()).get();
+                    buton = client.player.world.getRecipeManager().get(packet.getRecipe()).orElseThrow();
                     Notification.create(1000, "CraftCrash", Notification.Type.INFO, "Selected second recipe");
                     Notification.create(1000, "CraftCrash", Notification.Type.SUCCESS, "Starting the crash!");
                     isListening = false;
