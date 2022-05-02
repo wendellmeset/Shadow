@@ -23,8 +23,7 @@ public class LongJump extends Module {
     final BooleanSetting glide = this.config.create(new BooleanSetting.Builder(true).name("Glide").description("Whether to glide after the initial jump").get());
     final DoubleSetting glideVelocity = this.config.create(new DoubleSetting.Builder(0.05).name("Glide velocity").description("How strong to glide").min(-0.08).max(0.07).precision(2).get());
     final BooleanSetting keepApplying = this.config.create(new BooleanSetting.Builder(true).name("Keep applying").description("Whether to keep applying velocity after the jump").get());
-    final DoubleSetting applyStrength = this.config.create(new DoubleSetting.Builder(0.3).name("Apply strength").description("How much to apply after the jump").min(0.01).max(0.3)
-            .precision(3).get());
+    final DoubleSetting applyStrength = this.config.create(new DoubleSetting.Builder(0.3).name("Apply strength").description("How much to apply after the jump").min(0.01).max(0.3).precision(3).get());
     boolean jumped = false;
 
     public LongJump() {

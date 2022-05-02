@@ -11,7 +11,7 @@ import net.shadow.client.helper.render.Rectangle;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Transitions;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.HashMap;
 
 public class PanelFrame extends Element implements FastTickable {
@@ -108,7 +108,7 @@ public class PanelFrame extends Element implements FastTickable {
             Renderer.R2D.renderRoundedQuad(matrices, ThemeManager.getMainTheme().getConfig(), x + width - 15, y + (real * height) - 15, x + width, y + (real * height), 5, 10);
         }
         ClipStack.globalInstance.addWindow(matrices, new Rectangle(x, y, x + width, y + (real * height)));
-//        Renderer.R2D.beginScissor(x, y, x + width, y + (real * width));
+        //        Renderer.R2D.beginScissor(x, y, x + width, y + (real * width));
         for (Element pb : elements) {
             // why?
             pb.setX(this.x + positions.get(pb)[0] + 5);
@@ -125,7 +125,7 @@ public class PanelFrame extends Element implements FastTickable {
         for (Element pb : elements) {
             pb.render(matrices, mouseX, mouseY, scrollBeingUsed);
         }
-//        Renderer.R2D.endScissor();
+        //        Renderer.R2D.endScissor();
         ClipStack.globalInstance.popWindow();
         Renderer.R2D.renderRoundedQuad(matrices, ThemeManager.getMainTheme().getHeader(), x, y, x + width, y + 15, 5, 10);
         FontRenderers.getRenderer().drawString(matrices, title, x + (width / 2) - FontRenderers.getRenderer().getStringWidth(title) / 2, y + 3, new Color(255, 255, 255, 255).getRGB());
@@ -154,7 +154,8 @@ public class PanelFrame extends Element implements FastTickable {
     @Override
     public boolean charTyped(char c, int mods) {
         for (Element pb : elements) {
-            if (pb.charTyped(c, mods)) return true;
+            if (pb.charTyped(c, mods))
+                return true;
         }
         // TODO Auto-generated method stub
         return false;

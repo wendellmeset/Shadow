@@ -21,7 +21,7 @@ import net.shadow.client.helper.font.adapter.FontAdapter;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Utils;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Comparator;
 
 import static net.shadow.client.feature.module.impl.render.TargetHud.GREEN;
@@ -69,12 +69,13 @@ public class NameTags extends Module {
         }
         String pingStr = (ping == 0 ? "?" : ping) + " ms";
         String gmString = "§cBot";
-        if (gamemode != null) switch (gamemode) {
-            case ADVENTURE -> gmString = "Adventure";
-            case CREATIVE -> gmString = "Creative";
-            case SURVIVAL -> gmString = "Survival";
-            case SPECTATOR -> gmString = "Spectator";
-        }
+        if (gamemode != null)
+            switch (gamemode) {
+                case ADVENTURE -> gmString = "Adventure";
+                case CREATIVE -> gmString = "Creative";
+                case SURVIVAL -> gmString = "Survival";
+                case SPECTATOR -> gmString = "Spectator";
+            }
         MatrixStack stack1 = Renderer.R3D.getEmptyMatrixStack();
         Vec3d actual = new Vec3d(screenPos.x, screenPos.y - labelHeight, screenPos.z);
         float width = nameDrawer.getStringWidth(text) + 4;
@@ -84,19 +85,20 @@ public class NameTags extends Module {
         double origWidth = 782;
         double origHeight = 1000;
         double newHeight = nameDrawer.getFontHeight();
-        double newWidth = origWidth*(newHeight /origHeight);
-        double req = newWidth+5;
+        double newWidth = origWidth * (newHeight / origHeight);
+        double req = newWidth + 5;
 
         if (in) {
 
-            if (width-req < nameDrawer.getStringWidth(text)) width += newWidth+5; // make sure we always have some space to draw the icon
+            if (width - req < nameDrawer.getStringWidth(text))
+                width += newWidth + 5; // make sure we always have some space to draw the icon
         }
         Renderer.R2D.renderRoundedQuad(stack1, new Color(0, 0, 5, 200), actual.x - width / 2d, actual.y, actual.x + width / 2d, actual.y + labelHeight, 3, 20);
-        nameDrawer.drawString(stack1, text, actual.x + width/2d - nameDrawer.getStringWidth(text)-2, actual.y + 2, 0xFFFFFF);
+        nameDrawer.drawString(stack1, text, actual.x + width / 2d - nameDrawer.getStringWidth(text) - 2, actual.y + 2, 0xFFFFFF);
 
         if (in) {
             RenderSystem.setShaderTexture(0, GameTexture.TEXTURE_ICON.getWhere());
-            Renderer.R2D.renderTexture(stack1, actual.x -width/2d+2,actual.y+2, newWidth,newHeight,0,0, newWidth,newHeight, newWidth,newHeight);
+            Renderer.R2D.renderTexture(stack1, actual.x - width / 2d + 2, actual.y + 2, newWidth, newHeight, 0, 0, newWidth, newHeight, newWidth, newHeight);
         }
 
         infoDrawer.drawString(stack1, gmString, actual.x + width / 2d - infoDrawer.getStringWidth(gmString) - 2, actual.y + 2 + nameDrawer.getFontHeight(), 0xAAAAAA);
@@ -126,7 +128,7 @@ public class NameTags extends Module {
     public void onWorldRender(MatrixStack matrices) {
         // sort the entire thing based on the most distant to the least distant because thats how rendering works
         for (AbstractClientPlayerEntity player : client.world.getPlayers().stream().sorted(Comparator.comparingDouble(value -> -value.getPos().distanceTo(client.gameRenderer.getCamera().getPos()))).filter(abstractClientPlayerEntity -> !abstractClientPlayerEntity.equals(client.player)).toList()) {
-//            String t = player.getEntityName();
+            //            String t = player.getEntityName();
             render(matrices, player, player.getName());
         }
     }

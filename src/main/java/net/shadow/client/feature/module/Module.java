@@ -49,11 +49,12 @@ public abstract class Module {
         this.moduleType = type;
         this.config = new ModuleConfig();
         this.keybind = this.config.create(new DoubleSetting.Builder(-1).name("Keybind").description("The keybind to toggle the module with").min(-1).max(65535).precision(0).get());
-//        this.keybind.showIf(() -> false);
+        //        this.keybind.showIf(() -> false);
         this.debuggerEnabled = this.config.create(new BooleanSetting.Builder(false).name("Debugger").description("Shows a lot of funky visuals describing whats going on").get());
         boolean hasAnnotation = false;
         for (Annotation declaredAnnotation : this.getClass().getDeclaredAnnotations()) {
-            if (declaredAnnotation.annotationType() == NoNotificationDefault.class) hasAnnotation = true;
+            if (declaredAnnotation.annotationType() == NoNotificationDefault.class)
+                hasAnnotation = true;
         }
         this.toasts = this.config.create(new BooleanSetting.Builder(!hasAnnotation).name("Toasts").description("Whether to show enabled / disabled toasts").get());
     }

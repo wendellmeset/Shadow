@@ -12,9 +12,7 @@ public record NbtGroup(NbtElement... elements) {
 
     @Override
     public String toString() {
-        return "NbtGroup{" +
-                "elements=" + Arrays.toString(elements) +
-                '}';
+        return "NbtGroup{" + "elements=" + Arrays.toString(elements) + '}';
     }
 
     public NbtCompound toCompound() {

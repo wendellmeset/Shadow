@@ -24,7 +24,7 @@ import net.shadow.client.helper.Rotations;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Utils;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -37,8 +37,7 @@ public class Flattener extends Module {
     final BooleanSetting makeSame = this.config.create(new BooleanSetting.Builder(false).name("Make same").description("Makes the floor the same material you're holding").get());
     final BooleanSetting asyncPlaceBreak = this.config.create(new BooleanSetting.Builder(true).name("Async place / break").description("Does block breaking and placing at the same time").get());
     final BooleanSetting breakSides = this.config.create(new BooleanSetting.Builder(true).name("Break sides").description("Clears the area 3 blocks up so you can walk into it").get());
-    final DoubleSetting amountPerTick = this.config.create(new DoubleSetting.Builder(3).name("Amount per tick").description("How many actions to do per tick").min(1).max(20).precision(0)
-            .get());
+    final DoubleSetting amountPerTick = this.config.create(new DoubleSetting.Builder(3).name("Amount per tick").description("How many actions to do per tick").min(1).max(20).precision(0).get());
     Vec3d origin = null;
     int prevSlot = -1;
     boolean toBreakEmptyBefore = false;
@@ -161,4 +160,3 @@ public class Flattener extends Module {
 
     }
 }
-

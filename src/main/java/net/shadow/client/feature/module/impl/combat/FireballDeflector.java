@@ -19,14 +19,12 @@ import net.shadow.client.helper.Rotations;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Utils;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Objects;
 
 public class FireballDeflector extends Module {
-    final EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.DeflectSomewhere).name("Mode")
-            .description("How to change the fireball's motion (ReflectBack = reflect back at shooter, DeflectSomewhere = idc get it away)").get());
-    final BooleanSetting checkVel = this.config.create(new BooleanSetting.Builder(false).name("Check velocity")
-            .description("Checks if the fireball is actually approaching before hitting. Can get funky with a lot of them").get());
+    final EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.DeflectSomewhere).name("Mode").description("How to change the fireball's motion (ReflectBack = reflect back at shooter, DeflectSomewhere = idc get it away)").get());
+    final BooleanSetting checkVel = this.config.create(new BooleanSetting.Builder(false).name("Check velocity").description("Checks if the fireball is actually approaching before hitting. Can get funky with a lot of them").get());
 
     public FireballDeflector() {
         super("FireballDeflector", "Deflects (or reflects) fireballs in your hit range", ModuleType.COMBAT);
@@ -98,12 +96,10 @@ public class FireballDeflector extends Module {
                 if (entity instanceof FireballEntity fe) {
                     if (fe.getOwner() != null) {
                         Entity owner = fe.getOwner();
-                        Renderer.R3D.renderLine(Utils.getInterpolatedEntityPosition(owner).add(0, owner.getHeight() / 2, 0), Utils.getInterpolatedEntityPosition(fe)
-                                .add(0, fe.getHeight() / 2, 0), Color.MAGENTA, matrices);
+                        Renderer.R3D.renderLine(Utils.getInterpolatedEntityPosition(owner).add(0, owner.getHeight() / 2, 0), Utils.getInterpolatedEntityPosition(fe).add(0, fe.getHeight() / 2, 0), Color.MAGENTA, matrices);
                     }
                     if (inHitRange(Objects.requireNonNull(ShadowMain.client.player), fe)) {
-                        Renderer.R3D.renderLine(Utils.getInterpolatedEntityPosition(ShadowMain.client.player)
-                                .add(0, ShadowMain.client.player.getHeight() / 2, 0), Utils.getInterpolatedEntityPosition(fe).add(0, fe.getHeight() / 2, 0), Color.RED, matrices);
+                        Renderer.R3D.renderLine(Utils.getInterpolatedEntityPosition(ShadowMain.client.player).add(0, ShadowMain.client.player.getHeight() / 2, 0), Utils.getInterpolatedEntityPosition(fe).add(0, fe.getHeight() / 2, 0), Color.RED, matrices);
                     }
                 }
             }

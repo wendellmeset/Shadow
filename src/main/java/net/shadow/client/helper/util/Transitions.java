@@ -4,7 +4,7 @@
 
 package net.shadow.client.helper.util;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class Transitions {
 

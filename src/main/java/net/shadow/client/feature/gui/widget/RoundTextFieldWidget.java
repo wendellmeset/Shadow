@@ -22,7 +22,7 @@ import net.shadow.client.helper.render.Renderer;
 import org.apache.commons.lang3.SystemUtils;
 import org.lwjgl.glfw.GLFW;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class RoundTextFieldWidget implements Element, Drawable, Selectable, DoesMSAA, HasSpecialCursor {
     protected final String suggestion;
@@ -351,7 +351,7 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
     @Override
     public void render(MatrixStack stack, int mouseX, int mouseY, float delta) {
         mouseOver = inBounds(mouseX, mouseY);
-//        double pad = pad();
+        //        double pad = pad();
         double pad = 2;
         double overflowWidth = getOverflowWidthForRender();
         double innerHeight = FontRenderers.getRenderer().getFontHeight();
@@ -378,8 +378,7 @@ public class RoundTextFieldWidget implements Element, Drawable, Selectable, Does
         //Renderer.R2D.endScissor();
         boolean renderCursor = (System.currentTimeMillis() % 1000) / 500d > 1;
         if (focused && renderCursor) {
-            Renderer.R2D.renderQuad(stack, Color.WHITE, x + pad + getTextWidth(cursor) - overflowWidth, centerY, x + pad + getTextWidth(cursor) - overflowWidth + 1, centerY + FontRenderers.getRenderer()
-                    .getMarginHeight());
+            Renderer.R2D.renderQuad(stack, Color.WHITE, x + pad + getTextWidth(cursor) - overflowWidth, centerY, x + pad + getTextWidth(cursor) - overflowWidth + 1, centerY + FontRenderers.getRenderer().getMarginHeight());
         }
 
     }

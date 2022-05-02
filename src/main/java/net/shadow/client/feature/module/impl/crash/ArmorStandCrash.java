@@ -27,7 +27,8 @@ public class ArmorStandCrash extends Module {
         super("ArmorStandCrash", "Crash servers with armor stands in creative (really fast)", ModuleType.CRASH);
         Events.registerEventHandler(EventType.PACKET_SEND, pevent -> {
             PacketEvent event = (PacketEvent) pevent;
-            if (!this.isEnabled()) return;
+            if (!this.isEnabled())
+                return;
             if (event.getPacket() instanceof PlayerInteractBlockC2SPacket packet) {
                 for (int i = 0; i < slider.getValue(); i++) {
                     ItemStack load = new ItemStack(Items.ARMOR_STAND, 1);

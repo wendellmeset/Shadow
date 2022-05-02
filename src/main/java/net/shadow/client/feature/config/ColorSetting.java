@@ -4,7 +4,7 @@
 
 package net.shadow.client.feature.config;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.function.Consumer;
 
 public class ColorSetting extends SettingBase<Color> {

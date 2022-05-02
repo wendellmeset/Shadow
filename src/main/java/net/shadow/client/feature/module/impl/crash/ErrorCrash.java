@@ -78,8 +78,6 @@ public class ErrorCrash extends Module {
 
 
     public enum Mode {
-        Click,
-        Trade,
-        Button
+        Click, Trade, Button
     }
 }

@@ -18,7 +18,7 @@ import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Utils;
 import org.lwjgl.glfw.GLFW;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 

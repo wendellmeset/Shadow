@@ -34,7 +34,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -76,7 +76,8 @@ public class AChatScreenMixin extends Screen {
     List<String> getSuggestions(String command) {
         List<String> a = new ArrayList<>();
         String[] args = command.split(" +");
-        if (args.length == 0) return a;
+        if (args.length == 0)
+            return a;
         String cmd = args[0].toLowerCase();
         args = Arrays.copyOfRange(args, 1, args.length);
         if (command.endsWith(" ")) { // append empty arg when we end with a space
@@ -194,14 +195,17 @@ public class AChatScreenMixin extends Screen {
             } else {
                 t = previousSuggestionInput + s;
             }
-            if (t.isEmpty()) return OrderedText.empty();
+            if (t.isEmpty())
+                return OrderedText.empty();
             String p = getPrefix();
-            if (t.length() <= p.length()) return vanillaTextProvider(s, integer);
+            if (t.length() <= p.length())
+                return vanillaTextProvider(s, integer);
 
             String actualCommandText = t.substring(p.length());
             String[] spl = actualCommandText.split(" +");
 
-            if (spl.length == 0) return vanillaTextProvider(s, integer);
+            if (spl.length == 0)
+                return vanillaTextProvider(s, integer);
             Command c = CommandRegistry.getByAlias(spl[0]);
             String[] args = Arrays.copyOfRange(spl, 1, spl.length);
             if (c != null && t.startsWith(p) && args.length > 0) {
@@ -212,17 +216,20 @@ public class AChatScreenMixin extends Screen {
                 for (int i = 0; i < chars.length; i++) {
                     char c1 = chars[i];
                     if (c1 == ' ') {
-                        if (!countedSpaceBefore) countedGaps++;
+                        if (!countedSpaceBefore)
+                            countedGaps++;
                         countedSpaceBefore = true;
                         if (i >= integer)
                             texts.add(OrderedText.styledForwardsVisitedString(String.valueOf(c1), Style.EMPTY));
                     } else {
                         countedSpaceBefore = false;
-                        if (i < integer) continue;
+                        if (i < integer)
+                            continue;
                         if (countedGaps >= 1) {
                             ArgumentType current = c.getSuggestionsWithType(countedGaps - 1, args).getType();
                             int col = 0xFFFFFF;
-                            if (current != null) col = current.getColor().getRGB();
+                            if (current != null)
+                                col = current.getColor().getRGB();
                             texts.add(OrderedText.styledForwardsVisitedString(String.valueOf(c1), Style.EMPTY.withColor(col)));
                         } else {
                             texts.add(OrderedText.styledForwardsVisitedString(String.valueOf(c1), Style.EMPTY));

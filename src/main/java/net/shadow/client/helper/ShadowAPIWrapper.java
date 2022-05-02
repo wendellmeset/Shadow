@@ -28,7 +28,8 @@ public class ShadowAPIWrapper {
     static boolean currentUserIsAdmin = false;
 
     public static String getAuthKey() {
-        if (authKey.isEmpty()) return null;
+        if (authKey.isEmpty())
+            return null;
         return authKey;
     }
 
@@ -73,44 +74,39 @@ public class ShadowAPIWrapper {
     }
 
     public static boolean attemptLogin(String username, String password) {
-        String d = gson.toJson(Map.of(
-                "username", username,
-                "password", password
-        ));
+        String d = gson.toJson(Map.of("username", username, "password", password));
         HttpResponse<String> uResp = post("/users/apiKeyForCreds", d);
-        if (uResp == null) return false;
+        if (uResp == null)
+            return false;
         System.out.println(uResp.body() + ": " + d);
-        if (uResp.statusCode() != 200) return false;
+        if (uResp.statusCode() != 200)
+            return false;
         return loginWithKey(uResp.body());
     }
 
     public static List<AccountEntry> getAccounts() {
         HttpResponse<String> a = get("/users/admin/list");
-        if (a.statusCode() != 200) return List.of();
+        if (a.statusCode() != 200)
+            return List.of();
         return new ArrayList<>(List.of(new Gson().fromJson(a.body(), AccountEntry[].class)));
     }
 
     public static boolean deleteAccount(String user, String pass) {
-        HttpResponse<String> s = request("/users/admin/delete", "DELETE", HttpRequest.BodyPublishers.ofString(new Gson().toJson(
-                Map.of("username", user, "password", pass)
-        )));
+        HttpResponse<String> s = request("/users/admin/delete", "DELETE", HttpRequest.BodyPublishers.ofString(new Gson().toJson(Map.of("username", user, "password", pass))));
         return s != null && s.statusCode() == 200;
     }
 
     public static boolean registerAccount(String user, String pass) {
-        HttpResponse<String> s = post("/users/admin/register", new Gson().toJson(
-                Map.of("username", user, "password", pass)
-        ));
-        if (s != null) System.out.println(s.body());
+        HttpResponse<String> s = post("/users/admin/register", new Gson().toJson(Map.of("username", user, "password", pass)));
+        if (s != null)
+            System.out.println(s.body());
         return s != null && s.statusCode() == 200;
     }
 
     public static boolean putItem(ItemStack stack) {
-        HttpResponse<String> a = request("/items", "PUT", HttpRequest.BodyPublishers.ofString(gson.toJson(Map.of(
-                "itemName", Registry.ITEM.getId(stack.getItem()).getPath(),
-                "itemNbt", new String(Base64.getEncoder().encode(stack.getOrCreateNbt().toString().getBytes(StandardCharsets.UTF_8)))
-        ))));
-        if (a == null) return false;
+        HttpResponse<String> a = request("/items", "PUT", HttpRequest.BodyPublishers.ofString(gson.toJson(Map.of("itemName", Registry.ITEM.getId(stack.getItem()).getPath(), "itemNbt", new String(Base64.getEncoder().encode(stack.getOrCreateNbt().toString().getBytes(StandardCharsets.UTF_8)))))));
+        if (a == null)
+            return false;
         System.out.println(a.body());
         return a.statusCode() == 200;
     }
@@ -120,11 +116,7 @@ public class ShadowAPIWrapper {
 
         @Override
         public String toString() {
-            return "AccountEntry{" +
-                    "username='" + username + '\'' +
-                    ", password='" + password + '\'' +
-                    ", apiKey='" + apiKey + '\'' +
-                    '}';
+            return "AccountEntry{" + "username='" + username + '\'' + ", password='" + password + '\'' + ", apiKey='" + apiKey + '\'' + '}';
         }
     }
 }

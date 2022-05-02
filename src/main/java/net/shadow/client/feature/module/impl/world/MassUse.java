@@ -81,9 +81,7 @@ public class MassUse extends Module {
                         Random random = new Random();
 
                         for (int i = 0; i < uses.getValue(); i++) {
-                            BlockPos pos = new BlockPos(client.player.getPos()).add(
-                                    random.nextInt(13) - 6, random.nextInt(13) - 6,
-                                    random.nextInt(13) - 6);
+                            BlockPos pos = new BlockPos(client.player.getPos()).add(random.nextInt(13) - 6, random.nextInt(13) - 6, random.nextInt(13) - 6);
                             PlayerInteractBlockC2SPacket pp = Utils.Packets.generatePlace(pos);
                             dontRepeat.add(pp);
                             client.player.networkHandler.sendPacket(pp);
@@ -125,9 +123,6 @@ public class MassUse extends Module {
     }
 
     public enum Mode {
-        Interact,
-        MassPlace,
-        RandomPlace
+        Interact, MassPlace, RandomPlace
     }
 }
-

@@ -26,9 +26,7 @@ public class ItemData extends Command {
 
     @Override
     public PossibleArgument getSuggestionsWithType(int index, String[] args) {
-        return StaticArgumentServer.serveFromStatic(index, new PossibleArgument(ArgumentType.PLAYER, Objects.requireNonNull(ShadowMain.client.world).getPlayers().stream().map(abstractClientPlayerEntity -> abstractClientPlayerEntity.getGameProfile().getName()).toList().toArray(String[]::new)),
-                new PossibleArgument(ArgumentType.STRING, "hand", "offhand", "head", "chest", "legs", "feet"),
-                new PossibleArgument(ArgumentType.STRING, "--onlyShow"));
+        return StaticArgumentServer.serveFromStatic(index, new PossibleArgument(ArgumentType.PLAYER, Objects.requireNonNull(ShadowMain.client.world).getPlayers().stream().map(abstractClientPlayerEntity -> abstractClientPlayerEntity.getGameProfile().getName()).toList().toArray(String[]::new)), new PossibleArgument(ArgumentType.STRING, "hand", "offhand", "head", "chest", "legs", "feet"), new PossibleArgument(ArgumentType.STRING, "--onlyShow"));
     }
 
     @Override
@@ -38,7 +36,8 @@ public class ItemData extends Command {
         boolean onlyShow = args.length > 2 && args[2].equalsIgnoreCase("--onlyShow");
         PlayerEntity player = new PlayerFromNameArgumentParser(true).parse(args[0]);
         ItemStack item = getItem(player, args[1]);
-        if (item == null) return;
+        if (item == null)
+            return;
         if (ShadowMain.client.interactionManager.hasCreativeInventory() && !onlyShow) {
             giveItem(item);
             message("Item copied.");
@@ -87,8 +86,7 @@ public class ItemData extends Command {
         if (slot < 9)
             slot += 36;
 
-        CreativeInventoryActionC2SPacket packet =
-                new CreativeInventoryActionC2SPacket(slot, stack);
+        CreativeInventoryActionC2SPacket packet = new CreativeInventoryActionC2SPacket(slot, stack);
         ShadowMain.client.player.networkHandler.sendPacket(packet);
     }
 }

@@ -47,9 +47,12 @@ public class ClientCrasher extends Module {
 
     @EventListener(type = EventType.PACKET_SEND)
     void giveAShit(PacketEvent event) {
-        if (mode.getValue() != Mode.Place) return;
-        if (!sends) return;
-        if (!this.isEnabled()) return;
+        if (mode.getValue() != Mode.Place)
+            return;
+        if (!sends)
+            return;
+        if (!this.isEnabled())
+            return;
         if (!(event.getPacket() instanceof PlayerMoveC2SPacket packet))
             return;
 
@@ -71,8 +74,7 @@ public class ClientCrasher extends Module {
         if (packet instanceof PlayerMoveC2SPacket.PositionAndOnGround)
             newPacket = new PlayerMoveC2SPacket.PositionAndOnGround(x, y + r.nextDouble(), z, true);
         else
-            newPacket = new PlayerMoveC2SPacket.Full(x, y + r.nextDouble(), z, packet.getYaw(0),
-                    packet.getPitch(0), true);
+            newPacket = new PlayerMoveC2SPacket.Full(x, y + r.nextDouble(), z, packet.getYaw(0), packet.getPitch(0), true);
         sends = false;
         client.player.networkHandler.getConnection().send(newPacket);
         sends = true;
@@ -91,7 +93,8 @@ public class ClientCrasher extends Module {
                 client.player.updatePosition(selectedbreaker.getX() + 0.5, selectedbreaker.getY() + 1, selectedbreaker.getZ() + 0.5);
                 int b4slot = client.player.getInventory().selectedSlot;
                 int slot = TheJ();
-                if (slot == -1) return;
+                if (slot == -1)
+                    return;
                 if (client.player.world.getBlockState(selectedbreaker).isAir()) {
                     client.player.getInventory().selectedSlot = slot;
                     client.interactionManager.interactBlock(client.player, client.world, Hand.MAIN_HAND, new BlockHitResult(new Vec3d(selectedbreaker.getX(), selectedbreaker.getY(), selectedbreaker.getZ()).add(0.5, 0.5, 0.5), Direction.UP, selectedbreaker, false));
@@ -173,9 +176,6 @@ public class ClientCrasher extends Module {
     }
 
     public enum Mode {
-        Place,
-        Offhand,
-        Lagbook,
-        Poof
+        Place, Offhand, Lagbook, Poof
     }
 }

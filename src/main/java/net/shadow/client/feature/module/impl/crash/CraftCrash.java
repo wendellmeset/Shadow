@@ -32,7 +32,8 @@ public class CraftCrash extends Module {
 
     @EventListener(type = EventType.PACKET_SEND)
     public void onPacketSend(PacketEvent event) {
-        if (!this.isEnabled()) return;
+        if (!this.isEnabled())
+            return;
         if (event.getPacket() instanceof CraftRequestC2SPacket packet) {
             if (isListening) {
                 if (stick == null) {

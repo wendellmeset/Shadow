@@ -37,7 +37,7 @@ public class GifPlayer {
     private GifPlayer(Object file, int fps) {
         this.gifFile = file;
         this.fps = fps;
-//        globalInstances.add(this);
+        //        globalInstances.add(this);
         init();
 
     }
@@ -61,12 +61,7 @@ public class GifPlayer {
         }
         frameList.clear();
         try {
-            String[] imageatt = new String[]{
-                    "imageLeftPosition",
-                    "imageTopPosition",
-                    "imageWidth",
-                    "imageHeight"
-            };
+            String[] imageatt = new String[]{"imageLeftPosition", "imageTopPosition", "imageWidth", "imageHeight"};
 
             ImageReader reader = ImageIO.getImageReadersByFormatName("gif").next();
             ImageInputStream ciis = ImageIO.createImageInputStream(gifFile);
@@ -101,7 +96,7 @@ public class GifPlayer {
                 }
                 Frame f = new Frame("lmfao", master);
                 frameList.add(f);
-//                ImageIO.write(master, "GIF", new File( i + ".gif"));
+                //                ImageIO.write(master, "GIF", new File( i + ".gif"));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -122,7 +117,8 @@ public class GifPlayer {
         long timeDelta = System.currentTimeMillis() - lastRender;
         long eachXmsFrame = 1000 / fps;
         int framesToProgress = (int) (timeDelta / eachXmsFrame);
-        if (framesToProgress > 0) lastRender = System.currentTimeMillis();
+        if (framesToProgress > 0)
+            lastRender = System.currentTimeMillis();
         for (int i = 0; i < framesToProgress; i++) {
             progressFrame();
         }

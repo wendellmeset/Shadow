@@ -5,7 +5,6 @@
 package net.shadow.client.feature.module.impl.world;
 
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.network.packet.c2s.play.ClientStatusC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.network.packet.c2s.play.TeleportConfirmC2SPacket;
 import net.minecraft.network.packet.s2c.play.DeathMessageS2CPacket;
@@ -29,16 +28,16 @@ public class Godmode extends Module {
 
     @EventListener(type = EventType.PACKET_SEND)
     void giveAShit(PacketEvent event) {
-        if(mode.getValue().equals(Mode.Portal)){
+        if (mode.getValue().equals(Mode.Portal)) {
             if (event.getPacket() instanceof TeleportConfirmC2SPacket) {
                 event.setCancelled(true);
             }
         }
     }
 
-    @EventListener(type=EventType.PACKET_RECEIVE)
-    void giveTwoShits(PacketEvent event){
-        if(mode.getValue().equals(Mode.Vanilla)){
+    @EventListener(type = EventType.PACKET_RECEIVE)
+    void giveTwoShits(PacketEvent event) {
+        if (mode.getValue().equals(Mode.Vanilla)) {
             if (event.getPacket() instanceof DeathMessageS2CPacket) {
                 event.setCancelled(true);
             }
@@ -87,8 +86,6 @@ public class Godmode extends Module {
     }
 
     public enum Mode {
-        Vanilla,
-        Matrix,
-        Portal
+        Vanilla, Matrix, Portal
     }
 }

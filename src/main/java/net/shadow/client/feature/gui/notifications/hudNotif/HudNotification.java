@@ -18,7 +18,7 @@ import net.shadow.client.helper.render.ClipStack;
 import net.shadow.client.helper.render.Rectangle;
 import net.shadow.client.helper.render.Renderer;
 
-import java.awt.Color;
+import java.awt.*;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class HudNotification {
@@ -52,9 +52,7 @@ public class HudNotification {
         double c1 = 1.70158;
         double c2 = c1 * 1.525;
 
-        return x < 0.5
-                ? (Math.pow(2 * x, 2) * ((c2 + 1) * 2 * x - c2)) / 2
-                : (Math.pow(2 * x - 2, 2) * ((c2 + 1) * (x * 2 - 2) + c2) + 2) / 2;
+        return x < 0.5 ? (Math.pow(2 * x, 2) * ((c2 + 1) * 2 * x - c2)) / 2 : (Math.pow(2 * x - 2, 2) * ((c2 + 1) * (x * 2 - 2) + c2) + 2) / 2;
 
     }
 
@@ -92,8 +90,10 @@ public class HudNotification {
     }
 
     public enum Type {
-        SUCCESS(GameTexture.NOTIF_SUCCESS.getWhere(), new Color(58, 223, 118)), INFO(GameTexture.NOTIF_INFO.getWhere(), new Color(39, 186, 253)),
-        WARNING(GameTexture.NOTIF_WARNING.getWhere(), new Color(255, 189, 17)), ERROR(GameTexture.NOTIF_ERROR.getWhere(), new Color(254, 92, 92));
+        SUCCESS(GameTexture.NOTIF_SUCCESS.getWhere(), new Color(58, 223, 118)),
+        INFO(GameTexture.NOTIF_INFO.getWhere(), new Color(39, 186, 253)),
+        WARNING(GameTexture.NOTIF_WARNING.getWhere(), new Color(255, 189, 17)),
+        ERROR(GameTexture.NOTIF_ERROR.getWhere(), new Color(254, 92, 92));
         final Color c;
         final Texture i;
 

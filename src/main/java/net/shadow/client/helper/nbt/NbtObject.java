@@ -23,10 +23,7 @@ public class NbtObject extends NbtElement {
 
     @Override
     public String toString() {
-        return "NbtObject{" +
-                "name='" + name + '\'' +
-                ", children=" + Arrays.toString(children) +
-                '}';
+        return "NbtObject{" + "name='" + name + '\'' + ", children=" + Arrays.toString(children) + '}';
     }
 
     @Override

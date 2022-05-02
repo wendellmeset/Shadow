@@ -20,7 +20,7 @@ import net.shadow.client.helper.util.Utils;
 import org.apache.logging.log4j.Level;
 
 import javax.imageio.ImageIO;
-import java.awt.Color;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -86,7 +86,7 @@ public class LoadingScreen extends ClientScreen implements FastTickable {
             opacity -= 0.01;
             opacity = MathHelper.clamp(opacity, 0.001, 1);
         }
-//        HomeScreen.instance().onFastTick();
+        //        HomeScreen.instance().onFastTick();
     }
 
     void load() {

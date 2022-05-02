@@ -31,8 +31,9 @@ public class Events {
             entries.add(le);
             return le;
         } else {
-            ShadowMain.log(Level.WARN, uniqueId + " tried to register " + event.name() + " multiple times");
-            return entries.stream().filter(listenerEntry -> listenerEntry.id == uniqueId).findFirst().orElseThrow();
+            ShadowMain.log(Level.WARN, uniqueId + " tried to register " + event.name() + " multiple times, unregistering previous and adding new");
+            unregister(uniqueId);
+            return registerEventHandler(uniqueId, event, handler, owner); // yes this is recursive and no this will not repeat again because we unregistered
         }
     }
 
@@ -59,8 +60,9 @@ public class Events {
                 if (declaredAnnotation.annotationType() == EventListener.class) {
                     EventListener ev = (EventListener) declaredAnnotation;
                     Class<?>[] params = declaredMethod.getParameterTypes();
-                    if (params.length != 1 || !Event.class.isAssignableFrom(params[0])) {
-                        ShadowMain.log(Level.ERROR, "Event handler " + declaredMethod.getName() + "(" + Arrays.stream(params).map(Class::getSimpleName).collect(Collectors.joining(", ")) + ") -> " + declaredMethod.getReturnType().getName() + " from " + instance.getClass().getName() + " is malformed, skipping");
+                    if (params.length != 1 || !params[0].isAssignableFrom(ev.type().getExpectedType())) {
+                        throw new IllegalArgumentException(String.format("Invalid signature: Expected %s.%s(%s) -> void, got %s.%s(%s) -> %s. Listener: %s", instance.getClass().getSimpleName(), declaredMethod.getName(), ev.type().getExpectedType().getSimpleName(), instance.getClass().getSimpleName(), declaredMethod.getName(), Arrays.stream(params).map(Class::getSimpleName).collect(Collectors.joining(", ")), declaredMethod.getReturnType().getName(), ev.type().name()));
+                        //                        ShadowMain.log(Level.ERROR, "Event handler " + declaredMethod.getName() + "(" + Arrays.stream(params).map(Class::getSimpleName).collect(Collectors.joining(", ")) + ") -> " + declaredMethod.getReturnType().getName() + " from " + instance.getClass().getName() + " is malformed, skipping");
                     } else {
                         declaredMethod.setAccessible(true);
 
@@ -80,9 +82,11 @@ public class Events {
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     public static boolean fireEvent(EventType event, Event argument) {
+        if (!event.getExpectedType().equals(argument.getClass()))
+            throw new IllegalArgumentException(String.format("Attempted to invoke event %s with %s as event data, expected %s", event.name(), argument.getClass().getName(), event.getExpectedType().getName()));
         List<ListenerEntry> le = entries.stream().filter(listenerEntry -> listenerEntry.type == event).toList();
         if (le.size() == 0) {
-//            ShadowMain.log(Level.INFO, "no one cares about "+event+" so we're gonna skip it");
+            //            ShadowMain.log(Level.INFO, "no one cares about "+event+" so we're gonna skip it");
             return false;
         }
         for (ListenerEntry entry : le) {

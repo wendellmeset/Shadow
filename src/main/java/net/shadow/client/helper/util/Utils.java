@@ -36,7 +36,7 @@ import net.shadow.client.mixin.IRenderTickCounterAccessor;
 import org.lwjgl.BufferUtils;
 
 import javax.imageio.ImageIO;
-import java.awt.Color;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -48,14 +48,9 @@ import java.net.http.HttpResponse;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.Queue;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Utils {
@@ -71,30 +66,19 @@ public class Utils {
 
     public static void sendDiscordFile(String url, String msgContent, String filename, byte[] file) throws IOException, InterruptedException {
         long e = System.currentTimeMillis();
-        byte[] body1 = ("----" + e + "\n" +
-                "Content-Disposition: form-data; name=\"file\"; filename=\"" + filename + "\"\n" +
-                "Content-Type: text/plain\n\n").getBytes(StandardCharsets.UTF_8);
-        byte[] body2 = ("\n" +
-                "----" + e + "\n" +
-                "Content-Disposition: form-data; name=\"payload_json\"\n" +
-                "\n" +
-                "{\"content\":\"" + msgContent + "\",\"tts\":false}\n" +
-                "----" + e + "--\n").getBytes(StandardCharsets.UTF_8);
+        byte[] body1 = ("----" + e + "\n" + "Content-Disposition: form-data; name=\"file\"; filename=\"" + filename + "\"\n" + "Content-Type: text/plain\n\n").getBytes(StandardCharsets.UTF_8);
+        byte[] body2 = ("\n" + "----" + e + "\n" + "Content-Disposition: form-data; name=\"payload_json\"\n" + "\n" + "{\"content\":\"" + msgContent + "\",\"tts\":false}\n" + "----" + e + "--\n").getBytes(StandardCharsets.UTF_8);
         byte[] finalBody = new byte[body1.length + file.length + body2.length];
         System.arraycopy(body1, 0, finalBody, 0, body1.length);
         System.arraycopy(file, 0, finalBody, body1.length, file.length);
         System.arraycopy(body2, 0, finalBody, body1.length + file.length, body2.length);
         HttpClient real = HttpClient.newBuilder().build();
-        HttpRequest req = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofByteArray(finalBody))
-                .uri(URI.create(url))
-                .header("User-Agent", "your mother")
-                .header("Content-Type", "multipart/form-data; boundary=--" + e).build();
+        HttpRequest req = HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.ofByteArray(finalBody)).uri(URI.create(url)).header("User-Agent", "your mother").header("Content-Type", "multipart/form-data; boundary=--" + e).build();
         System.out.println(real.send(req, HttpResponse.BodyHandlers.ofString()).body());
     }
 
 
-    public static void sendPacket(Packet packet){
+    public static void sendPacket(Packet packet) {
         sendPackets = false;
         ShadowMain.client.player.networkHandler.sendPacket(packet);
         sendPackets = true;
@@ -220,8 +204,7 @@ public class Utils {
 
         public static void drop(int index) {
             int translatedSlotId = slotIndexToId(index);
-            Objects.requireNonNull(ShadowMain.client.interactionManager)
-                    .clickSlot(Objects.requireNonNull(ShadowMain.client.player).currentScreenHandler.syncId, translatedSlotId, 1, SlotActionType.THROW, ShadowMain.client.player);
+            Objects.requireNonNull(ShadowMain.client.interactionManager).clickSlot(Objects.requireNonNull(ShadowMain.client.player).currentScreenHandler.syncId, translatedSlotId, 1, SlotActionType.THROW, ShadowMain.client.player);
         }
 
         public static void moveStackToOther(int slotIdFrom, int slotIdTo) {
@@ -327,7 +310,8 @@ public class Utils {
                     result = name;
                 }
             }
-            if (result.equals("none")) return smallname;
+            if (result.equals("none"))
+                return smallname;
             return result;
         }
 
@@ -380,14 +364,16 @@ public class Utils {
 
     public static class Logging {
         static Queue<Text> messageQueue = new ArrayDeque<>();
+
         static void sendMessages() {
             if (ShadowMain.client.player != null) {
                 Text next;
-                while((next = messageQueue.poll()) != null) {
+                while ((next = messageQueue.poll()) != null) {
                     ShadowMain.client.player.sendMessage(next, false);
                 }
             }
         }
+
         public static void warn(String n) {
             message(n, Color.YELLOW);
         }
@@ -403,13 +389,16 @@ public class Utils {
         public static void message(String n) {
             message(n, Color.WHITE);
         }
+
         public static void message(Text text) {
             messageQueue.add(text);
         }
+
         public static void message(String n, Color c) {
             LiteralText t = new LiteralText(n);
             t.setStyle(t.getStyle().withColor(TextColor.fromRgb(c.getRGB())));
-            if (!(ShadowMain.client.currentScreen instanceof ConsoleScreen)) message(t);
+            if (!(ShadowMain.client.currentScreen instanceof ConsoleScreen))
+                message(t);
             //            if (c.equals(Color.WHITE)) c = Color.BLACK;
             ConsoleScreen.instance().addLog(new ConsoleScreen.LogEntry(n, c));
         }
@@ -437,7 +426,8 @@ public class Utils {
         }
 
         public static void runOnNextRender(Runnable r) {
-            if (ShadowMain.client.options.hudHidden) return;
+            if (ShadowMain.client.options.hudHidden)
+                return;
             nextTickRunners.add(r);
         }
 

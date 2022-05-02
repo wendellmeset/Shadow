@@ -28,7 +28,7 @@ public class FlightCrash extends Module {
 
     public FlightCrash() {
         super("FlightCrash", "Generates a ton of chunks", ModuleType.CRASH);
-//        Events.registerEventHandlerClass(this);
+        //        Events.registerEventHandlerClass(this);
     }
 
     @Override
@@ -66,8 +66,10 @@ public class FlightCrash extends Module {
 
     @EventListener(type = EventType.PACKET_SEND)
     void onSentPacket(PacketEvent event) {
-        if (!this.isEnabled()) return;
-        if (!capture) return;
+        if (!this.isEnabled())
+            return;
+        if (!capture)
+            return;
 
         if (!(event.getPacket() instanceof PlayerMoveC2SPacket packet))
             return;
@@ -89,8 +91,7 @@ public class FlightCrash extends Module {
         if (packet instanceof PlayerMoveC2SPacket.PositionAndOnGround)
             newPacket = new PlayerMoveC2SPacket.PositionAndOnGround(x, y + randomboolnum(), z, true);
         else
-            newPacket = new PlayerMoveC2SPacket.Full(x, y + randomboolnum(), z, packet.getYaw(0),
-                    packet.getPitch(0), true);
+            newPacket = new PlayerMoveC2SPacket.Full(x, y + randomboolnum(), z, packet.getYaw(0), packet.getPitch(0), true);
 
         capture = false;
         client.player.networkHandler.getConnection().send(newPacket);

@@ -13,7 +13,7 @@ import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.feature.module.impl.misc.ClientSettings;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -49,7 +49,8 @@ public class Help extends Command {
         } else {
             String s = args[0];
             Command c = CommandRegistry.getByAlias(s);
-            if (c == null) error("Command \"" + s + "\" was not found");
+            if (c == null)
+                error("Command \"" + s + "\" was not found");
             else {
                 message("Command " + c.getName());
                 message(c.getDescription(), Color.GRAY);

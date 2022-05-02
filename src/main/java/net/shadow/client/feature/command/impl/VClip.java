@@ -28,7 +28,6 @@ public class VClip extends Command {
         validateArgumentsLength(args, 1, "Provide height");
 
         ClientPlayerEntity player = ShadowMain.client.player;
-        player.updatePosition(player.getX(),
-                player.getY() + new DoubleArgumentParser().parse(args[0]), player.getZ());
+        player.updatePosition(player.getX(), player.getY() + new DoubleArgumentParser().parse(args[0]), player.getZ());
     }
 }

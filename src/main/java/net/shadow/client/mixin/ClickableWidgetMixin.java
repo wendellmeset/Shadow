@@ -8,12 +8,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.SliderWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.BufferRenderer;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormat;
-import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
@@ -29,7 +24,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.awt.Color;
+import java.awt.*;
 
 @Mixin(ClickableWidget.class)
 public abstract class ClickableWidgetMixin implements DoesMSAA, FastTickable {
@@ -103,14 +98,16 @@ public abstract class ClickableWidgetMixin implements DoesMSAA, FastTickable {
     @Override
     public void onFastTick() {
         double delta = 0.03;
-        if (!isHovered()) delta *= -1;
+        if (!isHovered())
+            delta *= -1;
         anim += delta;
         anim = MathHelper.clamp(anim, 0, 1);
     }
 
     @Inject(method = "renderButton", at = @At("HEAD"), cancellable = true)
     void p(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if (((Object) this) instanceof TextFieldWidget) return;
+        if (((Object) this) instanceof TextFieldWidget)
+            return;
         ci.cancel();
 
         Renderer.R2D.renderRoundedQuad(matrices, Renderer.Util.lerp(c1.brighter(), c1, anim), x, y, x + width, y + height, 5, 15);

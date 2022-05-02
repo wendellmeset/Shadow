@@ -22,7 +22,8 @@ public class EntityCrash extends Module {
 
     public Entity getNearestLikelyEntity() {
         for (Entity ent : client.world.getEntities()) {
-            if (distanceTo(ent) > 5 || ent == client.player) continue;
+            if (distanceTo(ent) > 5 || ent == client.player)
+                continue;
             return ent;
         }
         return null;
@@ -38,7 +39,8 @@ public class EntityCrash extends Module {
     @Override
     public void tick() {
         target = getNearestLikelyEntity();
-        if (target == null) return;
+        if (target == null)
+            return;
         for (int i = 0; i < repeat.getValue(); i++) {
             client.player.networkHandler.sendPacket(PlayerInteractEntityC2SPacket.attack(target, client.player.isSneaking()));
         }

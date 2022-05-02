@@ -25,7 +25,8 @@ public class Speed extends Module {
     @Override
     public void tick() {
         fovEffectScal = client.options.fovEffectScale;
-        if (client.player == null) return;
+        if (client.player == null)
+            return;
         switch (mode.getValue()) {
             case OnGround:
                 client.player.setSprinting(true);
@@ -46,9 +47,11 @@ public class Speed extends Module {
                 if (client.player.input.movementForward != 0 || client.player.input.movementSideways != 0) {
                     client.player.setSprinting(true);
 
-                    if (client.player.isOnGround()) client.player.addVelocity(0, 0.3, 0);
+                    if (client.player.isOnGround())
+                        client.player.addVelocity(0, 0.3, 0);
 
-                    if (client.player.isOnGround()) return;
+                    if (client.player.isOnGround())
+                        return;
 
                     float sspeed = Float.parseFloat(speed.getValue() + "") / 50;
 
@@ -58,10 +61,13 @@ public class Speed extends Module {
                     if (client.player.forwardSpeed < 0) {
                         yaw += 180;
                         forward = -0.5f;
-                    } else if (client.player.forwardSpeed > 0) forward = 0.5f;
+                    } else if (client.player.forwardSpeed > 0)
+                        forward = 0.5f;
 
-                    if (client.player.sidewaysSpeed > 0) yaw -= 90 * forward;
-                    if (client.player.sidewaysSpeed < 0) yaw += 90 * forward;
+                    if (client.player.sidewaysSpeed > 0)
+                        yaw -= 90 * forward;
+                    if (client.player.sidewaysSpeed < 0)
+                        yaw += 90 * forward;
 
                     yaw = (float) Math.toRadians(yaw);
 
@@ -101,9 +107,6 @@ public class Speed extends Module {
 
 
     public enum Mode {
-        OnGround,
-        BHop,
-        LowHop,
-        CSGO
+        OnGround, BHop, LowHop, CSGO
     }
 }

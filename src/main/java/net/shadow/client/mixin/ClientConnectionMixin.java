@@ -14,7 +14,6 @@ import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.PacketEvent;
 import net.shadow.client.helper.util.Utils;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -38,7 +37,8 @@ public class ClientConnectionMixin {
 
     @Inject(method = "send(Lnet/minecraft/network/Packet;)V", cancellable = true, at = @At("HEAD"))
     public void dispatchPacketSend(Packet<?> packet, CallbackInfo ci) {
-        if(!Utils.sendPackets) return;
+        if (!Utils.sendPackets)
+            return;
         if (Events.fireEvent(EventType.PACKET_SEND, new PacketEvent(packet))) {
             ci.cancel();
         }

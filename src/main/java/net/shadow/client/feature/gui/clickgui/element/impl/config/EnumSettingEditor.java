@@ -11,7 +11,7 @@ import net.shadow.client.feature.gui.clickgui.theme.ThemeManager;
 import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.render.Renderer;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 

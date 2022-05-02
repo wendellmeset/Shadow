@@ -32,21 +32,13 @@ public class EntryListWidgetMixin {
     @Shadow
     protected int width;
 
-    @Redirect(method = "render", at = @At(
-            value = "FIELD",
-            target = "Lnet/minecraft/client/gui/widget/EntryListWidget;renderHorizontalShadows:Z",
-            opcode = Opcodes.GETFIELD
-    ))
+    @Redirect(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/widget/EntryListWidget;renderHorizontalShadows:Z", opcode = Opcodes.GETFIELD))
     boolean r(EntryListWidget<?> instance, MatrixStack stack) {
-//        ClipStack.globalInstance.addWindow(stack,new Rectangle(left,top,width-right,height-bottom));
+        //        ClipStack.globalInstance.addWindow(stack,new Rectangle(left,top,width-right,height-bottom));
         return false;
     }
 
-    @Redirect(method = "render", at = @At(
-            value = "FIELD",
-            target = "Lnet/minecraft/client/gui/widget/EntryListWidget;renderBackground:Z",
-            opcode = Opcodes.GETFIELD
-    ))
+    @Redirect(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/widget/EntryListWidget;renderBackground:Z", opcode = Opcodes.GETFIELD))
     boolean r1(EntryListWidget<?> instance) {
 
         return false;

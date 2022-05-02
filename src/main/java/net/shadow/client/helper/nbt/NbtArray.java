@@ -53,9 +53,6 @@ public class NbtArray<T> extends NbtElement {
 
     @Override
     public String toString() {
-        return "NbtArray{" +
-                "name='" + name + '\'' +
-                ", elements=" + Arrays.toString(elements) +
-                '}';
+        return "NbtArray{" + "name='" + name + '\'' + ", elements=" + Arrays.toString(elements) + '}';
     }
 }

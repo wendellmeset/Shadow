@@ -7,7 +7,7 @@ package net.shadow.client.feature.gui.clickgui.theme.impl;
 import net.shadow.client.feature.gui.clickgui.theme.Theme;
 import net.shadow.client.feature.module.ModuleRegistry;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class Custom implements Theme {
     final net.shadow.client.feature.module.impl.render.Theme theme = ModuleRegistry.getByClass(net.shadow.client.feature.module.impl.render.Theme.class);

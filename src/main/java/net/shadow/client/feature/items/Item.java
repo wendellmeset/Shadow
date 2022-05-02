@@ -25,7 +25,7 @@ public abstract class Item {
         try {
             List<Option<?>> o = new ArrayList<>();
             for (Field declaredField : this.getClass().getDeclaredFields()) {
-//                System.out.println(declaredField);
+                //                System.out.println(declaredField);
                 declaredField.setAccessible(true);
                 if (declaredField.get(this) instanceof Option) {
                     o.add((Option<?>) declaredField.get(this));

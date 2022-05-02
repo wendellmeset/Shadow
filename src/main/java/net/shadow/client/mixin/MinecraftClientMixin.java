@@ -35,7 +35,9 @@ public class MinecraftClientMixin implements MinecraftClientDuck {
     private int itemUseCooldown;
 
     @Mutable
-    @Shadow @Final private Session session;
+    @Shadow
+    @Final
+    private Session session;
 
     @Inject(method = "stop", at = @At("HEAD"))
     void real(CallbackInfo ci) {

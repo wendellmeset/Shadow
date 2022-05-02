@@ -26,7 +26,7 @@ import net.shadow.client.helper.util.Transitions;
 import net.shadow.client.helper.util.Utils;
 import org.lwjgl.opengl.GL40C;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -78,8 +78,7 @@ public class TargetHud extends Module {
             e = AttackManager.getLastAttackInTimeRange();
             return;
         }
-        List<Entity> entitiesQueue = StreamSupport.stream(Objects.requireNonNull(ShadowMain.client.world).getEntities().spliterator(), false).filter(this::isApplicable)
-                .sorted(Comparator.comparingDouble(value -> value.getPos().distanceTo(Objects.requireNonNull(ShadowMain.client.player).getPos()))).toList();
+        List<Entity> entitiesQueue = StreamSupport.stream(Objects.requireNonNull(ShadowMain.client.world).getEntities().spliterator(), false).filter(this::isApplicable).sorted(Comparator.comparingDouble(value -> value.getPos().distanceTo(Objects.requireNonNull(ShadowMain.client.player).getPos()))).toList();
         if (entitiesQueue.size() > 0) {
             e = entitiesQueue.get(0);
         } else {

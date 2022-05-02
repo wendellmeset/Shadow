@@ -23,7 +23,7 @@ import net.shadow.client.helper.Rotations;
 import net.shadow.client.helper.Timer;
 import net.shadow.client.helper.render.Renderer;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class AutoLavacast extends Module {
 
@@ -66,8 +66,7 @@ public class AutoLavacast extends Module {
         Vec3d placeCenter = Vec3d.of(next).add(.5, .5, .5);
         if (mode.getValue() == Mode.Bypass) {
             Rotations.lookAtPositionSmooth(placeCenter, 6);
-            if (((ShadowMain.client.player.horizontalCollision && moveForwards) || ShadowMain.client.player.getBoundingBox()
-                    .intersects(Vec3d.of(next), Vec3d.of(next).add(1, 1, 1))) && ShadowMain.client.player.isOnGround()) {
+            if (((ShadowMain.client.player.horizontalCollision && moveForwards) || ShadowMain.client.player.getBoundingBox().intersects(Vec3d.of(next), Vec3d.of(next).add(1, 1, 1))) && ShadowMain.client.player.isOnGround()) {
                 ShadowMain.client.player.jump();
                 ShadowMain.client.player.setOnGround(false);
             }

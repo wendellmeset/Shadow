@@ -18,7 +18,7 @@ import net.shadow.client.feature.module.ModuleType;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Utils;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Comparator;
 import java.util.stream.StreamSupport;
 
@@ -51,9 +51,7 @@ public class Tracers extends Module {
         if (ShadowMain.client.world == null || ShadowMain.client.player == null) {
             return null;
         }
-        return StreamSupport.stream(ShadowMain.client.world.getEntities().spliterator(), false)
-                .filter(entity -> entity.squaredDistanceTo(ShadowMain.client.player) < 4096 && entity.getUuid() != ShadowMain.client.player.getUuid() && isEntityApplicable(entity))
-                .count() + "";
+        return StreamSupport.stream(ShadowMain.client.world.getEntities().spliterator(), false).filter(entity -> entity.squaredDistanceTo(ShadowMain.client.player) < 4096 && entity.getUuid() != ShadowMain.client.player.getUuid() && isEntityApplicable(entity)).count() + "";
     }
 
     @Override
@@ -61,8 +59,7 @@ public class Tracers extends Module {
         if (ShadowMain.client.world == null || ShadowMain.client.player == null) {
             return;
         }
-        for (Entity entity : StreamSupport.stream(ShadowMain.client.world.getEntities().spliterator(), false)
-                .sorted(Comparator.comparingDouble(value -> -value.distanceTo(ShadowMain.client.player))).toList()) {
+        for (Entity entity : StreamSupport.stream(ShadowMain.client.world.getEntities().spliterator(), false).sorted(Comparator.comparingDouble(value -> -value.distanceTo(ShadowMain.client.player))).toList()) {
             if (entity.squaredDistanceTo(ShadowMain.client.player) > 4096) {
                 continue;
             }
@@ -104,4 +101,3 @@ public class Tracers extends Module {
 
     }
 }
-

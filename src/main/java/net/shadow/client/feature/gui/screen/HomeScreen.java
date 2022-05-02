@@ -27,17 +27,13 @@ import net.shadow.client.helper.render.Renderer;
 import org.apache.commons.io.IOUtils;
 import org.lwjgl.opengl.GL40C;
 
-import java.awt.Color;
+import java.awt.*;
 import java.io.File;
 import java.net.http.HttpClient;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.AbstractMap;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public class HomeScreen extends ClientScreen {
     static final double padding = 6;
@@ -64,7 +60,7 @@ public class HomeScreen extends ClientScreen {
         if (instance == null) {
             instance = new HomeScreen();
         }
-//        instance = new HomeScreen();
+        //        instance = new HomeScreen();
         return instance;
     }
 
@@ -75,7 +71,7 @@ public class HomeScreen extends ClientScreen {
             isDev = execF.isDirectory();
             HomeScreen.version = IOUtils.toString(Objects.requireNonNull(HomeScreen.class.getClassLoader().getResourceAsStream("version.txt")), StandardCharsets.UTF_8);
             HomeScreen.changelog = IOUtils.toString(Objects.requireNonNull(HomeScreen.class.getClassLoader().getResourceAsStream("changelogLatest.txt")), StandardCharsets.UTF_8);
-//            System.out.println("updating acc");
+            //            System.out.println("updating acc");
             updateCurrentAccount(() -> {
 
             });
@@ -101,11 +97,11 @@ public class HomeScreen extends ClientScreen {
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Realms", () -> ShadowMain.client.setScreen(new RealmsMainScreen(this))));
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Alts", () -> {
             ShadowMain.client.setScreen(AltManagerScreen.instance());
-//            Notification.create(RandomStringUtils.randomPrint(20), RandomUtils.nextLong(4000, 7000), Notification.Type.INFO);
+            //            Notification.create(RandomStringUtils.randomPrint(20), RandomUtils.nextLong(4000, 7000), Notification.Type.INFO);
         }));
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Settings", () -> ShadowMain.client.setScreen(new OptionsScreen(this, ShadowMain.client.options))));
         buttonsMap.add(new AbstractMap.SimpleEntry<>("Quit", ShadowMain.client::scheduleStop));
-//        buttonsMap.add(new AbstractMap.SimpleEntry<>("reinit", this::init));
+        //        buttonsMap.add(new AbstractMap.SimpleEntry<>("reinit", this::init));
         double rowWidth = 150;
         double rowHeight = 30;
         double padding = 5;
@@ -135,7 +131,8 @@ public class HomeScreen extends ClientScreen {
         if (loaded) {
             updateCurrentAccount(() -> {
             }); // already loaded this instance, refresh on the fly
-        } else load();
+        } else
+            load();
     }
 
     void complete() {

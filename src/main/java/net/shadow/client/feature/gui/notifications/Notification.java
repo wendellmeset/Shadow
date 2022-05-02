@@ -8,7 +8,7 @@ import net.shadow.client.helper.GameTexture;
 import net.shadow.client.helper.Texture;
 import net.shadow.client.helper.font.FontRenderers;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,8 +80,10 @@ public class Notification {
     }
 
     public enum Type {
-        SUCCESS(GameTexture.NOTIF_SUCCESS.getWhere(), new Color(58, 223, 118)), INFO(GameTexture.NOTIF_INFO.getWhere(), new Color(39, 186, 253)),
-        WARNING(GameTexture.NOTIF_WARNING.getWhere(), new Color(255, 189, 17)), ERROR(GameTexture.NOTIF_ERROR.getWhere(), new Color(254, 92, 92));
+        SUCCESS(GameTexture.NOTIF_SUCCESS.getWhere(), new Color(58, 223, 118)),
+        INFO(GameTexture.NOTIF_INFO.getWhere(), new Color(39, 186, 253)),
+        WARNING(GameTexture.NOTIF_WARNING.getWhere(), new Color(255, 189, 17)),
+        ERROR(GameTexture.NOTIF_ERROR.getWhere(), new Color(254, 92, 92));
         final Color c;
         final Texture i;
 

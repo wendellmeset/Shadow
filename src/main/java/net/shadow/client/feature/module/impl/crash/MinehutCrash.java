@@ -25,7 +25,8 @@ public class MinehutCrash extends Module {
 
     @EventListener(type = EventType.PACKET_RECEIVE)
     void blockBounces(PacketEvent event) {
-        if (this.isEnabled() && this.bb.getValue()) event.setCancelled(true);
+        if (this.isEnabled() && this.bb.getValue())
+            event.setCancelled(true);
     }
 
     @Override

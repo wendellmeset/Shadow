@@ -19,10 +19,7 @@ public class NbtList extends NbtElement {
 
     @Override
     public String toString() {
-        return "NbtArray{" +
-                "name='" + name + '\'' +
-                ", children=" + Arrays.toString(children) +
-                '}';
+        return "NbtArray{" + "name='" + name + '\'' + ", children=" + Arrays.toString(children) + '}';
     }
 
     @Override

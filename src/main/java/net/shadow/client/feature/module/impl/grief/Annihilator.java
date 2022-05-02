@@ -52,7 +52,7 @@ public class Annihilator extends Module {
         int startY = MathHelper.clamp(r(pos.getY() - range.getValue()), Objects.requireNonNull(ShadowMain.client.world).getBottomY(), ShadowMain.client.world.getTopY());
         int endY = MathHelper.clamp(r(pos.getY() + range.getValue()), ShadowMain.client.world.getBottomY(), ShadowMain.client.world.getTopY());
         String cmd = "/fill " + r(pos.getX() - range.getValue()) + " " + startY + " " + r(pos.getZ() - range.getValue()) + " " + r(pos.getX() + range.getValue()) + " " + endY + " " + r(pos.getZ() + range.getValue()) + " " + "minecraft:" + block.getValue();
-//        System.out.println(cmd);
+        //        System.out.println(cmd);
         client.player.sendChatMessage(cmd);
     }
 
@@ -89,4 +89,3 @@ public class Annihilator extends Module {
 
     }
 }
-

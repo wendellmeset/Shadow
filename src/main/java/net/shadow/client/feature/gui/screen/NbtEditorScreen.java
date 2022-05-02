@@ -24,7 +24,7 @@ import net.shadow.client.helper.util.Transitions;
 import org.apache.commons.compress.utils.Lists;
 import org.lwjgl.glfw.GLFW;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -252,8 +252,10 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
                     int whitespacesStart = 0;
                     String index = initial.get(editorY);
                     for (char c : Arrays.copyOfRange(index.toCharArray(), 0, editorX)) {
-                        if (c == ' ') whitespacesStart++;
-                        else break;
+                        if (c == ' ')
+                            whitespacesStart++;
+                        else
+                            break;
                     }
                     whitespacesStart %= 2;
                     int missing = 2 - whitespacesStart;

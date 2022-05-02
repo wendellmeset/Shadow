@@ -20,13 +20,12 @@ import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 import net.shadow.client.helper.render.Renderer;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Arrays;
 import java.util.Objects;
 
 public class AutoTrap extends Module {
-    static final double[][] buildOffsetsSmall = new double[][]{new double[]{0, 2, 0}, new double[]{1, 1, 0}, new double[]{0, 1, 1}, new double[]{-1, 1, 0}, new double[]{0, 1, -1},
-            new double[]{0, -1, 0}};
+    static final double[][] buildOffsetsSmall = new double[][]{new double[]{0, 2, 0}, new double[]{1, 1, 0}, new double[]{0, 1, 1}, new double[]{-1, 1, 0}, new double[]{0, 1, -1}, new double[]{0, -1, 0}};
     static final double[][] buildOffsetsBig = new double[][]{
             // begin bottom
             new double[]{-.5, -1, -.5}, new double[]{-.5, -1, .5}, new double[]{.5, -1, .5}, new double[]{.5, -1, -.5},
@@ -65,8 +64,7 @@ public class AutoTrap extends Module {
         if (smallMatches) {
             return true;
         }
-        double[][] possibleOffsetsHome = new double[][]{new double[]{1, 0, 1}, new double[]{1, 0, 0}, new double[]{1, 0, -1}, new double[]{0, 0, -1}, new double[]{-1, 0, -1}, new double[]{-1, 0, 0},
-                new double[]{-1, 0, 1}, new double[]{0, 0, 1}, new double[]{0, 0, 0}};
+        double[][] possibleOffsetsHome = new double[][]{new double[]{1, 0, 1}, new double[]{1, 0, 0}, new double[]{1, 0, -1}, new double[]{0, 0, -1}, new double[]{-1, 0, -1}, new double[]{-1, 0, 0}, new double[]{-1, 0, 1}, new double[]{0, 0, 1}, new double[]{0, 0, 0}};
         for (double[] ints : possibleOffsetsHome) {
             Vec3d potentialHome = entityPos.add(ints[0], ints[1], ints[2]);
             boolean matches = Arrays.stream(buildOffsetsBig).allMatch(ints1 -> {

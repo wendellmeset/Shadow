@@ -27,19 +27,13 @@ import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Transitions;
 import org.lwjgl.glfw.GLFW;
 
-import java.awt.Color;
+import java.awt.*;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class ClickGUI extends Screen implements FastTickable {
-//    public static final Theme theme = new SipoverV1();
+    //    public static final Theme theme = new SipoverV1();
 
     static final Color tooltipColor = new Color(20, 20, 30, 255);
     static ConfigContainer configContainer = new ConfigContainer(new File(ShadowMain.BASE, "clickGui.sip"), "amongUs");
@@ -77,13 +71,15 @@ public class ClickGUI extends Screen implements FastTickable {
     }
 
     public static void reInit() {
-        if (instance != null) instance.initElements();
+        if (instance != null)
+            instance.initElements();
     }
 
     void loadConfig() {
         configContainer.reload();
         ClickguiConfigContainer cc = configContainer.get(ClickguiConfigContainer.class);
-        if (cc == null || cc.entries == null) return;
+        if (cc == null || cc.entries == null)
+            return;
         Map<String, CategoryDisplay> displays = new HashMap<>();
         for (Element element : elements) {
             if (element instanceof CategoryDisplay dd) {
@@ -100,7 +96,8 @@ public class ClickGUI extends Screen implements FastTickable {
                 List<ModuleDisplay> mdList = disp.getMd();
                 for (ClickguiConfigContainer.ModuleEntry moduleEntry : entry.entries) {
                     ModuleDisplay mde = mdList.stream().filter(moduleDisplay -> moduleDisplay.getModule().getName().equals(moduleEntry.name)).findFirst().orElse(null);
-                    if (mde == null) continue;
+                    if (mde == null)
+                        continue;
                     mde.setExtended(moduleEntry.expanded);
                 }
             }
@@ -153,7 +150,8 @@ public class ClickGUI extends Screen implements FastTickable {
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
         for (Element element : elements) {
-            if (element.scroll(mouseX, mouseY, amount)) break;
+            if (element.scroll(mouseX, mouseY, amount))
+                break;
         }
         return super.mouseScrolled(mouseX, mouseY, amount);
     }
@@ -170,8 +168,7 @@ public class ClickGUI extends Screen implements FastTickable {
         double x = 5;
         double y = 5;
         double tallestInTheRoom = 0;
-        for (ModuleType value : Arrays.stream(ModuleType.values())
-                .sorted(Comparator.comparingLong(value -> -ModuleRegistry.getModules().stream().filter(module -> module.getModuleType() == value).count())).toList()) {
+        for (ModuleType value : Arrays.stream(ModuleType.values()).sorted(Comparator.comparingLong(value -> -ModuleRegistry.getModules().stream().filter(module -> module.getModuleType() == value).count())).toList()) {
             CategoryDisplay cd = new CategoryDisplay(x, y, value);
             tallestInTheRoom = Math.max(tallestInTheRoom, cd.getHeight());
             x += cd.getWidth() + 5;

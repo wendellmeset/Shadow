@@ -14,6 +14,10 @@ import net.minecraft.util.registry.Registry;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
+import net.shadow.client.helper.event.EventListener;
+import net.shadow.client.helper.event.EventType;
+import net.shadow.client.helper.event.events.BlockRenderEvent;
+import net.shadow.client.helper.event.events.ChunkRenderQueryEvent;
 
 import java.util.List;
 
@@ -34,6 +38,18 @@ public class XRAY extends Module {
         boolean c1 = block == Blocks.CHEST || block == Blocks.FURNACE || block == Blocks.END_GATEWAY || block == Blocks.COMMAND_BLOCK || block == Blocks.ANCIENT_DEBRIS;
         boolean c2 = block instanceof OreBlock || block instanceof RedstoneOreBlock;
         return c1 || c2;
+    }
+
+    @EventListener(type = EventType.BLOCK_RENDER)
+    void blockRender(BlockRenderEvent bre) {
+        if (!blockApplicable(bre.getBlockState().getBlock())) {
+            bre.setCancelled(true);
+        }
+    }
+
+    @EventListener(type = EventType.SHOULD_RENDER_CHUNK)
+    void shouldRenderChunk(ChunkRenderQueryEvent event) {
+        event.setShouldRender(true);
     }
 
     @Override
@@ -66,4 +82,3 @@ public class XRAY extends Module {
 
     }
 }
-

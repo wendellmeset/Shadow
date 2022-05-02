@@ -27,7 +27,7 @@ import net.shadow.client.helper.event.events.MouseEvent;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Utils;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Objects;
 
 public class AnyPlacer extends Module {

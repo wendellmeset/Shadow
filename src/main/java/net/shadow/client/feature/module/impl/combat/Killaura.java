@@ -47,8 +47,7 @@ public class Killaura extends Module {
     final BooleanSetting automaticDelay = this.config.create(new BooleanSetting.Builder(true).name("Auto delay").description("Whether or not to automatically calculate perfect delay").get());
     final DoubleSetting delay = this.config.create(new DoubleSetting.Builder(0).name("Delay").description("How much to wait between attacks").min(0).max(20).precision(1).get());
 
-    final BooleanSetting attackOnlyCombatPartner = this.config.create(new BooleanSetting.Builder(true).name("Attack only combat").description("Whether or not to only aim at the combat partner")
-            .get());
+    final BooleanSetting attackOnlyCombatPartner = this.config.create(new BooleanSetting.Builder(true).name("Attack only combat").description("Whether or not to only aim at the combat partner").get());
     final BooleanSetting attackPlayers = this.config.create(new BooleanSetting.Builder(true).name("Attack players").description("Whether or not to aim at players").get());
     final BooleanSetting attackHostile = this.config.create(new BooleanSetting.Builder(true).name("Attack hostile").description("Whether or not to aim at hostile entities").get());
     final BooleanSetting attackNeutral = this.config.create(new BooleanSetting.Builder(true).name("Attack neutral").description("Whether or not to aim at neutral entities").get());

@@ -31,7 +31,8 @@ public class AutoIgnite extends Module {
     int getLighterSlot() {
         for (int i = 0; i < 9; i++) {
             ItemStack is = ShadowMain.client.player.getInventory().getStack(i);
-            if (is.getItem() == Items.FLINT_AND_STEEL) return i;
+            if (is.getItem() == Items.FLINT_AND_STEEL)
+                return i;
         }
         return -1;
     }
@@ -39,7 +40,8 @@ public class AutoIgnite extends Module {
     @Override
     public void tick() {
         int lighterSlot = getLighterSlot();
-        if (lighterSlot == -1) return;
+        if (lighterSlot == -1)
+            return;
         double searchRad = Math.ceil(ShadowMain.client.interactionManager.getReachDistance());
         List<BlockPos> blocksToIgnite = new ArrayList<>();
         for (double x = -searchRad; x < searchRad; x++) {
@@ -56,7 +58,8 @@ public class AutoIgnite extends Module {
                 }
             }
         }
-        if (blocksToIgnite.isEmpty()) return;
+        if (blocksToIgnite.isEmpty())
+            return;
         int prevSlot = ShadowMain.client.player.getInventory().selectedSlot;
         ShadowMain.client.getNetworkHandler().sendPacket(new UpdateSelectedSlotC2SPacket(lighterSlot));
 

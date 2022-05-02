@@ -4,7 +4,7 @@
 
 package net.shadow.client.feature.gui.clickgui.theme;
 
-import java.awt.Color;
+import java.awt.*;
 
 public interface Theme {
     String getName();

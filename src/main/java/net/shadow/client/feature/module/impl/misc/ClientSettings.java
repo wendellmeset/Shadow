@@ -13,11 +13,7 @@ import net.shadow.client.feature.module.ModuleType;
 
 public class ClientSettings extends Module {
     @Getter
-    final
-    StringSetting prefix = this.config.create(new StringSetting.Builder(">")
-            .name("Prefix")
-            .description("The prefix to use for commands")
-            .get());
+    final StringSetting prefix = this.config.create(new StringSetting.Builder(">").name("Prefix").description("The prefix to use for commands").get());
 
     public ClientSettings() {
         super("ClientSettings", "Configuration for the client", ModuleType.MISC);

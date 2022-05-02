@@ -24,7 +24,7 @@ import net.shadow.client.helper.render.Rectangle;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.render.Scroller;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -115,7 +115,8 @@ public class CategoryDisplay extends Element {
         return md.stream().filter(moduleDisplay -> {
             char[] charsToSearchFor = ClickGUI.instance().searchTerm.toLowerCase().toCharArray();
             for (char c : charsToSearchFor) {
-                if (!moduleDisplay.module.getName().toLowerCase().contains(String.valueOf(c))) return false;
+                if (!moduleDisplay.module.getName().toLowerCase().contains(String.valueOf(c)))
+                    return false;
             }
             return true;
         }).collect(Collectors.toList());
@@ -125,7 +126,7 @@ public class CategoryDisplay extends Element {
     public boolean scroll(double mouseX, double mouseY, double amount) {
         // not needed for now
         if (amount == 0 || inBounds(mouseX, mouseY)) {
-//            scroll += amount * 10;
+            //            scroll += amount * 10;
             double contentHeight = getModules().stream().map(ModuleDisplay::getHeight).reduce(Double::sum).orElse(0d);
             double viewerHeight = Math.min(contentHeight, 350);
             double elScroll = contentHeight - viewerHeight;
@@ -147,9 +148,7 @@ public class CategoryDisplay extends Element {
         double mouseY1 = mouseY;
         scroll(mouseX1, mouseY1, 0);
         Theme theme = ThemeManager.getMainTheme();
-        double openAnim = this.openAnim < 0.5
-                ? (1 - sqrt(1 - pow(2 * this.openAnim, 2))) / 2
-                : (sqrt(1 - pow(-2 * this.openAnim + 2, 2)) + 1) / 2;
+        double openAnim = this.openAnim < 0.5 ? (1 - sqrt(1 - pow(2 * this.openAnim, 2))) / 2 : (sqrt(1 - pow(-2 * this.openAnim + 2, 2)) + 1) / 2;
         //        Renderer.R2D.fill(matrices, theme.getHeader(), x, y, x + width, y + headerHeight());
         double r = 5;
         double hheight = headerHeight();
@@ -196,7 +195,8 @@ public class CategoryDisplay extends Element {
             for (ModuleDisplay moduleDisplay : getModules()) {
                 moduleDisplay.setX(this.x);
                 moduleDisplay.setY(this.y + y);
-                if (moduleDisplay.getY() + scroller.getScroll() > this.y + height) continue;
+                if (moduleDisplay.getY() + scroller.getScroll() > this.y + height)
+                    continue;
 
                 moduleDisplay.render(matrices, mouseX1, mouseY1 - scroller.getScroll(), scrollBeingUsed);
                 y += moduleDisplay.getHeight();
@@ -223,13 +223,14 @@ public class CategoryDisplay extends Element {
     public void tickAnim() {
         scroller.tick();
         double oaDelta = 0.02;
-        if (!open) oaDelta *= -1;
+        if (!open)
+            oaDelta *= -1;
         openAnim += oaDelta;
         openAnim = MathHelper.clamp(openAnim, 0, 1);
         for (ModuleDisplay moduleDisplay : getModules()) {
             moduleDisplay.tickAnim();
         }
-//        smoothScroll = Transitions.transition(smoothScroll, scroll, 7, 0);
+        //        smoothScroll = Transitions.transition(smoothScroll, scroll, 7, 0);
     }
 
     @Override

@@ -60,7 +60,6 @@ public class Damage extends Command {
     }
 
     private void sendPosition(double x, double y, double z, boolean onGround) {
-        ShadowMain.client.player.networkHandler.sendPacket(
-                new PlayerMoveC2SPacket.PositionAndOnGround(x, y, z, onGround));
+        ShadowMain.client.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(x, y, z, onGround));
     }
 }

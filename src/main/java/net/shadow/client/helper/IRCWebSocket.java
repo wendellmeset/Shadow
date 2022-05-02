@@ -22,18 +22,15 @@ import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class IRCWebSocket extends WebSocketClient {
-    public record PlayerEntry(String username, UUID uuid) {
-
-    }
     public static List<PlayerEntry> knownIRCPlayers = new CopyOnWriteArrayList<>();
     String authToken;
     Runnable onClose;
-
     public IRCWebSocket(URI serverUri, String authToken, Runnable onClose) {
         super(serverUri, Map.of("Authorization", authToken, "X-MC-UUID", ShadowMain.client.getSession().getUuid(), "X-MC-USERNAME", ShadowMain.client.getSession().getUsername()));
         this.authToken = authToken;
         this.onClose = onClose;
     }
+
     @Override
     public void onOpen(ServerHandshake handshakedata) {
         Utils.Logging.success("Connected to IRC");
@@ -70,8 +67,9 @@ public class IRCWebSocket extends WebSocketClient {
                     } catch (Exception ignored) {
                         continue;
                     }
-                    PlayerEntry pe = new PlayerEntry(u,uuid);
-                    if(!knownIRCPlayers.contains(pe)) knownIRCPlayers.add(pe);
+                    PlayerEntry pe = new PlayerEntry(u, uuid);
+                    if (!knownIRCPlayers.contains(pe))
+                        knownIRCPlayers.add(pe);
                 }
 
             }
@@ -90,9 +88,12 @@ public class IRCWebSocket extends WebSocketClient {
         ex.printStackTrace();
     }
 
+    public record PlayerEntry(String username, UUID uuid) {
+
+    }
+
     @AllArgsConstructor
-    public static
-    class Packet {
+    public static class Packet {
         public String id;
         public Map<String, Object> data;
 
@@ -102,10 +103,7 @@ public class IRCWebSocket extends WebSocketClient {
 
         @Override
         public String toString() {
-            return "Packet{" +
-                    "id='" + id + '\'' +
-                    ", data=" + data +
-                    '}';
+            return "Packet{" + "id='" + id + '\'' + ", data=" + data + '}';
         }
     }
 }

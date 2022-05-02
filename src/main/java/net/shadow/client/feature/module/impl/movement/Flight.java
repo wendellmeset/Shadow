@@ -6,6 +6,7 @@ package net.shadow.client.feature.module.impl.movement;
 
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.network.Packet;
 import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket;
 import net.minecraft.network.packet.c2s.play.KeepAliveC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
@@ -17,19 +18,17 @@ import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.config.EnumSetting;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
+import net.shadow.client.helper.Timer;
 import net.shadow.client.helper.event.EventListener;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.PacketEvent;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Utils;
-import net.shadow.client.helper.Timer;
-import net.minecraft.network.Packet;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import java.awt.Color;
 import java.util.Objects;
 import java.util.Random;
 
@@ -38,13 +37,11 @@ public class Flight extends Module {
     final EnumSetting<FlightMode> mode = this.config.create(new EnumSetting.Builder<>(FlightMode.Static).name("Mode").description("How you fly").get());
     final BooleanSetting bypassVanillaAc = this.config.create(new BooleanSetting.Builder(true).name("Bypass vanilla AC").description("Whether to bypass the vanilla anticheat").get());
     final DoubleSetting speed = this.config.create(new DoubleSetting.Builder(1).name("Speed").description("How fast you fly").min(0).max(10).get());
-
-
+    final List<Packet<?>> queue = new ArrayList<>();
     Timer lag = new Timer();
     boolean capturePackets = false;
     int bypassTimer = 0;
     boolean flewBefore = false;
-    final List<Packet<?>> queue = new ArrayList<>();
 
 
     public Flight() {
@@ -127,10 +124,10 @@ public class Flight extends Module {
                 }
             }
             case Walk -> {
-                if(lag.hasExpired(490L)){
+                if (lag.hasExpired(490L)) {
                     lag.reset();
-                    for(int i = 0; i < 3; i++){
-                        if(!queue.isEmpty()){
+                    for (int i = 0; i < 3; i++) {
+                        if (!queue.isEmpty()) {
                             Utils.sendPacket(queue.get(0));
                             queue.remove(0);
                         }
@@ -144,7 +141,7 @@ public class Flight extends Module {
                 Utils.setClientTps(10F);
                 ShadowMain.client.player.getAbilities().flying = false;
                 int mx = 0, my = 0, mz = 0;
-        
+
                 if (go.jumpKey.isPressed()) {
                     my++;
                 }
@@ -174,7 +171,7 @@ public class Flight extends Module {
                 Vec3d nv3 = new Vec3d(nx, ny, nz);
                 ShadowMain.client.player.setVelocity(nv3);
             }
-                
+
         }
     }
 
@@ -186,13 +183,12 @@ public class Flight extends Module {
     }
 
     private void sendPosition(double x, double y, double z, boolean onGround) {
-        ShadowMain.client.player.networkHandler.sendPacket(
-                new PlayerMoveC2SPacket.PositionAndOnGround(x, y, z, onGround));
+        ShadowMain.client.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(x, y, z, onGround));
     }
 
     @Override
     public void enable() {
-        if(mode.getValue() == FlightMode.Walk){
+        if (mode.getValue() == FlightMode.Walk) {
             applyDamage(1);
             applyDamage(1);
         }
@@ -202,9 +198,9 @@ public class Flight extends Module {
         Objects.requireNonNull(ShadowMain.client.getNetworkHandler()).sendPacket(new ClientCommandC2SPacket(ShadowMain.client.player, ClientCommandC2SPacket.Mode.RELEASE_SHIFT_KEY));
     }
 
-    @EventListener(type=EventType.PACKET_SEND)
-    void giveTwoShits(PacketEvent event){
-        if(mode.getValue() == FlightMode.Walk){
+    @EventListener(type = EventType.PACKET_SEND)
+    void giveTwoShits(PacketEvent event) {
+        if (mode.getValue() == FlightMode.Walk) {
             if (!this.isEnabled()) {
                 return;
             }

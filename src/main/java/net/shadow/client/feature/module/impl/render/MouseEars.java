@@ -21,7 +21,7 @@ public class MouseEars extends Module {
 
     @Override
     public void enable() {
-//        MemoryUtil.memSet(0L, 0, 1L); kill yourself saturn
+        //        MemoryUtil.memSet(0L, 0, 1L); kill yourself saturn
     }
 
     @Override
@@ -44,4 +44,3 @@ public class MouseEars extends Module {
 
     }
 }
-

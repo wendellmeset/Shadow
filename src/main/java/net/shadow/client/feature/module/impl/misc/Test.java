@@ -13,7 +13,7 @@ import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 import net.shadow.client.helper.event.EventListener;
 import net.shadow.client.helper.event.EventType;
-import net.shadow.client.helper.event.events.BlockRenderingEvent;
+import net.shadow.client.helper.event.events.BlockRenderEvent;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Utils;
 
@@ -25,13 +25,14 @@ public class Test extends Module {
 
     public Test() {
         super("Test", "Testing stuff with the client, can be ignored", ModuleType.MISC);
-//        Events.registerEventHandlerClass(this);
+        //        Events.registerEventHandlerClass(this);
     }
 
     @EventListener(type = EventType.BLOCK_RENDER)
     @SuppressWarnings("unused")
-    void onBlockRender(BlockRenderingEvent event) {
-        if (!this.isEnabled()) return;
+    void onBlockRender(BlockRenderEvent event) {
+        if (!this.isEnabled())
+            return;
         BlockPos b = new BlockPos(event.getPosition());
         boolean listContains = discovered.stream().anyMatch(blockPos -> blockPos.equals(b));
         if (event.getBlockState().getBlock() == searchTerm) {
@@ -73,6 +74,6 @@ public class Test extends Module {
     @Override
     public void tick() {
         discovered.removeIf(blockPos -> client.world.getBlockState(blockPos).getBlock() != searchTerm);
-//        client.interactionManager.clickSlot(0, 0, 0, SlotActionType.QUICK_MOVE, client.player);
+        //        client.interactionManager.clickSlot(0, 0, 0, SlotActionType.QUICK_MOVE, client.player);
     }
 }

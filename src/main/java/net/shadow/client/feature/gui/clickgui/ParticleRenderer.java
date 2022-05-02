@@ -5,12 +5,7 @@
 package net.shadow.client.feature.gui.clickgui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.BufferRenderer;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormat;
-import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Matrix4f;
@@ -22,7 +17,7 @@ import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Transitions;
 import org.lwjgl.opengl.GL11;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +42,7 @@ public class ParticleRenderer {
         Particle n = new Particle();
         n.x = ShadowMain.client.getWindow().getScaledWidth() * Math.random();
         n.y = ShadowMain.client.getWindow().getScaledHeight() * Math.random();
-//        n.velY = (Math.random() - .5) / 4;
+        //        n.velY = (Math.random() - .5) / 4;
         n.velX = (Math.random() - .5) / 4;
         n.circleRad = Math.random() * 2;
         particles.add(n);
@@ -183,7 +178,7 @@ public class ParticleRenderer {
             long deltaOverall = Math.min(startDelta, endDelta);
             double pk = (deltaOverall / (double) fadeTime);
 
-//            ShadowMain.client.textRenderer.draw(stack,pk+"",(float)x,(float)y,0xFFFFFF);
+            //            ShadowMain.client.textRenderer.draw(stack,pk+"",(float)x,(float)y,0xFFFFFF);
             pk = Transitions.easeOutExpo(pk);
             Theme theme = ThemeManager.getMainTheme();
             stack.push();

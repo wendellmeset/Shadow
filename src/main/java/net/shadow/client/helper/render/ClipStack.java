@@ -12,7 +12,7 @@ import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.feature.module.impl.render.ClickGUI;
 import net.shadow.client.mixin.MatrixStackAccessor;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Deque;
 import java.util.Stack;
 
@@ -34,7 +34,7 @@ public class ClipStack {
         Rectangle r = new Rectangle(x, y, endX, endY);
         if (clipStack.empty()) {
             clipStack.push(new TransformationEntry(r, stack.peek()));
-//            renderDebug(r.getX(),r.getY(),r.getX1(),r.getY1());
+            //            renderDebug(r.getX(),r.getY(),r.getX1(),r.getY1());
 
             Renderer.R2D.beginScissor(r.getX(), r.getY(), r.getX1(), r.getY1());
         } else {
@@ -50,7 +50,7 @@ public class ClipStack {
             clipStack.push(new TransformationEntry(new Rectangle(nsx, nsy, nstx, nsty), stack.peek()));
 
 
-//            renderDebug(nsx,nsy,nstx,nsty);
+            //            renderDebug(nsx,nsy,nstx,nsty);
 
             Renderer.R2D.beginScissor(nsx, nsy, nstx, nsty);
         }
@@ -77,7 +77,7 @@ public class ClipStack {
         } else {
             TransformationEntry r1 = clipStack.peek();
             Rectangle r = r1.rect;
-//            Renderer.R2D.renderLine(stack,Color.BLUE,r.getX1(),r.getY(),r.getX(),r.getY1());
+            //            Renderer.R2D.renderLine(stack,Color.BLUE,r.getX1(),r.getY(),r.getX(),r.getY1());
             MatrixStack s = new MatrixStack();
             Deque<MatrixStack.Entry> p = ((MatrixStackAccessor) s).getStack();
             p.clear();

@@ -23,8 +23,7 @@ public class ClientPlayerInteractionManagerMixin {
     @Shadow
     private int blockBreakingCooldown;
 
-    @Redirect(method = "updateBlockBreakingProgress",
-            at = @At(value = "FIELD", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;blockBreakingCooldown:I", opcode = Opcodes.GETFIELD, ordinal = 0))
+    @Redirect(method = "updateBlockBreakingProgress", at = @At(value = "FIELD", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;blockBreakingCooldown:I", opcode = Opcodes.GETFIELD, ordinal = 0))
     public int overwriteCooldown(ClientPlayerInteractionManager clientPlayerInteractionManager) {
         int cd = this.blockBreakingCooldown;
         return Objects.requireNonNull(ModuleRegistry.getByClass(NoBreakDelay.class)).isEnabled() ? 0 : cd;

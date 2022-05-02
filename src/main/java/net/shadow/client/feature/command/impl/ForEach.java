@@ -34,13 +34,15 @@ public class ForEach extends Command {
     public ForEach() {
         super("ForEach", "Do something for each player", "forEach", "for", "fe");
         Events.registerEventHandler(EventType.PACKET_RECEIVE, event -> {
-            if (!recieving) return;
+            if (!recieving)
+                return;
             PacketEvent pe = (PacketEvent) event;
             if (pe.getPacket() instanceof CommandSuggestionsS2CPacket packet) {
                 Suggestions all = packet.getSuggestions();
                 for (Suggestion i : all.getList()) {
                     String name = i.getText();
-                    if (name.contains(ShadowMain.client.player.getName().toString())) continue;
+                    if (name.contains(ShadowMain.client.player.getName().toString()))
+                        continue;
                     ShadowMain.client.player.sendChatMessage(partial.replaceAll("%s", name));
                     message(partial.replaceAll("%s", name));
                 }
@@ -67,8 +69,7 @@ public class ForEach extends Command {
         switch (args[0]) {
             case "player" -> {
                 for (PlayerListEntry playerListEntry : Objects.requireNonNull(ShadowMain.client.getNetworkHandler()).getPlayerList()) {
-                    if (Utils.Players.isPlayerNameValid(playerListEntry.getProfile().getName()) && !playerListEntry.getProfile().getId()
-                            .equals(Objects.requireNonNull(ShadowMain.client.player).getUuid())) {
+                    if (Utils.Players.isPlayerNameValid(playerListEntry.getProfile().getName()) && !playerListEntry.getProfile().getId().equals(Objects.requireNonNull(ShadowMain.client.player).getUuid())) {
                         runner.execute(() -> {
                             try {
                                 ShadowMain.client.player.sendChatMessage(String.join(" ", Arrays.copyOfRange(args, 2, args.length)).replaceAll("%s", playerListEntry.getProfile().getName()));

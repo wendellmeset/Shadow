@@ -39,7 +39,7 @@ public class ParticleManagerMixin implements ParticleManagerDuck {
                 int totalParticles = this.particles.values().stream().mapToInt(Collection::size).sum() + this.newParticles.size();
                 if (totalParticles >= max) {
                     ci.cancel();
-//                    ac.showCrashPreventionNotification("Prevented particle from rendering");
+                    //                    ac.showCrashPreventionNotification("Prevented particle from rendering");
                 }
             }
         }

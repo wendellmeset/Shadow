@@ -40,12 +40,7 @@ public class LogFlood extends Command {
                     ItemStack push = new ItemStack(Items.PLAYER_HEAD, 1);
                     NbtCompound main = new NbtCompound();
                     NbtCompound skullowner = new NbtCompound();
-                    NbtIntArray id = new NbtIntArray(new int[]{
-                            1044599774,
-                            -91344643,
-                            -1626455549,
-                            -827872364
-                    });
+                    NbtIntArray id = new NbtIntArray(new int[]{1044599774, -91344643, -1626455549, -827872364});
                     skullowner.put("Id", id);
                     skullowner.put("Name", NbtString.of("LFlood" + new Random().nextInt(50000)));
                     NbtCompound b = new NbtCompound();

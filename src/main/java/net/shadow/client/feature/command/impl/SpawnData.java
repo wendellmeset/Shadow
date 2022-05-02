@@ -59,15 +59,7 @@ public class SpawnData extends Command {
                 if (!stack.hasNbt())
                     stack.setNbt(new NbtCompound());
 
-                NbtGroup ng = new NbtGroup(
-                        new NbtObject("EntityTag",
-                                new NbtList("Pos",
-                                        new NbtProperty(parser.consumeDouble()),
-                                        new NbtProperty(parser.consumeDouble()),
-                                        new NbtProperty(parser.consumeDouble())
-                                )
-                        )
-                );
+                NbtGroup ng = new NbtGroup(new NbtObject("EntityTag", new NbtList("Pos", new NbtProperty(parser.consumeDouble()), new NbtProperty(parser.consumeDouble()), new NbtProperty(parser.consumeDouble()))));
                 NbtCompound tag = ng.toCompound();
                 stack.getOrCreateNbt().copyFrom(tag);
                 ShadowMain.client.player.networkHandler.sendPacket(new CreativeInventoryActionC2SPacket(36 + ShadowMain.client.player.getInventory().selectedSlot, stack));
@@ -78,15 +70,7 @@ public class SpawnData extends Command {
                 ItemStack stack = ShadowMain.client.player.getInventory().getMainHandStack();
                 if (!stack.hasNbt())
                     stack.setNbt(new NbtCompound());
-                NbtGroup ng = new NbtGroup(
-                        new NbtObject("EntityTag",
-                                new NbtList("Motion",
-                                        new NbtProperty(parser.consumeDouble()),
-                                        new NbtProperty(parser.consumeDouble()),
-                                        new NbtProperty(parser.consumeDouble())
-                                )
-                        )
-                );
+                NbtGroup ng = new NbtGroup(new NbtObject("EntityTag", new NbtList("Motion", new NbtProperty(parser.consumeDouble()), new NbtProperty(parser.consumeDouble()), new NbtProperty(parser.consumeDouble()))));
                 NbtCompound tag = ng.toCompound();
                 stack.getOrCreateNbt().copyFrom(tag);
                 ShadowMain.client.player.networkHandler.sendPacket(new CreativeInventoryActionC2SPacket(36 + ShadowMain.client.player.getInventory().selectedSlot, stack));
@@ -97,15 +81,7 @@ public class SpawnData extends Command {
                 if (!stack.hasNbt())
                     stack.setNbt(new NbtCompound());
                 Vec3d se = Objects.requireNonNull(ShadowMain.client.player).raycast(255, ShadowMain.client.getTickDelta(), true).getPos();
-                NbtGroup ng = new NbtGroup(
-                        new NbtObject("EntityTag",
-                                new NbtList("Pos",
-                                        new NbtProperty(se.x),
-                                        new NbtProperty(se.y),
-                                        new NbtProperty(se.z)
-                                )
-                        )
-                );
+                NbtGroup ng = new NbtGroup(new NbtObject("EntityTag", new NbtList("Pos", new NbtProperty(se.x), new NbtProperty(se.y), new NbtProperty(se.z))));
                 NbtCompound tag = ng.toCompound();
                 stack.getOrCreateNbt().copyFrom(tag);
                 ShadowMain.client.player.networkHandler.sendPacket(new CreativeInventoryActionC2SPacket(36 + ShadowMain.client.player.getInventory().selectedSlot, stack));

@@ -18,7 +18,7 @@ import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.helper.Rotations;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
-import net.shadow.client.helper.event.events.PostInitEvent;
+import net.shadow.client.helper.event.events.base.NonCancellableEvent;
 import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.font.adapter.impl.BruhAdapter;
 import net.shadow.client.helper.font.renderer.FontRenderer;
@@ -28,8 +28,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.awt.Font;
-import java.awt.FontFormatException;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -153,7 +152,7 @@ public class ShadowMain implements ModInitializer {
         //        ModuleRegistry.sortModulesPostInit();
         CommandRegistry.init();
         log(Level.INFO, "Sending post window init");
-        Events.fireEvent(EventType.POST_INIT, new PostInitEvent());
+        Events.fireEvent(EventType.POST_INIT, new NonCancellableEvent());
         for (Module module : new ArrayList<>(ModuleRegistry.getModules())) {
             module.postInit();
         }

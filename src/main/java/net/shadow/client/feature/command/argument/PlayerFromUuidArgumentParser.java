@@ -19,7 +19,8 @@ public class PlayerFromUuidArgumentParser implements ArgumentParser<PlayerEntity
         try {
             UUID u = UUID.fromString(argument);
             for (AbstractClientPlayerEntity player : ShadowMain.client.world.getPlayers()) {
-                if (player.getUuid().equals(u)) return player;
+                if (player.getUuid().equals(u))
+                    return player;
             }
             throw new CommandException("Invalid argument \"" + argument + "\": Player not found", "Provide the uuid of an existing player");
         } catch (Exception e) {

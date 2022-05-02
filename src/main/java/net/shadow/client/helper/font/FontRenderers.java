@@ -8,7 +8,7 @@ import net.shadow.client.helper.font.adapter.FontAdapter;
 import net.shadow.client.helper.font.adapter.impl.BruhAdapter;
 import net.shadow.client.helper.font.renderer.FontRenderer;
 
-import java.awt.Font;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

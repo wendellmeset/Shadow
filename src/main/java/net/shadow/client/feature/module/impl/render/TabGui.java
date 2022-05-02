@@ -19,7 +19,7 @@ import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Transitions;
 import org.lwjgl.glfw.GLFW;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -28,13 +28,13 @@ import java.util.function.BooleanSupplier;
 
 public class TabGui extends Module {
     @Getter
-    final
-    Stack<TabPane> tabStack = new Stack<>();
+    final Stack<TabPane> tabStack = new Stack<>();
 
     public TabGui() {
         super("TabGui", "Renders a small module manager top left", ModuleType.RENDER);
         Events.registerEventHandler(EventType.KEYBOARD, event -> {
-            if (!this.isEnabled()) return;
+            if (!this.isEnabled())
+                return;
             KeyboardEvent me = (KeyboardEvent) event;
             handleMouse(me);
         });
@@ -55,11 +55,13 @@ public class TabGui extends Module {
                 GuiEntry ge = new GuiEntry(value.getName(), () -> false, () -> {
                     TabPane modules = new TabPane();
                     for (Module module : ModuleRegistry.getModules()) {
-                        if (module.getModuleType() != value) continue;
+                        if (module.getModuleType() != value)
+                            continue;
                         GuiEntry ge1 = new GuiEntry(module.getName(), module::isEnabled, module::toggle, tabStack::pop, FontRenderers.getRenderer().getStringWidth(module.getName()), FontRenderers.getRenderer().getMarginHeight());
                         modules.entries.add(ge1);
                     }
-                    if (modules.entries.isEmpty()) return;
+                    if (modules.entries.isEmpty())
+                        return;
                     tabStack.add(modules);
                 }, () -> {
                 }, FontRenderers.getRenderer().getStringWidth(value.getName()), FontRenderers.getRenderer().getMarginHeight());
@@ -79,8 +81,10 @@ public class TabGui extends Module {
     }
 
     void handleMouse(KeyboardEvent me) {
-        if (me.getType() == 0) return;
-        if (tabStack.isEmpty()) return;
+        if (me.getType() == 0)
+            return;
+        if (tabStack.isEmpty())
+            return;
         TabPane tbp = tabStack.peek();
         switch (me.getKeycode()) {
             case GLFW.GLFW_KEY_DOWN -> tbp.cursor++;
@@ -96,7 +100,8 @@ public class TabGui extends Module {
     }
 
     public void render(MatrixStack stack) {
-        if (!this.isEnabled()) return;
+        if (!this.isEnabled())
+            return;
         for (TabPane tabPane : tabStack) {
             GuiEntry widest = tabPane.entries.stream().max(Comparator.comparingDouble(value -> value.width)).orElseThrow();
             double padOuter = 2;

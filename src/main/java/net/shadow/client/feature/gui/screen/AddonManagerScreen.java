@@ -24,7 +24,7 @@ import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.render.Scroller;
 import org.lwjgl.opengl.GL40C;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -122,8 +122,10 @@ public class AddonManagerScreen extends ClientScreen implements FastTickable {
             this.addon = addon;
             this.width = width;
             disable = new RoundButton(RoundButton.STANDARD, 0, 0, 60, 20, addon.isEnabled() ? "Disable" : "Enable", () -> {
-                if (addon.isEnabled()) AddonManager.INSTANCE.disableAddon(addon);
-                else AddonManager.INSTANCE.enableAddon(addon);
+                if (addon.isEnabled())
+                    AddonManager.INSTANCE.disableAddon(addon);
+                else
+                    AddonManager.INSTANCE.enableAddon(addon);
                 disable.setText(addon.isEnabled() ? "Disable" : "Enable");
                 ClickGUI.reInit();
             });
@@ -150,9 +152,11 @@ public class AddonManagerScreen extends ClientScreen implements FastTickable {
 
             RenderSystem.blendFunc(GL40C.GL_DST_ALPHA, GL40C.GL_ONE_MINUS_DST_ALPHA);
             Identifier icon = addon.getIcon();
-            if (icon == null) icon = GameTexture.ICONS_ADDON_PROVIDED.getWhere();
+            if (icon == null)
+                icon = GameTexture.ICONS_ADDON_PROVIDED.getWhere();
             RenderSystem.setShaderTexture(0, icon);
-            if (!addon.isEnabled()) RenderSystem.setShaderColor(0.6f, 0.6f, 0.6f, 1f);
+            if (!addon.isEnabled())
+                RenderSystem.setShaderColor(0.6f, 0.6f, 0.6f, 1f);
             Renderer.R2D.renderTexture(stack, x + padding, y + padding, iconDimensions, iconDimensions, 0, 0, iconDimensions, iconDimensions, iconDimensions, iconDimensions);
             RenderSystem.defaultBlendFunc();
             RenderSystem.setShaderColor(1f, 1f, 1f, 1f);

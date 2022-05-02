@@ -26,7 +26,8 @@ public class Effect extends Command {
 
     @Override
     public PossibleArgument getSuggestionsWithType(int index, String[] args) {
-        if (index == 0) return new PossibleArgument(ArgumentType.STRING, "give", "clear");
+        if (index == 0)
+            return new PossibleArgument(ArgumentType.STRING, "give", "clear");
         else if (args[0].equalsIgnoreCase("give")) {
             return switch (index) {
                 case 1 -> new PossibleArgument(ArgumentType.NUMBER, "(effect id)");

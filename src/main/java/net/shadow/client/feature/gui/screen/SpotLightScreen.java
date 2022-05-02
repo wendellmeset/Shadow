@@ -30,7 +30,7 @@ import net.shadow.client.helper.util.Transitions;
 import org.apache.commons.lang3.SystemUtils;
 import org.lwjgl.glfw.GLFW;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -126,7 +126,7 @@ public class SpotLightScreen extends ClientScreen implements FastTickable {
         Renderer.R2D.renderRoundedQuad(stack, new Color(20, 20, 20), command.x, command.y, command.x + command.width, command.y + totalHeight, 5, 20);
         Renderer.R2D.renderRoundedQuad(stack, new Color(30, 30, 30), command.x, command.y, command.x + command.width, command.y + command.height, 5, 20);
 
-//        useSelectingIndex = !(mouseX >= suggestionsField.getX() && mouseX <= suggestionsField.getX1() && mouseY >= suggestionsField.getY() && mouseY <= suggestionsField.getY1());
+        //        useSelectingIndex = !(mouseX >= suggestionsField.getX() && mouseX <= suggestionsField.getX1() && mouseY >= suggestionsField.getY() && mouseY <= suggestionsField.getY1());
 
         double yOffset = 0;
         stack.push();
@@ -140,7 +140,8 @@ public class SpotLightScreen extends ClientScreen implements FastTickable {
             suggestionsEntry.wid = command.width - 4;
             if (!useSelectingIndex)
                 suggestionsEntry.selected = mouseX >= suggestionsEntry.x && mouseX <= suggestionsEntry.x + suggestionsEntry.wid && mouseY + smoothScroll >= suggestionsEntry.y && mouseY + smoothScroll <= suggestionsEntry.y + suggestionsEntry.height();
-            else suggestionsEntry.selected = index == selectingIndex;
+            else
+                suggestionsEntry.selected = index == selectingIndex;
             suggestionsEntry.render(stack);
             yOffset += suggestionsEntry.height() + 2;
             index++;
@@ -162,14 +163,17 @@ public class SpotLightScreen extends ClientScreen implements FastTickable {
             selectingIndex--;
             return true;
         } else if (keyCode == GLFW.GLFW_KEY_ENTER) {
-            if (!entries.isEmpty()) entries.get(selectingIndex).onCl.run();
+            if (!entries.isEmpty())
+                entries.get(selectingIndex).onCl.run();
             return true;
         } else if (keyCode == GLFW.GLFW_KEY_TAB) {
             for (SuggestionsEntry entry : entries) {
-                if (entry.selected) entry.tabcomplete.run();
+                if (entry.selected)
+                    entry.tabcomplete.run();
             }
             return true;
-        } else return super.keyPressed(keyCode, scanCode, modifiers);
+        } else
+            return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
     @Override
@@ -221,7 +225,8 @@ public class SpotLightScreen extends ClientScreen implements FastTickable {
         selectingIndex = makeSureInBounds(selectingIndex, entries.size());
         smoothScroll = Transitions.transition(smoothScroll, scroll, 7, 0);
         double delta = 0.07;
-        if (closing) delta *= -1;
+        if (closing)
+            delta *= -1;
         anim += delta;
         anim = MathHelper.clamp(anim, 0, 1);
     }
@@ -580,8 +585,7 @@ public class SpotLightScreen extends ClientScreen implements FastTickable {
             //Renderer.R2D.endScissor();
             boolean renderCursor = (System.currentTimeMillis() % 1000) / 500d > 1;
             if (focused && renderCursor) {
-                Renderer.R2D.renderQuad(stack, new Color(1f, 1f, 1f, opacity), x + pad + getTextWidth(cursor) - overflowWidth, centerY, x + pad + getTextWidth(cursor) - overflowWidth + 1, centerY + fa
-                        .getMarginHeight());
+                Renderer.R2D.renderQuad(stack, new Color(1f, 1f, 1f, opacity), x + pad + getTextWidth(cursor) - overflowWidth, centerY, x + pad + getTextWidth(cursor) - overflowWidth + 1, centerY + fa.getMarginHeight());
             }
 
         }

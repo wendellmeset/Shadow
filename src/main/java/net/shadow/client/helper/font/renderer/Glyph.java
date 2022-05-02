@@ -7,11 +7,7 @@ package net.shadow.client.helper.font.renderer;
 import net.shadow.client.helper.Texture;
 import net.shadow.client.helper.util.Utils;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;

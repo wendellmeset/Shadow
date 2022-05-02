@@ -20,10 +20,8 @@ import net.shadow.client.mixin.IPlayerMoveC2SPacketAccessor;
  */
 public class NoFall extends Module {
 
-    final EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.OnGround).name("Mode").description("How to spoof packets (packet drowns the others out, use with caution)")
-            .get());
-    final DoubleSetting fallDist = this.config.create(new DoubleSetting.Builder(3).name("Fall distance").description("How much to fall before breaking the fall").min(1).max(10).precision(1)
-            .get());
+    final EnumSetting<Mode> mode = this.config.create(new EnumSetting.Builder<>(Mode.OnGround).name("Mode").description("How to spoof packets (packet drowns the others out, use with caution)").get());
+    final DoubleSetting fallDist = this.config.create(new DoubleSetting.Builder(3).name("Fall distance").description("How much to fall before breaking the fall").min(1).max(10).precision(1).get());
     public boolean enabled = true;
 
     public NoFall() {
@@ -88,4 +86,3 @@ public class NoFall extends Module {
         OnGround, Packet, BreakFall
     }
 }
-

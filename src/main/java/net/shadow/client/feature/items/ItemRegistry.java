@@ -4,11 +4,7 @@
 
 package net.shadow.client.feature.items;
 
-import net.shadow.client.feature.items.impl.Backdoor;
-import net.shadow.client.feature.items.impl.Fireball;
-import net.shadow.client.feature.items.impl.Nuke;
-import net.shadow.client.feature.items.impl.Plague;
-import net.shadow.client.feature.items.impl.Poof;
+import net.shadow.client.feature.items.impl.*;
 
 import java.util.ArrayList;
 import java.util.List;

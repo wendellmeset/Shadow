@@ -12,8 +12,7 @@ import net.shadow.client.feature.module.impl.render.TargetHud;
 public class TargetHUD extends HudElement {
 
     public TargetHUD() {
-        super("Target HUD", ShadowMain.client.getWindow().getScaledWidth() / 2f + 10, ShadowMain.client.getWindow()
-                .getScaledHeight() / 2f + 10, TargetHud.modalWidth, TargetHud.modalHeight);
+        super("Target HUD", ShadowMain.client.getWindow().getScaledWidth() / 2f + 10, ShadowMain.client.getWindow().getScaledHeight() / 2f + 10, TargetHud.modalWidth, TargetHud.modalHeight);
     }
 
     @Override
