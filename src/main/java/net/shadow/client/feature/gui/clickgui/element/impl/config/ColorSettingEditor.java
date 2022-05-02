@@ -14,7 +14,7 @@ import net.shadow.client.helper.render.ClipStack;
 import net.shadow.client.helper.render.Rectangle;
 import net.shadow.client.helper.render.Renderer;
 
-import java.awt.*;
+import java.awt.Color;
 
 import static java.lang.Math.pow;
 
@@ -96,15 +96,14 @@ public class ColorSettingEditor extends ConfigBase<ColorSetting> {
     }
 
     Element[] getChildren() {
-        return new Element[]{red, green, blue, alpha};
+        return new Element[] { red, green, blue, alpha };
     }
 
     @Override
     public boolean clicked(double x, double y, int button) {
         if (expanded) {
             for (Element child : getChildren()) {
-                if (child.clicked(x, y, button))
-                    return true;
+                if (child.clicked(x, y, button)) return true;
             }
         }
         if (x >= this.x && x <= this.x + width && y >= this.y && y <= this.y + headerHeight()) {
@@ -122,8 +121,7 @@ public class ColorSettingEditor extends ConfigBase<ColorSetting> {
     @Override
     public boolean dragged(double x, double y, double deltaX, double deltaY, int button) {
         for (Element child : getChildren()) {
-            if (child.dragged(x, y, deltaX, deltaY, button))
-                return true;
+            if (child.dragged(x, y, deltaX, deltaY, button)) return true;
         }
         return false;
     }
@@ -166,8 +164,7 @@ public class ColorSettingEditor extends ConfigBase<ColorSetting> {
     @Override
     public void tickAnim() {
         double delta = 0.02;
-        if (!expanded)
-            delta *= -1;
+        if (!expanded) delta *= -1;
         expandProg += delta;
         expandProg = MathHelper.clamp(expandProg, 0, 1);
         for (Element child : getChildren()) {

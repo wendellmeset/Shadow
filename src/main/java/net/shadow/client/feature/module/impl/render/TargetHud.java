@@ -26,7 +26,7 @@ import net.shadow.client.helper.util.Transitions;
 import net.shadow.client.helper.util.Utils;
 import org.lwjgl.opengl.GL40C;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;

@@ -6,7 +6,12 @@ package net.shadow.client.feature.module.impl.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import it.unimi.dsi.fastutil.ints.Int2IntArrayMap;
-import net.minecraft.client.render.*;
+import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.BufferRenderer;
+import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexFormat;
+import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.TntEntity;
@@ -25,7 +30,7 @@ import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Utils;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class ShowTntPrime extends Module {
     final Int2IntArrayMap i2iamp = new Int2IntArrayMap();
@@ -33,19 +38,16 @@ public class ShowTntPrime extends Module {
     public ShowTntPrime() {
         super("ShowTntPrime", "Shows how much time is left for a piece of tnt to explode", ModuleType.RENDER);
         Events.registerEventHandler(EventType.PACKET_RECEIVE, event -> {
-            if (!this.isEnabled())
-                return;
+            if (!this.isEnabled()) return;
             PacketEvent pe = (PacketEvent) event;
             if (pe.getPacket() instanceof EntityTrackerUpdateS2CPacket p) {
                 Entity e = ShadowMain.client.world.getEntityById(p.id());
-                if (e == null)
-                    return;
+                if (e == null) return;
                 if (e instanceof TntEntity) {
                     if (i2iamp.size() > 200) {
                         return;
                     }
-                    if (p.getTrackedValues() == null || p.getTrackedValues().size() == 0)
-                        return;
+                    if (p.getTrackedValues() == null || p.getTrackedValues().size() == 0) return;
                     //                    System.out.println(p.getTrackedValues().get(0).get());
                     if (!i2iamp.containsKey(p.id()))
                         i2iamp.put(p.id(), Integer.parseInt(p.getTrackedValues().get(0).get() + ""));
@@ -116,8 +118,7 @@ public class ShowTntPrime extends Module {
         //        System.out.println(i2iamp.keySet().size());
         for (Integer integer : i2iamp.keySet()) {
             Entity e = ShadowMain.client.world.getEntityById(integer);
-            if (e == null)
-                i2iamp.remove((int) integer);
+            if (e == null) i2iamp.remove((int) integer);
             else {
                 int fuseStart = i2iamp.get((int) integer);
                 int fuseNow = ((TntEntity) e).getFuse();

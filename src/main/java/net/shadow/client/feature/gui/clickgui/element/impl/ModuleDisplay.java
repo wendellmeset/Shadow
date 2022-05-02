@@ -121,8 +121,7 @@ public class ModuleDisplay extends Element {
     @Override
     public boolean scroll(double mouseX, double mouseY, double amount) {
         if (extendAnim > 0) {
-            if (cd.scroll(mouseX, mouseY, amount))
-                return true;
+            if (cd.scroll(mouseX, mouseY, amount)) return true;
         }
         return super.scroll(mouseX, mouseY, amount);
     }

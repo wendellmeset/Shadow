@@ -14,7 +14,7 @@ import net.shadow.client.feature.gui.widget.RoundButton;
 import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.render.Renderer;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class NotificationScreen extends ClientScreen implements FastTickable {
     final String t;

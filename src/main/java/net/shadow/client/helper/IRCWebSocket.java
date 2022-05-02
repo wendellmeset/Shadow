@@ -25,6 +25,7 @@ public class IRCWebSocket extends WebSocketClient {
     public static List<PlayerEntry> knownIRCPlayers = new CopyOnWriteArrayList<>();
     String authToken;
     Runnable onClose;
+
     public IRCWebSocket(URI serverUri, String authToken, Runnable onClose) {
         super(serverUri, Map.of("Authorization", authToken, "X-MC-UUID", ShadowMain.client.getSession().getUuid(), "X-MC-USERNAME", ShadowMain.client.getSession().getUsername()));
         this.authToken = authToken;
@@ -68,8 +69,7 @@ public class IRCWebSocket extends WebSocketClient {
                         continue;
                     }
                     PlayerEntry pe = new PlayerEntry(u, uuid);
-                    if (!knownIRCPlayers.contains(pe))
-                        knownIRCPlayers.add(pe);
+                    if (!knownIRCPlayers.contains(pe)) knownIRCPlayers.add(pe);
                 }
 
             }

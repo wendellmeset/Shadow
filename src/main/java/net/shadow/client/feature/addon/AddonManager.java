@@ -29,7 +29,11 @@ import java.nio.file.FileVisitor;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -38,21 +42,17 @@ import java.util.stream.Collectors;
 public class AddonManager {
     public static final File ADDON_DIRECTORY = new File(ShadowMain.BASE, "addons");
     public static final File ADDON_RESOURCE_CACHE = new File(ADDON_DIRECTORY, ".res_cache");
-    private static final int[] EXPECTED_CLASS_SIGNATURE = new int[]{0xCA, 0xFE, 0xBA, 0xBE};
+    private static final int[] EXPECTED_CLASS_SIGNATURE = new int[] { 0xCA, 0xFE, 0xBA, 0xBE };
     public static AddonManager INSTANCE;
     private final List<AddonEntry> loadedAddons = new ArrayList<>();
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private AddonManager() {
         INSTANCE = this;
-        if (!ADDON_DIRECTORY.isDirectory())
-            ADDON_DIRECTORY.delete();
-        if (!ADDON_DIRECTORY.exists())
-            ADDON_DIRECTORY.mkdir();
-        if (!ADDON_RESOURCE_CACHE.isDirectory())
-            ADDON_RESOURCE_CACHE.delete();
-        if (!ADDON_RESOURCE_CACHE.exists())
-            ADDON_RESOURCE_CACHE.mkdir();
+        if (!ADDON_DIRECTORY.isDirectory()) ADDON_DIRECTORY.delete();
+        if (!ADDON_DIRECTORY.exists()) ADDON_DIRECTORY.mkdir();
+        if (!ADDON_RESOURCE_CACHE.isDirectory()) ADDON_RESOURCE_CACHE.delete();
+        if (!ADDON_RESOURCE_CACHE.exists()) ADDON_RESOURCE_CACHE.mkdir();
         initializeAddons();
 
         Events.registerEventHandlerClass(this);
@@ -158,8 +158,7 @@ public class AddonManager {
                 storedConfig.put(customModule.module().getName(), customModule.module().config);
             }
         }
-        if (addon.isEnabled())
-            disableAddon(addon);
+        if (addon.isEnabled()) disableAddon(addon);
         AddonEntry meant = null;
         for (AddonEntry loadedAddon : loadedAddons) {
             if (loadedAddon.registeredAddon == addon) {
@@ -198,29 +197,25 @@ public class AddonManager {
     }
 
     public void disableAddon(Addon addon) {
-        if (!addon.isEnabled())
-            throw new IllegalStateException("Addon already disabled");
+        if (!addon.isEnabled()) throw new IllegalStateException("Addon already disabled");
         addon.onDisable();
         ModuleRegistry.clearCustomModules(addon);
         CommandRegistry.clearCustomCommands(addon);
     }
 
     public void enableAddon(Addon addon) {
-        if (addon.isEnabled())
-            throw new IllegalStateException("Addon already enabled");
+        if (addon.isEnabled()) throw new IllegalStateException("Addon already enabled");
         addon.onEnable();
         List<AddonModule> customModules = addon.getAdditionalModules();
         List<Command> customCommands = addon.getAdditionalCommands();
-        if (customModules != null)
-            for (AddonModule additionalModule : customModules) {
-                ShadowMain.log(Level.INFO, "Loading module " + additionalModule.getName() + " from addon " + addon.name);
-                ModuleRegistry.registerAddonModule(addon, additionalModule);
-            }
-        if (customCommands != null)
-            for (Command customCommand : customCommands) {
-                ShadowMain.log(Level.INFO, "Loading command " + customCommand.getName() + " from addon " + addon.name);
-                CommandRegistry.registerCustomCommand(addon, customCommand);
-            }
+        if (customModules != null) for (AddonModule additionalModule : customModules) {
+            ShadowMain.log(Level.INFO, "Loading module " + additionalModule.getName() + " from addon " + addon.name);
+            ModuleRegistry.registerAddonModule(addon, additionalModule);
+        }
+        if (customCommands != null) for (Command customCommand : customCommands) {
+            ShadowMain.log(Level.INFO, "Loading command " + customCommand.getName() + " from addon " + addon.name);
+            CommandRegistry.registerCustomCommand(addon, customCommand);
+        }
     }
 
     void dispatchDisable() {
@@ -248,8 +243,7 @@ public class AddonManager {
         JarFile jf = new JarFile(location);
         Class<Addon> mainClass = null;
         for (JarEntry jarEntry : jf.stream().toList()) {
-            if (jarEntry.isDirectory())
-                continue;
+            if (jarEntry.isDirectory()) continue;
             InputStream stream = jf.getInputStream(jarEntry);
             if (jarEntry.getName().endsWith(".class")) {
                 byte[] classBytes = stream.readAllBytes();

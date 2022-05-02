@@ -33,8 +33,7 @@ public class Config extends Command {
             case 1 -> {
                 if (ModuleRegistry.getByName(args[0]) != null) {
                     yield new PossibleArgument(ArgumentType.STRING, Objects.requireNonNull(ModuleRegistry.getByName(args[0].replaceAll("-", " "))).config.getSettings().stream().map(SettingBase::getName).toList().toArray(String[]::new));
-                } else
-                    yield super.getSuggestionsWithType(index, args);
+                } else yield super.getSuggestionsWithType(index, args);
             }
             case 2 -> new PossibleArgument(ArgumentType.STRING, "(New value)");
             default -> super.getSuggestionsWithType(index, args);

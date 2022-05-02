@@ -53,8 +53,7 @@ public abstract class Module {
         this.debuggerEnabled = this.config.create(new BooleanSetting.Builder(false).name("Debugger").description("Shows a lot of funky visuals describing whats going on").get());
         boolean hasAnnotation = false;
         for (Annotation declaredAnnotation : this.getClass().getDeclaredAnnotations()) {
-            if (declaredAnnotation.annotationType() == NoNotificationDefault.class)
-                hasAnnotation = true;
+            if (declaredAnnotation.annotationType() == NoNotificationDefault.class) hasAnnotation = true;
         }
         this.toasts = this.config.create(new BooleanSetting.Builder(!hasAnnotation).name("Toasts").description("Whether to show enabled / disabled toasts").get());
     }

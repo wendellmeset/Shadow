@@ -21,7 +21,7 @@ import net.shadow.client.helper.font.adapter.FontAdapter;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Utils;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Comparator;
 
 import static net.shadow.client.feature.module.impl.render.TargetHud.GREEN;
@@ -69,13 +69,12 @@ public class NameTags extends Module {
         }
         String pingStr = (ping == 0 ? "?" : ping) + " ms";
         String gmString = "§cBot";
-        if (gamemode != null)
-            switch (gamemode) {
-                case ADVENTURE -> gmString = "Adventure";
-                case CREATIVE -> gmString = "Creative";
-                case SURVIVAL -> gmString = "Survival";
-                case SPECTATOR -> gmString = "Spectator";
-            }
+        if (gamemode != null) switch (gamemode) {
+            case ADVENTURE -> gmString = "Adventure";
+            case CREATIVE -> gmString = "Creative";
+            case SURVIVAL -> gmString = "Survival";
+            case SPECTATOR -> gmString = "Spectator";
+        }
         MatrixStack stack1 = Renderer.R3D.getEmptyMatrixStack();
         Vec3d actual = new Vec3d(screenPos.x, screenPos.y - labelHeight, screenPos.z);
         float width = nameDrawer.getStringWidth(text) + 4;

@@ -36,8 +36,7 @@ public class InteractCrash extends Module {
         switch (mode.getValue()) {
             case Block -> {
                 BlockHitResult bhr = (BlockHitResult) client.crosshairTarget;
-                if (client.world.getBlockState(bhr.getBlockPos()).isAir())
-                    return;
+                if (client.world.getBlockState(bhr.getBlockPos()).isAir()) return;
                 for (int i = 0; i < repeat.getValue(); i++) {
                     client.player.networkHandler.sendPacket(new PlayerInteractBlockC2SPacket(Hand.MAIN_HAND, bhr));
                 }
@@ -65,8 +64,7 @@ public class InteractCrash extends Module {
 
     @EventListener(type = EventType.PACKET_RECEIVE)
     void onGotPacket(PacketEvent event) {
-        if (!this.isEnabled())
-            return;
+        if (!this.isEnabled()) return;
         if (event.getPacket() instanceof OpenScreenS2CPacket packet) {
             event.setCancelled(true);
         }

@@ -23,7 +23,7 @@ import net.shadow.client.helper.Rotations;
 import net.shadow.client.helper.Timer;
 import net.shadow.client.helper.render.Renderer;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class AutoLavacast extends Module {
 

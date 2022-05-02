@@ -66,13 +66,10 @@ public class FlightCrash extends Module {
 
     @EventListener(type = EventType.PACKET_SEND)
     void onSentPacket(PacketEvent event) {
-        if (!this.isEnabled())
-            return;
-        if (!capture)
-            return;
+        if (!this.isEnabled()) return;
+        if (!capture) return;
 
-        if (!(event.getPacket() instanceof PlayerMoveC2SPacket packet))
-            return;
+        if (!(event.getPacket() instanceof PlayerMoveC2SPacket packet)) return;
 
         if (!(packet instanceof PlayerMoveC2SPacket.PositionAndOnGround || packet instanceof PlayerMoveC2SPacket.Full))
             return;

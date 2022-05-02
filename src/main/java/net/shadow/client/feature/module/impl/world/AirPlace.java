@@ -26,11 +26,9 @@ public class AirPlace extends Module {
     public AirPlace() {
         super("AirPlace", "Places blocks in the air", ModuleType.MISC);
         Events.registerEventHandler(EventType.MOUSE_EVENT, event -> {
-            if (!this.isEnabled())
-                return;
+            if (!this.isEnabled()) return;
             if (enabled && ((MouseEvent) event).getButton() == 1 && ((MouseEvent) event).getAction() == 1) {
-                if (ShadowMain.client.currentScreen != null)
-                    return;
+                if (ShadowMain.client.currentScreen != null) return;
                 try {
                     if (!client.world.getBlockState(((BlockHitResult) ShadowMain.client.crosshairTarget).getBlockPos()).isAir())
                         return;

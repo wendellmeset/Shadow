@@ -49,8 +49,7 @@ public class LoominaCrash extends Module {
                 Notification.create(1000, "Loomina", Notification.Type.ERROR, "out of dye!");
             }
         } else {
-            if (this.expl != null)
-                expl.duration = 0;
+            if (this.expl != null) expl.duration = 0;
             expl = null;
         }
     }

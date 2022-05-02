@@ -19,7 +19,7 @@ import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.render.Cursor;
 import net.shadow.client.helper.render.Renderer;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class RoundButton implements Element, Drawable, Selectable, FastTickable, DoesMSAA, HasSpecialCursor {
 
@@ -121,8 +121,7 @@ public class RoundButton implements Element, Drawable, Selectable, FastTickable,
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         isHovered = inBounds(mouseX, mouseY) && isEnabled();
-        if (!isVisible())
-            return;
+        if (!isVisible()) return;
         matrices.push();
         matrices.translate(x + width / 2d, y + height / 2d, 0);
         float animProgress = (float) easeInOutQuint(this.animProgress);
@@ -147,8 +146,7 @@ public class RoundButton implements Element, Drawable, Selectable, FastTickable,
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (!isVisible())
-            return false;
+        if (!isVisible()) return false;
         if (inBounds(mouseX, mouseY) && isEnabled() && button == 0) {
             onPress.run();
             return true;

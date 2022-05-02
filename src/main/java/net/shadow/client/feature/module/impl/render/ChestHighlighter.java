@@ -29,8 +29,7 @@ public class ChestHighlighter extends Module {
     }
 
     void addIfNotExisting(BlockPos p) {
-        if (positions.stream().noneMatch(blockPos -> blockPos.equals(p)))
-            positions.add(p);
+        if (positions.stream().noneMatch(blockPos -> blockPos.equals(p))) positions.add(p);
     }
 
     void remove(BlockPos p) {
@@ -39,8 +38,7 @@ public class ChestHighlighter extends Module {
 
     @EventListener(type = EventType.BLOCK_ENTITY_RENDER)
     void r(BlockEntityRenderEvent be) {
-        if (!this.isEnabled())
-            return;
+        if (!this.isEnabled()) return;
         if (be.getBlockEntity() instanceof ChestBlockEntity) {
             addIfNotExisting(be.getBlockEntity().getPos());
         }

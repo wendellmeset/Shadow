@@ -57,8 +57,7 @@ public class Freecam extends Module {
 
     @EventListener(type = EventType.NOCLIP_QUERY)
     void onNoclip(PlayerNoClipQueryEvent event) {
-        if (event.getPlayer().isOnGround())
-            return;
+        if (event.getPlayer().isOnGround()) return;
         event.setNoClipState(PlayerNoClipQueryEvent.NoClipState.ACTIVE);
     }
 

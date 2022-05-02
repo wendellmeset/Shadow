@@ -24,7 +24,7 @@ import net.shadow.client.helper.render.Rectangle;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.render.Scroller;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -115,8 +115,7 @@ public class CategoryDisplay extends Element {
         return md.stream().filter(moduleDisplay -> {
             char[] charsToSearchFor = ClickGUI.instance().searchTerm.toLowerCase().toCharArray();
             for (char c : charsToSearchFor) {
-                if (!moduleDisplay.module.getName().toLowerCase().contains(String.valueOf(c)))
-                    return false;
+                if (!moduleDisplay.module.getName().toLowerCase().contains(String.valueOf(c))) return false;
             }
             return true;
         }).collect(Collectors.toList());
@@ -195,8 +194,7 @@ public class CategoryDisplay extends Element {
             for (ModuleDisplay moduleDisplay : getModules()) {
                 moduleDisplay.setX(this.x);
                 moduleDisplay.setY(this.y + y);
-                if (moduleDisplay.getY() + scroller.getScroll() > this.y + height)
-                    continue;
+                if (moduleDisplay.getY() + scroller.getScroll() > this.y + height) continue;
 
                 moduleDisplay.render(matrices, mouseX1, mouseY1 - scroller.getScroll(), scrollBeingUsed);
                 y += moduleDisplay.getHeight();
@@ -223,8 +221,7 @@ public class CategoryDisplay extends Element {
     public void tickAnim() {
         scroller.tick();
         double oaDelta = 0.02;
-        if (!open)
-            oaDelta *= -1;
+        if (!open) oaDelta *= -1;
         openAnim += oaDelta;
         openAnim = MathHelper.clamp(openAnim, 0, 1);
         for (ModuleDisplay moduleDisplay : getModules()) {

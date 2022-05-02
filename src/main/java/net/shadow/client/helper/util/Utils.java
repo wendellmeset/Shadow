@@ -36,7 +36,7 @@ import net.shadow.client.mixin.IRenderTickCounterAccessor;
 import org.lwjgl.BufferUtils;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -48,9 +48,14 @@ import java.net.http.HttpResponse;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Queue;
-import java.util.*;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Utils {
@@ -310,8 +315,7 @@ public class Utils {
                     result = name;
                 }
             }
-            if (result.equals("none"))
-                return smallname;
+            if (result.equals("none")) return smallname;
             return result;
         }
 
@@ -358,7 +362,7 @@ public class Utils {
         public static int[] decodeUUID(UUID uuid) {
             long sigLeast = uuid.getLeastSignificantBits();
             long sigMost = uuid.getMostSignificantBits();
-            return new int[]{(int) (sigMost >> 32), (int) sigMost, (int) (sigLeast >> 32), (int) sigLeast};
+            return new int[] { (int) (sigMost >> 32), (int) sigMost, (int) (sigLeast >> 32), (int) sigLeast };
         }
     }
 
@@ -397,8 +401,7 @@ public class Utils {
         public static void message(String n, Color c) {
             LiteralText t = new LiteralText(n);
             t.setStyle(t.getStyle().withColor(TextColor.fromRgb(c.getRGB())));
-            if (!(ShadowMain.client.currentScreen instanceof ConsoleScreen))
-                message(t);
+            if (!(ShadowMain.client.currentScreen instanceof ConsoleScreen)) message(t);
             //            if (c.equals(Color.WHITE)) c = Color.BLACK;
             ConsoleScreen.instance().addLog(new ConsoleScreen.LogEntry(n, c));
         }
@@ -426,8 +429,7 @@ public class Utils {
         }
 
         public static void runOnNextRender(Runnable r) {
-            if (ShadowMain.client.options.hudHidden)
-                return;
+            if (ShadowMain.client.options.hudHidden) return;
             nextTickRunners.add(r);
         }
 

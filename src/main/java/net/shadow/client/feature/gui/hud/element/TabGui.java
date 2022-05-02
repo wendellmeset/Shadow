@@ -23,8 +23,7 @@ public class TabGui extends HudElement {
     }
 
     net.shadow.client.feature.module.impl.render.TabGui getTgui() {
-        if (tgui == null)
-            tgui = ModuleRegistry.getByClass(net.shadow.client.feature.module.impl.render.TabGui.class);
+        if (tgui == null) tgui = ModuleRegistry.getByClass(net.shadow.client.feature.module.impl.render.TabGui.class);
         return tgui;
     }
 

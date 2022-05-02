@@ -24,14 +24,14 @@ import net.shadow.client.feature.module.ModuleType;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Utils;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AutoFireball extends Module {
 
     final DoubleSetting radius = this.config.create(new DoubleSetting.Builder(15).max(100).min(10).name("Radius").description("The radius to search in").get());
-    final Block[] blocks = new Block[]{Blocks.COBBLESTONE, Blocks.GLASS, Blocks.GLASS_PANE, Blocks.OAK_DOOR, Blocks.IRON_DOOR, Blocks.BRICKS, Blocks.OAK_PLANKS, Blocks.DARK_OAK_PLANKS, Blocks.WHITE_WOOL, Blocks.BLACK_WOOL, Blocks.BARREL, Blocks.CHEST, Blocks.CRAFTING_TABLE, Blocks.FURNACE};
+    final Block[] blocks = new Block[] { Blocks.COBBLESTONE, Blocks.GLASS, Blocks.GLASS_PANE, Blocks.OAK_DOOR, Blocks.IRON_DOOR, Blocks.BRICKS, Blocks.OAK_PLANKS, Blocks.DARK_OAK_PLANKS, Blocks.WHITE_WOOL, Blocks.BLACK_WOOL, Blocks.BARREL, Blocks.CHEST, Blocks.CRAFTING_TABLE, Blocks.FURNACE };
     final BlockPos walkman = new BlockPos(0, 0, 0);
     final List<BlockPos> targets = new ArrayList<>();
 

@@ -30,7 +30,7 @@ import net.shadow.client.helper.util.Transitions;
 import org.apache.commons.lang3.SystemUtils;
 import org.lwjgl.glfw.GLFW;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -140,8 +140,7 @@ public class SpotLightScreen extends ClientScreen implements FastTickable {
             suggestionsEntry.wid = command.width - 4;
             if (!useSelectingIndex)
                 suggestionsEntry.selected = mouseX >= suggestionsEntry.x && mouseX <= suggestionsEntry.x + suggestionsEntry.wid && mouseY + smoothScroll >= suggestionsEntry.y && mouseY + smoothScroll <= suggestionsEntry.y + suggestionsEntry.height();
-            else
-                suggestionsEntry.selected = index == selectingIndex;
+            else suggestionsEntry.selected = index == selectingIndex;
             suggestionsEntry.render(stack);
             yOffset += suggestionsEntry.height() + 2;
             index++;
@@ -163,17 +162,14 @@ public class SpotLightScreen extends ClientScreen implements FastTickable {
             selectingIndex--;
             return true;
         } else if (keyCode == GLFW.GLFW_KEY_ENTER) {
-            if (!entries.isEmpty())
-                entries.get(selectingIndex).onCl.run();
+            if (!entries.isEmpty()) entries.get(selectingIndex).onCl.run();
             return true;
         } else if (keyCode == GLFW.GLFW_KEY_TAB) {
             for (SuggestionsEntry entry : entries) {
-                if (entry.selected)
-                    entry.tabcomplete.run();
+                if (entry.selected) entry.tabcomplete.run();
             }
             return true;
-        } else
-            return super.keyPressed(keyCode, scanCode, modifiers);
+        } else return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
     @Override
@@ -225,8 +221,7 @@ public class SpotLightScreen extends ClientScreen implements FastTickable {
         selectingIndex = makeSureInBounds(selectingIndex, entries.size());
         smoothScroll = Transitions.transition(smoothScroll, scroll, 7, 0);
         double delta = 0.07;
-        if (closing)
-            delta *= -1;
+        if (closing) delta *= -1;
         anim += delta;
         anim = MathHelper.clamp(anim, 0, 1);
     }

@@ -10,7 +10,7 @@ import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.render.Renderer;
 import org.lwjgl.glfw.GLFW;
 
-import java.awt.*;
+import java.awt.Color;
 import java.lang.reflect.Field;
 
 public class KeybindEditor extends ConfigBase<DoubleSetting> {
@@ -57,8 +57,7 @@ public class KeybindEditor extends ConfigBase<DoubleSetting> {
                 selecting = false;
                 return true;
             }
-            if (keycode1 == GLFW.GLFW_KEY_BACKSPACE)
-                keycode1 = -1;
+            if (keycode1 == GLFW.GLFW_KEY_BACKSPACE) keycode1 = -1;
             configValue.setValue(keycode1 + 0d);
             selecting = false;
             return true;
@@ -90,8 +89,7 @@ public class KeybindEditor extends ConfigBase<DoubleSetting> {
                 } catch (Exception ignored) {
                     keyName = "unknown." + keybind;
                 }
-            } else
-                keyName = keyName.toUpperCase();
+            } else keyName = keyName.toUpperCase();
         }
         Renderer.R2D.renderRoundedQuad(matrices, new Color(40, 40, 40), x, y, x + width, y + h, 5, 20);
         FontRenderers.getRenderer().drawCenteredString(matrices, keyName, x + width / 2d, y + h / 2d - FontRenderers.getRenderer().getMarginHeight() / 2d, 1f, 1f, 1f, 1f);

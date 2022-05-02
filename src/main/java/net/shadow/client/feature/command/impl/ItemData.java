@@ -36,8 +36,7 @@ public class ItemData extends Command {
         boolean onlyShow = args.length > 2 && args[2].equalsIgnoreCase("--onlyShow");
         PlayerEntity player = new PlayerFromNameArgumentParser(true).parse(args[0]);
         ItemStack item = getItem(player, args[1]);
-        if (item == null)
-            return;
+        if (item == null) return;
         if (ShadowMain.client.interactionManager.hasCreativeInventory() && !onlyShow) {
             giveItem(item);
             message("Item copied.");
@@ -83,8 +82,7 @@ public class ItemData extends Command {
             return;
         }
 
-        if (slot < 9)
-            slot += 36;
+        if (slot < 9) slot += 36;
 
         CreativeInventoryActionC2SPacket packet = new CreativeInventoryActionC2SPacket(slot, stack);
         ShadowMain.client.player.networkHandler.sendPacket(packet);

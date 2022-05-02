@@ -80,7 +80,7 @@ public class Events {
         }
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public static boolean fireEvent(EventType event, Event argument) {
         if (!event.getExpectedType().equals(argument.getClass()))
             throw new IllegalArgumentException(String.format("Attempted to invoke event %s with %s as event data, expected %s", event.name(), argument.getClass().getName(), event.getExpectedType().getName()));

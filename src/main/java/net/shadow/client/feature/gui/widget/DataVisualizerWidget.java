@@ -15,7 +15,7 @@ import net.shadow.client.feature.gui.FastTickable;
 import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.render.Renderer;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -48,8 +48,7 @@ public class DataVisualizerWidget implements Element, Drawable, Selectable, Fast
     }
 
     void sizeArray() {
-        while (data.size() > maxSize)
-            data.remove(0);
+        while (data.size() > maxSize) data.remove(0);
     }
 
     public void addDataPoint(double d) {

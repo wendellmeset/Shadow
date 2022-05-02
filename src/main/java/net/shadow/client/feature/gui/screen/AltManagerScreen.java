@@ -27,8 +27,11 @@ import net.shadow.client.feature.gui.widget.RoundTextFieldWidget;
 import net.shadow.client.helper.Texture;
 import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.font.adapter.FontAdapter;
+import net.shadow.client.helper.render.ClipStack;
+import net.shadow.client.helper.render.MSAAFramebuffer;
+import net.shadow.client.helper.render.PlayerHeadResolver;
 import net.shadow.client.helper.render.Rectangle;
-import net.shadow.client.helper.render.*;
+import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Transitions;
 import net.shadow.client.mixin.IMinecraftClientAccessor;
 import net.shadow.client.mixin.SessionAccessor;
@@ -36,12 +39,18 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.Level;
 import org.lwjgl.opengl.GL40C;
 
-import java.awt.*;
+import java.awt.Color;
 import java.io.File;
 import java.net.http.HttpClient;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
-import java.util.*;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
@@ -340,7 +349,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
             } else {
                 mail = "No email bound";
             }
-            AltContainer.PropEntry[] props = new AltContainer.PropEntry[]{new AltContainer.PropEntry(this.selectedAlt.storage.type == AddScreenOverlay.AccountType.CRACKED ? this.selectedAlt.storage.email : this.selectedAlt.storage.cachedName, FontRenderers.getCustomSize(22), this.selectedAlt.storage.valid ? 0xFFFFFF : 0xFF3333), new AltContainer.PropEntry(mail, FontRenderers.getRenderer(), 0xAAAAAA), new AltContainer.PropEntry("Type: " + this.selectedAlt.storage.type.s, FontRenderers.getRenderer(), 0xAAAAAA)};
+            AltContainer.PropEntry[] props = new AltContainer.PropEntry[] { new AltContainer.PropEntry(this.selectedAlt.storage.type == AddScreenOverlay.AccountType.CRACKED ? this.selectedAlt.storage.email : this.selectedAlt.storage.cachedName, FontRenderers.getCustomSize(22), this.selectedAlt.storage.valid ? 0xFFFFFF : 0xFF3333), new AltContainer.PropEntry(mail, FontRenderers.getRenderer(), 0xAAAAAA), new AltContainer.PropEntry("Type: " + this.selectedAlt.storage.type.s, FontRenderers.getRenderer(), 0xAAAAAA) };
 
             float propsOffset = (float) (fromY + padding);
             for (AltContainer.PropEntry prop : props) {
@@ -378,7 +387,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
             uuid = FontRenderers.getRenderer().trimStringToWidth(uuid, maxWid - 1 - threeDotWidth);
             uuid += "...";
         }
-        AltContainer.PropEntry[] props = new AltContainer.PropEntry[]{new AltContainer.PropEntry(ShadowMain.client.getSession().getUsername(), FontRenderers.getCustomSize(22), 0xFFFFFF), new AltContainer.PropEntry(uuid, FontRenderers.getRenderer(), 0xAAAAAA)};
+        AltContainer.PropEntry[] props = new AltContainer.PropEntry[] { new AltContainer.PropEntry(ShadowMain.client.getSession().getUsername(), FontRenderers.getCustomSize(22), 0xFFFFFF), new AltContainer.PropEntry(uuid, FontRenderers.getRenderer(), 0xAAAAAA) };
         float propsOffset = (float) (fromY + padding);
         for (AltContainer.PropEntry prop : props) {
             prop.cfr.drawString(stack, prop.name, (float) (fromX + padding + texDim + padding), propsOffset, prop.color, false);
@@ -396,8 +405,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
             return false;
         }
         boolean a = super.mouseClicked(mouseX, mouseY, button);
-        if (a)
-            return true;
+        if (a) return true;
         if (mouseX >= rBounds.getX() && mouseX <= rBounds.getX1() && mouseY >= rBounds.getY() && mouseY <= rBounds.getY1()) {
             for (AltContainer alt : getAlts()) {
                 alt.clicked(mouseX, mouseY + scrollSmooth);
@@ -971,7 +979,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
             } else {
                 mail = "No email bound";
             }
-            PropEntry[] props = new PropEntry[]{new PropEntry(this.storage.type == AddScreenOverlay.AccountType.CRACKED ? this.storage.email : this.storage.cachedName, FontRenderers.getCustomSize(22), storage.valid ? 0xFFFFFF : 0xFF3333), new PropEntry("Email: " + mail, FontRenderers.getRenderer(), 0xAAAAAA)/*, new PropEntry("Type: " + this.storage.type.s, FontRenderers.getRenderer(), 0xAAAAAA)*/};
+            PropEntry[] props = new PropEntry[] { new PropEntry(this.storage.type == AddScreenOverlay.AccountType.CRACKED ? this.storage.email : this.storage.cachedName, FontRenderers.getCustomSize(22), storage.valid ? 0xFFFFFF : 0xFF3333), new PropEntry("Email: " + mail, FontRenderers.getRenderer(), 0xAAAAAA)/*, new PropEntry("Type: " + this.storage.type.s, FontRenderers.getRenderer(), 0xAAAAAA)*/ };
             float propsOffset = (float) (getHeight() - (texHeight)) / 2f;
             for (PropEntry prop : props) {
                 prop.cfr.drawString(stack, prop.name, (float) (originX + padding + texWidth + padding), (float) (originY + propsOffset), prop.color, false);

@@ -27,10 +27,16 @@ import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Transitions;
 import org.lwjgl.glfw.GLFW;
 
-import java.awt.*;
+import java.awt.Color;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
-import java.util.*;
+import java.util.Map;
+import java.util.Objects;
 
 public class ClickGUI extends Screen implements FastTickable {
     //    public static final Theme theme = new SipoverV1();
@@ -71,15 +77,13 @@ public class ClickGUI extends Screen implements FastTickable {
     }
 
     public static void reInit() {
-        if (instance != null)
-            instance.initElements();
+        if (instance != null) instance.initElements();
     }
 
     void loadConfig() {
         configContainer.reload();
         ClickguiConfigContainer cc = configContainer.get(ClickguiConfigContainer.class);
-        if (cc == null || cc.entries == null)
-            return;
+        if (cc == null || cc.entries == null) return;
         Map<String, CategoryDisplay> displays = new HashMap<>();
         for (Element element : elements) {
             if (element instanceof CategoryDisplay dd) {
@@ -96,8 +100,7 @@ public class ClickGUI extends Screen implements FastTickable {
                 List<ModuleDisplay> mdList = disp.getMd();
                 for (ClickguiConfigContainer.ModuleEntry moduleEntry : entry.entries) {
                     ModuleDisplay mde = mdList.stream().filter(moduleDisplay -> moduleDisplay.getModule().getName().equals(moduleEntry.name)).findFirst().orElse(null);
-                    if (mde == null)
-                        continue;
+                    if (mde == null) continue;
                     mde.setExtended(moduleEntry.expanded);
                 }
             }
@@ -150,8 +153,7 @@ public class ClickGUI extends Screen implements FastTickable {
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
         for (Element element : elements) {
-            if (element.scroll(mouseX, mouseY, amount))
-                break;
+            if (element.scroll(mouseX, mouseY, amount)) break;
         }
         return super.mouseScrolled(mouseX, mouseY, amount);
     }

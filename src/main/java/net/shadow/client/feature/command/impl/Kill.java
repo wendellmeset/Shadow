@@ -143,7 +143,7 @@ public class Kill extends Command {
                 if (player.equals(ShadowMain.client.player)) {
                     continue;
                 }
-                onExecute(new String[]{player.getGameProfile().getName()});
+                onExecute(new String[] { player.getGameProfile().getName() });
             }
             return;
         }
@@ -195,7 +195,7 @@ public class Kill extends Command {
                     error("Couldn't find user's uuid. If you know it, run the command again with \"U(uuid)\"");
                     return;
                 }
-                onExecute(new String[]{"U" + u});
+                onExecute(new String[] { "U" + u });
                 return;
             }
             if (targets.size() > 1) {

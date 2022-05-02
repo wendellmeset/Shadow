@@ -24,7 +24,7 @@ import net.shadow.client.helper.util.Transitions;
 import org.apache.commons.compress.utils.Lists;
 import org.lwjgl.glfw.GLFW;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -33,8 +33,8 @@ import java.util.List;
 public class NbtEditorScreen extends ClientScreen implements FastTickable {
     final ItemStack stack;
     final List<String> initial = new ArrayList<>();
-    final char[] suffixes = {'b', 's', 'L', 'f', 'd'};
-    final char[][] appendPairs = {{'"', '"'}, {'{', '}'}, {'\'', '\''}, {'[', ']'}};
+    final char[] suffixes = { 'b', 's', 'L', 'f', 'd' };
+    final char[][] appendPairs = { { '"', '"' }, { '{', '}' }, { '\'', '\'' }, { '[', ']' } };
     int editorX = 0;
     int editorY = 0;
     double scrollX = 0;
@@ -252,10 +252,8 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
                     int whitespacesStart = 0;
                     String index = initial.get(editorY);
                     for (char c : Arrays.copyOfRange(index.toCharArray(), 0, editorX)) {
-                        if (c == ' ')
-                            whitespacesStart++;
-                        else
-                            break;
+                        if (c == ' ') whitespacesStart++;
+                        else break;
                     }
                     whitespacesStart %= 2;
                     int missing = 2 - whitespacesStart;
@@ -325,7 +323,7 @@ public class NbtEditorScreen extends ClientScreen implements FastTickable {
                         editorY++;
                         initial.add(editorY, " ".repeat(indent) + overtake);
                     } else {
-                        char[] control = {'{', '[', ',', '.'};
+                        char[] control = { '{', '[', ',', '.' };
                         boolean isControl = false;
                         for (char c : control) {
                             if (c == previous.charAt(previous.length() - 1)) {

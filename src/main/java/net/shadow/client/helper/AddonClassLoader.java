@@ -29,8 +29,7 @@ public class AddonClassLoader extends URLClassLoader {
     public URL findResource(String name) {
         System.out.println(resourceMap);
         System.out.println("find resource " + name);
-        if (resourceMap.containsKey(name))
-            return resourceMap.get(name);
+        if (resourceMap.containsKey(name)) return resourceMap.get(name);
         return super.findResource(name);
     }
 }

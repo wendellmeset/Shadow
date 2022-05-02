@@ -31,8 +31,7 @@ public class Test extends Module {
     @EventListener(type = EventType.BLOCK_RENDER)
     @SuppressWarnings("unused")
     void onBlockRender(BlockRenderEvent event) {
-        if (!this.isEnabled())
-            return;
+        if (!this.isEnabled()) return;
         BlockPos b = new BlockPos(event.getPosition());
         boolean listContains = discovered.stream().anyMatch(blockPos -> blockPos.equals(b));
         if (event.getBlockState().getBlock() == searchTerm) {

@@ -47,14 +47,12 @@ public class AntiCrash extends Module {
     }
 
     public static AntiCrash instance() {
-        if (instance == null)
-            instance = ModuleRegistry.getByClass(AntiCrash.class);
+        if (instance == null) instance = ModuleRegistry.getByClass(AntiCrash.class);
         return instance;
     }
 
     void handlePacketEvent(Event e) {
-        if (!this.isEnabled())
-            return;
+        if (!this.isEnabled()) return;
         PacketEvent pe = (PacketEvent) e;
         if (pe.getPacket() instanceof OpenScreenS2CPacket && screenGui.getValue()) {
             long current = System.currentTimeMillis();

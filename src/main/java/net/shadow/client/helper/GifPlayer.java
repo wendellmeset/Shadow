@@ -61,7 +61,7 @@ public class GifPlayer {
         }
         frameList.clear();
         try {
-            String[] imageatt = new String[]{"imageLeftPosition", "imageTopPosition", "imageWidth", "imageHeight"};
+            String[] imageatt = new String[] { "imageLeftPosition", "imageTopPosition", "imageWidth", "imageHeight" };
 
             ImageReader reader = ImageIO.getImageReadersByFormatName("gif").next();
             ImageInputStream ciis = ImageIO.createImageInputStream(gifFile);
@@ -117,8 +117,7 @@ public class GifPlayer {
         long timeDelta = System.currentTimeMillis() - lastRender;
         long eachXmsFrame = 1000 / fps;
         int framesToProgress = (int) (timeDelta / eachXmsFrame);
-        if (framesToProgress > 0)
-            lastRender = System.currentTimeMillis();
+        if (framesToProgress > 0) lastRender = System.currentTimeMillis();
         for (int i = 0; i < framesToProgress; i++) {
             progressFrame();
         }

@@ -19,7 +19,7 @@ import net.shadow.client.helper.util.Utils;
 import java.util.Objects;
 
 public class OOBCrash extends Module {
-    final Step[] bogusSteps = new Step[]{new Step("Exploiting packet handler", 2000), new Step("Attempting to override isValid(Lnet/minecraft/util/math/Vec3d;)Z method", 1000), new Step("Packet handler dump: 0x05 0x13 0x11 0x92 (INJECTING HERE) 0x00 0x00 0x00 0x00", 2000), new Step("Requesting out of bounds", 1000), new Step("Sending packet", 100), new Step("Overwriting isValid:Z", 100), new Step("Cancelling packet checks", 100), new Step("Finalizing", 1000), new Step("", 1000)};
+    final Step[] bogusSteps = new Step[] { new Step("Exploiting packet handler", 2000), new Step("Attempting to override isValid(Lnet/minecraft/util/math/Vec3d;)Z method", 1000), new Step("Packet handler dump: 0x05 0x13 0x11 0x92 (INJECTING HERE) 0x00 0x00 0x00 0x00", 2000), new Step("Requesting out of bounds", 1000), new Step("Sending packet", 100), new Step("Overwriting isValid:Z", 100), new Step("Cancelling packet checks", 100), new Step("Finalizing", 1000), new Step("", 1000) };
     long startTime = System.currentTimeMillis();
     Step current;
 

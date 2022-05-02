@@ -34,15 +34,13 @@ public class ForEach extends Command {
     public ForEach() {
         super("ForEach", "Do something for each player", "forEach", "for", "fe");
         Events.registerEventHandler(EventType.PACKET_RECEIVE, event -> {
-            if (!recieving)
-                return;
+            if (!recieving) return;
             PacketEvent pe = (PacketEvent) event;
             if (pe.getPacket() instanceof CommandSuggestionsS2CPacket packet) {
                 Suggestions all = packet.getSuggestions();
                 for (Suggestion i : all.getList()) {
                     String name = i.getText();
-                    if (name.contains(ShadowMain.client.player.getName().toString()))
-                        continue;
+                    if (name.contains(ShadowMain.client.player.getName().toString())) continue;
                     ShadowMain.client.player.sendChatMessage(partial.replaceAll("%s", name));
                     message(partial.replaceAll("%s", name));
                 }

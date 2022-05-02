@@ -11,7 +11,7 @@ import net.shadow.client.feature.config.SettingBase;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class Theme extends Module {
     public final ColorSetting accent = this.config.create(new ColorSetting.Builder(new Color(0x3AD99D)).name("Accent").description("The accent color").get());
@@ -24,7 +24,7 @@ public class Theme extends Module {
 
     public Theme() {
         super("Theme", "Allows you to edit the client's appearance", ModuleType.RENDER);
-        for (SettingBase<?> settingBase : new SettingBase<?>[]{accent, header, module, configC, active, inactive}) {
+        for (SettingBase<?> settingBase : new SettingBase<?>[] { accent, header, module, configC, active, inactive }) {
             settingBase.showIf(() -> modeSetting.getValue() == Mode.Custom);
         }
     }

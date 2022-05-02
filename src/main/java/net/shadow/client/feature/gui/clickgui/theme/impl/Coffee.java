@@ -6,7 +6,7 @@ package net.shadow.client.feature.gui.clickgui.theme.impl;
 
 import net.shadow.client.feature.gui.clickgui.theme.Theme;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class Coffee implements Theme {
 

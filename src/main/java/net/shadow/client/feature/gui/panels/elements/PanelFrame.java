@@ -11,7 +11,7 @@ import net.shadow.client.helper.render.Rectangle;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Transitions;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.HashMap;
 
 public class PanelFrame extends Element implements FastTickable {
@@ -31,7 +31,7 @@ public class PanelFrame extends Element implements FastTickable {
         this.xGoal = x;
         this.yGoal = y;
         for (Element el : this.elements) {
-            positions.put(el, new double[]{el.getX(), el.getY(), el.getWidth(), el.getHeight()});
+            positions.put(el, new double[] { el.getX(), el.getY(), el.getWidth(), el.getHeight() });
         }
     }
 
@@ -154,8 +154,7 @@ public class PanelFrame extends Element implements FastTickable {
     @Override
     public boolean charTyped(char c, int mods) {
         for (Element pb : elements) {
-            if (pb.charTyped(c, mods))
-                return true;
+            if (pb.charTyped(c, mods)) return true;
         }
         // TODO Auto-generated method stub
         return false;

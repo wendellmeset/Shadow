@@ -47,14 +47,10 @@ public class ClientCrasher extends Module {
 
     @EventListener(type = EventType.PACKET_SEND)
     void giveAShit(PacketEvent event) {
-        if (mode.getValue() != Mode.Place)
-            return;
-        if (!sends)
-            return;
-        if (!this.isEnabled())
-            return;
-        if (!(event.getPacket() instanceof PlayerMoveC2SPacket packet))
-            return;
+        if (mode.getValue() != Mode.Place) return;
+        if (!sends) return;
+        if (!this.isEnabled()) return;
+        if (!(event.getPacket() instanceof PlayerMoveC2SPacket packet)) return;
 
         if (!(packet instanceof PlayerMoveC2SPacket.PositionAndOnGround || packet instanceof PlayerMoveC2SPacket.Full))
             return;
@@ -93,8 +89,7 @@ public class ClientCrasher extends Module {
                 client.player.updatePosition(selectedbreaker.getX() + 0.5, selectedbreaker.getY() + 1, selectedbreaker.getZ() + 0.5);
                 int b4slot = client.player.getInventory().selectedSlot;
                 int slot = TheJ();
-                if (slot == -1)
-                    return;
+                if (slot == -1) return;
                 if (client.player.world.getBlockState(selectedbreaker).isAir()) {
                     client.player.getInventory().selectedSlot = slot;
                     client.interactionManager.interactBlock(client.player, client.world, Hand.MAIN_HAND, new BlockHitResult(new Vec3d(selectedbreaker.getX(), selectedbreaker.getY(), selectedbreaker.getZ()).add(0.5, 0.5, 0.5), Direction.UP, selectedbreaker, false));
@@ -143,8 +138,7 @@ public class ClientCrasher extends Module {
     private int TheJ() {
         for (int i = 0; i < 9; i++) {
             ItemStack stack = client.player.getInventory().getStack(i);
-            if (stack.isEmpty() || !(stack.getItem() instanceof BlockItem))
-                continue;
+            if (stack.isEmpty() || !(stack.getItem() instanceof BlockItem)) continue;
 
             return i;
         }

@@ -43,8 +43,7 @@ public class StatsScreen extends ClientScreen implements FastTickable {
             while (packetIn.size() > 100) {
                 packetIn.remove(0);
             }
-            while (packetOut.size() > 100)
-                packetOut.remove(0);
+            while (packetOut.size() > 100) packetOut.remove(0);
         }
     }
 

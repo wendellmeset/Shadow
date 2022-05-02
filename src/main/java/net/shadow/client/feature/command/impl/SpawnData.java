@@ -56,8 +56,7 @@ public class SpawnData extends Command {
             case "position" -> {
                 validateArgumentsLength(args, 4, "Provide X, Y and Z coordinates");
                 ItemStack stack = ShadowMain.client.player.getInventory().getMainHandStack();
-                if (!stack.hasNbt())
-                    stack.setNbt(new NbtCompound());
+                if (!stack.hasNbt()) stack.setNbt(new NbtCompound());
 
                 NbtGroup ng = new NbtGroup(new NbtObject("EntityTag", new NbtList("Pos", new NbtProperty(parser.consumeDouble()), new NbtProperty(parser.consumeDouble()), new NbtProperty(parser.consumeDouble()))));
                 NbtCompound tag = ng.toCompound();
@@ -68,8 +67,7 @@ public class SpawnData extends Command {
             case "velocity" -> {
                 validateArgumentsLength(args, 4, "Provide X, Y and Z velocity");
                 ItemStack stack = ShadowMain.client.player.getInventory().getMainHandStack();
-                if (!stack.hasNbt())
-                    stack.setNbt(new NbtCompound());
+                if (!stack.hasNbt()) stack.setNbt(new NbtCompound());
                 NbtGroup ng = new NbtGroup(new NbtObject("EntityTag", new NbtList("Motion", new NbtProperty(parser.consumeDouble()), new NbtProperty(parser.consumeDouble()), new NbtProperty(parser.consumeDouble()))));
                 NbtCompound tag = ng.toCompound();
                 stack.getOrCreateNbt().copyFrom(tag);
@@ -78,8 +76,7 @@ public class SpawnData extends Command {
             }
             case "cursor" -> {
                 ItemStack stack = ShadowMain.client.player.getInventory().getMainHandStack();
-                if (!stack.hasNbt())
-                    stack.setNbt(new NbtCompound());
+                if (!stack.hasNbt()) stack.setNbt(new NbtCompound());
                 Vec3d se = Objects.requireNonNull(ShadowMain.client.player).raycast(255, ShadowMain.client.getTickDelta(), true).getPos();
                 NbtGroup ng = new NbtGroup(new NbtObject("EntityTag", new NbtList("Pos", new NbtProperty(se.x), new NbtProperty(se.y), new NbtProperty(se.z))));
                 NbtCompound tag = ng.toCompound();

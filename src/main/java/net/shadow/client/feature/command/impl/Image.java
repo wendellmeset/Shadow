@@ -24,7 +24,7 @@ import net.shadow.client.helper.event.events.PacketEvent;
 import net.shadow.client.helper.util.Utils;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -38,8 +38,7 @@ public class Image extends Command {
     public Image() {
         super("Image", "Apply an image to various text mediums", "image", "img");
         Events.registerEventHandler(EventType.PACKET_RECEIVE, event -> {
-            if (!real)
-                return;
+            if (!real) return;
             PacketEvent pe = (PacketEvent) event;
             if (pe.getPacket() instanceof GameMessageS2CPacket p) {
                 if (p.getMessage().getString().contains("Command set:")) {

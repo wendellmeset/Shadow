@@ -12,7 +12,7 @@ import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.feature.module.impl.render.ClickGUI;
 import net.shadow.client.mixin.MatrixStackAccessor;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Deque;
 import java.util.Stack;
 

@@ -29,14 +29,14 @@ public class ClientPlayerInteractionManagerMixin {
         return Objects.requireNonNull(ModuleRegistry.getByClass(NoBreakDelay.class)).isEnabled() ? 0 : cd;
     }
 
-    @Inject(method = {"getReachDistance()F"}, at = {@At("HEAD")}, cancellable = true)
+    @Inject(method = { "getReachDistance()F" }, at = { @At("HEAD") }, cancellable = true)
     private void onReachDistance(CallbackInfoReturnable<Float> cir) {
         if (ModuleRegistry.getByClass(Reach.class).isEnabled()) {
             cir.setReturnValue((float) ModuleRegistry.getByClass(Reach.class).getReachDistance());
         }
     }
 
-    @Inject(method = {"hasExtendedReach()Z"}, at = {@At("HEAD")}, cancellable = true)
+    @Inject(method = { "hasExtendedReach()Z" }, at = { @At("HEAD") }, cancellable = true)
     private void onExtendedReach(CallbackInfoReturnable<Boolean> cir) {
         if (ModuleRegistry.getByClass(Reach.class).isEnabled()) {
             cir.setReturnValue(true);

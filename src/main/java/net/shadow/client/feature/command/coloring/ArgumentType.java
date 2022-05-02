@@ -8,7 +8,7 @@ import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 
-import java.awt.*;
+import java.awt.Color;
 
 public enum ArgumentType {
     STRING(new Color(0x55FF55), String.class),

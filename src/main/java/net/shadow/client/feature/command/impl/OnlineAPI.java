@@ -60,8 +60,7 @@ public class OnlineAPI extends Command {
 
     @Override
     public PossibleArgument getSuggestionsWithType(int index, String[] args) {
-        if (index == 0)
-            return new PossibleArgument(ArgumentType.STRING, "login", "logout");
+        if (index == 0) return new PossibleArgument(ArgumentType.STRING, "login", "logout");
         if (args[0].equalsIgnoreCase("login")) {
             return StaticArgumentServer.serveFromStatic(index - 1, new PossibleArgument(ArgumentType.STRING, "(username)"), new PossibleArgument(ArgumentType.STRING, "(password)"));
         }
@@ -86,8 +85,7 @@ public class OnlineAPI extends Command {
             }
             case "logout" -> {
                 IRC irc = ModuleRegistry.getByClass(IRC.class);
-                if (irc.isEnabled())
-                    irc.setEnabled(false);
+                if (irc.isEnabled()) irc.setEnabled(false);
                 ShadowAPIWrapper.logout();
                 success("Logged you out");
             }

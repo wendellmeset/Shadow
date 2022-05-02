@@ -27,13 +27,17 @@ import net.shadow.client.helper.render.Renderer;
 import org.apache.commons.io.IOUtils;
 import org.lwjgl.opengl.GL40C;
 
-import java.awt.*;
+import java.awt.Color;
 import java.io.File;
 import java.net.http.HttpClient;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.*;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
 public class HomeScreen extends ClientScreen {
     static final double padding = 6;
@@ -131,8 +135,7 @@ public class HomeScreen extends ClientScreen {
         if (loaded) {
             updateCurrentAccount(() -> {
             }); // already loaded this instance, refresh on the fly
-        } else
-            load();
+        } else load();
     }
 
     void complete() {

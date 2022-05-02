@@ -21,7 +21,7 @@ import net.shadow.client.helper.render.ClipStack;
 import net.shadow.client.helper.render.Rectangle;
 import net.shadow.client.helper.render.Renderer;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class RadarElement extends HudElement {
     public RadarElement() {
@@ -53,8 +53,7 @@ public class RadarElement extends HudElement {
                 deltaX *= width;
                 deltaZ *= width;
                 Color c;
-                if (entity.equals(ShadowMain.client.player))
-                    c = Color.WHITE;
+                if (entity.equals(ShadowMain.client.player)) c = Color.WHITE;
                 else if (entity instanceof PlayerEntity) {
                     c = Color.RED;
                 } else if (entity instanceof ItemEntity) {

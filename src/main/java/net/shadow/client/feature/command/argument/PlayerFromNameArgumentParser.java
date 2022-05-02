@@ -23,11 +23,9 @@ public class PlayerFromNameArgumentParser implements ArgumentParser<PlayerEntity
             throw new CommandException("World is not loaded", "Join a world or server");
         for (AbstractClientPlayerEntity player : ShadowMain.client.world.getPlayers()) {
             if (ignoreCase) {
-                if (player.getGameProfile().getName().equalsIgnoreCase(argument))
-                    return player;
+                if (player.getGameProfile().getName().equalsIgnoreCase(argument)) return player;
             } else {
-                if (player.getGameProfile().getName().equals(argument))
-                    return player;
+                if (player.getGameProfile().getName().equals(argument)) return player;
             }
         }
         throw new CommandException("Invalid argument \"" + argument + "\": Player not found", "Provide the name of an existing player");

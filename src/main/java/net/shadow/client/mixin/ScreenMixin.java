@@ -8,7 +8,11 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.AbstractParentElement;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.render.*;
+import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexFormat;
+import net.minecraft.client.render.VertexFormats;
 import net.shadow.client.feature.gui.HasSpecialCursor;
 import net.shadow.client.helper.render.Cursor;
 import org.spongepowered.asm.mixin.Final;
@@ -18,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.List;
 
 @Mixin(Screen.class)
@@ -64,8 +68,7 @@ public abstract class ScreenMixin extends AbstractParentElement {
         long c = Cursor.STANDARD;
         for (Element child : this.children) {
             if (child instanceof HasSpecialCursor specialCursor) {
-                if (specialCursor.shouldApplyCustomCursor())
-                    c = specialCursor.getCursor();
+                if (specialCursor.shouldApplyCustomCursor()) c = specialCursor.getCursor();
             }
         }
         Cursor.setGlfwCursor(c);

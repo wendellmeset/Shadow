@@ -4,7 +4,14 @@
 
 package net.shadow.client.helper.nbt;
 
-import net.minecraft.nbt.*;
+import net.minecraft.nbt.NbtByte;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtDouble;
+import net.minecraft.nbt.NbtFloat;
+import net.minecraft.nbt.NbtInt;
+import net.minecraft.nbt.NbtLong;
+import net.minecraft.nbt.NbtShort;
+import net.minecraft.nbt.NbtString;
 
 import java.util.UUID;
 
@@ -32,8 +39,7 @@ public class NbtProperty extends net.shadow.client.helper.nbt.NbtElement {
             compound.putUuid(name, nu);
         } else if (val instanceof Boolean b) {
             compound.putBoolean(name, b);
-        } else
-            compound.put(name, get());
+        } else compound.put(name, get());
     }
 
     @Override
@@ -52,7 +58,6 @@ public class NbtProperty extends net.shadow.client.helper.nbt.NbtElement {
             return NbtByte.of(b);
         } else if (val instanceof Short s) {
             return NbtShort.of(s);
-        } else
-            return null; // no nbt representation of it
+        } else return null; // no nbt representation of it
     }
 }

@@ -54,8 +54,7 @@ public class ToolsScreen extends Module {
     public ToolsScreen() {
         super("ToolsScreen", "The tools screen", ModuleType.RENDER);
         Events.registerEventHandler(EventType.PACKET_RECEIVE, packet2 -> {
-            if (!enabled)
-                return;
+            if (!enabled) return;
             PacketEvent event = (PacketEvent) packet2;
             if (event.getPacket() instanceof OpenWrittenBookS2CPacket && !alt) {
                 event.setCancelled(true);
@@ -129,7 +128,7 @@ public class ToolsScreen extends Module {
     @Override
     public void enable() {
         if (menu == null) {
-            menu = new PanelsGui(new PanelFrame[]{new PanelFrame(100, 100, 250, 170, "Grief", new Element[]{new PanelButton(0, 0, -1, "Delete LP Data", () -> {
+            menu = new PanelsGui(new PanelFrame[] { new PanelFrame(100, 100, 250, 170, "Grief", new Element[] { new PanelButton(0, 0, -1, "Delete LP Data", () -> {
                 packetinputmode = "lp";
                 enabled = true;
                 ShadowMain.client.player.networkHandler.sendPacket(new RequestCommandCompletionsC2SPacket(0, "/lp deletegroup "));
@@ -153,7 +152,7 @@ public class ToolsScreen extends Module {
                 packetinputmode = "worldguard";
                 enabled = true;
                 ShadowMain.client.player.sendChatMessage("/rg list");
-            })}), new PanelFrame(500, 100, 250, 125, "Discord", new Element[]{new StringSettingEditor(0, 0, 240, token), new StringSettingEditor(0, 30, 240, guild), new PanelButton(0, 65, -1, "Nuke", () -> {
+            }) }), new PanelFrame(500, 100, 250, 125, "Discord", new Element[] { new StringSettingEditor(0, 0, 240, token), new StringSettingEditor(0, 30, 240, guild), new PanelButton(0, 65, -1, "Nuke", () -> {
                 new Thread(() -> {
                     final ThreadPoolExecutor pool = new ThreadPoolExecutor(10, 10, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
                     try {
@@ -197,7 +196,7 @@ public class ToolsScreen extends Module {
                         e.printStackTrace();
                     }
                 }).start();
-            }),})});
+            }), }) });
         }
         ShadowMain.client.setScreen(menu);
         this.setEnabled(false);

@@ -8,7 +8,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.shadow.client.feature.gui.FastTickable;
 import net.shadow.client.helper.render.Renderer;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class TestScreen extends ClientScreen implements FastTickable {
 

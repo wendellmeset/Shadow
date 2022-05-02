@@ -57,8 +57,7 @@ public class ReverseKnockback extends Module {
 
     @EventListener(type = EventType.PACKET_SEND)
     void packetSend(PacketEvent event) {
-        if (!this.isEnabled())
-            return;
+        if (!this.isEnabled()) return;
         if (event.getPacket() instanceof PlayerMoveC2SPacket packet) {
             if (dontRepeat.contains(packet)) {
                 dontRepeat.remove(packet);

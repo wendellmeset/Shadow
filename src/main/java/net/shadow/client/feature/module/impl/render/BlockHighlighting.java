@@ -23,15 +23,14 @@ import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Utils;
 import net.shadow.client.mixin.WorldRendererAccessor;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.SortedSet;
 
 public class BlockHighlighting extends Module {
     public BlockHighlighting() {
         super("BlockHighlighting", "Renders better block breaking animations", ModuleType.RENDER);
         Events.registerEventHandler(EventType.PACKET_RECEIVE, p -> {
-            if (!this.isEnabled())
-                return;
+            if (!this.isEnabled()) return;
             PacketEvent event = (PacketEvent) p;
             if (event.getPacket() instanceof BlockUpdateS2CPacket packet) {
                 BlockPos real = packet.getPos();
@@ -47,8 +46,7 @@ public class BlockHighlighting extends Module {
 
     public void renderEntry(MatrixStack stack, Long2ObjectMap.Entry<SortedSet<BlockBreakingInfo>> e) {
         SortedSet<BlockBreakingInfo> bbrs = e.getValue();
-        if (bbrs == null || bbrs.isEmpty())
-            return;
+        if (bbrs == null || bbrs.isEmpty()) return;
 
         long k = e.getLongKey();
         BlockPos kv = BlockPos.fromLong(k);
@@ -56,8 +54,7 @@ public class BlockHighlighting extends Module {
         double stageProg = stage / 10d;
         BlockState bs = ShadowMain.client.world.getBlockState(kv);
         VoxelShape vs = bs.getOutlineShape(ShadowMain.client.world, kv);
-        if (vs.isEmpty())
-            return;
+        if (vs.isEmpty()) return;
         Box bb = vs.getBoundingBox();
         double invProg = 1 - stageProg;
         double lenX = bb.getXLength();

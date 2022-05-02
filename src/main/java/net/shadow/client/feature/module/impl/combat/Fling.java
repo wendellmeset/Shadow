@@ -61,14 +61,11 @@ public class Fling extends Module {
 
     @EventListener(type = EventType.PACKET_SEND)
     void sendPacket(PacketEvent event) {
-        if (!this.isEnabled())
-            return;
-        if (!not)
-            return;
+        if (!this.isEnabled()) return;
+        if (!not) return;
         if (event.getPacket() instanceof PlayerInteractItemC2SPacket) {
             if (client.player.getInventory().getMainHandStack().getItem() == Items.FISHING_ROD && (client.player.fishHook != null)) {
-                if (client.player.fishHook.isRemoved())
-                    return;
+                if (client.player.fishHook.isRemoved()) return;
                 client.player.setVelocity(Vec3d.ZERO);
                 event.setCancelled(true);
                 new Thread(() -> {

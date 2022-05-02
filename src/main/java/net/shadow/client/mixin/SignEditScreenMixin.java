@@ -25,7 +25,7 @@ public class SignEditScreenMixin extends Screen {
         super(title);
     }
 
-    @Inject(at = {@At("HEAD")}, method = {"init()V"})
+    @Inject(at = { @At("HEAD") }, method = { "init()V" })
     private void onInit(CallbackInfo ci) {
         if (ModuleRegistry.getByClass(AutoSign.class).isEnabled()) {
             text = ModuleRegistry.getByClass(AutoSign.class).getText();

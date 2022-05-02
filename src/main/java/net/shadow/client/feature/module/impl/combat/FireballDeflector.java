@@ -19,7 +19,7 @@ import net.shadow.client.helper.Rotations;
 import net.shadow.client.helper.render.Renderer;
 import net.shadow.client.helper.util.Utils;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Objects;
 
 public class FireballDeflector extends Module {

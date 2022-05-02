@@ -18,7 +18,7 @@ import net.shadow.client.helper.render.ClipStack;
 import net.shadow.client.helper.render.Rectangle;
 import net.shadow.client.helper.render.Renderer;
 
-import java.awt.*;
+import java.awt.Color;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class HudNotification {
