@@ -17,7 +17,7 @@ jobs:
                   cache: 'gradle'
                   distribution: 'temurin'
             - name: Patch and build
-              run: "./createRelease.sh"
+              run: "./gradlew build"
             - uses: actions/upload-artifact@v2
               with:
                 name: Builded Jars
