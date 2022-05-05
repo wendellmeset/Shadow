@@ -13,7 +13,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.shadow.client.feature.command.Command;
 import net.shadow.client.feature.command.coloring.PossibleArgument;
-import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.feature.gui.notifications.Notification;
 
 public class Gensploit extends Command {

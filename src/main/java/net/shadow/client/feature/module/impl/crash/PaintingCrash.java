@@ -5,18 +5,17 @@
 package net.shadow.client.feature.module.impl.crash;
 
 import net.minecraft.client.util.math.MatrixStack;
-import net.shadow.client.feature.module.Module;
-import net.shadow.client.feature.module.ModuleType;
-import net.shadow.client.helper.event.EventType;
-import net.shadow.client.helper.event.Events;
-import net.shadow.client.helper.event.events.PacketEvent;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtInt;
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
+import net.shadow.client.feature.module.Module;
+import net.shadow.client.feature.module.ModuleType;
+import net.shadow.client.helper.event.EventType;
+import net.shadow.client.helper.event.Events;
+import net.shadow.client.helper.event.events.PacketEvent;
 
 public class PaintingCrash extends Module {
     private int xChunk;

@@ -74,6 +74,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
     final FontAdapter titleSmall = FontRenderers.getCustomSize(30);
     final FontAdapter title = FontRenderers.getCustomSize(40);
     final AtomicBoolean isLoggingIn = new AtomicBoolean(false);
+    final boolean currentAccountTextureLoaded = true;
     AltContainer selectedAlt;
     net.shadow.client.feature.gui.widget.RoundButton add, exit, remove, tags, login, session, censorMail;
     RoundTextFieldWidget search;
@@ -81,7 +82,6 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
     double scroll = 0;
     double scrollSmooth = 0;
     Texture currentAccountTexture = new Texture("dynamic/currentaccount");
-    final boolean currentAccountTextureLoaded = true;
 
     private AltManagerScreen() {
         super(MSAAFramebuffer.MAX_SAMPLES);

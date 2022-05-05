@@ -17,11 +17,11 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ShadItemGroup {
+    final Text name;
     @Getter
     String nameS;
     @Getter
     ItemStack icon;
-    final Text name;
     @Getter
     List<ItemStack> items = new CopyOnWriteArrayList<>();
 

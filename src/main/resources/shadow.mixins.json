@@ -59,7 +59,6 @@
     "PlayerEntityMixin",
     "PlayerEntityRendererMixin",
     "PlayerInteractEntityC2SPacketAccessor",
-    "PlayerListHudMixin",
     "ScreenMixin",
     "SelectWorldScreenMixin",
     "SessionAccessor",

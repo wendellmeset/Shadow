@@ -62,7 +62,6 @@ import net.shadow.client.feature.module.impl.misc.AntiOffhandCrash;
 import net.shadow.client.feature.module.impl.misc.AntiPacketKick;
 import net.shadow.client.feature.module.impl.misc.ClientSettings;
 import net.shadow.client.feature.module.impl.misc.DiscordRPC;
-import net.shadow.client.feature.module.impl.misc.IRC;
 import net.shadow.client.feature.module.impl.misc.InfChatLength;
 import net.shadow.client.feature.module.impl.misc.ItemPuke;
 import net.shadow.client.feature.module.impl.misc.MoreChatHistory;
@@ -351,7 +350,6 @@ public class ModuleRegistry {
         registerModule(CraftCrash.class);
         registerModule(ItemPuke.class);
         registerModule(EntityCrash.class);
-        registerModule(IRC.class);
         registerModule(SSRFCrash.class);
         registerModule(Equipper.class);
         registerModule(Godmode.class);

@@ -11,8 +11,8 @@ import net.shadow.client.feature.module.ModuleType;
 import net.shadow.client.helper.util.Transitions;
 
 public class Radar extends Module {
-    public double iScale = 0;
     final DoubleSetting scale = this.config.create(new DoubleSetting.Builder(3).name("Scale").description("How much area to show around you").min(0.1).max(10).precision(1).get());
+    public double iScale = 0;
 
     public Radar() {
         super("Radar", "Allows you to see other players and entities around", ModuleType.RENDER);

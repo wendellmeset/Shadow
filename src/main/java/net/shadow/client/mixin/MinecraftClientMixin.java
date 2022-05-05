@@ -10,7 +10,6 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.Session;
 import net.shadow.client.ShadowMain;
 import net.shadow.client.feature.module.ModuleRegistry;
-import net.shadow.client.feature.module.impl.misc.IRC;
 import net.shadow.client.feature.module.impl.world.FastUse;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
@@ -48,11 +47,6 @@ public class MinecraftClientMixin implements MinecraftClientDuck {
     @Override
     public void setSession(Session newSession) {
         this.session = newSession;
-        IRC i = ModuleRegistry.getByClass(IRC.class);
-        // reconnect to the irc with the new session to stay up to date
-        if (i.isEnabled()) {
-            i.reconnect();
-        }
     }
 
     @Inject(method = "<init>", at = @At("TAIL"))

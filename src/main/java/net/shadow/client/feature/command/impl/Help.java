@@ -9,7 +9,6 @@ import net.shadow.client.feature.command.CommandRegistry;
 import net.shadow.client.feature.command.coloring.ArgumentType;
 import net.shadow.client.feature.command.coloring.PossibleArgument;
 import net.shadow.client.feature.command.coloring.StaticArgumentServer;
-import net.shadow.client.feature.command.exception.CommandException;
 import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.feature.module.impl.misc.ClientSettings;
 

@@ -3,17 +3,17 @@
  */
 
 package net.shadow.client.feature.module.impl.grief;
+
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
-
-import java.util.Random;
-
-import net.minecraft.client.util.math.MatrixStack;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
 import net.shadow.client.helper.util.Utils;
+
+import java.util.Random;
 
 public class MapFuck extends Module {
 

@@ -14,6 +14,7 @@ import net.shadow.client.helper.event.events.LoreQueryEvent;
 import net.shadow.client.helper.event.events.MouseEvent;
 import net.shadow.client.helper.event.events.PacketEvent;
 import net.shadow.client.helper.event.events.PlayerNoClipQueryEvent;
+import net.shadow.client.helper.event.events.WorldRenderEvent;
 import net.shadow.client.helper.event.events.base.Event;
 import net.shadow.client.helper.event.events.base.NonCancellableEvent;
 
@@ -24,7 +25,7 @@ public enum EventType {
     MOUSE_EVENT(MouseEvent.class), LORE_QUERY(LoreQueryEvent.class), CONFIG_SAVE(NonCancellableEvent.class),
     NOCLIP_QUERY(PlayerNoClipQueryEvent.class), KEYBOARD(KeyboardEvent.class), POST_INIT(NonCancellableEvent.class),
     HUD_RENDER(NonCancellableEvent.class), GAME_EXIT(NonCancellableEvent.class),
-    SHOULD_RENDER_CHUNK(ChunkRenderQueryEvent.class);
+    SHOULD_RENDER_CHUNK(ChunkRenderQueryEvent.class), WORLD_RENDER(WorldRenderEvent.class);
     private final Class<? extends Event> expectedType;
 
     public Class<? extends Event> getExpectedType() {

@@ -4,7 +4,6 @@
 
 package net.shadow.client;
 
-import coffeeprotect.SkipObfuscation;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Element;
@@ -23,7 +22,6 @@ import net.shadow.client.helper.font.FontRenderers;
 import net.shadow.client.helper.font.adapter.impl.BruhAdapter;
 import net.shadow.client.helper.font.renderer.FontRenderer;
 import net.shadow.client.helper.manager.ConfigManager;
-import net.shadow.client.helper.protection.Locker;
 import net.shadow.client.helper.util.Utils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -36,7 +34,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-@SkipObfuscation
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class ShadowMain implements ModInitializer {
 

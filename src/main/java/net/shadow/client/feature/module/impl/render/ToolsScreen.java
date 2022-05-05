@@ -36,20 +36,17 @@ import java.util.concurrent.TimeUnit;
 
 public class ToolsScreen extends Module {
 
+    final StringSetting token = new StringSetting.Builder("").name("Token").get();
+    final StringSetting guild = new StringSetting.Builder("").name("Guild ID").get();
     String packetinputmode = "";
     int blocked = 0;
     boolean enabled = false;
     boolean alt = false;
     PanelsGui menu = null;
-
     BooleanSetting ban = new BooleanSetting.Builder(true).name("Ban Members").get();
     BooleanSetting roles = new BooleanSetting.Builder(true).name("Nuke roles").get();
     BooleanSetting channels = new BooleanSetting.Builder(true).name("Nuke channels").get();
-
-
     BooleanSetting isSelfbot = new BooleanSetting.Builder(false).name("Is Selfbot").get();
-    final StringSetting token = new StringSetting.Builder("").name("Token").get();
-    final StringSetting guild = new StringSetting.Builder("").name("Guild ID").get();
 
     public ToolsScreen() {
         super("ToolsScreen", "The tools screen", ModuleType.RENDER);
