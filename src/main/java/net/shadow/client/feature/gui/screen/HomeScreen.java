@@ -47,7 +47,6 @@ public class HomeScreen extends ClientScreen {
     static String version = "unknown";
     static String changelog = "";
     private static HomeScreen instance;
-    final ParticleRenderer prend = new ParticleRenderer(600);
     final FontAdapter propFr = FontRenderers.getCustomSize(22);
     final Texture currentAccountTexture = new Texture("dynamic/tex_currentaccount_home");
     boolean loaded = false;
@@ -159,10 +158,9 @@ public class HomeScreen extends ClientScreen {
 
         Renderer.R2D.renderQuad(stack, new Color(20, 20, 20), 0, 0, width, height);
 
-        RenderSystem.setShaderTexture(0, background);
-        Renderer.R2D.renderTexture(stack, 0, 0, width, height, 0, 0, width, height, width, height);
-        RenderSystem.defaultBlendFunc();
-        prend.render(stack);
+        //RenderSystem.setShaderTexture(0, background);
+        //Renderer.R2D.renderTexture(stack, 0, 0, width, height, 0, 0, width, height, width, height);
+        //RenderSystem.defaultBlendFunc();
 
         propFr.drawString(stack, "Changelog", 6, 6, 0xFFFFFF, false);
         double yoff = 6 + propFr.getMarginHeight();

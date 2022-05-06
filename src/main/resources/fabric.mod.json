@@ -3,12 +3,14 @@
   "id": "shadow",
   "version": "${version}",
   "name": "Shadow client",
-  "description": "incredibly real",
+  "description": "minecraft exploit client for the latest version",
   "authors": [
-    "0x150",
-    "Saturn5VFive"
+    "Saturn5VFive",
+    "0x150"
   ],
-  "contributors": [],
+  "contributors": [
+    "BBBBB"
+  ],
   "contact": {},
   "license": "All-Rights-Reserved",
   "icon": "assets/shadow/icon.png",

@@ -46,7 +46,6 @@ import net.shadow.client.feature.command.impl.MessageSpam;
 import net.shadow.client.feature.command.impl.Panic;
 import net.shadow.client.feature.command.impl.PermissionLevel;
 import net.shadow.client.feature.command.impl.Poof;
-import net.shadow.client.feature.command.impl.RageQuit;
 import net.shadow.client.feature.command.impl.RandomBook;
 import net.shadow.client.feature.command.impl.Rename;
 import net.shadow.client.feature.command.impl.Say;
@@ -117,7 +116,6 @@ public class CommandRegistry {
         vanillaCommands.add(new ConfigUtils());
         vanillaCommands.add(new Kill());
         vanillaCommands.add(new Invsee());
-        vanillaCommands.add(new RageQuit());
         vanillaCommands.add(new Find());
         vanillaCommands.add(new FakeItem());
         vanillaCommands.add(new Taco());

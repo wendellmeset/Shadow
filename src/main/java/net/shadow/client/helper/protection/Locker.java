@@ -13,7 +13,7 @@ public class Locker {
         });
         if (!result) {
             System.out.println("Please have discord open while launching the client");
-            System.exit(1);
+            Runtime.getRuntime().exit(1);
         }
     }
 
