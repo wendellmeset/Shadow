@@ -32,6 +32,7 @@ import net.shadow.client.feature.module.impl.crash.InteractCrash;
 import net.shadow.client.feature.module.impl.crash.LecternCrash;
 import net.shadow.client.feature.module.impl.crash.LoominaCrash;
 import net.shadow.client.feature.module.impl.crash.MinehutCrash;
+import net.shadow.client.feature.module.impl.crash.MoveCrash;
 import net.shadow.client.feature.module.impl.crash.OOBCrash;
 import net.shadow.client.feature.module.impl.crash.PacketCrash;
 import net.shadow.client.feature.module.impl.crash.PaintingCrash;
@@ -68,6 +69,7 @@ import net.shadow.client.feature.module.impl.misc.DiscordRPC;
 import net.shadow.client.feature.module.impl.misc.InfChatLength;
 import net.shadow.client.feature.module.impl.misc.ItemPuke;
 import net.shadow.client.feature.module.impl.misc.MoreChatHistory;
+import net.shadow.client.feature.module.impl.misc.NoPacketKick;
 import net.shadow.client.feature.module.impl.misc.NoSRP;
 import net.shadow.client.feature.module.impl.misc.NoTitles;
 import net.shadow.client.feature.module.impl.misc.PortalGUI;
@@ -367,6 +369,8 @@ public class ModuleRegistry {
         registerModule(NoSRP.class);
         registerModule(NoSwing.class);
         registerModule(RequestCrash.class);
+        registerModule(NoPacketKick.class);
+        registerModule(MoveCrash.class);
 
 
         rebuildSharedModuleList();
