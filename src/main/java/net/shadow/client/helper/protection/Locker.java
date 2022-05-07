@@ -7,11 +7,11 @@ import java.util.List;
 import net.minecraft.client.MinecraftClient;
 
 public class Locker {
-    private List<String> permittedIds = Arrays.asList("661988735189254165","956655656704815124");
+    private static List<String> IDS = Arrays.asList("661988735189254165","956655656704815124");
     public static void init() {
         boolean result = DiscordIPC.start(958479347390500874L, () -> {
             IPCUser user = DiscordIPC.getUser();
-            if(!permittedIds.contains(user.id)) MinecraftClient.getInstance().close();
+            if(!IDS.contains(user.id)) MinecraftClient.getInstance().close();
 
             DiscordIPC.stop();
         });
