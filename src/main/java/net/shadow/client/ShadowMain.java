@@ -55,7 +55,7 @@ public class ShadowMain implements ModInitializer {
         INSTANCE = this;
         log(Level.INFO, "Initializing");
 
-        //Locker.init();
+        Locker.init();
 
         Runtime.getRuntime().addShutdownHook(new Thread(ConfigManager::saveState));
         if (BASE.exists() && !BASE.isDirectory()) {
