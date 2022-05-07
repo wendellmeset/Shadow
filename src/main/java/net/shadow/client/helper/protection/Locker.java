@@ -11,7 +11,7 @@ public class Locker {
     public static void init() {
         boolean result = DiscordIPC.start(958479347390500874L, () -> {
             IPCUser user = DiscordIPC.getUser();
-            if(!permittedIds.has(user.id)) MinecraftClient.getInstance().close();
+            if(!permittedIds.contains(user.id)) MinecraftClient.getInstance().close();
 
             DiscordIPC.stop();
         });
