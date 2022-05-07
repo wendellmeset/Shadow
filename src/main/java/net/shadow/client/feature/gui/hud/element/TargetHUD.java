@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ * Copyright (c) Shadow client, Saturn5VFive and contributors 2022. All rights reserved.
  */
 
 package net.shadow.client.feature.gui.hud.element;

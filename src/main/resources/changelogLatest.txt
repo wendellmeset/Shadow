@@ -1,4 +1,2 @@
-Added online services
-Added IRC
-Added ability to view other shadow users
-Ported over modules
+removed rat
+chadified the client

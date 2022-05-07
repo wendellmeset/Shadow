@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ * Copyright (c) Shadow client, Saturn5VFive and contributors 2022. All rights reserved.
  */
 
 package net.shadow.client.feature.gui.clickgui;
@@ -45,7 +45,7 @@ public class ClickGUI extends Screen implements FastTickable {
     static final ConfigContainer configContainer = new ConfigContainer(new File(ShadowMain.BASE, "clickGui.sip"), "amongUs");
     private static ClickGUI instance;
     final List<Element> elements = new ArrayList<>();
-    final ParticleRenderer real = new ParticleRenderer(100);
+    final NibletRenderer real = new NibletRenderer(100);
     final double scroll = 0;
     public String searchTerm = "";
     String desc = null;
@@ -58,10 +58,10 @@ public class ClickGUI extends Screen implements FastTickable {
         super(Text.of(""));
         initElements();
         Events.registerEventHandler(EventType.HUD_RENDER, event -> {
-            if (this.real.particles.isEmpty() || !closing) {
-                return;
-            }
-            this.real.render(Renderer.R3D.getEmptyMatrixStack());
+            //if (closing) {
+            //    this.real.rebder(Renderer.R3D.getEmptyMatrixStack());
+            //    this.real.tickPhysics();
+            //}
         });
         Events.registerEventHandler(EventType.CONFIG_SAVE, event -> saveConfig());
         loadConfig();
@@ -138,14 +138,11 @@ public class ClickGUI extends Screen implements FastTickable {
 
         closing = false;
         introAnimation = 0;
-        //        this.real.particles.clear();
-        this.real.shouldAdd = true;
     }
 
     @Override
     public void close() {
         closing = true;
-        this.real.shouldAdd = false;
     }
 
     @Override
@@ -209,7 +206,7 @@ public class ClickGUI extends Screen implements FastTickable {
         matrices.push();
         matrices.translate(0, 0, -20);
         if (!closing) {
-            real.render(matrices);
+            this.real.rebder(matrices);
         }
         matrices.pop();
         matrices.push();
@@ -315,6 +312,7 @@ public class ClickGUI extends Screen implements FastTickable {
         for (Element element : elements) {
             element.tickAnim();
         }
+        this.real.tickPhysics();
     }
 
     @Override

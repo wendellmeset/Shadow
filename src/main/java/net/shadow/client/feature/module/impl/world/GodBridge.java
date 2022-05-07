@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ * Copyright (c) Shadow client, Saturn5VFive and contributors 2022. All rights reserved.
  */
 
 package net.shadow.client.feature.module.impl.world;
@@ -106,6 +106,7 @@ public class GodBridge extends Module {
         switch (client.player.getMovementDirection()) {
             case NORTH, SOUTH -> toCheck = isolated.x;
             case EAST, WEST -> toCheck = isolated.z;
+            default -> {}
         }
         client.options.sneakKey.setPressed(toCheck > 0.5 + mOffset || toCheck < 0.5 - mOffset);
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ * Copyright (c) Shadow client, Saturn5VFive and contributors 2022. All rights reserved.
  */
 
 package net.shadow.client.feature.module;
@@ -14,6 +14,7 @@ import net.shadow.client.feature.module.impl.combat.Criticals;
 import net.shadow.client.feature.module.impl.combat.FireballDeflector;
 import net.shadow.client.feature.module.impl.combat.Fling;
 import net.shadow.client.feature.module.impl.combat.Killaura;
+import net.shadow.client.feature.module.impl.combat.NoSwing;
 import net.shadow.client.feature.module.impl.combat.Reach;
 import net.shadow.client.feature.module.impl.combat.ReverseKnockback;
 import net.shadow.client.feature.module.impl.combat.ShulkerDeflector;
@@ -32,7 +33,9 @@ import net.shadow.client.feature.module.impl.crash.LecternCrash;
 import net.shadow.client.feature.module.impl.crash.LoominaCrash;
 import net.shadow.client.feature.module.impl.crash.MinehutCrash;
 import net.shadow.client.feature.module.impl.crash.OOBCrash;
+import net.shadow.client.feature.module.impl.crash.PacketCrash;
 import net.shadow.client.feature.module.impl.crash.PaintingCrash;
+import net.shadow.client.feature.module.impl.crash.RequestCrash;
 import net.shadow.client.feature.module.impl.crash.SSRFCrash;
 import net.shadow.client.feature.module.impl.exploit.AntiAntiXray;
 import net.shadow.client.feature.module.impl.exploit.AntiRDI;
@@ -65,6 +68,7 @@ import net.shadow.client.feature.module.impl.misc.DiscordRPC;
 import net.shadow.client.feature.module.impl.misc.InfChatLength;
 import net.shadow.client.feature.module.impl.misc.ItemPuke;
 import net.shadow.client.feature.module.impl.misc.MoreChatHistory;
+import net.shadow.client.feature.module.impl.misc.NoSRP;
 import net.shadow.client.feature.module.impl.misc.NoTitles;
 import net.shadow.client.feature.module.impl.misc.PortalGUI;
 import net.shadow.client.feature.module.impl.misc.Spinner;
@@ -138,6 +142,7 @@ import net.shadow.client.feature.module.impl.world.GodBridge;
 import net.shadow.client.feature.module.impl.world.Godmode;
 import net.shadow.client.feature.module.impl.world.InstantBreak;
 import net.shadow.client.feature.module.impl.world.MassUse;
+import net.shadow.client.feature.module.impl.world.NewChunks;
 import net.shadow.client.feature.module.impl.world.NoBreakDelay;
 import net.shadow.client.feature.module.impl.world.Nuker;
 import net.shadow.client.feature.module.impl.world.Scaffold;
@@ -357,6 +362,11 @@ public class ModuleRegistry {
         registerModule(Radar.class);
         registerModule(PaintingCrash.class);
         registerModule(MapFuck.class);
+        registerModule(NewChunks.class);
+        registerModule(PacketCrash.class);
+        registerModule(NoSRP.class);
+        registerModule(NoSwing.class);
+        registerModule(RequestCrash.class);
 
 
         rebuildSharedModuleList();

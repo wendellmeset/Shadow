@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ * Copyright (c) Shadow client, Saturn5VFive and contributors 2022. All rights reserved.
  */
 
 package net.shadow.client.feature.gui.screen;
@@ -15,7 +15,6 @@ import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.DefaultSkinHelper;
 import net.minecraft.client.util.math.MatrixStack;
 import net.shadow.client.ShadowMain;
-import net.shadow.client.feature.gui.clickgui.ParticleRenderer;
 import net.shadow.client.feature.gui.widget.RoundButton;
 import net.shadow.client.helper.GameTexture;
 import net.shadow.client.helper.Texture;

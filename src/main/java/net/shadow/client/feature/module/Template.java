@@ -1,10 +1,12 @@
 /*
- * Copyright (c) Shadow client, 0x150, Saturn5VFive 2022. All rights reserved.
+ * Copyright (c) Shadow client, Saturn5VFive and contributors 2022. All rights reserved.
  */
 
 package net.shadow.client.feature.module;
 
 import net.minecraft.client.util.math.MatrixStack;
+import net.shadow.client.feature.module.Module;
+import net.shadow.client.feature.module.ModuleType;
 
 public class Template extends Module {
 
