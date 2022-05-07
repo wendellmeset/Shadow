@@ -16,8 +16,8 @@ jobs:
                   java-version: ${{ matrix.java }}
                   cache: 'gradle'
                   distribution: 'temurin'
-            - name: Patch and build
-              run: "chmod +x createRelease.sh && ./createRelease.sh"
+            - name: Build
+              run: "./gradlew build"
             - uses: actions/upload-artifact@v2
               with:
                 name: Builded Jars
