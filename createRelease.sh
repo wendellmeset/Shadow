@@ -20,5 +20,6 @@ export JAVA_HOME="$HOME/.jdks/openjdk-17.0.1/"
 if [[ ! -d bin ]]; then
   mkdir bin
   fi
-mv ./build/libs/shadow-1.0.0.jar bin
+mv ./build/libs/shadow-1.0.0.jar bin/shadow-deobfuscated-$ver
+./obfuscatedRelease.sh
 echo "Made release"

@@ -15,6 +15,7 @@ import net.shadow.client.feature.itemMenu.ItemGroupRegistry;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleRegistry;
 import net.shadow.client.helper.Rotations;
+import net.shadow.client.helper.protection.Locker;
 import net.shadow.client.helper.event.EventType;
 import net.shadow.client.helper.event.Events;
 import net.shadow.client.helper.event.events.base.NonCancellableEvent;
@@ -55,7 +56,7 @@ public class ShadowMain implements ModInitializer {
         INSTANCE = this;
         log(Level.INFO, "Initializing");
 
-        //Locker.init();
+        Locker.init();
 
         Runtime.getRuntime().addShutdownHook(new Thread(ConfigManager::saveState));
         if (BASE.exists() && !BASE.isDirectory()) {
