@@ -57,7 +57,9 @@ import net.shadow.client.feature.module.impl.grief.AutoIgnite;
 import net.shadow.client.feature.module.impl.grief.AutoRun;
 import net.shadow.client.feature.module.impl.grief.AutoTNT;
 import net.shadow.client.feature.module.impl.grief.Decimator;
+import net.shadow.client.feature.module.impl.grief.Explosion;
 import net.shadow.client.feature.module.impl.grief.MapFuck;
+import net.shadow.client.feature.module.impl.grief.MultiShot;
 import net.shadow.client.feature.module.impl.misc.AdBlock;
 import net.shadow.client.feature.module.impl.misc.AdSpammer;
 import net.shadow.client.feature.module.impl.misc.AllowFormatCodes;
@@ -371,6 +373,8 @@ public class ModuleRegistry {
         registerModule(RequestCrash.class);
         registerModule(NoPacketKick.class);
         registerModule(MoveCrash.class);
+        registerModule(MultiShot.class);
+        registerModule(Explosion.class);
 
 
         rebuildSharedModuleList();

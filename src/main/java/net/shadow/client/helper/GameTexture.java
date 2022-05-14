@@ -19,7 +19,7 @@ public enum GameTexture {
 
     ICONS_RENDER(new Texture("icons/render"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/render.png"),
     ICONS_CRASH(new Texture("icons/crash"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/crash.png"),
-    ICONS_GRIEF(new Texture("icons/grief"), "https://github.com/Saturn5Vfive/shadow-fs/blob/main/grief.png?raw=true"),
+    ICONS_GRIEF(new Texture("icons/grief"), "https://github.com/Saturn5Vfive/monty/blob/main/icons8-spaceship-100.png?raw=true"),
     ICONS_ADDON_PROVIDED(new Texture("icons/item"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/addons.png"),
     ICONS_MOVE(new Texture("icons/move"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/movement.png"),
     ICONS_MISC(new Texture("icons/misc"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/misc.png"),

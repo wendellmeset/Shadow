@@ -64,7 +64,7 @@ public class MapFuck extends Module {
                 decals.add(decal);
             }
         }
-        item.getNbt().put("Decorations", decals);
+        item.getOrCreateNbt().put("Decorations", decals);
         this.setEnabled(false);
         client.player.networkHandler.sendPacket(new CreativeInventoryActionC2SPacket(36 + client.player.getInventory().selectedSlot, item));
     }

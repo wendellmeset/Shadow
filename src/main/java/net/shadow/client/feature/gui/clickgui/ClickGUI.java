@@ -306,8 +306,8 @@ public class ClickGUI extends Screen implements FastTickable {
         if (closing) {
             d *= -1;
         }
-        introAnimation = 1;
-        //introAnimation = MathHelper.clamp(introAnimation, 0, 1);
+        introAnimation += d;
+        introAnimation = MathHelper.clamp(introAnimation, 0, 1);
         trackedScroll = Transitions.transition(trackedScroll, scroll, 7, 0);
         for (Element element : elements) {
             element.tickAnim();
