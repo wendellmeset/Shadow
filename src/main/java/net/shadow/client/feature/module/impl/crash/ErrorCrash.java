@@ -11,12 +11,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.packet.c2s.play.ButtonClickC2SPacket;
 import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket;
+import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.network.packet.c2s.play.SelectMerchantTradeC2SPacket;
 import net.minecraft.screen.slot.SlotActionType;
 import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.config.EnumSetting;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
+import net.shadow.client.helper.event.EventListener;
+import net.shadow.client.helper.event.EventType;
+import net.shadow.client.helper.event.events.PacketEvent;
 
 
 public class ErrorCrash extends Module {
@@ -26,6 +30,13 @@ public class ErrorCrash extends Module {
 
     public ErrorCrash() {
         super("ErrorCrash", "Crash by making a shit ton of errors", ModuleType.CRASH);
+    }
+
+    @EventListener(type=EventType.PACKET_SEND)
+    void real(PacketEvent event){
+        if(event.getPacket() instanceof PlayerMoveC2SPacket packet){
+            event.setCancelled(true);
+        }
     }
 
     @Override
