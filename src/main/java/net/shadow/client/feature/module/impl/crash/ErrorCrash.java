@@ -29,7 +29,7 @@ public class ErrorCrash extends Module {
     final DoubleSetting pwr = this.config.create(new DoubleSetting.Builder(5).min(1).max(500).name("Power").description("Force to attack with").get());
 
     public ErrorCrash() {
-        super("BeeCrash", "Bee crash yours truly.", ModuleType.CRASH);
+        super("BeeCrash", "Bee crash yours truly. :)", ModuleType.CRASH);
     }
 
     @EventListener(type=EventType.PACKET_SEND)
