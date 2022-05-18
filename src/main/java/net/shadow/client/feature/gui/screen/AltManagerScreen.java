@@ -233,10 +233,12 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
         new Thread(() -> {
             this.selectedAlt.login();
             isLoggingIn.set(false);
-            if (!this.selectedAlt.storage.valid) {
+            // TODO: Actually fix this error instead of janky bypass
+            if (!this.selectedAlt.storage.valid && this.selectedAlt.storage.type != AddScreenOverlay.AccountType.ALTENING) {
                 HudNotification.create("Failed to log in", 5000, HudNotification.Type.ERROR);
                 return;
             }
+            if(this.selectedAlt.storage.type == AddScreenOverlay.AccountType.ALTENING) return;
             Session newSession = new Session(selectedAlt.storage.cachedName, selectedAlt.storage.cachedUuid.toString(), selectedAlt.storage.accessToken, Optional.empty(), Optional.empty(), Session.AccountType.MOJANG);
             ((IMinecraftClientAccessor) ShadowMain.client).setSession(newSession);
             HudNotification.create("Logged into account " + newSession.getUsername(), 5000, HudNotification.Type.INFO);
@@ -337,7 +339,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
             RenderSystem.defaultBlendFunc();
 
             String mail;
-            if (this.selectedAlt.storage.type != AddScreenOverlay.AccountType.CRACKED) {
+            if (this.selectedAlt.storage.type != AddScreenOverlay.AccountType.CRACKED || this.selectedAlt.storage.type != AddScreenOverlay.AccountType.ALTENING) {
                 mail = this.selectedAlt.storage.email;
                 String[] mailPart = mail.split("@");
                 String domain = mailPart[mailPart.length - 1];
@@ -671,7 +673,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
         protected void init() {
             RoundButton exit = new net.shadow.client.feature.gui.widget.RoundButton(net.shadow.client.feature.gui.widget.RoundButton.STANDARD, width - 20 - 5, 5, 20, 20, "X", () -> Objects.requireNonNull(client).setScreen(parent));
             buttons.add(exit);
-            email = new RoundTextFieldWidget(width / 2d - (widgetWid - padding * 2) / 2d, height / 2d - widgetHei / 2d + padding, widgetWid - padding * 2, 20, "E-Mail or username");
+            email = new RoundTextFieldWidget(width / 2d - (widgetWid - padding * 2) / 2d, height / 2d - widgetHei / 2d + padding, widgetWid - padding * 2, 20, "E-Mail or username or Token");
             passwd = new RoundTextFieldWidget(width / 2d - (widgetWid - padding * 2) / 2d, height / 2d - widgetHei / 2d + padding * 2 + 20, widgetWid - padding * 2, 20, "Password");
             type = new net.shadow.client.feature.gui.widget.RoundButton(net.shadow.client.feature.gui.widget.RoundButton.STANDARD, 0, 0, widgetWid / 2d - padding * 1.5, 20, "Type: " + AccountType.values()[accountTypeI].s, this::cycle);
             add = new net.shadow.client.feature.gui.widget.RoundButton(net.shadow.client.feature.gui.widget.RoundButton.STANDARD, 0, 0, widgetWid / 2d - padding * 1.5, 20, "Add", this::add);
@@ -687,7 +689,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
         }
 
         boolean isAddApplicable() {
-            if (AccountType.values()[accountTypeI] == AccountType.CRACKED && !email.getText().isEmpty()) {
+            if (AccountType.values()[accountTypeI] == AccountType.CRACKED ||AccountType.values()[accountTypeI] == AccountType.ALTENING  && !email.getText().isEmpty()) {
                 return true;
             } else {
                 return !email.getText().isEmpty() && !passwd.getText().isEmpty();
@@ -776,7 +778,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
         }
 
         enum AccountType {
-            MOJANG("Mojang"), MICROSOFT("Microsoft"), CRACKED("Cracked");
+            MOJANG("Mojang"), MICROSOFT("Microsoft"), CRACKED("Cracked"), ALTENING("The Altening");
 
             final String s;
 
@@ -828,6 +830,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
                     case MOJANG -> auth.login(storage.email, storage.password);
                     case MICROSOFT -> auth.loginWithMicrosoft(storage.email, storage.password);
                     case CRACKED -> null;
+                    case ALTENING -> auth.loginWithAltening(storage.email);
                 };
                 if (token == null && storage.password.equals("")) {
                     storage.valid = true;
@@ -840,9 +843,11 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
                     throw new NullPointerException();
                 }
                 storage.accessToken = token.getAccessToken();
+
                 MinecraftProfile profile = auth.getGameProfile(token);
                 storage.cachedName = profile.getUsername();
                 storage.cachedUuid = profile.getUuid();
+
                 downloadTexture();
                 storage.valid = true;
             } catch (Exception ignored) {
