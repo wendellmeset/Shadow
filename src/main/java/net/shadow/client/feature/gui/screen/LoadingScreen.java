@@ -22,9 +22,7 @@ import org.apache.logging.log4j.Level;
 import javax.imageio.ImageIO;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
@@ -97,7 +95,21 @@ public class LoadingScreen extends ClientScreen implements FastTickable {
 
         for (GameTexture resource : GameTexture.values()) {
             progressMap.put(resource, new ProgressData());
+
+
             es.execute(() -> {
+                if(new File(ShadowMain.BASE.getPath()+ resource.getWhere().getPath()+".png").exists()) {
+                    try {
+                        BufferedImage bufferedImage = ImageIO.read(new File(ShadowMain.BASE.getPath()+ resource.getWhere().getPath()+".png"));
+                        Utils.registerBufferedImageTexture(resource.getWhere(),bufferedImage);
+                    } catch (IOException ignore) {
+
+                    } finally {
+                        progressMap.get(resource).getProgress().set(1);
+                        progressMap.get(resource).getWorkingOnIt().set(false);
+                    }
+                    return;
+                }
                 ShadowMain.log(Level.INFO, "Downloading " + resource.getDownloadUrl());
                 progressMap.get(resource).getWorkingOnIt().set(true);
                 try {
@@ -127,6 +139,14 @@ public class LoadingScreen extends ClientScreen implements FastTickable {
                     BufferedImage bi = ImageIO.read(new ByteArrayInputStream(imageBuffer));
                     Utils.registerBufferedImageTexture(resource.getWhere(), bi);
                     ShadowMain.log(Level.INFO, "Downloaded " + resource.getDownloadUrl());
+                    if(!new File(ShadowMain.BASE.getPath() + resource.getWhere().getPath()+".png").getParentFile().exists()) {
+                        new File(ShadowMain.BASE.getPath() + resource.getWhere().getPath()+".png").getParentFile().mkdir();
+                    }
+                    new File(ShadowMain.BASE.getPath()+resource.getWhere().getPath()+".png").createNewFile();
+                    FileOutputStream output = new FileOutputStream(ShadowMain.BASE.getPath()+resource.getWhere().getPath()+".png");
+                    output.write(imageBuffer);
+                    output.close();
+
                 } catch (Exception e) {
                     ShadowMain.log(Level.ERROR, "Failed to download " + resource.getDownloadUrl() + ": " + e.getMessage());
                     BufferedImage empty = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
