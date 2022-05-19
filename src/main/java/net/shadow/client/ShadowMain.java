@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Shadow client, Saturn5VFive and contributors 2022. All rights reserved.
+ * Copyright (c) Shadow client, Saturn5VFive, Breathtaken and contributors 2022. All rights reserved.
  */
 
 package net.shadow.client;
@@ -9,11 +9,13 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Element;
 import net.shadow.client.feature.addon.AddonManager;
 import net.shadow.client.feature.command.CommandRegistry;
+import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.gui.FastTickable;
 import net.shadow.client.feature.gui.notifications.NotificationRenderer;
 import net.shadow.client.feature.itemMenu.ItemGroupRegistry;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleRegistry;
+import net.shadow.client.feature.module.impl.render.ClickGUI;
 import net.shadow.client.helper.Rotations;
 import net.shadow.client.helper.protection.Locker;
 import net.shadow.client.helper.event.EventType;
@@ -27,6 +29,7 @@ import net.shadow.client.helper.util.Utils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.lwjgl.glfw.GLFW;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -56,13 +59,14 @@ public class ShadowMain implements ModInitializer {
         INSTANCE = this;
         log(Level.INFO, "Initializing");
 
-        Locker.init();
+        if(!isInIde()) Locker.init();
 
         Runtime.getRuntime().addShutdownHook(new Thread(ConfigManager::saveState));
         if (BASE.exists() && !BASE.isDirectory()) {
             BASE.delete();
         }
         if (!BASE.exists()) {
+            firstLaunch();
             BASE.mkdir();
         }
 
@@ -75,7 +79,13 @@ public class ShadowMain implements ModInitializer {
 
         log(Level.INFO, "Done initializing");
     }
-
+    void firstLaunch() {
+        log(Level.INFO,"First launch, binding ClickGUI to right shift.");
+        ModuleRegistry.getByClass(ClickGUI.class).keybind.setValue((double) GLFW.GLFW_KEY_RIGHT_SHIFT);
+    }
+    boolean isInIde() {
+        return true;
+    }
     void initFonts() {
         try {
             int fsize = 18 * 2;
