@@ -1,5 +1,6 @@
 package me.x150.authlib.login.mojang;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import java.io.BufferedReader;
@@ -43,7 +44,8 @@ public class MinecraftAuthenticator extends Authenticator<MinecraftToken> {
             request.add("agent", agent);
             request.addProperty("username", email);
             request.addProperty("password", password);
-            request.addProperty("requestUser", false);
+            request.addProperty("clientToken","");
+            request.addProperty("requestUser", true);
             String requestBody = request.toString();
             httpURLConnection.setFixedLengthStreamingMode(requestBody.length());
             httpURLConnection.setRequestProperty("Content-Type", "application/json");
