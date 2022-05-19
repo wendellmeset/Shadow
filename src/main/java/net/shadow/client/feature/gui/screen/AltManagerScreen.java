@@ -8,7 +8,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService;
 import com.mojang.blaze3d.systems.RenderSystem;
+import me.x150.authlib.AccountUtils;
 import me.x150.authlib.login.mojang.MinecraftAuthenticator;
 import me.x150.authlib.login.mojang.MinecraftToken;
 import me.x150.authlib.login.mojang.profile.MinecraftProfile;
@@ -236,9 +238,14 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
             // TODO: Actually fix this error instead of janky bypass
             if (!this.selectedAlt.storage.valid && this.selectedAlt.storage.type != AddScreenOverlay.AccountType.ALTENING) {
                 HudNotification.create("Failed to log in", 5000, HudNotification.Type.ERROR);
+
                 return;
             }
             if(this.selectedAlt.storage.type == AddScreenOverlay.AccountType.ALTENING) return;
+            AccountUtils.setBaseUrl((YggdrasilMinecraftSessionService) ShadowMain.client.getSessionService(),"https://sessionserver.mojang.com/session/minecraft/");
+            AccountUtils.setJoinUrl((YggdrasilMinecraftSessionService) ShadowMain.client.getSessionService(),"https://sessionserver.mojang.com/session/minecraft/join");
+            AccountUtils.setCheckUrl((YggdrasilMinecraftSessionService) ShadowMain.client.getSessionService(),"https://sessionserver.mojang.com/session/minecraft/hasJoined");
+
             Session newSession = new Session(selectedAlt.storage.cachedName, selectedAlt.storage.cachedUuid.toString(), selectedAlt.storage.accessToken, Optional.empty(), Optional.empty(), Session.AccountType.MOJANG);
             ((IMinecraftClientAccessor) ShadowMain.client).setSession(newSession);
             HudNotification.create("Logged into account " + newSession.getUsername(), 5000, HudNotification.Type.INFO);
