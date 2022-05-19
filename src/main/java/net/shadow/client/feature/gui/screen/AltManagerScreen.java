@@ -819,6 +819,7 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
         }
 
         void downloadTexture() {
+            if(this.storage.cachedUuid == null) return;
             this.tex = PlayerHeadResolver.resolve(this.storage.cachedUuid);
         }
 
@@ -850,7 +851,6 @@ public class AltManagerScreen extends ClientScreen implements FastTickable {
                     throw new NullPointerException();
                 }
                 storage.accessToken = token.getAccessToken();
-
                 MinecraftProfile profile = auth.getGameProfile(token);
                 storage.cachedName = profile.getUsername();
                 storage.cachedUuid = profile.getUuid();

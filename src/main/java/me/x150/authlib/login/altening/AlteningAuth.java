@@ -54,7 +54,7 @@ public class AlteningAuth {
             yggdrasilUserAuthentication.logIn();
             ((IMinecraftClientAccessor) ShadowMain.client).setSession(new Session(yggdrasilUserAuthentication.getSelectedProfile().getName(), yggdrasilUserAuthentication.getSelectedProfile().getId().toString(), yggdrasilUserAuthentication.getAuthenticatedToken(), Optional.empty(), Optional.empty(), Session.AccountType.MOJANG));
             this.username = yggdrasilUserAuthentication.getSelectedProfile().getName();
-            return new MinecraftToken(yggdrasilUserAuthentication.getAuthenticatedToken(),username);
+            return new MinecraftToken(yggdrasilUserAuthentication.getAuthenticatedToken(),username,yggdrasilUserAuthentication.getSelectedProfile().getId());
         }
         catch (AuthenticationException authenticationException) {
             return null;

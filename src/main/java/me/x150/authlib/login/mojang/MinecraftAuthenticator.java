@@ -1,29 +1,24 @@
 package me.x150.authlib.login.mojang;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import me.x150.authlib.exception.AuthFailureException;
 import me.x150.authlib.login.altening.AlteningAuth;
 import me.x150.authlib.login.microsoft.MicrosoftAuthenticator;
 import me.x150.authlib.login.microsoft.XboxToken;
-import me.x150.authlib.login.mojang.MinecraftToken;
 import me.x150.authlib.login.mojang.profile.MinecraftProfile;
-import me.x150.authlib.login.mojang.profile.MinecraftProfileCape;
-import me.x150.authlib.login.mojang.profile.MinecraftProfileSkin;
 import me.x150.authlib.struct.Authenticator;
-
 public class MinecraftAuthenticator extends Authenticator<MinecraftToken> {
     protected final MicrosoftAuthenticator microsoftAuthenticator = new MicrosoftAuthenticator();
 
@@ -44,13 +39,14 @@ public class MinecraftAuthenticator extends Authenticator<MinecraftToken> {
             request.add("agent", agent);
             request.addProperty("username", email);
             request.addProperty("password", password);
-            request.addProperty("clientToken","");
-            request.addProperty("requestUser", true);
+            request.addProperty("requestUser", false);
             String requestBody = request.toString();
+
             httpURLConnection.setFixedLengthStreamingMode(requestBody.length());
             httpURLConnection.setRequestProperty("Content-Type", "application/json");
-            httpURLConnection.setRequestProperty("Host", "authserver.mojang.com");
+            // httpURLConnection.setRequestProperty("Host", "authserver.mojang.com");
             httpURLConnection.connect();
+
             OutputStream outputStream = httpURLConnection.getOutputStream();
 
             try {
@@ -70,9 +66,9 @@ public class MinecraftAuthenticator extends Authenticator<MinecraftToken> {
             if (outputStream != null) {
                 outputStream.close();
             }
-
             JsonObject jsonObject = this.parseResponseData(httpURLConnection);
-            return new MinecraftToken(jsonObject.get("accessToken").getAsString(), ((JsonObject)jsonObject.get("selectedProfile")).get("name").getAsString());
+
+            return new MinecraftToken(jsonObject.get("accessToken").getAsString(), jsonObject.get("selectedProfile").getAsJsonObject().get("name").getAsString(),generateUUID(jsonObject.get("selectedProfile").getAsJsonObject().get("id").getAsString()));
         } catch (IOException var14) {
             throw new AuthFailureException(String.format("Authentication error. Request could not be made! Cause: '%s'", var14.getMessage()));
         }
@@ -115,7 +111,7 @@ public class MinecraftAuthenticator extends Authenticator<MinecraftToken> {
             }
 
             JsonObject jsonObject = this.microsoftAuthenticator.parseResponseData(httpURLConnection);
-            return new MinecraftToken(jsonObject.get("access_token").getAsString(), jsonObject.get("username").getAsString());
+            return new MinecraftToken(jsonObject.get("access_token").getAsString(), jsonObject.get("username").getAsString(),UUID.fromString(jsonObject.get("selected_profile").getAsJsonObject().get("id").getAsString()));
         } catch (IOException var14) {
             throw new AuthFailureException(String.format("Authentication error. Request could not be made! Cause: '%s'", var14.getMessage()));
         }
@@ -127,38 +123,58 @@ public class MinecraftAuthenticator extends Authenticator<MinecraftToken> {
 
     public MinecraftProfile getGameProfile(MinecraftToken minecraftToken) {
         try {
+            if(isForceMigrated(minecraftToken)) {
+                // this request is completly useless....
+               return new MinecraftProfile(minecraftToken.getUuid(),minecraftToken.getUsername());
+            }
             URL url = new URL("https://api.minecraftservices.com/minecraft/profile");
             URLConnection urlConnection = url.openConnection();
             HttpURLConnection httpURLConnection = (HttpURLConnection)urlConnection;
             httpURLConnection.setRequestMethod("GET");
-            httpURLConnection.setRequestProperty("Authorization", "Bearer " + minecraftToken.getAccessToken());
-            httpURLConnection.setRequestProperty("Host", "api.minecraftservices.com");
+            httpURLConnection.setRequestProperty("Authorization",  "Bearer "+minecraftToken.getAccessToken());
             httpURLConnection.connect();
             JsonObject jsonObject = this.parseResponseData(httpURLConnection);
+
             UUID uuid = this.generateUUID(jsonObject.get("id").getAsString());
             String name = jsonObject.get("name").getAsString();
+
 
             return new MinecraftProfile(uuid, name);
         } catch (IOException var10) {
             throw new AuthFailureException(String.format("Authentication error. Request could not be made! Cause: '%s'", var10.getMessage()));
         }
     }
+    public boolean isForceMigrated(MinecraftToken minecraftToken) {
+        try {
 
+            URL url = new URL("https://api.minecraftservices.com/rollout/v1/msamigrationforced");
+            URLConnection urlConnection = url.openConnection();
+            HttpURLConnection httpURLConnection = (HttpURLConnection)urlConnection;
+            httpURLConnection.setRequestMethod("GET");
+            httpURLConnection.setRequestProperty("Authorization",  "Bearer "+minecraftToken.getAccessToken());
+            httpURLConnection.connect();
+            JsonObject jsonObject = this.parseResponseData(httpURLConnection);
+            boolean rollout = jsonObject.get("rollout").getAsBoolean();
+
+
+            return rollout;
+        } catch (IOException var10) {
+            throw new AuthFailureException(String.format("Authentication error. Request could not be made! Cause: '%s'", var10.getMessage()));
+        }
+    }
     public JsonObject parseResponseData(HttpURLConnection httpURLConnection) throws IOException {
-        BufferedReader bufferedReader;
-        if (httpURLConnection.getResponseCode() != 200) {
-            bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getErrorStream()));
-        } else {
-            bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
-        }
 
-        String lines = (String)bufferedReader.lines().collect(Collectors.joining());
-        JsonObject jsonObject = (JsonObject)this.gson.fromJson(lines, JsonObject.class);
-        if (jsonObject.has("error")) {
-            throw new AuthFailureException(String.format("Could not find profile!. Error: '%s'", jsonObject.get("errorMessage").getAsString()));
-        } else {
-            return jsonObject;
+        InputStream stream = httpURLConnection.getInputStream();
+
+        StringBuilder textBuilder = new StringBuilder();
+        try (Reader reader = new BufferedReader(new InputStreamReader
+                (stream, Charset.forName(StandardCharsets.UTF_8.name())))) {
+            int c = 0;
+            while ((c = reader.read()) != -1) {
+                textBuilder.append((char) c);
+            }
         }
+        return this.gson.fromJson(textBuilder.toString(),JsonObject.class);
     }
 
     public UUID generateUUID(String trimmedUUID) throws IllegalArgumentException {
