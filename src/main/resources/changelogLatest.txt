@@ -1,3 +1,1 @@
-Fixed altening
-Autobind clickgui first launch
-Gigachad load time (second load)
+Fixed mojang accounts

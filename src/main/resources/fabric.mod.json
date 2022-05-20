@@ -3,13 +3,12 @@
   "id": "shadow",
   "version": "${version}",
   "name": "Shadow client",
-  "description": "minecraft exploit client for the latest version",
+  "description": "The ultimate trolling client.",
   "authors": [
     "Saturn5VFive",
-    "0x150"
+    "ZeoNight"
   ],
   "contributors": [
-    "BBBBB"
   ],
   "contact": {},
   "license": "All-Rights-Reserved",
