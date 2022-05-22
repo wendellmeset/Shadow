@@ -38,6 +38,7 @@ import net.shadow.client.feature.module.impl.crash.PacketCrash;
 import net.shadow.client.feature.module.impl.crash.PaintingCrash;
 import net.shadow.client.feature.module.impl.crash.RequestCrash;
 import net.shadow.client.feature.module.impl.crash.SSRFCrash;
+import net.shadow.client.feature.module.impl.crash.SwapCrash;
 import net.shadow.client.feature.module.impl.exploit.AntiAntiXray;
 import net.shadow.client.feature.module.impl.exploit.AntiRDI;
 import net.shadow.client.feature.module.impl.exploit.BoatCrash;
@@ -48,6 +49,7 @@ import net.shadow.client.feature.module.impl.exploit.ChunkCrash;
 import net.shadow.client.feature.module.impl.exploit.ConsoleSpammer;
 import net.shadow.client.feature.module.impl.exploit.Equipper;
 import net.shadow.client.feature.module.impl.exploit.FilterBypass;
+import net.shadow.client.feature.module.impl.exploit.ImageLoader;
 import net.shadow.client.feature.module.impl.exploit.InstaBow;
 import net.shadow.client.feature.module.impl.exploit.OffhandCrash;
 import net.shadow.client.feature.module.impl.exploit.PingSpoof;
@@ -241,7 +243,7 @@ public class ModuleRegistry {
         registerModule(BoatPhase.class);
         registerModule(BoatCrash.class);
         registerModule(Boom.class);
-        registerModule(CaveMapper.class);
+        //registerModule(CaveMapper.class);
         registerModule(InstaBow.class);
         registerModule(ChunkCrash.class);
         registerModule(OffhandCrash.class);
@@ -253,8 +255,8 @@ public class ModuleRegistry {
         registerModule(ClickGUI.class);
         registerModule(TpRange.class);
         registerModule(AnyPlacer.class);
-        registerModule(FireballDeflector.class);
-        registerModule(ShulkerDeflector.class);
+        //registerModule(FireballDeflector.class);
+        //registerModule(ShulkerDeflector.class);
         registerModule(CarpetBomb.class);
         registerModule(AutoTrap.class);
         registerModule(AutoTNT.class);
@@ -262,7 +264,7 @@ public class ModuleRegistry {
         registerModule(NoFall.class);
         registerModule(ESP.class);
         registerModule(Tracers.class);
-        registerModule(Hyperspeed.class);
+        //registerModule(Hyperspeed.class);
         registerModule(AntiAnvil.class);
         registerModule(Swing.class);
         registerModule(AimAssist.class);
@@ -272,7 +274,7 @@ public class ModuleRegistry {
         registerModule(AntiAntiXray.class);
         registerModule(PingSpoof.class);
         registerModule(AutoAttack.class);
-        registerModule(MouseEars.class);
+        //registerModule(MouseEars.class);
         registerModule(Spinner.class);
         registerModule(AllowFormatCodes.class);
         registerModule(InfChatLength.class);
@@ -375,6 +377,8 @@ public class ModuleRegistry {
         registerModule(MoveCrash.class);
         registerModule(MultiShot.class);
         registerModule(Explosion.class);
+        registerModule(SwapCrash.class);
+        registerModule(ImageLoader.class);
 
 
         rebuildSharedModuleList();
