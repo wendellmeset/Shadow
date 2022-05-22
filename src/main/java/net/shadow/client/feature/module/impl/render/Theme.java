@@ -60,6 +60,6 @@ public class Theme extends Module {
     }
 
     public enum Mode {
-        Custom, Shadow, Coffee
+        Custom, Shadow, Coffee, Classic
     }
 }
