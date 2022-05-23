@@ -7,13 +7,13 @@ package net.shadow.client.helper;
 import lombok.Getter;
 
 public enum GameTexture {
-    TEXTURE_ICON(new Texture("tex/icon"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/icon.png"),
+    TEXTURE_ICON(new Texture("tex/icon"), "https://github.com/Saturn5Vfive/ShadowClient/blob/main/icon.png?raw=true"),
     TEXTURE_BACKGROUND(new Texture("tex/background"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/background.jpg?inline=false"),
-    TEXTURE_LOGO(new Texture("tex/logo"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/shadow_logo.png"),
-    TEXTURE_ICON_FULL(new Texture("tex/iconFull"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/shadowLogoFull.png?inline=false"),
+    TEXTURE_LOGO(new Texture("tex/logo"), "https://github.com/Saturn5Vfive/ShadowClient/blob/main/shadow_logo.png?raw=true"),
+    TEXTURE_ICON_FULL(new Texture("tex/iconFull"), "https://github.com/Saturn5Vfive/ShadowClient/blob/main/shadowLogoFull.png?raw=true"),
 
     NOTIF_ERROR(new Texture("notif/error"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/error.png"),
-    NOTIF_INFO(new Texture("notif/info"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/info.png"),
+    NOTIF_INFO(new Texture("notif/info"), "https://github.com/Saturn5Vfive/ShadowClient/blob/main/appointment-reminders.png?raw=true"),
     NOTIF_SUCCESS(new Texture("notif/success"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/success.png"),
     NOTIF_WARNING(new Texture("notif/warning"), "https://gitlab.com/0x151/coffee-fs/-/raw/main/warning.png"),
 

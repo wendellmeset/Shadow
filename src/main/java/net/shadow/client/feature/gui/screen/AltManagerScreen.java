@@ -58,7 +58,7 @@ import java.util.stream.Collectors;
 
 public class AltManagerScreen extends ClientScreen implements FastTickable {
     public static final Map<UUID, Texture> texCache = new HashMap<>();
-    static final File ALTS_FILE = new File(ShadowMain.BASE, "alts.sip");
+    static final File ALTS_FILE = new File(ShadowMain.BASE, "alts.shadow");
     static final String TOP_NOTE = """
             // DO NOT SHARE THIS FILE
             // This file contains sensitive information about your accounts

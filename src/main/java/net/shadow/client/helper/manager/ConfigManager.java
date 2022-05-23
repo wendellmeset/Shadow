@@ -34,7 +34,7 @@ public class ConfigManager {
     public static boolean enabled = false;
 
     static {
-        CONFIG_FILE = new File(ShadowMain.BASE, "config.sip");
+        CONFIG_FILE = new File(ShadowMain.BASE, "config.shadow");
     }
 
     /**

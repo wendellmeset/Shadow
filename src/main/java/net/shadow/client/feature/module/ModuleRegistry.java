@@ -264,7 +264,7 @@ public class ModuleRegistry {
         registerModule(NoFall.class);
         registerModule(ESP.class);
         registerModule(Tracers.class);
-        //registerModule(Hyperspeed.class);
+        registerModule(Hyperspeed.class);
         registerModule(AntiAnvil.class);
         registerModule(Swing.class);
         registerModule(AimAssist.class);

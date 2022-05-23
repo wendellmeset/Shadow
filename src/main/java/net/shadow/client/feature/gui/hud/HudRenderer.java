@@ -30,7 +30,7 @@ import java.util.List;
 
 public class HudRenderer {
 
-    static final File CONFIG = new File(ShadowMain.BASE, "hud.sip");
+    static final File CONFIG = new File(ShadowMain.BASE, "hud.shadow");
     private static HudRenderer INSTANCE;
     final List<HudElement> elements = register();
     boolean isEditing = false;

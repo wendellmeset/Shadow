@@ -31,7 +31,7 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Taco extends Command {
-    public static final File storage = new File(ShadowMain.BASE, "taco.sip");
+    public static final File storage = new File(ShadowMain.BASE, "taco.shadow");
     public static final List<Frame> frames = new ArrayList<>();
     public static final AtomicBoolean init = new AtomicBoolean(false);
     static final File gifPath = new File(ShadowMain.BASE, "tacoFrames");
