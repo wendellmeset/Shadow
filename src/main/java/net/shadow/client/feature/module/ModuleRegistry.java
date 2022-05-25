@@ -41,6 +41,7 @@ import net.shadow.client.feature.module.impl.crash.SSRFCrash;
 import net.shadow.client.feature.module.impl.crash.SwapCrash;
 import net.shadow.client.feature.module.impl.exploit.AntiAntiXray;
 import net.shadow.client.feature.module.impl.exploit.AntiRDI;
+import net.shadow.client.feature.module.impl.exploit.BeaconSpoofer;
 import net.shadow.client.feature.module.impl.exploit.BoatCrash;
 import net.shadow.client.feature.module.impl.exploit.BoatFling;
 import net.shadow.client.feature.module.impl.exploit.BrandSpoof;
@@ -58,6 +59,7 @@ import net.shadow.client.feature.module.impl.grief.AutoFireball;
 import net.shadow.client.feature.module.impl.grief.AutoIgnite;
 import net.shadow.client.feature.module.impl.grief.AutoRun;
 import net.shadow.client.feature.module.impl.grief.AutoTNT;
+import net.shadow.client.feature.module.impl.grief.ControlPanel;
 import net.shadow.client.feature.module.impl.grief.Decimator;
 import net.shadow.client.feature.module.impl.grief.Explosion;
 import net.shadow.client.feature.module.impl.grief.MapFuck;
@@ -379,6 +381,8 @@ public class ModuleRegistry {
         registerModule(Explosion.class);
         registerModule(SwapCrash.class);
         registerModule(ImageLoader.class);
+        registerModule(ControlPanel.class);
+        registerModule(BeaconSpoofer.class);
 
 
         rebuildSharedModuleList();

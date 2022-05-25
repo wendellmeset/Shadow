@@ -100,7 +100,7 @@ public class LoadingScreen extends ClientScreen implements FastTickable {
             es.execute(() -> {
                 if(new File(ShadowMain.BASE.getPath()+ resource.getWhere().getPath()+".png").exists()) {
                     try {
-                        BufferedImage bufferedImage = ImageIO.read(new File(ShadowMain.BASE.getPath()+ resource.getWhere().getPath()+".png"));
+                        BufferedImage bufferedImage = ImageIO.read(new File(ShadowMain.BASE.getPath() + resource.getWhere().getPath()+".png"));
                         Utils.registerBufferedImageTexture(resource.getWhere(),bufferedImage);
                     } catch (IOException ignore) {
 
@@ -109,53 +109,54 @@ public class LoadingScreen extends ClientScreen implements FastTickable {
                         progressMap.get(resource).getWorkingOnIt().set(false);
                     }
                     return;
-                }
-                ShadowMain.log(Level.INFO, "Downloading " + resource.getDownloadUrl());
-                progressMap.get(resource).getWorkingOnIt().set(true);
-                try {
-
-                    URL url = new URL(resource.getDownloadUrl());
-                    HttpURLConnection httpConnection = (HttpURLConnection) (url.openConnection());
-                    long completeFileSize = httpConnection.getContentLength();
-
-                    BufferedInputStream in = new BufferedInputStream(httpConnection.getInputStream());
-                    ByteArrayOutputStream bout = new ByteArrayOutputStream();
-                    byte[] data = new byte[16];
-                    long downloadedFileSize = 0;
-                    int x;
-                    progressMap.get(resource).getProgress().set(0.1);
-                    while ((x = in.read(data, 0, 16)) >= 0) {
-                        downloadedFileSize += x;
-
-                        double currentProgress = ((double) downloadedFileSize) / ((double) completeFileSize);
-                        //                        progress.set(MathHelper.lerp(currentProgress, progressBefore, completedProgress));
-                        progressMap.get(resource).getProgress().set(currentProgress * 0.8 + 0.1);
-
-                        bout.write(data, 0, x);
+                }else{
+                    ShadowMain.log(Level.INFO, "Downloading " + resource.getDownloadUrl());
+                    progressMap.get(resource).getWorkingOnIt().set(true);
+                    try {
+    
+                        URL url = new URL(resource.getDownloadUrl());
+                        HttpURLConnection httpConnection = (HttpURLConnection) (url.openConnection());
+                        long completeFileSize = httpConnection.getContentLength();
+    
+                        BufferedInputStream in = new BufferedInputStream(httpConnection.getInputStream());
+                        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+                        byte[] data = new byte[16];
+                        long downloadedFileSize = 0;
+                        int x;
+                        progressMap.get(resource).getProgress().set(0.1);
+                        while ((x = in.read(data, 0, 16)) >= 0) {
+                            downloadedFileSize += x;
+    
+                            double currentProgress = ((double) downloadedFileSize) / ((double) completeFileSize);
+                            //                        progress.set(MathHelper.lerp(currentProgress, progressBefore, completedProgress));
+                            progressMap.get(resource).getProgress().set(currentProgress * 0.8 + 0.1);
+    
+                            bout.write(data, 0, x);
+                        }
+                        bout.close();
+                        in.close();
+                        byte[] imageBuffer = bout.toByteArray();
+                        BufferedImage bi = ImageIO.read(new ByteArrayInputStream(imageBuffer));
+                        Utils.registerBufferedImageTexture(resource.getWhere(), bi);
+                        ShadowMain.log(Level.INFO, "Downloaded " + resource.getDownloadUrl());
+                        if(!new File(ShadowMain.BASE.getPath() + resource.getWhere().getPath()+".png").getParentFile().exists()) {
+                            new File(ShadowMain.BASE.getPath() + resource.getWhere().getPath()+".png").getParentFile().mkdir();
+                        }
+                        new File(ShadowMain.BASE.getPath()+resource.getWhere().getPath()+".png").createNewFile();
+                        FileOutputStream output = new FileOutputStream(ShadowMain.BASE.getPath()+resource.getWhere().getPath()+".png");
+                        output.write(imageBuffer);
+                        output.close();
+    
+                    } catch (Exception e) {
+                        ShadowMain.log(Level.ERROR, "Failed to download " + resource.getDownloadUrl() + ": " + e.getMessage());
+                        BufferedImage empty = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+                        empty.setRGB(0, 0, 0xFF000000);
+                        Utils.registerBufferedImageTexture(resource.getWhere(), empty);
+                        warningIfPresent = "Some textures failed to download. They won't show up in game.";
+                    } finally {
+                        progressMap.get(resource).getProgress().set(1);
+                        progressMap.get(resource).getWorkingOnIt().set(false);
                     }
-                    bout.close();
-                    in.close();
-                    byte[] imageBuffer = bout.toByteArray();
-                    BufferedImage bi = ImageIO.read(new ByteArrayInputStream(imageBuffer));
-                    Utils.registerBufferedImageTexture(resource.getWhere(), bi);
-                    ShadowMain.log(Level.INFO, "Downloaded " + resource.getDownloadUrl());
-                    if(!new File(ShadowMain.BASE.getPath() + resource.getWhere().getPath()+".png").getParentFile().exists()) {
-                        new File(ShadowMain.BASE.getPath() + resource.getWhere().getPath()+".png").getParentFile().mkdir();
-                    }
-                    new File(ShadowMain.BASE.getPath()+resource.getWhere().getPath()+".png").createNewFile();
-                    FileOutputStream output = new FileOutputStream(ShadowMain.BASE.getPath()+resource.getWhere().getPath()+".png");
-                    output.write(imageBuffer);
-                    output.close();
-
-                } catch (Exception e) {
-                    ShadowMain.log(Level.ERROR, "Failed to download " + resource.getDownloadUrl() + ": " + e.getMessage());
-                    BufferedImage empty = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
-                    empty.setRGB(0, 0, 0xFF000000);
-                    Utils.registerBufferedImageTexture(resource.getWhere(), empty);
-                    warningIfPresent = "Some textures failed to download. They won't show up in game.";
-                } finally {
-                    progressMap.get(resource).getProgress().set(1);
-                    progressMap.get(resource).getWorkingOnIt().set(false);
                 }
             });
         }

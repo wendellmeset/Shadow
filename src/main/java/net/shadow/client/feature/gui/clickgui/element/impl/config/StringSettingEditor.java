@@ -23,6 +23,10 @@ public class StringSettingEditor extends ConfigBase<StringSetting> {
         this.height = h + FontRenderers.getRenderer().getMarginHeight() + 1;
     }
 
+    public RoundTextFieldWidget getRawParent(){
+        return input;
+    }
+
     @Override
     public boolean clicked(double x, double y, int button) {
         return input.mouseClicked(x, y, button);
