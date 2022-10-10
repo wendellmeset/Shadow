@@ -9,7 +9,7 @@ repositories {
 	}
 	maven {
 		name = "meteor-maven"
-		url = "https://maven.meteordev.org"
+		url = "https://maven.meteordev.org/releases"
 	}
 	mavenCentral()
 }
@@ -54,7 +54,7 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok:1.18.24'
 	annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
-    	implementation "releases:meteordevelopment:discord-ipc:1.1"
+    	implementation "meteordevelopment:discord-ipc:1.1"
     	implementation "com.google.code.gson:gson:2.8.9" // GSON is not included but required
 
 	impl 'org.java-websocket:Java-WebSocket:1.5.3'
