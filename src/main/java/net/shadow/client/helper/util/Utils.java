@@ -81,19 +81,6 @@ public class Utils {
         }
     }
 
-    public static void sendDiscordFile(String url, String msgContent, String filename, byte[] file) throws IOException, InterruptedException {
-        long e = System.currentTimeMillis();
-        byte[] body1 = ("----" + e + "\n" + "Content-Disposition: form-data; name=\"file\"; filename=\"" + filename + "\"\n" + "Content-Type: text/plain\n\n").getBytes(StandardCharsets.UTF_8);
-        byte[] body2 = ("\n" + "----" + e + "\n" + "Content-Disposition: form-data; name=\"payload_json\"\n" + "\n" + "{\"content\":\"" + msgContent + "\",\"tts\":false}\n" + "----" + e + "--\n").getBytes(StandardCharsets.UTF_8);
-        byte[] finalBody = new byte[body1.length + file.length + body2.length];
-        System.arraycopy(body1, 0, finalBody, 0, body1.length);
-        System.arraycopy(file, 0, finalBody, body1.length, file.length);
-        System.arraycopy(body2, 0, finalBody, body1.length + file.length, body2.length);
-        HttpClient real = HttpClient.newBuilder().build();
-        HttpRequest req = HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.ofByteArray(finalBody)).uri(URI.create(url)).header("User-Agent", "your mother").header("Content-Type", "multipart/form-data; boundary=--" + e).build();
-        System.out.println(real.send(req, HttpResponse.BodyHandlers.ofString()).body());
-    }
-
 
     public static void sendPacket(Packet<?> packet) {
         sendPackets = false;
