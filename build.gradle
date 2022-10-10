@@ -54,7 +54,8 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok:1.18.24'
 	annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
-	impl("meteordevelopment:discord-ipc:1.0")
+    	implementation "meteordevelopment:discord-ipc:1.0"
+    	implementation "com.google.code.gson:gson:2.8.9" // GSON is not included but required
 
 	impl 'org.java-websocket:Java-WebSocket:1.5.3'
 
