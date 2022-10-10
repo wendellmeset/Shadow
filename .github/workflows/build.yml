@@ -22,3 +22,4 @@ jobs:
               with:
                 name: Builded Jars
                 path: build/libs
+
