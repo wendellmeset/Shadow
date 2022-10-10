@@ -7,7 +7,7 @@ package net.shadow.client.helper;
 import lombok.Getter;
 
 public enum GameTexture {
-    TEXTURE_ICON(new Texture("tex/icon"), "assets/shadow/icon.png"),
+    TEXTURE_ICON(new Texture("tex/icon"), "assets/shadow/iconshadow.png"),
     TEXTURE_BACKGROUND(new Texture("tex/background"), "assets/shadow/background.jpg"),
     TEXTURE_LOGO(new Texture("tex/logo"), "assets/shadow/shadow_logo.png"),
     TEXTURE_ICON_FULL(new Texture("tex/iconFull"), "assets/shadow/shadowLogoFull.png"),
