@@ -55,6 +55,8 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
 	impl("meteordevelopment:discord-ipc:1.0")
+	
+	impl "com.google.code.gson:gson:2.8.9"
 
 	impl 'org.java-websocket:Java-WebSocket:1.5.3'
 
