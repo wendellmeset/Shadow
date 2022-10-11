@@ -7,15 +7,15 @@ package net.shadow.client.helper;
 import lombok.Getter;
 
 public enum GameTexture {
-    TEXTURE_ICON(new Texture("tex/icon"), "https://drive.google.com/uc?export=download&id=1Pi1JsN8BteloaMkeCUFzLtybzrb-cK72"),
-    TEXTURE_BACKGROUND(new Texture("tex/background"), "https://drive.google.com/uc?export=download&id=14-_hNXOFbx5T7_jH9OZD0KT_WNho4ge6"),
-    TEXTURE_LOGO(new Texture("tex/logo"), "https://drive.google.com/uc?export=download&id=1mIvE0-ThOp6NTYRidSIfJAMkRMCZbNFt"),
-    TEXTURE_ICON_FULL(new Texture("tex/iconFull"), "https://drive.google.com/uc?export=download&id=1yT7wbvPMfra0adSFEnPO9bR6UQLySZGk"),
+    TEXTURE_ICON(new Texture("tex/icon"), "https://www.dropbox.com/s/fe9xekfz3by1hr9/iconshadow.png?dl=1"),
+    TEXTURE_BACKGROUND(new Texture("tex/background"), "https://www.dropbox.com/s/j5ephx6jqc77pvd/background.jpg?dl=1"),
+    TEXTURE_LOGO(new Texture("tex/logo"), "https://www.dropbox.com/s/fgcu480wwbed0k0/shadow_logo.png?dl=1"),
+    TEXTURE_ICON_FULL(new Texture("tex/iconFull"), "https://www.dropbox.com/s/0vp2oo8fmg0qbyq/shadowLogoFull.png?dl=1"),
 
-    NOTIF_ERROR(new Texture("notif/error"), "https://drive.google.com/uc?export=download&id=1ZjuQQgmpKCOMJ2RYaNhhVW1Z05pd-lFN"),
-    NOTIF_INFO(new Texture("notif/info"), "https://drive.google.com/uc?export=download&id=1b0qJg7C0ctfjcgyAa3ZIdNicpgRF_FzQ"),
-    NOTIF_SUCCESS(new Texture("notif/success"), "https://drive.google.com/uc?export=download&id=1C1EsZ-bg3yh-fgmc6KlnuMwdNvnVQeOo"),
-    NOTIF_WARNING(new Texture("notif/warning"), "https://drive.google.com/uc?export=download&id=1Jdl3VSCH2PZWBeKZ0AhFkFvleo9I2ZWH"),
+    NOTIF_ERROR(new Texture("notif/error"), "https://www.dropbox.com/s/lzbml9xwxpam33p/error.png?dl=1"),
+    NOTIF_INFO(new Texture("notif/info"), "https://www.dropbox.com/s/3ghswi7mpuc53ys/info.png?dl=1"),
+    NOTIF_SUCCESS(new Texture("notif/success"), "https://www.dropbox.com/s/rkoxou3xqr756lg/success.png?dl=1"),
+    NOTIF_WARNING(new Texture("notif/warning"), "https://www.dropbox.com/s/vyxxypgbfzk79co/warning.png?dl=1"),
 
     ICONS_RENDER(new Texture("icons/render"), "https://drive.google.com/uc?export=download&id=15XYCuH7tIi0pNbAi_FIwz7UjEIZdGX05"),
     ICONS_CRASH(new Texture("icons/crash"), "https://drive.google.com/uc?export=download&id=1jRD056Fom5-i9QNCuC3vBVBzUK1mhOYM"),
