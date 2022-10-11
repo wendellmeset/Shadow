@@ -19,7 +19,7 @@ public enum GameTexture {
 
     ICONS_RENDER(new Texture("icons/render"), "https://drive.google.com/uc?export=download&id=15XYCuH7tIi0pNbAi_FIwz7UjEIZdGX05"),
     ICONS_CRASH(new Texture("icons/crash"), "https://drive.google.com/uc?export=download&id=1jRD056Fom5-i9QNCuC3vBVBzUK1mhOYM"),
-    ICONS_GRIEF(new Texture("icons/grief"), "https://drive.google.com/uc?export=download&id=1A3E5vCCIO69R-rcsvZOAP_KDT6zUCSAR"),
+    ICONS_GRIEF(new Texture("icons/grief"), "https://drive.google.com/uc?export=download&id=1mTm3rXF2FizdKYW_pjHi1biI9vVeAmkA"),
     ICONS_ADDON_PROVIDED(new Texture("icons/item"), "https://drive.google.com/uc?export=download&id=112HRiNkIv6DJLxBwVkNIjf6eL5oUtU9E"),
     ICONS_MOVE(new Texture("icons/move"), "https://drive.google.com/uc?export=download&id=12lgG1sa9pgcRJGiqmHRPlbgyipMzJeRj"),
     ICONS_MISC(new Texture("icons/misc"), "https://drive.google.com/uc?export=download&id=1JV-TCVH6epPPkre1bgp0clPfnt3jUZP5"),
