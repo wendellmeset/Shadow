@@ -17,18 +17,18 @@ public enum GameTexture {
     NOTIF_SUCCESS(new Texture("notif/success"), "https://www.dropbox.com/s/rkoxou3xqr756lg/success.png?dl=1"),
     NOTIF_WARNING(new Texture("notif/warning"), "https://www.dropbox.com/s/vyxxypgbfzk79co/warning.png?dl=1"),
 
-    ICONS_RENDER(new Texture("icons/render"), "https://drive.google.com/uc?export=download&id=15XYCuH7tIi0pNbAi_FIwz7UjEIZdGX05"),
-    ICONS_CRASH(new Texture("icons/crash"), "https://drive.google.com/uc?export=download&id=1jRD056Fom5-i9QNCuC3vBVBzUK1mhOYM"),
-    ICONS_GRIEF(new Texture("icons/grief"), "a"),
-    ICONS_ADDON_PROVIDED(new Texture("icons/item"), "https://drive.google.com/uc?export=download&id=112HRiNkIv6DJLxBwVkNIjf6eL5oUtU9E"),
-    ICONS_MOVE(new Texture("icons/move"), "https://drive.google.com/uc?export=download&id=12lgG1sa9pgcRJGiqmHRPlbgyipMzJeRj"),
-    ICONS_MISC(new Texture("icons/misc"), "https://drive.google.com/uc?export=download&id=1JV-TCVH6epPPkre1bgp0clPfnt3jUZP5"),
-    ICONS_WORLD(new Texture("icons/world"), "https://drive.google.com/uc?export=download&id=1rz35RXksiRCKW-h28PoDwx4x543H7Ujq"),
-    ICONS_EXPLOIT(new Texture("icons/exploit"), "https://drive.google.com/uc?export=download&id=1cwPbPaq1v9CI4Oy0CP9JSkX8rZvYpXzq"),
-    ICONS_COMBAT(new Texture("icons/combat"), "a"),
+    ICONS_RENDER(new Texture("icons/render"), "https://www.dropbox.com/s/x8elotjidwwh2so/render.png?dl=1"),
+    ICONS_CRASH(new Texture("icons/crash"), "https://www.dropbox.com/s/0g512a1ehovnvpg/crash.png?dl=1"),
+    ICONS_GRIEF(new Texture("icons/grief"), "https://www.dropbox.com/s/ph1ccx6zycqx8a3/grief.png?dl=1"),
+    ICONS_ADDON_PROVIDED(new Texture("icons/item"), "https://www.dropbox.com/s/xv5i7yadlsfgcuf/addons.png?dl=1"),
+    ICONS_MOVE(new Texture("icons/move"), "https://www.dropbox.com/s/vok2hiqrscpzkm5/movement.png?dl=1"),
+    ICONS_MISC(new Texture("icons/misc"), "https://www.dropbox.com/s/f9gmrf4y900indy/misc.png?dl=1"),
+    ICONS_WORLD(new Texture("icons/world"), "https://www.dropbox.com/s/49zjgn9od0o9ww1/world.png?dl=1"),
+    ICONS_EXPLOIT(new Texture("icons/exploit"), "https://www.dropbox.com/s/9m1dccmybcvfcqi/exploit.png?dl=1"),
+    ICONS_COMBAT(new Texture("icons/combat"), "https://www.dropbox.com/s/fp23w1bkqedxsd8/combat.png?dl=1"),
 
-    ACTION_RUNCOMMAND(new Texture("actions/runCommand"), "https://drive.google.com/uc?export=download&id=1Uh1YnOf8QaTM71P3cNHC0DhPgQAh-9uJ"),
-    ACTION_TOGGLEMODULE(new Texture("actions/toggleModule"), "https://drive.google.com/uc?export=download&id=1euUtkGdJ2zTHAZ_h8uMxX4zXZAJ6nqzZ");
+    ACTION_RUNCOMMAND(new Texture("actions/runCommand"), "https://www.dropbox.com/s/b42uj6lij2sus6x/command.png?dl=1"),
+    ACTION_TOGGLEMODULE(new Texture("actions/toggleModule"), "https://www.dropbox.com/s/vilaidqlpehm0q7/toggle.png?dl=1");
     @Getter
     final String downloadUrl;
     @Getter
