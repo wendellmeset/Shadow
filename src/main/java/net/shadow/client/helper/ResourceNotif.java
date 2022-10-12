@@ -1,3 +1,5 @@
+package net.shadow.client.helper;
+
 import net.shadow.client.ShadowMain;
 
 import javax.swing.*;
