@@ -60,7 +60,7 @@ public class ResourceNotif {
             fileStream.close();
             out.close();
             
-            return tempFile.getAbsolutePath();
+            return theFile.getAbsolutePath();
 
         } catch (IOException e) {
             return null;
