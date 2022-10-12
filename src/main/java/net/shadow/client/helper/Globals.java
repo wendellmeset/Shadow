@@ -1,4 +1,3 @@
-
 package net.shadow.client.helper;
 
 import net.minecraft.client.network.ServerAddress;
