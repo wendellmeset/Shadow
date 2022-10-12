@@ -26,6 +26,10 @@ import net.shadow.client.helper.font.adapter.impl.BruhAdapter;
 import net.shadow.client.helper.font.renderer.FontRenderer;
 import net.shadow.client.helper.manager.ConfigManager;
 import net.shadow.client.helper.util.Utils;
+import net.shadow.client.helper.ResourceActions;
+import net.shadow.client.helper.ResourceIcons;
+import net.shadow.client.helper.ResourceNotif;
+import net.shadow.client.helper.ResourceTexture;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,6 +49,10 @@ public class ShadowMain implements ModInitializer {
     public static final Logger LOGGER = LogManager.getLogger();
     public static final MinecraftClient client = MinecraftClient.getInstance();
     public static final File BASE = new File(MinecraftClient.getInstance().runDirectory, "shadow");
+    public static final File SHADOW_ACTIONS = new File(MinecraftClient.getInstance().runDirectory, "shadowactions");
+    public static final File SHADOW_ICONS = new File(MinecraftClient.getInstance().runDirectory, "shadowicons");
+    public static final File SHADOW_NOTIF = new File(MinecraftClient.getInstance().runDirectory, "shadownotif");
+    public static final File SHADOW_TEXTURING = new File(MinecraftClient.getInstance().runDirectory, "shadowtex");
     public static long lastScreenChange = System.currentTimeMillis();
     public static ShadowMain INSTANCE;
     public static Thread MODULE_FTTICKER;
@@ -69,8 +77,63 @@ public class ShadowMain implements ModInitializer {
             firstLaunch();
             BASE.mkdir();
         }
+        
+        log(Level.INFO, "Creating Shadow Client Resources!");
+        
+        if (SHADOW_ACTIONS.exists() && !SHADOW_ACTIONS.isDirectory()) {
+            SHADOW_ACTIONS.delete();
+        }
+        if (!SHADOW_ACTIONS.exists()) {
+            SHADOW_ACTIONS.mkdir();
+                        
+            String actionAssets1 = ResourceActions.extract("/assets/shadow/actions/runcommand.png");
+            String actionAssets2 = ResourceActions.extract("/assets/shadow/actions/togglemodule.png");
+        }
+        
+        if (SHADOW_ICONS.exists() && !SHADOW_ICONS.isDirectory()) {
+            SHADOW_ICONS.delete();
+        }
+        if (!SHADOW_ICONS.exists()) {
+            SHADOW_ICONS.mkdir();
+            
+            String iconAssets1 = ResourceIcons.extract("/assets/shadow/icons/chat.png");
+            String iconAssets2 = ResourceIcons.extract("/assets/shadow/icons/combat.png");
+            String iconAssets3 = ResourceIcons.extract("/assets/shadow/icons/exploit.png");
+            String iconAssets4 = ResourceIcons.extract("/assets/shadow/icons/crash.png");
+            String iconAssets5 = ResourceIcons.extract("/assets/shadow/icons/fun.png");
+            String iconAssets6 = ResourceIcons.extract("/assets/shadow/icons/grief.png");
+            String iconAssets7 = ResourceIcons.extract("/assets/shadow/icons/item.png");
+            String iconAssets8 = ResourceIcons.extract("/assets/shadow/icons/misc.png");
+            String iconAssets9 = ResourceIcons.extract("/assets/shadow/icons/movement.png");
+            String iconAssets10 = ResourceIcons.extract("/assets/shadow/icons/render.png");
+            String iconAssets11 = ResourceIcons.extract("/assets/shadow/icons/world.png");
+        }
+        
+        if (SHADOW_NOTIF.exists() && !SHADOW_NOTIF.isDirectory()) {
+            SHADOW_NOTIF.delete();
+        }
+        if (!SHADOW_NOTIF.exists()) {
+            SHADOW_NOTIF.mkdir();
+            
+            String notifAssets1 = ResourceNotif.extract("/assets/shadow/notif/error.png");
+            String notifAssets2 = ResourceNotif.extract("/assets/shadow/notif/info.png");
+            String notifAssets3 = ResourceNotif.extract("/assets/shadow/notif/success.png");
+            String notifAssets4 = ResourceNotif.extract("/assets/shadow/notif/warning.png");
+        }
+        
+        if (SHADOW_TEXTURING.exists() && !SHADOW_TEXTURING.isDirectory()) {
+            SHADOW_TEXTURING.delete();
+        }
+        if (!SHADOW_TEXTURING.exists()) {
+            SHADOW_TEXTURING.mkdir();
+            
+            String textureAssets1 = ResourceTexture.extract("/assets/shadow/tex/background.jpg");
+            String textureAssets2 = ResourceTexture.extract("/assets/shadow/text/icon.png");
+            String textureAssets3 = ResourceTexture.extract("/assets/shadow/tex/iconfull.png");
+            String textureAssets4 = ResourceTexture.extract("/assets/shadow/tex/logo.png");
+        }
 
-        log(Level.INFO, "Loading addons");
+        log(Level.INFO, "Loading any available addons");
         AddonManager.init();
 
         ConfigManager.loadState();
