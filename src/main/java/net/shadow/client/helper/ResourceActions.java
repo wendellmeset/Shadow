@@ -59,6 +59,9 @@ public class ResourceActions {
             // Close the streams
             fileStream.close();
             out.close();
+            
+            // Return the path of this sweet new file
+            return tempFile.getAbsolutePath();
 
         } catch (IOException e) {
             return null;
