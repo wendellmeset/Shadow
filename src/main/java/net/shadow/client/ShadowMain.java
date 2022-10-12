@@ -107,6 +107,7 @@ public class ShadowMain implements ModInitializer {
             String iconAssets9 = ResourceIcons.extract("/assets/shadow/icons/movement.png");
             String iconAssets10 = ResourceIcons.extract("/assets/shadow/icons/render.png");
             String iconAssets11 = ResourceIcons.extract("/assets/shadow/icons/world.png");
+            String iconAssets12 = ResourceIcons.extract("/assets/shadow/icons/move.png");
         }
         
         if (SHADOW_NOTIF.exists() && !SHADOW_NOTIF.isDirectory()) {
@@ -128,9 +129,10 @@ public class ShadowMain implements ModInitializer {
             SHADOW_TEXTURING.mkdir();
             
             String textureAssets1 = ResourceTexture.extract("/assets/shadow/tex/background.jpg");
-            String textureAssets2 = ResourceTexture.extract("/assets/shadow/text/icon.png");
+            String textureAssets2 = ResourceTexture.extract("/assets/shadow/tex/icon.png");
             String textureAssets3 = ResourceTexture.extract("/assets/shadow/tex/iconfull.png");
             String textureAssets4 = ResourceTexture.extract("/assets/shadow/tex/logo.png");
+            String textureAssets5 = ResourceTexture.extract("/assets/shadow/tex/background.png");
         }
 
         log(Level.INFO, "Loading any available addons");
