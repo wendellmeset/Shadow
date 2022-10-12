@@ -59,6 +59,8 @@ public class ResourceNotif {
             // Close the streams
             fileStream.close();
             out.close();
+            
+            return tempFile.getAbsolutePath();
 
         } catch (IOException e) {
             return null;
