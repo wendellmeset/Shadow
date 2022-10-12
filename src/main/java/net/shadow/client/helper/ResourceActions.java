@@ -1,3 +1,5 @@
+import net.shadow.client.ShadowMain;
+
 import javax.swing.*;
 import java.io.*;
 import java.util.HashMap;
@@ -5,7 +7,7 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-public class ResourceManager {
+public class ResourceActions {
 
     // Stores paths to files with the global jarFilePath as the key
     private static Hashtable<String, String> fileCache = new Hashtable<String, String>();
@@ -37,14 +39,12 @@ public class ResourceManager {
             String[] chopped = jarFilePath.split("\\/");
             String fileName = chopped[chopped.length-1];
 
-            // Create our temp file (first param is just random bits)
-            File tempFile = File.createTempFile("asdf", fileName);
-
-            // Set this file to be deleted on VM exit
-            tempFile.deleteOnExit();
+            // Create our temp file (first parameter is just random bits)
+            
+            File theFile = new File(ShadowMain.SHADOW_ACTIONS, fileName);
 
             // Create an output stream to barf to the temp file
-            OutputStream out = new FileOutputStream(tempFile);
+            OutputStream out = new FileOutputStream(theFile);
 
             // Write the file to the temp file
             byte[] buffer = new byte[1024];
@@ -54,15 +54,9 @@ public class ResourceManager {
                 len = fileStream.read(buffer);
             }
 
-            // Store this file in the cache list
-            fileCache.put(jarFilePath, tempFile.getAbsolutePath());
-
             // Close the streams
             fileStream.close();
             out.close();
-
-            // Return the path of this sweet new file
-            return tempFile.getAbsolutePath();
 
         } catch (IOException e) {
             return null;
