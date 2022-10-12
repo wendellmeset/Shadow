@@ -29,7 +29,7 @@ public class ResourceActions {
         // Alright, we don't have the file, let's extract it
         try {
             // Read the file we're looking for
-            InputStream fileStream = ResourceManager.class.getResourceAsStream(jarFilePath);
+            InputStream fileStream = ResourceActions.class.getResourceAsStream(jarFilePath);
 
             // Was the resource found?
             if(fileStream == null)
