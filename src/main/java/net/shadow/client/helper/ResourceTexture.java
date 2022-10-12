@@ -59,6 +59,8 @@ public class ResourceTexture {
             // Close the streams
             fileStream.close();
             out.close();
+            
+            return theFile.getAbsolutePath();
 
         } catch (IOException e) {
             return null;
